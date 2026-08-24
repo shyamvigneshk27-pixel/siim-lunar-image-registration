@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "siim"
+version = "0.1.0.dev0"
+description = "Multi-modal, Sun-angle and scale invariant lunar image correspondence (SIH 2026, PS 26166)"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "pyyaml>=6.0",
+    "pillow>=10.0",
+]
+
+[project.optional-dependencies]
+# Visualisation and reporting; not needed by the core pipeline.
+viz = ["matplotlib>=3.8", "pandas>=2.0"]
+# Added at EXP-001 when a feature-detection backend is chosen.
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 90
+src = ["src", "tests", "scripts"]

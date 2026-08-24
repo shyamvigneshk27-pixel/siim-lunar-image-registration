@@ -1,0 +1,252 @@
+{
+  "objective": "4 - GT-free estimators vs coherent wrong solutions",
+  "protocol": "thresholds from calibration seeds, reported on disjoint validation seeds",
+  "calibration_seeds": [
+    1001,
+    1002,
+    1003,
+    1004
+  ],
+  "validation_seeds": [
+    7001,
+    7002,
+    7003,
+    7004
+  ],
+  "part_a_correspondence_level": {
+    "held_out_median": {
+      "threshold_from_calibration": 1000000000000.0,
+      "validation": {
+        "threshold": 1000000000000.0,
+        "n": 96,
+        "n_wrong": 60,
+        "detection_rate": 0.2,
+        "false_alarm_rate": 0.0,
+        "tp": 12.0,
+        "fp": 0.0,
+        "tn": 36.0,
+        "fn": 48.0
+      },
+      "per_kind": {
+        "correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.4825111485308343,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "correct_noisy": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 1.424406100410864,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "clustered_correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.47545212397545833,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "lattice_shift": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.46789538468987457,
+          "flagged_rate": 0.0,
+          "median_true_error": 64.0
+        },
+        "repeated_texture": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.4695791600980461,
+          "flagged_rate": 0.0,
+          "median_true_error": 64.0
+        },
+        "coherent_affine": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.47646126863838584,
+          "flagged_rate": 0.0,
+          "median_true_error": 52.70999014376441
+        },
+        "partial_overlap": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.47388819922938996,
+          "flagged_rate": 0.0,
+          "median_true_error": 21.142121256222413
+        },
+        "low_inlier_degenerate": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 1000000000000.0,
+          "flagged_rate": 1.0,
+          "median_true_error": 275.6450254397794
+        }
+      }
+    },
+    "split_consistency": {
+      "threshold_from_calibration": 0.8610384534433726,
+      "validation": {
+        "threshold": 0.8610384534433726,
+        "n": 96,
+        "n_wrong": 60,
+        "detection_rate": 0.2,
+        "false_alarm_rate": 0.0,
+        "tp": 12.0,
+        "fp": 0.0,
+        "tn": 36.0,
+        "fn": 48.0
+      },
+      "per_kind": {
+        "correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.14773382133736182,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "correct_noisy": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.5393594698598908,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "clustered_correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.29255497879387526,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.0
+        },
+        "lattice_shift": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.17210701399796938,
+          "flagged_rate": 0.0,
+          "median_true_error": 64.0
+        },
+        "repeated_texture": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.22334688095447866,
+          "flagged_rate": 0.0,
+          "median_true_error": 64.0
+        },
+        "coherent_affine": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.1552916268938058,
+          "flagged_rate": 0.0,
+          "median_true_error": 52.70999014376441
+        },
+        "partial_overlap": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.5226221517692504,
+          "flagged_rate": 0.0,
+          "median_true_error": 21.142121256222413
+        },
+        "low_inlier_degenerate": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 1000000000000.0,
+          "flagged_rate": 1.0,
+          "median_true_error": 275.6450254397794
+        }
+      }
+    }
+  },
+  "part_b_cycle_and_loop": {
+    "cycle_error": {
+      "threshold_from_calibration": 0.0,
+      "validation": {
+        "threshold": 0.0,
+        "n": 48,
+        "n_wrong": 36,
+        "detection_rate": 1.0,
+        "false_alarm_rate": 1.0,
+        "tp": 36.0,
+        "fp": 12.0,
+        "tn": 0.0,
+        "fn": 0.0
+      },
+      "per_kind": {
+        "correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.3247560885207622,
+          "flagged_rate": 1.0,
+          "median_true_error": 0.37923290865512504
+        },
+        "lattice_all_edges": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.0,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        },
+        "lattice_one_edge": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.0,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        },
+        "symmetric_wrong": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 0.0,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        }
+      }
+    },
+    "loop_error": {
+      "threshold_from_calibration": 62.74509803921568,
+      "validation": {
+        "threshold": 62.74509803921568,
+        "n": 48,
+        "n_wrong": 36,
+        "detection_rate": 1.0,
+        "false_alarm_rate": 0.0,
+        "tp": 36.0,
+        "fp": 0.0,
+        "tn": 12.0,
+        "fn": 0.0
+      },
+      "per_kind": {
+        "correct": {
+          "n": 12,
+          "is_wrong": false,
+          "median_signal": 0.621970093874499,
+          "flagged_rate": 0.0,
+          "median_true_error": 0.37923290865512504
+        },
+        "lattice_all_edges": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 190.07904237102366,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        },
+        "lattice_one_edge": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 62.74509803921568,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        },
+        "symmetric_wrong": {
+          "n": 12,
+          "is_wrong": true,
+          "median_signal": 62.74509803921568,
+          "flagged_rate": 1.0,
+          "median_true_error": 64.0
+        }
+      }
+    }
+  }
+}

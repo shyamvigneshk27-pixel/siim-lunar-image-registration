@@ -1,0 +1,470 @@
+{
+  "objective": "2 - terrain realism",
+  "lola_reference": {
+    "highlands": {
+      "median_deg": 9.1,
+      "mean_deg": 11.0,
+      "std_deg": 7.0
+    },
+    "mare": {
+      "median_deg": 3.5,
+      "mean_deg": 4.9,
+      "std_deg": 4.5
+    },
+    "angle_of_repose_deg": 33.0,
+    "baseline_m": 15.0
+  },
+  "seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005
+  ],
+  "image_shape": [
+    384,
+    384
+  ],
+  "regime_statistics": {
+    "A_mare_moderate": {
+      "scene": "mare",
+      "target_slope_median_deg": 3.5,
+      "realistic": true,
+      "note": "Realistic mare. Low slope AND low feature density: the information-poor case (Challenge G).",
+      "n_seeds": 5,
+      "slope": {
+        "median_deg": {
+          "mean": 3.4999999999996616,
+          "std": 4.985712247230148e-13
+        },
+        "mean_deg": {
+          "mean": 3.7539266513009464,
+          "std": 0.015787184241676605
+        },
+        "std_deg": {
+          "mean": 2.062642824326493,
+          "std": 0.051033010417680456
+        },
+        "p90_deg": {
+          "mean": 6.406778027912729,
+          "std": 0.028616722027725507
+        },
+        "p99_deg": {
+          "mean": 9.317116159007025,
+          "std": 0.1575057293274893
+        },
+        "max_deg": {
+          "mean": 26.71351654898003,
+          "std": 2.2723058163844363
+        },
+        "frac_above_repose": {
+          "mean": 0.0,
+          "std": 0.0
+        }
+      },
+      "keypoints_per_megapixel": {
+        "mean": 312.042236328125,
+        "std": 9.7703922079969
+      }
+    },
+    "A_highlands_moderate": {
+      "scene": "highlands",
+      "target_slope_median_deg": 9.1,
+      "realistic": true,
+      "note": "Realistic highlands, the LOLA 15 m median. The default regime for drawing conclusions about real terrain.",
+      "n_seeds": 5,
+      "slope": {
+        "median_deg": {
+          "mean": 9.099999999993447,
+          "std": 1.1940118199363286e-11
+        },
+        "mean_deg": {
+          "mean": 9.618167268505141,
+          "std": 0.017762113253580965
+        },
+        "std_deg": {
+          "mean": 4.920686139609072,
+          "std": 0.019802074492489222
+        },
+        "p90_deg": {
+          "mean": 16.34313782931625,
+          "std": 0.050256629188904035
+        },
+        "p99_deg": {
+          "mean": 22.644663656525363,
+          "std": 0.14460898407266462
+        },
+        "max_deg": {
+          "mean": 33.85197473522332,
+          "std": 1.047692089051245
+        },
+        "frac_above_repose": {
+          "mean": 2.0599365234375e-05,
+          "std": 2.8197812824365735e-05
+        }
+      },
+      "keypoints_per_megapixel": {
+        "mean": 22119.140625,
+        "std": 134.10383632031147
+      }
+    },
+    "B_highlands_challenging": {
+      "scene": "highlands",
+      "target_slope_median_deg": 18.0,
+      "realistic": true,
+      "note": "Rugged crater-saturated highlands. Median well above the LOLA mean; tail approaches the angle of repose. Physically plausible but at the rough end of the real distribution.",
+      "n_seeds": 5,
+      "slope": {
+        "median_deg": {
+          "mean": 17.99999999996776,
+          "std": 5.537258974480734e-11
+        },
+        "mean_deg": {
+          "mean": 18.578889294204245,
+          "std": 0.024927535700569818
+        },
+        "std_deg": {
+          "mean": 8.877262561279956,
+          "std": 0.02097071882005126
+        },
+        "p90_deg": {
+          "mean": 30.711693913276303,
+          "std": 0.05955443052440362
+        },
+        "p99_deg": {
+          "mean": 40.05494824558515,
+          "std": 0.09666531126998043
+        },
+        "max_deg": {
+          "mean": 54.82148945456272,
+          "std": 1.754585763892749
+        },
+        "frac_above_repose": {
+          "mean": 0.06362152099609375,
+          "std": 0.0009158515356187639
+        }
+      },
+      "keypoints_per_megapixel": {
+        "mean": 32582.09228515625,
+        "std": 273.18559691827295
+      }
+    },
+    "C_extreme_diagnostic": {
+      "scene": "highlands",
+      "target_slope_median_deg": null,
+      "realistic": false,
+      "note": "The EXP-001 terrain, unchanged. p99 slope ~78 deg, which is physically impossible on the Moon (far past the angle of repose). RETAINED DELIBERATELY as a diagnostic stress test and to keep EXP-001 reproducible -- not as evidence about lunar imagery.",
+      "n_seeds": 5,
+      "slope": {
+        "median_deg": {
+          "mean": 58.53258109461261,
+          "std": 2.155963050143272
+        },
+        "mean_deg": {
+          "mean": 55.010956084541064,
+          "std": 1.9625772953898912
+        },
+        "std_deg": {
+          "mean": 15.233062820711563,
+          "std": 0.14074223367442193
+        },
+        "p90_deg": {
+          "mean": 71.49539855375342,
+          "std": 1.4311192437719062
+        },
+        "p99_deg": {
+          "mean": 76.75827982599296,
+          "std": 1.04371940174409
+        },
+        "max_deg": {
+          "mean": 81.6812911532123,
+          "std": 0.5071299335350463
+        },
+        "frac_above_repose": {
+          "mean": 0.8954734802246094,
+          "std": 0.01660402206124871
+        }
+      },
+      "keypoints_per_megapixel": {
+        "mean": 31246.185302734375,
+        "std": 877.2543111715868
+      }
+    }
+  },
+  "density_slope_separability": [
+    {
+      "persistence": 0.35,
+      "octaves": 4,
+      "slope_median_deg": 9.099999999997143,
+      "slope_p99_deg": 33.93632152162464,
+      "keypoints_per_megapixel": 1286.8245442708333
+    },
+    {
+      "persistence": 0.45,
+      "octaves": 5,
+      "slope_median_deg": 9.099999999995292,
+      "slope_p99_deg": 25.15742616276985,
+      "keypoints_per_megapixel": 4885.355631510417
+    },
+    {
+      "persistence": 0.6,
+      "octaves": 6,
+      "slope_median_deg": 9.099999999989732,
+      "slope_p99_deg": 22.590049693385414,
+      "keypoints_per_megapixel": 22135.416666666668
+    },
+    {
+      "persistence": 0.7,
+      "octaves": 7,
+      "slope_median_deg": 9.09999999999904,
+      "slope_p99_deg": 22.480899080849397,
+      "keypoints_per_megapixel": 30404.408772786457
+    }
+  ],
+  "exp001_subset_summary": {
+    "A_mare_moderate": {
+      "azimuth": {
+        "0.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 13.0,
+          "median_true_error": 0.2573260537144598
+        },
+        "15.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 9.0,
+          "median_true_error": 0.7005568282715136
+        },
+        "30.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 3.0,
+          "median_true_error": 413.21877240179424
+        },
+        "45.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 0.0,
+          "median_true_error": NaN
+        },
+        "60.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 0.0,
+          "median_true_error": NaN
+        },
+        "90.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 0.0,
+          "median_true_error": NaN
+        }
+      },
+      "scale": {
+        "1.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 19.0,
+          "median_true_error": 0.06924938978313797
+        },
+        "2.0": {
+          "n_seeds": 3,
+          "success_rate": 0.3333333333333333,
+          "median_inliers": 0.0,
+          "median_true_error": NaN
+        },
+        "4.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 0.0,
+          "median_true_error": NaN
+        }
+      },
+      "last_fully_successful_delta_azimuth": 15.0
+    },
+    "A_highlands_moderate": {
+      "azimuth": {
+        "0.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 1045.0,
+          "median_true_error": 0.05246354368863611
+        },
+        "15.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 324.0,
+          "median_true_error": 0.4837782785458282
+        },
+        "30.0": {
+          "n_seeds": 3,
+          "success_rate": 0.6666666666666666,
+          "median_inliers": 10.0,
+          "median_true_error": 0.3887810785418076
+        },
+        "45.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 3.0,
+          "median_true_error": 88.82753583587746
+        },
+        "60.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 3.0,
+          "median_true_error": 366.7587613299334
+        },
+        "90.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 3.0,
+          "median_true_error": 453.1706335378823
+        }
+      },
+      "scale": {
+        "1.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 1331.0,
+          "median_true_error": 0.007327196264080172
+        },
+        "2.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 279.0,
+          "median_true_error": 0.3489206374673316
+        },
+        "4.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 56.0,
+          "median_true_error": 1.1292016387389914
+        }
+      },
+      "last_fully_successful_delta_azimuth": 15.0
+    },
+    "B_highlands_challenging": {
+      "azimuth": {
+        "0.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 4119.0,
+          "median_true_error": 0.0397431806299986
+        },
+        "15.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 1097.0,
+          "median_true_error": 0.06266694249752867
+        },
+        "30.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 15.0,
+          "median_true_error": 0.2800861718456335
+        },
+        "45.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 4.0,
+          "median_true_error": 245.60599106189042
+        },
+        "60.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 3.0,
+          "median_true_error": 458.49461942071247
+        },
+        "90.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 4.0,
+          "median_true_error": 197.37636756827578
+        }
+      },
+      "scale": {
+        "1.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 5615.0,
+          "median_true_error": 0.0011870601995993615
+        },
+        "2.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 1221.0,
+          "median_true_error": 0.35578992647794694
+        },
+        "4.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 258.0,
+          "median_true_error": 1.064140098482953
+        }
+      },
+      "last_fully_successful_delta_azimuth": 30.0
+    },
+    "C_extreme_diagnostic": {
+      "azimuth": {
+        "0.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 1850.0,
+          "median_true_error": 0.07277743044124951
+        },
+        "15.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 394.0,
+          "median_true_error": 0.4942461323241234
+        },
+        "30.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 15.0,
+          "median_true_error": 0.48696244955889545
+        },
+        "45.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 4.0,
+          "median_true_error": 261.58818876126236
+        },
+        "60.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 4.0,
+          "median_true_error": 197.32507195221018
+        },
+        "90.0": {
+          "n_seeds": 3,
+          "success_rate": 0.0,
+          "median_inliers": 4.0,
+          "median_true_error": 365.9163999260722
+        }
+      },
+      "scale": {
+        "1.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 2605.0,
+          "median_true_error": 0.003603433709890464
+        },
+        "2.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 528.0,
+          "median_true_error": 0.34959173025099366
+        },
+        "4.0": {
+          "n_seeds": 3,
+          "success_rate": 1.0,
+          "median_inliers": 102.0,
+          "median_true_error": 1.118248629061752
+        }
+      },
+      "last_fully_successful_delta_azimuth": 30.0
+    }
+  }
+}

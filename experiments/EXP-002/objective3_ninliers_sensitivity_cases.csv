@@ -1,0 +1,16 @@
+subset_key,subset_value,status,n,n_wrong,n_correct,tp,fp,tn,fn,recall_detect_failure,false_positive_rate,precision,roc_auc,pr_auc
+regime,A_mare_moderate,evaluable,48,31,17,31,1,16,0,1.0,0.058823529411764705,0.96875,0.9876660341555977,0.9922506380073479
+regime,A_highlands_moderate,evaluable,48,24,24,24,0,24,0,1.0,0.0,1.0,1.0,1.0
+regime,B_highlands_challenging,evaluable,48,24,24,24,0,24,0,1.0,0.0,1.0,1.0,1.0
+regime,C_extreme_diagnostic,evaluable,48,24,24,24,0,24,0,1.0,0.0,1.0,1.0,1.0
+transform_kind,similarity,evaluable,64,32,32,32,1,31,0,1.0,0.03125,0.9696969696969697,0.9833984375,0.970216275659824
+transform_kind,affine,evaluable,64,33,31,33,0,31,0,1.0,0.0,1.0,1.0,1.0
+transform_kind,projective,evaluable,64,38,26,38,0,26,0,1.0,0.0,1.0,1.0,1.0
+delta_azimuth,0.0,evaluable,48,3,45,3,0,45,0,1.0,0.0,1.0,1.0,1.0
+delta_azimuth,20.0,evaluable,48,4,44,4,1,43,0,1.0,0.022727272727272728,0.8,0.9886363636363636,0.8875
+delta_azimuth,40.0,degenerate,48,48,0,48,0,0,0,1.0,nan,1.0,,
+delta_azimuth,60.0,degenerate,48,48,0,48,0,0,0,1.0,nan,1.0,,
+seed,7001,evaluable,48,26,22,26,0,22,0,1.0,0.0,1.0,1.0,1.0
+seed,7002,evaluable,48,27,21,27,1,20,0,1.0,0.047619047619047616,0.9642857142857143,0.9753086419753086,0.9718694885361552
+seed,7003,evaluable,48,24,24,24,0,24,0,1.0,0.0,1.0,1.0,1.0
+seed,7004,evaluable,48,26,22,26,0,22,0,1.0,0.0,1.0,1.0,1.0

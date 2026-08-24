@@ -1,0 +1,1549 @@
+{
+  "experiment": "EXP-002",
+  "objective": "3 (addendum) - sensitivity of the n_inliers decision rule",
+  "supersedes": null,
+  "corrects": "objective3_threshold.json:sensitivity, which is computed for best_deployable_signal (= split_consistency) and is presented in the stage documentation as a sensitivity analysis of n_inliers. Contradiction D2 in docs/stages/README.md.",
+  "does_not_modify": [
+    "experiments/EXP-002/objective3_threshold.json",
+    "experiments/EXP-002/objective3_threshold_cases.csv"
+  ],
+  "method": "Recomputed from the preserved per-case artefact objective3_threshold_cases.csv using pick_threshold/evaluate/overlap_report imported unchanged from run_exp002_threshold.py. Not a pipeline re-run: see the module docstring for why.",
+  "self_check": {
+    "description": "preserved CSV must reproduce objective3_threshold.json:signals.n_inliers exactly",
+    "passed": true,
+    "tolerance": 1e-12,
+    "recomputed_calibration": {
+      "threshold_score_space": -8.0,
+      "n": 192,
+      "n_wrong": 94,
+      "tp": 94.0,
+      "fp": 6.0,
+      "tn": 92.0,
+      "fn": 0.0,
+      "recall_detect_failure": 1.0,
+      "false_positive_rate": 0.061224489795918366,
+      "false_negative_rate": 0.0,
+      "precision": 0.94,
+      "roc_auc": 0.9888732088580113,
+      "pr_auc": 0.9826154068718824
+    },
+    "recomputed_validation": {
+      "threshold_score_space": -8.0,
+      "n": 192,
+      "n_wrong": 103,
+      "tp": 103.0,
+      "fp": 1.0,
+      "tn": 88.0,
+      "fn": 0.0,
+      "recall_detect_failure": 1.0,
+      "false_positive_rate": 0.011235955056179775,
+      "false_negative_rate": 0.0,
+      "precision": 0.9903846153846154,
+      "roc_auc": 0.9934547834624196,
+      "pr_auc": 0.99104663902048
+    }
+  },
+  "mislabelled_table_being_corrected": {
+    "signal_actually_used": "split_consistency",
+    "selected_by": "max validation ROC AUC over deployable signals",
+    "thresholds_present_in_recorded_sensitivity": [
+      1000000000000.0
+    ],
+    "sentinel_value": 1000000000000.0,
+    "is_sentinel_only": true,
+    "why_invalid": "1e12 is the non-finite sentinel substituted by _clean() for split_consistency. The recorded sensitivity table therefore measures 'did this case have enough inliers to evaluate split_consistency at all', not the discriminative content of n_inliers.",
+    "auc_margin_that_caused_the_wrong_pick": {
+      "split_consistency": 0.9943820224719101,
+      "n_inliers": 0.9934547834624196,
+      "margin": 0.0009272390094905436
+    }
+  },
+  "signal": "n_inliers",
+  "mandated_rule": "n_inliers < 8",
+  "separation": {
+    "protocol": "threshold chosen on calibration seeds only; reported on disjoint validation seeds",
+    "calibration_seeds": [
+      1001,
+      1002,
+      1003,
+      1004
+    ],
+    "validation_seeds": [
+      7001,
+      7002,
+      7003,
+      7004
+    ],
+    "seeds_disjoint": true,
+    "n_calibration": 192,
+    "n_validation": 192,
+    "calibration_wrong": 94,
+    "validation_wrong": 103,
+    "recall_delta_val_minus_cal": 0.010638297872340385,
+    "fpr_delta_val_minus_cal": -0.04998853473973859,
+    "note": "A rule that degrades from calibration to validation is overfitted to the calibration terrain. FPR improving on validation is sampling variation across 4 seeds, not evidence that the rule is better than calibration showed."
+  },
+  "cases_exactly_at_cutoff": {
+    "calibration": 1,
+    "validation": 0,
+    "confusion_matrix_identical_validation": true,
+    "confusion_matrix_identical_calibration": false,
+    "consequence": "No validation case has exactly 8 inliers, so 'n_inliers < 8' and 'n_inliers <= 8' produce an identical confusion matrix on validation. One calibration case has exactly 8, so on calibration they differ. The validated error rate therefore does not discriminate between the two forms of the rule, and the strict form inherits its validation numbers from data that never tested the boundary."
+  },
+  "rule_performance": {
+    "strict_lt_8": {
+      "calibration": {
+        "rule": "n_inliers < 8",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 93,
+        "fp": 6,
+        "tn": 92,
+        "fn": 1,
+        "recall_detect_failure": 0.9893617021276596,
+        "false_positive_rate": 0.061224489795918366,
+        "false_negative_rate": 0.010638297872340425,
+        "precision": 0.9393939393939394,
+        "specificity": 0.9387755102040817,
+        "recall_wilson95": [
+          0.9421770870372144,
+          0.998119604251912
+        ],
+        "fpr_wilson95": [
+          0.02835932368138567,
+          0.12719087173151772
+        ],
+        "precision_wilson95": [
+          0.8740321262351005,
+          0.9719302025537786
+        ]
+      },
+      "validation": {
+        "rule": "n_inliers < 8",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 1,
+        "tn": 88,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.0,
+        "precision": 0.9903846153846154,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9475322752920542,
+          0.9983006271503486
+        ]
+      }
+    },
+    "youden_le_8": {
+      "calibration": {
+        "rule": "n_inliers <= 8",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 6,
+        "tn": 92,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.061224489795918366,
+        "false_negative_rate": 0.0,
+        "precision": 0.94,
+        "specificity": 0.9387755102040817,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.02835932368138567,
+          0.12719087173151772
+        ],
+        "precision_wilson95": [
+          0.8752318455410406,
+          0.9722138760368118
+        ]
+      },
+      "validation": {
+        "rule": "n_inliers <= 8",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 1,
+        "tn": 88,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.0,
+        "precision": 0.9903846153846154,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9475322752920542,
+          0.9983006271503486
+        ]
+      }
+    }
+  },
+  "auc": {
+    "calibration": {
+      "roc_auc": 0.9888732088580113,
+      "pr_auc": 0.9826154068718824
+    },
+    "validation": {
+      "roc_auc": 0.9934547834624196,
+      "pr_auc": 0.99104663902048
+    },
+    "note": "AUC is threshold-free and is a property of n_inliers as a ranking, not of the < 8 rule. Reported for comparability with objective 3's signal table."
+  },
+  "thresholds_tested": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    12,
+    15,
+    20,
+    30,
+    50
+  ],
+  "threshold_sweep": {
+    "calibration": [
+      {
+        "rule": "n_inliers < 2",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 34,
+        "fp": 0,
+        "tn": 98,
+        "fn": 60,
+        "recall_detect_failure": 0.3617021276595745,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.6382978723404256,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.27176918645474224,
+          0.4624947920939829
+        ],
+        "fpr_wilson95": [
+          3.469446951953614e-18,
+          0.037719990121680605
+        ],
+        "precision_wilson95": [
+          0.8984854458466761,
+          0.9999999999999999
+        ]
+      },
+      {
+        "rule": "n_inliers < 3",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 47,
+        "fp": 1,
+        "tn": 97,
+        "fn": 47,
+        "recall_detect_failure": 0.5,
+        "false_positive_rate": 0.01020408163265306,
+        "false_negative_rate": 0.5,
+        "precision": 0.9791666666666666,
+        "specificity": 0.9897959183673469,
+        "recall_wilson95": [
+          0.4009266984859888,
+          0.5990733015140113
+        ],
+        "fpr_wilson95": [
+          0.0018035477567974675,
+          0.055554809913420274
+        ],
+        "precision_wilson95": [
+          0.8910078200474814,
+          0.9963128890224893
+        ]
+      },
+      {
+        "rule": "n_inliers < 4",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 63,
+        "fp": 2,
+        "tn": 96,
+        "fn": 31,
+        "recall_detect_failure": 0.6702127659574468,
+        "false_positive_rate": 0.02040816326530612,
+        "false_negative_rate": 0.32978723404255317,
+        "precision": 0.9692307692307692,
+        "specificity": 0.9795918367346939,
+        "recall_wilson95": [
+          0.570134654466759,
+          0.7569250642425024
+        ],
+        "fpr_wilson95": [
+          0.0056146141550348985,
+          0.07138211106371997
+        ],
+        "precision_wilson95": [
+          0.8945729447642206,
+          0.9915210027635599
+        ]
+      },
+      {
+        "rule": "n_inliers < 5",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 82,
+        "fp": 2,
+        "tn": 96,
+        "fn": 12,
+        "recall_detect_failure": 0.8723404255319149,
+        "false_positive_rate": 0.02040816326530612,
+        "false_negative_rate": 0.1276595744680851,
+        "precision": 0.9761904761904762,
+        "specificity": 0.9795918367346939,
+        "recall_wilson95": [
+          0.790001273429011,
+          0.9254418612474983
+        ],
+        "fpr_wilson95": [
+          0.0056146141550348985,
+          0.07138211106371997
+        ],
+        "precision_wilson95": [
+          0.9172855899143008,
+          0.9934460973098326
+        ]
+      },
+      {
+        "rule": "n_inliers < 6",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 88,
+        "fp": 2,
+        "tn": 96,
+        "fn": 6,
+        "recall_detect_failure": 0.9361702127659575,
+        "false_positive_rate": 0.02040816326530612,
+        "false_negative_rate": 0.06382978723404255,
+        "precision": 0.9777777777777777,
+        "specificity": 0.9795918367346939,
+        "recall_wilson95": [
+          0.8676702644900562,
+          0.970420264702426
+        ],
+        "fpr_wilson95": [
+          0.0056146141550348985,
+          0.07138211106371997
+        ],
+        "precision_wilson95": [
+          0.9225547331137463,
+          0.9938845580136748
+        ]
+      },
+      {
+        "rule": "n_inliers < 7",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 90,
+        "fp": 2,
+        "tn": 96,
+        "fn": 4,
+        "recall_detect_failure": 0.9574468085106383,
+        "false_positive_rate": 0.02040816326530612,
+        "false_negative_rate": 0.0425531914893617,
+        "precision": 0.9782608695652174,
+        "specificity": 0.9795918367346939,
+        "recall_wilson95": [
+          0.8956435421811827,
+          0.9833294518499572
+        ],
+        "fpr_wilson95": [
+          0.0056146141550348985,
+          0.07138211106371997
+        ],
+        "precision_wilson95": [
+          0.9241650601730417,
+          0.9940179587711463
+        ]
+      },
+      {
+        "rule": "n_inliers < 8",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 93,
+        "fp": 6,
+        "tn": 92,
+        "fn": 1,
+        "recall_detect_failure": 0.9893617021276596,
+        "false_positive_rate": 0.061224489795918366,
+        "false_negative_rate": 0.010638297872340425,
+        "precision": 0.9393939393939394,
+        "specificity": 0.9387755102040817,
+        "recall_wilson95": [
+          0.9421770870372144,
+          0.998119604251912
+        ],
+        "fpr_wilson95": [
+          0.02835932368138567,
+          0.12719087173151772
+        ],
+        "precision_wilson95": [
+          0.8740321262351005,
+          0.9719302025537786
+        ]
+      },
+      {
+        "rule": "n_inliers < 9",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 6,
+        "tn": 92,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.061224489795918366,
+        "false_negative_rate": 0.0,
+        "precision": 0.94,
+        "specificity": 0.9387755102040817,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.02835932368138567,
+          0.12719087173151772
+        ],
+        "precision_wilson95": [
+          0.8752318455410406,
+          0.9722138760368118
+        ]
+      },
+      {
+        "rule": "n_inliers < 10",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 7,
+        "tn": 91,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.07142857142857142,
+        "false_negative_rate": 0.0,
+        "precision": 0.9306930693069307,
+        "specificity": 0.9285714285714286,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.03502845359806087,
+          0.14016010936337964
+        ],
+        "precision_wilson95": [
+          0.8637997214654843,
+          0.9660246722296894
+        ]
+      },
+      {
+        "rule": "n_inliers < 12",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 11,
+        "tn": 87,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.11224489795918367,
+        "false_negative_rate": 0.0,
+        "precision": 0.8952380952380953,
+        "specificity": 0.8877551020408163,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.06384269945885744,
+          0.18989933369673156
+        ],
+        "precision_wilson95": [
+          0.8220879355623253,
+          0.9404891274365689
+        ]
+      },
+      {
+        "rule": "n_inliers < 15",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 16,
+        "tn": 82,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.16326530612244897,
+        "false_negative_rate": 0.0,
+        "precision": 0.8545454545454545,
+        "specificity": 0.8367346938775511,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.10306803521803501,
+          0.24886583568023965
+        ],
+        "precision_wilson95": [
+          0.776722611089306,
+          0.908440780244723
+        ]
+      },
+      {
+        "rule": "n_inliers < 20",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 22,
+        "tn": 76,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.22448979591836735,
+        "false_negative_rate": 0.0,
+        "precision": 0.8103448275862069,
+        "specificity": 0.7755102040816326,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.15318242080683164,
+          0.3165816553826658
+        ],
+        "precision_wilson95": [
+          0.7295075732944671,
+          0.8712861812919639
+        ]
+      },
+      {
+        "rule": "n_inliers < 30",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 24,
+        "tn": 74,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.24489795918367346,
+        "false_negative_rate": 0.0,
+        "precision": 0.7966101694915254,
+        "specificity": 0.7551020408163265,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.17044970160914977,
+          0.3385911096774219
+        ],
+        "precision_wilson95": [
+          0.7151769904138203,
+          0.8593400966067339
+        ]
+      },
+      {
+        "rule": "n_inliers < 50",
+        "n": 192,
+        "n_wrong": 94,
+        "n_correct": 98,
+        "tp": 94,
+        "fp": 26,
+        "tn": 72,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.2653061224489796,
+        "false_negative_rate": 0.0,
+        "precision": 0.7833333333333333,
+        "specificity": 0.7346938775510204,
+        "recall_wilson95": [
+          0.9607379237084551,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.18795724173122724,
+          0.3603603046524187
+        ],
+        "precision_wilson95": [
+          0.7014563746709164,
+          0.8476327643584851
+        ]
+      }
+    ],
+    "validation": [
+      {
+        "rule": "n_inliers < 2",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 35,
+        "fp": 0,
+        "tn": 89,
+        "fn": 68,
+        "recall_detect_failure": 0.33980582524271846,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.6601941747572816,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.2555700851446703,
+          0.4355610509868385
+        ],
+        "fpr_wilson95": [
+          3.469446951953614e-18,
+          0.04137654523625252
+        ],
+        "precision_wilson95": [
+          0.9010990076755959,
+          0.9999999999999999
+        ]
+      },
+      {
+        "rule": "n_inliers < 3",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 51,
+        "fp": 1,
+        "tn": 88,
+        "fn": 52,
+        "recall_detect_failure": 0.49514563106796117,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.5048543689320388,
+        "precision": 0.9807692307692307,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.4005157766877741,
+          0.5901245607707564
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.8987948887210774,
+          0.9965971919290547
+        ]
+      },
+      {
+        "rule": "n_inliers < 4",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 72,
+        "fp": 1,
+        "tn": 88,
+        "fn": 31,
+        "recall_detect_failure": 0.6990291262135923,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.30097087378640774,
+        "precision": 0.9863013698630136,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.6046054631486112,
+          0.7791407010516357
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9264026272903616,
+          0.997577748533516
+        ]
+      },
+      {
+        "rule": "n_inliers < 5",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 89,
+        "fp": 1,
+        "tn": 88,
+        "fn": 14,
+        "recall_detect_failure": 0.8640776699029126,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.13592233009708737,
+        "precision": 0.9888888888888889,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.7846989505636784,
+          0.9172757400465291
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9397159168824657,
+          0.9980359158990818
+        ]
+      },
+      {
+        "rule": "n_inliers < 6",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 100,
+        "fp": 1,
+        "tn": 88,
+        "fn": 3,
+        "recall_detect_failure": 0.970873786407767,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.02912621359223301,
+        "precision": 0.9900990099009901,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.9178416343391798,
+          0.9900456321833555
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9460328420055449,
+          0.9982500887510318
+        ]
+      },
+      {
+        "rule": "n_inliers < 7",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 102,
+        "fp": 1,
+        "tn": 88,
+        "fn": 1,
+        "recall_detect_failure": 0.9902912621359223,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.009708737864077669,
+        "precision": 0.9902912621359223,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.9470418081674632,
+          0.99828410852095
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9470418081674632,
+          0.99828410852095
+        ]
+      },
+      {
+        "rule": "n_inliers < 8",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 1,
+        "tn": 88,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.0,
+        "precision": 0.9903846153846154,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9475322752920542,
+          0.9983006271503486
+        ]
+      },
+      {
+        "rule": "n_inliers < 9",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 1,
+        "tn": 88,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.011235955056179775,
+        "false_negative_rate": 0.0,
+        "precision": 0.9903846153846154,
+        "specificity": 0.9887640449438202,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.001986183228256385,
+          0.060932462115046646
+        ],
+        "precision_wilson95": [
+          0.9475322752920542,
+          0.9983006271503486
+        ]
+      },
+      {
+        "rule": "n_inliers < 10",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 2,
+        "tn": 87,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.02247191011235955,
+        "false_negative_rate": 0.0,
+        "precision": 0.9809523809523809,
+        "specificity": 0.9775280898876404,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.006184398702128599,
+          0.07827634674822494
+        ],
+        "precision_wilson95": [
+          0.933194403305581,
+          0.994760817934037
+        ]
+      },
+      {
+        "rule": "n_inliers < 12",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 6,
+        "tn": 83,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.06741573033707865,
+        "false_negative_rate": 0.0,
+        "precision": 0.944954128440367,
+        "specificity": 0.9325842696629213,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.03126138505292331,
+          0.13936776082563224
+        ],
+        "precision_wilson95": [
+          0.885082725847891,
+          0.9745304076027645
+        ]
+      },
+      {
+        "rule": "n_inliers < 15",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 10,
+        "tn": 79,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.11235955056179775,
+        "false_negative_rate": 0.0,
+        "precision": 0.911504424778761,
+        "specificity": 0.8876404494382022,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.06218743336655998,
+          0.1946101129401976
+        ],
+        "precision_wilson95": [
+          0.8447297297280504,
+          0.9512206199052812
+        ]
+      },
+      {
+        "rule": "n_inliers < 20",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 17,
+        "tn": 72,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.19101123595505617,
+        "false_negative_rate": 0.0,
+        "precision": 0.8583333333333333,
+        "specificity": 0.8089887640449438,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.1228195648849351,
+          0.28477268217117596
+        ],
+        "precision_wilson95": [
+          0.7848050551014282,
+          0.9096312089651676
+        ]
+      },
+      {
+        "rule": "n_inliers < 30",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 18,
+        "tn": 71,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.20224719101123595,
+        "false_negative_rate": 0.0,
+        "precision": 0.8512396694214877,
+        "specificity": 0.797752808988764,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.13193782732624643,
+          0.29719651983691514
+        ],
+        "precision_wilson95": [
+          0.7770809679977386,
+          0.9037825912953552
+        ]
+      },
+      {
+        "rule": "n_inliers < 50",
+        "n": 192,
+        "n_wrong": 103,
+        "n_correct": 89,
+        "tp": 103,
+        "fp": 19,
+        "tn": 70,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.21348314606741572,
+        "false_negative_rate": 0.0,
+        "precision": 0.8442622950819673,
+        "specificity": 0.7865168539325843,
+        "recall_wilson95": [
+          0.964045241771352,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.1411479650217861,
+          0.309528482248426
+        ],
+        "precision_wilson95": [
+          0.769533914546802,
+          0.8979726511525664
+        ]
+      }
+    ]
+  },
+  "sensitivity": {
+    "regime": {
+      "A_mare_moderate": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 31,
+        "n_correct": 17,
+        "tp": 31,
+        "fp": 1,
+        "tn": 16,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.058823529411764705,
+        "false_negative_rate": 0.0,
+        "precision": 0.96875,
+        "specificity": 0.9411764705882353,
+        "recall_wilson95": [
+          0.889744604539564,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.010460400984997592,
+          0.26982030637575405
+        ],
+        "precision_wilson95": [
+          0.8425573617998744,
+          0.9944621398359969
+        ],
+        "roc_auc": 0.9876660341555977,
+        "pr_auc": 0.9922506380073479,
+        "status": "evaluable"
+      },
+      "A_highlands_moderate": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 24,
+        "n_correct": 24,
+        "tp": 24,
+        "fp": 0,
+        "tn": 24,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "fpr_wilson95": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ],
+        "precision_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "B_highlands_challenging": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 24,
+        "n_correct": 24,
+        "tp": 24,
+        "fp": 0,
+        "tn": 24,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "fpr_wilson95": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ],
+        "precision_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "C_extreme_diagnostic": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 24,
+        "n_correct": 24,
+        "tp": 24,
+        "fp": 0,
+        "tn": 24,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "fpr_wilson95": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ],
+        "precision_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      }
+    },
+    "transform_kind": {
+      "similarity": {
+        "rule": "n_inliers < 8",
+        "n": 64,
+        "n_wrong": 32,
+        "n_correct": 32,
+        "tp": 32,
+        "fp": 1,
+        "tn": 31,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.03125,
+        "false_negative_rate": 0.0,
+        "precision": 0.9696969696969697,
+        "specificity": 0.96875,
+        "recall_wilson95": [
+          0.8928208017449293,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.005537860164003122,
+          0.15744263820012558
+        ],
+        "precision_wilson95": [
+          0.846812746178811,
+          0.9946305894631283
+        ],
+        "roc_auc": 0.9833984375,
+        "pr_auc": 0.970216275659824,
+        "status": "evaluable"
+      },
+      "affine": {
+        "rule": "n_inliers < 8",
+        "n": 64,
+        "n_wrong": 33,
+        "n_correct": 31,
+        "tp": 33,
+        "fp": 0,
+        "tn": 31,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.895730002457548,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.0,
+          0.11025539546043596
+        ],
+        "precision_wilson95": [
+          0.895730002457548,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "projective": {
+        "rule": "n_inliers < 8",
+        "n": 64,
+        "n_wrong": 38,
+        "n_correct": 26,
+        "tp": 38,
+        "fp": 0,
+        "tn": 26,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.908190131774416,
+          0.9999999999999999
+        ],
+        "fpr_wilson95": [
+          0.0,
+          0.1287289218592153
+        ],
+        "precision_wilson95": [
+          0.908190131774416,
+          0.9999999999999999
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      }
+    },
+    "delta_azimuth": {
+      "0.0": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 3,
+        "n_correct": 45,
+        "tp": 3,
+        "fp": 0,
+        "tn": 45,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.4385029682449546,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.0,
+          0.07865159873288836
+        ],
+        "precision_wilson95": [
+          0.4385029682449546,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "20.0": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 4,
+        "n_correct": 44,
+        "tp": 4,
+        "fp": 1,
+        "tn": 43,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.022727272727272728,
+        "false_negative_rate": 0.0,
+        "precision": 0.8,
+        "specificity": 0.9772727272727273,
+        "recall_wilson95": [
+          0.5101091635454027,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.004023252060053224,
+          0.11807709698213287
+        ],
+        "precision_wilson95": [
+          0.37553462976252533,
+          0.9637758913675698
+        ],
+        "roc_auc": 0.9886363636363636,
+        "pr_auc": 0.8875,
+        "status": "evaluable"
+      },
+      "40.0": {
+        "status": "degenerate",
+        "reason": "all cases wrong",
+        "n": 48,
+        "n_wrong": 48,
+        "n_correct": 0,
+        "note": "rule still applied for reference; recall/FPR are undefined on a single-label subset",
+        "reference_eval": {
+          "rule": "n_inliers < 8",
+          "n": 48,
+          "n_wrong": 48,
+          "n_correct": 0,
+          "tp": 48,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "recall_detect_failure": 1.0,
+          "false_positive_rate": NaN,
+          "false_negative_rate": 0.0,
+          "precision": 1.0,
+          "specificity": NaN,
+          "recall_wilson95": [
+            0.9258998703338824,
+            0.9999999999999999
+          ],
+          "precision_wilson95": [
+            0.9258998703338824,
+            0.9999999999999999
+          ]
+        }
+      },
+      "60.0": {
+        "status": "degenerate",
+        "reason": "all cases wrong",
+        "n": 48,
+        "n_wrong": 48,
+        "n_correct": 0,
+        "note": "rule still applied for reference; recall/FPR are undefined on a single-label subset",
+        "reference_eval": {
+          "rule": "n_inliers < 8",
+          "n": 48,
+          "n_wrong": 48,
+          "n_correct": 0,
+          "tp": 48,
+          "fp": 0,
+          "tn": 0,
+          "fn": 0,
+          "recall_detect_failure": 1.0,
+          "false_positive_rate": NaN,
+          "false_negative_rate": 0.0,
+          "precision": 1.0,
+          "specificity": NaN,
+          "recall_wilson95": [
+            0.9258998703338824,
+            0.9999999999999999
+          ],
+          "precision_wilson95": [
+            0.9258998703338824,
+            0.9999999999999999
+          ]
+        }
+      }
+    },
+    "seed": {
+      "7001": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 26,
+        "n_correct": 22,
+        "tp": 26,
+        "fp": 0,
+        "tn": 22,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8712710781407846,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.0,
+          0.14865487460862087
+        ],
+        "precision_wilson95": [
+          0.8712710781407846,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "7002": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 27,
+        "n_correct": 21,
+        "tp": 27,
+        "fp": 1,
+        "tn": 20,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.047619047619047616,
+        "false_negative_rate": 0.0,
+        "precision": 0.9642857142857143,
+        "specificity": 0.9523809523809523,
+        "recall_wilson95": [
+          0.8754449702581328,
+          0.9999999999999998
+        ],
+        "fpr_wilson95": [
+          0.008455987809826399,
+          0.22669360074122563
+        ],
+        "precision_wilson95": [
+          0.8228780225664668,
+          0.9936674801509623
+        ],
+        "roc_auc": 0.9753086419753086,
+        "pr_auc": 0.9718694885361552,
+        "status": "evaluable"
+      },
+      "7003": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 24,
+        "n_correct": 24,
+        "tp": 24,
+        "fp": 0,
+        "tn": 24,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "fpr_wilson95": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ],
+        "precision_wilson95": [
+          0.8620237953250198,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      },
+      "7004": {
+        "rule": "n_inliers < 8",
+        "n": 48,
+        "n_wrong": 26,
+        "n_correct": 22,
+        "tp": 26,
+        "fp": 0,
+        "tn": 22,
+        "fn": 0,
+        "recall_detect_failure": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0,
+        "precision": 1.0,
+        "specificity": 1.0,
+        "recall_wilson95": [
+          0.8712710781407846,
+          1.0
+        ],
+        "fpr_wilson95": [
+          0.0,
+          0.14865487460862087
+        ],
+        "precision_wilson95": [
+          0.8712710781407846,
+          1.0
+        ],
+        "roc_auc": 1.0,
+        "pr_auc": 1.0,
+        "status": "evaluable"
+      }
+    }
+  },
+  "validation_overlap": {
+    "wrong_min": 2.0,
+    "wrong_median": 3.0,
+    "wrong_max": 7.0,
+    "correct_min": 2.0,
+    "correct_median": 585.0,
+    "correct_max": 4767.0,
+    "separable": false
+  },
+  "diagnostics": {
+    "sentinel_proxy": {
+      "question": "does split_consistency's non-finite sentinel fire on the same cases as the n_inliers < 8 rule?",
+      "agreement": 192,
+      "n": 192,
+      "agreement_rate": 1.0,
+      "consequence": "The sentinel is a proxy for a low inlier count, so the mislabelled table's CONFUSION MATRIX coincides with the corrected one. Its AUC column does not, because AUC uses the full ranking and the sentinel collapses every flagged case to one tied value. The recorded table was therefore not grossly wrong numerically -- it was measuring the wrong quantity, and its AUC values are wrong."
+    },
+    "recall_mass": {
+      "validation_failures_total": 103,
+      "failures_in_degenerate_azimuth_subsets": 96,
+      "failures_in_discriminable_subsets": 7,
+      "fraction_from_degenerate_subsets": 0.9320388349514563,
+      "consequence": "Most validation failures come from Delta-azimuth subsets in which every case fails -- total match collapse, which counting catches trivially. On the subsets where correct and wrong cases coexist, the recall estimate rests on far fewer failures. EXP-003 aims to operate precisely in that discriminable regime, so the headline recall overstates the evidence available for EXP-003's use of it."
+    },
+    "false_alarms": {
+      "n_false_alarms": 7,
+      "n_correct_cases": 187,
+      "scope": "calibration + validation pooled, for description only",
+      "by_regime": {
+        "A_mare_moderate": 5,
+        "A_highlands_moderate": 1,
+        "B_highlands_challenging": 1
+      },
+      "by_transform_kind": {
+        "similarity": 6,
+        "affine": 1
+      },
+      "by_delta_azimuth": {
+        "20.0": 4,
+        "40.0": 3
+      },
+      "coverage_max_gap_of_false_alarms": {
+        "min": 0.3917778127978848,
+        "max": 0.6046379268367511
+      },
+      "coverage_max_gap_median_all_correct": 0.06919442841451262,
+      "consequence": "Every false alarm is a correct-but-fragile registration: a handful of clustered inliers with a coverage gap far above the median for correct cases. They concentrate in realistic mare, which D-019 makes EXP-003's priority benchmark. The rule's false alarms are therefore not uniformly distributed over EXP-003's workload."
+    },
+    "rule_form": {
+      "documented_rule": "n_inliers < 8",
+      "youden_selected_rule": "n_inliers <= 8  (equivalently n_inliers < 9)",
+      "cases_at_the_boundary": [
+        {
+          "split": "calibration",
+          "regime": "A_mare_moderate",
+          "seed": 1003,
+          "delta_azimuth": 20.0,
+          "transform_kind": "projective",
+          "is_wrong": true,
+          "transform_error_median": 367.94962348890954
+        }
+      ],
+      "calibration": {
+        "strict_lt_8": {
+          "recall_detect_failure": 0.9893617021276596,
+          "false_positive_rate": 0.061224489795918366,
+          "fn": 1,
+          "fp": 6
+        },
+        "youden_le_8": {
+          "recall_detect_failure": 1.0,
+          "false_positive_rate": 0.061224489795918366,
+          "fn": 0,
+          "fp": 6
+        }
+      },
+      "validation": {
+        "identical_confusion_matrix": true,
+        "reason": "no validation case has exactly 8 inliers"
+      },
+      "finding": "The one case in 384 that discriminates between the two forms is a CALIBRATION failure with exactly 8 inliers and 367.95 px true error. 'n_inliers < 8' misses it (calibration recall 0.9894); 'n_inliers <= 8' catches it (recall 1.0000) at an IDENTICAL false positive rate of 0.0612 -- the same 6 false alarms either way. On validation the two forms are indistinguishable. The stricter form is therefore dominated: it gains nothing measured and loses one catastrophic detection.",
+      "recommendation": "EXP-003 should use 'n_inliers <= 8' (equivalently 'n_inliers < 9'), which is what Youden's J actually selected on calibration. This is a change of rule FORM, not of operating point, and it does not weaken any EXP-002 conclusion: the validated error rate is unchanged on validation."
+    }
+  },
+  "verdict": {
+    "operating_point_supported": true,
+    "basis": "Validation recall 1.000 (103/103, Wilson 95% CI 0.964-1.000), FPR 0.0112 (1/89, CI 0.002-0.061), ROC AUC 0.9935, on seeds disjoint from calibration. Recall is 1.000 in every non-degenerate subset: all 4 regimes, all 3 transform models, all 4 validation seeds.",
+    "qualification": "Supported as an aggregate failure detector. TWO caveats bound its use by EXP-003: (1) the documented STRICT form 'n_inliers < 8' is dominated by 'n_inliers <= 8' -- see diagnostics.rule_form; (2) 96 of 103 validation failures come from subsets where every case fails, so the headline recall is earned mostly on total collapse rather than on the discriminable regime EXP-003 will work in.",
+    "blocks_exp003": false
+  },
+  "negative_control_note": "fit_rmse is not used as a success/failure criterion anywhere in this analysis. Ground truth (is_wrong) is used only to score the rule, never as an input to it."
+}

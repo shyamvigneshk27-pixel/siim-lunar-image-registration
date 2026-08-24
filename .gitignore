@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# Real data products are large and externally sourced: manifests and metadata
+# are tracked, the bulk products are not.
+data/raw/**
+data/processed/**
+!data/**/.gitkeep
+!data/**/README.md

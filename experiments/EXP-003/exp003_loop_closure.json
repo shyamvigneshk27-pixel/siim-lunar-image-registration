@@ -1,0 +1,87 @@
+{
+  "experiment": "EXP-003",
+  "sub_experiment": "loop closure (GT-free primary estimator, ADR-0011)",
+  "estimators_deliberately_excluded": [
+    "held_out_residual",
+    "spatial_split_consistency",
+    "cycle_consistency"
+  ],
+  "exclusion_reason": "ADR-0011 / E-011: these are degeneracy detectors and are blind to coherent wrong solutions. Computing them here would invite a claim the evidence does not support.",
+  "arms": [
+    "B1_rootsift",
+    "A_orient_mod_pi"
+  ],
+  "regimes": [
+    "A_mare_moderate",
+    "A_highlands_moderate",
+    "B_highlands_challenging"
+  ],
+  "azimuths_deg": [
+    0.0,
+    15.0,
+    24.0,
+    30.0,
+    36.0,
+    45.0
+  ],
+  "seeds": [
+    3001,
+    3002,
+    3003
+  ],
+  "n_cases": 108,
+  "analysis": {
+    "overall": {
+      "subset": "all loop cases",
+      "n": 108,
+      "n_wrong": 85,
+      "n_correct": 23,
+      "loop_error_wrong_median": 1368.1160232826865,
+      "loop_error_correct_median": 0.25833434824192536,
+      "loop_error_correct_max": 0.7682372728439548,
+      "n_wrong_nonfinite_loop": 61,
+      "n_correct_nonfinite_loop": 0,
+      "separable_at_2px": true
+    },
+    "B1_rootsift": {
+      "subset": "B1_rootsift",
+      "n": 54,
+      "n_wrong": 41,
+      "n_correct": 13,
+      "loop_error_wrong_median": 1368.1160232826865,
+      "loop_error_correct_median": 0.3902324765585333,
+      "loop_error_correct_max": 0.7682372728439548,
+      "n_wrong_nonfinite_loop": 17,
+      "n_correct_nonfinite_loop": 0,
+      "separable_at_2px": true
+    },
+    "A_orient_mod_pi": {
+      "subset": "A_orient_mod_pi",
+      "n": 54,
+      "n_wrong": 44,
+      "n_correct": 10,
+      "loop_error_wrong_median": null,
+      "loop_error_correct_median": 0.10464545385645763,
+      "loop_error_correct_max": 0.4873941577448581,
+      "n_wrong_nonfinite_loop": 44,
+      "n_correct_nonfinite_loop": 0,
+      "separable_at_2px": null
+    },
+    "detection_loop_level": {
+      "threshold_px": 2.0,
+      "n_wrong": 85,
+      "n_correct": 23,
+      "detection_rate": 1.0,
+      "false_alarm_rate": 0.0
+    },
+    "detection_edge_level_MISLABELLED": {
+      "note": "Scored against the A->B edge label only. Retained to show the size of the labelling error: a loop with one bad edge is not a false alarm when loop closure refuses to close it.",
+      "threshold_px": 2.0,
+      "n_wrong": 48,
+      "n_correct": 60,
+      "detection_rate": 1.0,
+      "false_alarm_rate": 0.6166666666666667
+    }
+  },
+  "total_runtime_s": 207.99151199997868
+}
