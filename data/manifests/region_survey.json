@@ -1,0 +1,70 @@
+{
+  "regions": [
+    {
+      "region": "apollo15_hadley",
+      "terrain": "mare/highland boundary",
+      "n_products": 40,
+      "n_candidate_pairs": 37,
+      "incidence_range_deg": [
+        27.72,
+        92.35
+      ],
+      "best_pair": [
+        "nac.m1402237470lc",
+        "nac.m1351784988rc",
+        {
+          "incidence_delta_deg": 63.67999999999999,
+          "footprint_iou": 0.24732625302776226,
+          "resolution_ratio": 1.1643518518518519,
+          "overlap_status": "footprint IoU 0.247 (rasterised, approximate)",
+          "azimuth_delta_deg": null,
+          "azimuth_status": "NOT AVAILABLE. ODE exposes incidence/emission/phase and Solar_longitude (seasonal Ls), but no sub-solar AZIMUTH, and the PDS4 CDR labels carry no illumination geometry either (verified). Azimuth must be derived from observation time + target coordinates via a solar ephemeris. Until then these are illumination-varied pairs, NOT azimuth-controlled pairs."
+        }
+      ]
+    },
+    {
+      "region": "mare_serenitatis",
+      "terrain": "mare (low texture)",
+      "n_products": 40,
+      "n_candidate_pairs": 51,
+      "incidence_range_deg": [
+        18.22,
+        135.59
+      ],
+      "best_pair": [
+        "nac.m1322281266lc",
+        "nac.m1225876972lc",
+        {
+          "incidence_delta_deg": 65.32,
+          "footprint_iou": 0.39963802164908985,
+          "resolution_ratio": 1.0944254835039817,
+          "overlap_status": "footprint IoU 0.400 (rasterised, approximate)",
+          "azimuth_delta_deg": null,
+          "azimuth_status": "NOT AVAILABLE. ODE exposes incidence/emission/phase and Solar_longitude (seasonal Ls), but no sub-solar AZIMUTH, and the PDS4 CDR labels carry no illumination geometry either (verified). Azimuth must be derived from observation time + target coordinates via a solar ephemeris. Until then these are illumination-varied pairs, NOT azimuth-controlled pairs."
+        }
+      ]
+    },
+    {
+      "region": "tycho_highlands",
+      "terrain": "highlands / crater",
+      "n_products": 40,
+      "n_candidate_pairs": 29,
+      "incidence_range_deg": [
+        43.39,
+        86.15
+      ],
+      "best_pair": [
+        "nac.m172996700rc",
+        "nac.m116385823rc",
+        {
+          "incidence_delta_deg": 41.42000000000001,
+          "footprint_iou": 0.33338341346153844,
+          "resolution_ratio": 1.028169014084507,
+          "overlap_status": "footprint IoU 0.333 (rasterised, approximate)",
+          "azimuth_delta_deg": null,
+          "azimuth_status": "NOT AVAILABLE. ODE exposes incidence/emission/phase and Solar_longitude (seasonal Ls), but no sub-solar AZIMUTH, and the PDS4 CDR labels carry no illumination geometry either (verified). Azimuth must be derived from observation time + target coordinates via a solar ephemeris. Until then these are illumination-varied pairs, NOT azimuth-controlled pairs."
+        }
+      ]
+    }
+  ]
+}

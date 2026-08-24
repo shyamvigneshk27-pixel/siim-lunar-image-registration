@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1J00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<Product_Browse
+  xmlns="http://pds.nasa.gov/pds4/pds/v1"
+  xmlns:pds="http://pds.nasa.gov/pds4/pds/v1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 https://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1J00.xsd">
+  <Identification_Area>
+    <logical_identifier>urn:nasa:pds:lro-l-lroc-3-cdr:lrolrc_1040c_extras:browse.m1322281266lc</logical_identifier>
+    <version_id>2.0</version_id>
+    <title>Browse PTIF</title>
+    <information_model_version>1.19.0.0</information_model_version>
+    <product_class>Product_Browse</product_class>
+    <Modification_History>
+      <Modification_Detail>
+        <modification_date>2023-09-07</modification_date>
+        <version_id>2.0</version_id>
+        <description>
+          Updated PDS4 label
+        </description>
+      </Modification_Detail>
+    </Modification_History>
+  </Identification_Area>
+  <Reference_List>
+    <Internal_Reference>
+      <lid_reference>urn:nasa:pds:lro-l-lroc-3-cdr:lrolrc_1040c_data:nac.m1322281266lc</lid_reference>
+      <reference_type>browse_to_data</reference_type>
+      <comment>This is a reference to the data file corresponding to this figure.</comment>
+    </Internal_Reference>
+  </Reference_List>
+  <File_Area_Browse>
+    <File>
+      <file_name>M1322281266LC_pyr.tif</file_name>
+      <local_identifier>miscellaneous_file</local_identifier>
+      <creation_date_time>2019-09-07T03:21:05.000000Z</creation_date_time>
+      <file_size unit="byte">65038659</file_size>
+      <md5_checksum>af1b041d42bd1239a6586b2f9d61bdd5</md5_checksum>
+    </File>
+    <Encoded_Image>
+      <local_identifier>miscellaneous_browse</local_identifier>
+      <offset unit="byte">0</offset>
+      <encoding_standard_id>TIFF</encoding_standard_id>
+    </Encoded_Image>
+  </File_Area_Browse>
+</Product_Browse>

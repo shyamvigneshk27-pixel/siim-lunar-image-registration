@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SIIM — Match · Register · Verify · Explain</title>
+<style>
+:root{
+  --bg:#0b0f14; --panel:#131a23; --line:#243140; --ink:#e6edf5; --dim:#8fa3b8;
+  --ok:#3fb950; --bad:#f85149; --warn:#d29922; --acc:#58a6ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;
+  align-items:baseline;gap:16px;flex-wrap:wrap}
+h1{font-size:18px;margin:0;letter-spacing:.3px}
+.tag{font-size:11px;color:var(--dim);border:1px solid var(--line);
+  padding:2px 8px;border-radius:999px}
+main{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 61px)}
+aside{border-right:1px solid var(--line);padding:16px;overflow-y:auto}
+section{padding:20px 24px;overflow-y:auto}
+button.sc{display:block;width:100%;text-align:left;background:var(--panel);
+  color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+  margin-bottom:8px;cursor:pointer;font:inherit}
+button.sc:hover{border-color:var(--acc)}
+button.sc.active{border-color:var(--acc);background:#16202b}
+button.sc .t{font-weight:600;font-size:13px}
+button.sc .b{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4}
+.run{width:100%;background:var(--acc);color:#04121f;border:0;border-radius:8px;
+  padding:11px;font-weight:700;cursor:pointer;font-size:14px}
+.run:disabled{opacity:.5;cursor:wait}
+.imgs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.imgs figure{margin:0}
+.imgs img,canvas{width:100%;border:1px solid var(--line);border-radius:8px;display:block;
+  image-rendering:pixelated;background:#000}
+figcaption{font-size:11px;color:var(--dim);margin-top:6px}
+.verdict{border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid var(--line)}
+.verdict.VERIFIED{border-color:var(--ok);background:#0e2213}
+.verdict.REJECTED{border-color:var(--bad);background:#2a1113}
+.verdict.INCONCLUSIVE{border-color:var(--warn);background:#241d0c}
+.vhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.vstat{font-size:22px;font-weight:800;letter-spacing:.5px}
+.VERIFIED .vstat{color:var(--ok)} .REJECTED .vstat{color:var(--bad)}
+.INCONCLUSIVE .vstat{color:var(--warn)}
+.conf{font-size:11px;border:1px solid currentColor;border-radius:999px;padding:2px 9px;
+  text-transform:uppercase;letter-spacing:.6px}
+.reasons{margin:12px 0 0;padding-left:18px}
+.reasons li{margin-bottom:7px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--dim);font-weight:600}
+td.v{font-variant-numeric:tabular-nums;white-space:nowrap}
+.w-decisive{color:var(--acc);font-weight:700}
+.w-excluded{color:var(--dim);text-decoration:line-through}
+.e-supports{color:var(--ok)} .e-against{color:var(--warn)}
+.e-decisive_against{color:var(--bad);font-weight:700}
+.banner{border-radius:8px;padding:10px 13px;font-size:12.5px;margin-bottom:14px;
+  border:1px solid var(--warn);background:#241d0c;color:#f0d58a}
+.banner.gt{border-color:var(--line);background:var(--panel);color:var(--dim)}
+h3{font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--dim);
+  margin:22px 0 8px}
+.muted{color:var(--dim);font-size:12px}
+.pill{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:999px;
+  border:1px solid var(--line);color:var(--dim);margin-right:6px}
+.pill.live{border-color:var(--ok);color:var(--ok)}
+.pill.synth{border-color:var(--warn);color:var(--warn)}
+</style>
+</head>
+<body>
+<header>
+  <h1>SIIM</h1>
+  <span class="tag">Match · Register · <b>Verify</b> · <b>Explain</b></span>
+  <span class="tag">SIH 2026 · PS 26166</span>
+  <span class="muted" id="datastatus"></span>
+</header>
+
+<main>
+<aside>
+  <h3 style="margin-top:0">Scenario</h3>
+  <div id="scenarios"></div>
+  <button class="run" id="run">Run registration</button>
+  <h3>Not used in the verdict</h3>
+  <div id="excluded" class="muted"></div>
+</aside>
+
+<section>
+  <div id="out"><p class="muted">Pick a scenario and run it. Every number shown is
+  computed in the request; nothing is cached.</p></div>
+</section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+let SC = [], current = null;
+
+fetch('/api/scenarios').then(r=>r.json()).then(d=>{
+  SC = d.scenarios;
+  $('#scenarios').innerHTML = SC.map(s=>
+    `<button class="sc" data-id="${s.id}">
+       <div class="t">${s.adversarial?'⚠ ':''}${s.title}</div>
+       <div class="b">${s.blurb}</div>
+     </button>`).join('');
+  document.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.sc').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); current = b.dataset.id;
+  });
+  document.querySelector('.sc').click();
+  $('#datastatus').textContent =
+    'real LRO NAC: ' + d.data_status.real_lro_nac + '  ·  Chandrayaan-2: NOT AVAILABLE';
+  $('#excluded').innerHTML = Object.entries(d.excluded_from_verdict)
+    .map(([k,v])=>`<div style="margin-bottom:9px"><code style="color:#f0d58a">${k}</code><br>${v}</div>`).join('');
+});
+
+$('#run').onclick = async () => {
+  const btn = $('#run'); btn.disabled = true; btn.textContent = 'Running…';
+  try {
+    const r = await fetch('/api/run', {method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({scenario: current})});
+    render(await r.json());
+  } catch (e) {
+    $('#out').innerHTML = `<div class="banner">Request failed: ${e}</div>`;
+  }
+  btn.disabled = false; btn.textContent = 'Run registration';
+};
+
+function render(d){
+  const v = d.verdict, gt = d.ground_truth;
+  const advBanner = d.adversarial_construction
+    ? `<div class="banner"><b>Controlled synthetic adversarial case.</b> ${d.adversarial_note}</div>` : '';
+  const gtLine = gt.available
+    ? `<div class="banner gt"><b>Ground truth (synthetic only):</b> true registration error
+        <b>${gt.true_error_median_px===null?'not finite':gt.true_error_median_px.toFixed(2)+' px'}</b>.
+        ${gt.note}</div>` : '';
+
+  $('#out').innerHTML = `
+    <div>
+      <span class="pill ${d.computation==='live'?'live':''}">${d.computation.toUpperCase()} COMPUTATION</span>
+      <span class="pill synth">${d.data_source.toUpperCase()}</span>
+      <span class="pill">${d.timing.pipeline_s.toFixed(3)} s pipeline</span>
+    </div>
+    <h3>${d.title}</h3>
+    ${advBanner}
+    <div class="imgs">
+      <figure><img src="${d.source_png}"><figcaption>Source</figcaption></figure>
+      <figure><img src="${d.reference_png}"><figcaption>Reference</figcaption></figure>
+    </div>
+    <figure style="margin:0 0 18px"><canvas id="corr"></canvas>
+      <figcaption>Correspondences — <span style="color:#3fb950">green = inlier</span>,
+      <span style="color:#f85149">red = rejected</span>.
+      ${d.n_keypoints_src} / ${d.n_keypoints_dst} keypoints detected.</figcaption></figure>
+
+    <div class="verdict ${v.status}">
+      <div class="vhead">
+        <span class="vstat">${v.status}</span>
+        <span class="conf">confidence: ${v.confidence}</span>
+      </div>
+      <ul class="reasons">${v.reasons.map(r=>`<li>${r}</li>`).join('')}</ul>
+    </div>
+
+    ${gtLine}
+
+    <h3>Evidence</h3>
+    <table>
+      <tr><th>Signal</th><th>Value</th><th>Weight</th><th>Reads as</th><th>Why</th></tr>
+      ${v.evidence.map(e=>`<tr>
+        <td class="w-${e.weight}">${e.name}</td>
+        <td class="v">${e.value===null?'—':(+e.value).toPrecision(4)}</td>
+        <td class="w-${e.weight}">${e.weight}</td>
+        <td class="e-${e.verdict}">${e.verdict.replace('_',' ')}</td>
+        <td class="muted">${e.statement}</td></tr>`).join('')}
+    </table>
+
+    <h3>Estimated transform (${v.metrics.transform_model||'—'})</h3>
+    <table><tr><th>Matrix</th><td class="v">${
+      (v.metrics.transform_matrix||[]).map(row=>row.map(x=>(+x).toFixed(5).padStart(11)).join(' ')).join('<br>')
+    }</td></tr>
+    <tr><th>Timing</th><td class="v">detect ${d.timing.detect_describe_s.toFixed(3)}s ·
+      match ${d.timing.match_s.toFixed(3)}s · RANSAC ${d.timing.ransac_s.toFixed(3)}s</td></tr></table>`;
+
+  drawCorr(d);
+}
+
+function drawCorr(d){
+  const c = $('#corr'), ctx = c.getContext('2d');
+  const im1 = new Image(), im2 = new Image();
+  let n = 0;
+  const go = () => {
+    if (++n < 2) return;
+    const W = im1.width + im2.width, H = Math.max(im1.height, im2.height);
+    c.width = W; c.height = H;
+    ctx.drawImage(im1, 0, 0); ctx.drawImage(im2, im1.width, 0);
+    const {src, dst, inlier} = d.correspondences;
+    // outliers first so inliers draw on top
+    [false, true].forEach(want => {
+      ctx.strokeStyle = want ? 'rgba(63,185,80,.75)' : 'rgba(248,81,73,.35)';
+      ctx.lineWidth = want ? 1.1 : 0.7;
+      for (let i = 0; i < src.length; i++) {
+        if (!!inlier[i] !== want) continue;
+        ctx.beginPath();
+        ctx.moveTo(src[i][0], src[i][1]);
+        ctx.lineTo(dst[i][0] + im1.width, dst[i][1]);
+        ctx.stroke();
+      }
+    });
+  };
+  im1.onload = go; im2.onload = go;
+  im1.src = d.source_png; im2.src = d.reference_png;
+}
+</script>
+</body>
+</html>

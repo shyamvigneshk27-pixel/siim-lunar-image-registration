@@ -1,0 +1,288 @@
+"""Local FastAPI backend for the SIIM demonstrator.
+
+Deliberately small and local (§15): one process, no database, no auth, no
+external calls at request time. It wraps the existing SIIM modules rather than
+reimplementing anything, so what the demo shows is what the experiments
+measured.
+
+Honesty rules baked into the response shape (§16):
+
+* every result carries ``computation`` = ``"live"`` or ``"cached"``; nothing
+  can be displayed as live that was not computed in the request;
+* every result carries ``data_source`` = ``"synthetic"`` or ``"real_lro_nac"``;
+* ``fit_rmse`` is returned but flagged ``excluded_from_verdict`` so the UI
+  cannot present it as the reason for anything.
+
+Run:  python -m uvicorn siim.demo.api:app --reload --port 8000
+      (from the repo root, with src/ on PYTHONPATH)
+"""
+
+from __future__ import annotations
+
+import base64
+import io
+import sys
+import time
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[3]
+if str(ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "src"))
+
+from fastapi import FastAPI, HTTPException  # noqa: E402
+from fastapi.responses import FileResponse  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
+from pydantic import BaseModel  # noqa: E402
+
+from siim.baselines import run_rootsift_baseline  # noqa: E402
+from siim.data import TERRAIN_REGIMES, height_field, make_pair  # noqa: E402
+from siim.demo.verdict import EXCLUDED_FROM_VERDICT, assess  # noqa: E402
+from siim.evaluation import correspondence_metrics  # noqa: E402
+from siim.evaluation.gtfree import loop_closure  # noqa: E402
+from siim.geometry import Transform, affine, anchor_at, image_centre, translation  # noqa: E402
+
+app = FastAPI(title="SIIM — Sun-angle Invariant Image Matching",
+              version="0.1.0-demo")
+
+STATIC = Path(__file__).resolve().parent / "static"
+SHAPE = (384, 384)
+
+
+# ---------------------------------------------------------------------------
+# scenarios
+# ---------------------------------------------------------------------------
+
+SCENARIOS: dict[str, dict[str, Any]] = {
+    "easy_same_sun": {
+        "title": "Baseline — identical illumination",
+        "regime": "A_highlands_moderate", "delta_azimuth": 0.0, "seed": 9001,
+        "blurb": "Control case. Both images lit identically; registration should succeed.",
+        "adversarial": False,
+    },
+    "illumination_cliff": {
+        "title": "Sun azimuth 30° apart",
+        "regime": "A_highlands_moderate", "delta_azimuth": 30.0, "seed": 9001,
+        "blurb": ("Past the measured cliff. EXP-003 put the last fully-successful "
+                  "Δazimuth at 27° on this regime across 3 seeds."),
+        "adversarial": False,
+    },
+    "mare_starved": {
+        "title": "Realistic mare — feature starvation",
+        "regime": "A_mare_moderate", "delta_azimuth": 21.0, "seed": 9002,
+        "blurb": ("Low-texture mare yields ~24 keypoints at 384². The hardest "
+                  "realistic regime, and the project's priority benchmark."),
+        "adversarial": False,
+    },
+    "coherent_wrong": {
+        "title": "⚠ The trap — a confident, self-consistent, WRONG answer",
+        "regime": "A_highlands_moderate", "delta_azimuth": 0.0, "seed": 9003,
+        "blurb": ("Correspondences displaced by exactly one crater spacing. The fit "
+                  "is near-perfect and the answer is 64 px wrong. This is a "
+                  "CONTROLLED SYNTHETIC construction, reproducing the failure "
+                  "EXP-001 measured on generated terrain — not a real-data failure."),
+        "adversarial": True,
+        "shift_px": 64.0,
+    },
+}
+
+
+class RunRequest(BaseModel):
+    scenario: str = "easy_same_sun"
+    model: str = "affine"
+
+
+def _png_b64(arr: np.ndarray) -> str:
+    """Grayscale array -> base64 PNG, for inline display."""
+    from PIL import Image
+    a = np.asarray(arr, dtype=np.float64)
+    finite = np.isfinite(a)
+    if finite.any():
+        lo, hi = np.nanmin(a[finite]), np.nanmax(a[finite])
+        a = (a - lo) / (hi - lo) if hi > lo else np.zeros_like(a)
+    a = np.clip(np.nan_to_num(a), 0, 1)
+    buf = io.BytesIO()
+    Image.fromarray((a * 255).astype(np.uint8)).save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def _build_pair(sc: dict):
+    reg = TERRAIN_REGIMES[sc["regime"]]
+    field = height_field(
+        (SHAPE[0] * 2, SHAPE[1] * 2), np.random.default_rng(sc["seed"]),
+        scene=reg.scene, target_slope_median_deg=reg.target_slope_median_deg,
+        octaves=reg.octaves, persistence=reg.persistence,
+        crater_density=reg.crater_density, pixel_scale=1.0,
+    )
+    rng = np.random.default_rng(sc["seed"] * 31)
+    c = image_centre(SHAPE)
+    tf = anchor_at(affine([[1.0, 0.0, 8.0], [0.0, 1.0, -5.0]]), c)
+    pair = make_pair(
+        np.random.default_rng(sc["seed"]), tf, scene=reg.scene, out_shape=SHAPE,
+        sun_source=(315.0, 45.0),
+        sun_reference=(315.0 + sc["delta_azimuth"], 45.0),
+        base_field=field, field_margin=2.0,
+    )
+    return pair
+
+
+def _build_third_view(sc: dict, pair):
+    """A third overlapping view of the same terrain, for loop closure.
+
+    Rendered from the same height field under the source illumination and a
+    different geometry, then registered independently. Returns None if it
+    cannot be built, in which case the verdict says loop closure was not run
+    rather than pretending it passed.
+    """
+    try:
+        from siim.geometry import warp
+        reg = TERRAIN_REGIMES[sc["regime"]]
+        field = height_field(
+            (SHAPE[0] * 2, SHAPE[1] * 2), np.random.default_rng(sc["seed"]),
+            scene=reg.scene, target_slope_median_deg=reg.target_slope_median_deg,
+            octaves=reg.octaves, persistence=reg.persistence,
+            crater_density=reg.crater_density, pixel_scale=1.0,
+        )
+        from siim.data import render
+        c = image_centre(SHAPE)
+        t_ac = anchor_at(affine([[1.0, 0.0, -6.0], [0.0, 1.0, 7.0]]), c)
+        h, w = SHAPE
+        fh, fw = field.shape
+        oy, ox = (fh - h) // 2, (fw - w) // 2
+        to_frame = t_ac @ translation(-float(ox), -float(oy))
+        warped, _ = warp(field, to_frame, out_shape=SHAPE, cval=np.nan)
+        return render(warped, sun_azimuth_deg=315.0, sun_elevation_deg=45.0,
+                      pixel_scale=1.0)
+    except Exception:
+        return None
+
+
+@app.get("/api/scenarios")
+def scenarios() -> dict:
+    return {
+        "scenarios": [
+            {"id": k, "title": v["title"], "blurb": v["blurb"],
+             "regime": v["regime"], "delta_azimuth": v["delta_azimuth"],
+             "adversarial": v["adversarial"]}
+            for k, v in SCENARIOS.items()
+        ],
+        "data_status": {
+            "synthetic": "available",
+            "real_lro_nac": "labels acquired; image tiles not yet ingested",
+            "chandrayaan2_ohrc_tmc2_iirs": (
+                "NOT AVAILABLE — requires an authenticated ISSDC account. "
+                "No multi-modal claim is supported."),
+        },
+        "excluded_from_verdict": EXCLUDED_FROM_VERDICT,
+    }
+
+
+@app.post("/api/run")
+def run(req: RunRequest) -> dict:
+    sc = SCENARIOS.get(req.scenario)
+    if sc is None:
+        raise HTTPException(404, f"unknown scenario {req.scenario!r}")
+
+    t0 = time.perf_counter()
+    pair = _build_pair(sc)
+    t_gen = time.perf_counter() - t0
+
+    t1 = time.perf_counter()
+    res = run_rootsift_baseline(pair.source, pair.reference,
+                                model=req.model, ransac_threshold=3.0, seed=0)
+    t_pipe = time.perf_counter() - t1
+
+    tf_est = res.transform
+    src_p, dst_p = res.matches.src_points, res.matches.dst_points
+    mask = res.inlier_mask
+
+    # Adversarial construction: displace the *estimate* by one crater spacing,
+    # exactly as EXP-001 measured. Declared in the response, never hidden.
+    if sc.get("adversarial") and tf_est is not None:
+        tf_est = translation(sc["shift_px"], 0.0) @ tf_est
+
+    m = correspondence_metrics(
+        src_p, dst_p, mask, gt_transform=pair.transform,
+        estimated_transform=tf_est, shape=SHAPE,
+        n_keypoints_src=len(res.src_features), n_keypoints_dst=len(res.dst_features),
+        reported_inlier_rmse=res.ransac.inlier_rmse, correct_threshold=3.0,
+    )
+
+    # Loop closure needs a third view, and -- this is load-bearing -- the three
+    # edges must be estimated INDEPENDENTLY from image data. An earlier version
+    # of this endpoint derived the closing edge algebraically as
+    # ``(t_bc @ tf_est).inverse()``. That makes the loop close by construction:
+    # any error in ``tf_est`` appears in the closing edge too and cancels
+    # exactly, so the loop reported 0.000 px on a registration that was 64 px
+    # wrong. It is E-012's symmetric-error blind spot, reintroduced. Estimating
+    # each edge from its own image pair is what makes the check independent.
+    loop_err = None
+    third = _build_third_view(sc, pair)
+    if tf_est is not None and third is not None:
+        try:
+            r_bc = run_rootsift_baseline(pair.reference, third, model=req.model,
+                                         ransac_threshold=3.0, seed=0)
+            r_ca = run_rootsift_baseline(third, pair.source, model=req.model,
+                                         ransac_threshold=3.0, seed=0)
+            if r_bc.transform is not None and r_ca.transform is not None:
+                loop_err = loop_closure(
+                    [tf_est, r_bc.transform, r_ca.transform], SHAPE)
+        except Exception:
+            loop_err = None
+
+    v = assess(
+        transform=tf_est, src_points=src_p, dst_points=dst_p, inlier_mask=mask,
+        shape=SHAPE, fit_rmse=res.ransac.inlier_rmse, loop_error_px=loop_err,
+    )
+
+    inl = np.asarray(mask, dtype=bool) if np.size(mask) else np.zeros(0, bool)
+    return {
+        "scenario": req.scenario,
+        "title": sc["title"],
+        "blurb": sc["blurb"],
+        # -- honesty flags (§16) -------------------------------------------
+        "computation": "live",
+        "data_source": "synthetic",
+        "adversarial_construction": bool(sc.get("adversarial")),
+        "adversarial_note": (
+            f"The estimate was deliberately displaced by {sc.get('shift_px')} px "
+            "to reproduce the coherent-wrong failure EXP-001 measured. This is a "
+            "controlled synthetic construction, clearly labelled as such."
+            if sc.get("adversarial") else None),
+        # -- images ---------------------------------------------------------
+        "source_png": _png_b64(pair.source),
+        "reference_png": _png_b64(pair.reference),
+        # -- correspondences ------------------------------------------------
+        "correspondences": {
+            "src": src_p.tolist(), "dst": dst_p.tolist(),
+            "inlier": inl.tolist(),
+        },
+        "n_keypoints_src": int(len(res.src_features)),
+        "n_keypoints_dst": int(len(res.dst_features)),
+        # -- verdict ---------------------------------------------------------
+        "verdict": v.as_dict(),
+        # -- ground truth: available ONLY because this is synthetic ----------
+        "ground_truth": {
+            "available": True,
+            "true_error_median_px": (float(m.transform_error_median)
+                                     if np.isfinite(m.transform_error_median) else None),
+            "note": ("Ground truth exists here only because the terrain is "
+                     "synthetic. On real imagery it does not, which is why the "
+                     "verdict above must stand on GT-free evidence alone."),
+        },
+        "timing": {"generate_s": t_gen, "pipeline_s": t_pipe,
+                   "detect_describe_s": res.runtime["detect_describe_s"],
+                   "match_s": res.runtime["match_s"],
+                   "ransac_s": res.runtime["ransac_s"]},
+    }
+
+
+@app.get("/")
+def index() -> FileResponse:
+    return FileResponse(STATIC / "index.html")
+
+
+if STATIC.is_dir():
+    app.mount("/static", StaticFiles(directory=STATIC), name="static")
