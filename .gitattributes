@@ -1,0 +1,7 @@
+# PDS4 labels are archive artefacts. Their bytes are the evidence: the labels'
+# own md5_checksum values are quoted in docs/stages/REAL-DATA_LRO_NAC.md, and the
+# file_size identity check in src/siim/ingest/pds4.py is validated against them.
+# Git's line-ending normalisation would silently rewrite CRLF/LF and break both,
+# so these files are treated as binary-exact and never normalised.
+*.xml -text
+*.lbl -text

@@ -1,0 +1,127 @@
+{
+  "tag": "terminator",
+  "n_keypoints_src": 2515,
+  "n_keypoints_dst": 9706,
+  "n_putative_mutual_ratio_matches": 5,
+  "n_inliers": 3,
+  "inlier_ratio": 0.6,
+  "fit_rmse_px": 1.3127425272378462e-13,
+  "transform_estimated": true,
+  "n_inliers_failure_flag": true,
+  "runtime_s": {
+    "detect_describe_s": 0.6618854999542236,
+    "match_s": 0.3281239999923855,
+    "ransac_s": 0.04530110000632703,
+    "total_s": 1.0353105999529362
+  },
+  "transform_matrix": [
+    [
+      -0.6142741916039619,
+      -1.0023637499873217,
+      2223.529871217044
+    ],
+    [
+      -7.611557574534367,
+      -4.149902595452663,
+      11269.709169787024
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "coverage_max_uncovered_disc_ratio": 0.56156215899101,
+  "coverage_occupancy": 0.046875,
+  "wall_s": 1.0353328000055626,
+  "downsample": 2,
+  "model": "affine",
+  "verdict": {
+    "status": "REJECTED",
+    "confidence": "none",
+    "reasons": [
+      "Too few verified correspondences: 3 (threshold 8). Near the model's degrees of freedom, a fit can match its own points exactly while being catastrophically wrong.",
+      "Correspondences are clustered: 0.562 of the overlap has no nearby constraint, so the alignment is extrapolated there even if it is accurate where the points are."
+    ],
+    "evidence": [
+      {
+        "name": "n_inliers",
+        "value": 3.0,
+        "verdict": "decisive_against",
+        "weight": "decisive",
+        "statement": "Only 3 inliers (rule: reject at <= 8). Validated at recall 1.000 on 192 unseen cases (EXP-002)."
+      },
+      {
+        "name": "loop_error_px",
+        "value": null,
+        "verdict": "inconclusive",
+        "weight": "decisive",
+        "statement": "Not evaluated -- needs a third overlapping image. This is the only estimator shown to catch a coherent wrong solution, so the verdict is weaker than it could be."
+      },
+      {
+        "name": "coverage_max_gap",
+        "value": 0.56156215899101,
+        "verdict": "against",
+        "weight": "strong",
+        "statement": "Largest unconstrained region is 0.562 of the image (target <= 0.15). The transform is extrapolating where there are no correspondences."
+      },
+      {
+        "name": "inlier_ratio",
+        "value": 0.6,
+        "verdict": "supports",
+        "weight": "supporting",
+        "statement": "3/5 putative matches survived geometric verification. Self-consistency only: misses 8.7% of failures (EXP-002)."
+      },
+      {
+        "name": "fit_rmse",
+        "value": 1.3127425272378462e-13,
+        "verdict": "inconclusive",
+        "weight": "excluded",
+        "statement": "Reported for transparency and EXCLUDED from the verdict. ROC AUC 0.4947 as a failure detector on 192 unseen cases (EXP-002 objective 3, pre-declared negative control). Inverted in the failure regime: EXP-001 measured 10 of 17 catastrophic failures reporting fit RMSE below 1e-12 px while 190-2400 px wrong."
+      }
+    ],
+    "metrics": {
+      "n_putative": 5,
+      "n_inliers": 3,
+      "inlier_ratio": 0.6,
+      "coverage_max_gap": 0.56156215899101,
+      "coverage_occupancy": 0.046875,
+      "fit_rmse": 1.3127425272378462e-13,
+      "loop_error_px": null,
+      "transform_model": "affine",
+      "transform_matrix": [
+        [
+          -0.6142741916039619,
+          -1.0023637499873217,
+          2223.529871217044
+        ],
+        [
+          -7.611557574534367,
+          -4.149902595452663,
+          11269.709169787024
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "excluded": {
+      "fit_rmse": "ROC AUC 0.4947 as a failure detector on 192 unseen cases (EXP-002 objective 3, pre-declared negative control). Inverted in the failure regime: EXP-001 measured 10 of 17 catastrophic failures reporting fit RMSE below 1e-12 px while 190-2400 px wrong.",
+      "held_out_residual": "Detection 0.200 against coherent wrong solutions (EXP-002 objective 4, ADR-0011). A match set 64 px wrong yielded 0.468 px -- lower than a correct-but-noisy set at 1.424 px. Degeneracy detector only.",
+      "cycle_consistency": "Blind to symmetric errors by construction (E-012): forward +64 px and backward -64 px cancel exactly, scoring 0.000 on wrong cases against 0.325 on the correct one -- an inverted signal."
+    }
+  },
+  "classification": "C",
+  "classification_reason": "registration failure: n_inliers 3 <= 8, the EXP-002 operating point (not validated on real data)",
+  "claims_not_supported": [
+    "NO ground-truth accuracy claim: no independent geolocation exists here.",
+    "NO sub-pixel accuracy claim on real imagery.",
+    "NO comparison against synthetic ground truth.",
+    "NO Sun-AZIMUTH invariance claim: azimuth is unavailable (E-020); this pair differs in INCIDENCE only.",
+    "NO Chandrayaan-2 or multi-modal claim: no such data is present.",
+    "NO validation of n_inliers <= 8 on real data: applied, not validated.",
+    "Overlap is a PRE-REGISTRATION approximation from footprint latitude."
+  ]
+}

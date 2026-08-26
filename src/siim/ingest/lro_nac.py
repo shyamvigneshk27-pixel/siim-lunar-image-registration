@@ -37,11 +37,24 @@ from typing import Any
 
 import requests
 
+from .pds4 import (
+    Pds4ImageStructure,
+    Pds4LabelError,
+    decode_tile,
+    detect_product_type,
+    parse_image_structure,
+    plan_tile_byte_range,
+    validate_structure,
+)
+
 __all__ = [
     "ODE_ENDPOINT",
     "NacProduct",
     "query_nac",
     "find_illumination_pairs",
+    "observational_label_url",
+    "fetch_byte_range",
+    "fetch_image_tile",
     "fetch_label",
     "fetch_image_window",
     "write_manifest",
@@ -70,8 +83,14 @@ class NacProduct:
     emission_deg: float | None
     phase_deg: float | None
     image_url: str | None
+    #: The **observational** label (ODE ``Type == "Product"``). See
+    #: :func:`_parse_product` for why this is not simply "the .xml file".
     label_url: str | None
     image_kbytes: int | None
+    #: The browse-pyramid label (ODE ``Type == "Browse"``), when the product
+    #: has one. Kept rather than discarded so the distinction is visible in the
+    #: manifest and so E-022 cannot recur silently.
+    browse_label_url: str | None = None
     #: Everything ODE returned, kept verbatim so nothing is silently dropped.
     raw: dict[str, Any] = field(default_factory=dict, repr=False)
 
@@ -121,19 +140,68 @@ def _f(d: dict, key: str) -> float | None:
 
 
 def _parse_product(p: dict) -> NacProduct:
-    img_url = lbl_url = None
+    """Map one ODE product record onto :class:`NacProduct`.
+
+    **Files are selected by ODE's ``Type`` field, never by file extension.**
+    This is an ODE-specific mapping and it is deliberate. ODE lists each
+    product's files with an explicit class:
+
+    ==============  ==========================  =========================
+    ``Type``        ``Description``             example
+    ==============  ==========================  =========================
+    ``Product``     PDS4 PRODUCT LABEL FILE     ``DATA/.../M1322281266LC.xml``
+    ``Product``     PRODUCT DATA FILE           ``DATA/.../M1322281266LC.IMG``
+    ``Browse``      BROWSE LABEL                ``EXTRAS/BROWSE/...LC_pyr.xml``
+    ``Browse``      BROWSE IMAGE                ``EXTRAS/BROWSE/...LC_pyr.tif``
+    ``Derived``     KML / shapefiles            ``ode.rsl.wustl.edu/...``
+    ==============  ==========================  =========================
+
+    Both labels end in ``.xml``, are served from the same host, and parse as
+    valid PDS4. **Only the root element distinguishes them.** The previous
+    implementation matched on extension and assigned unconditionally, so the
+    last ``.xml`` in list order won -- and ODE lists ``Browse`` after
+    ``Product``. Every product carrying a browse pyramid therefore ended up
+    with a 2 KB ``Product_Browse`` label describing a JPEG pyramid, in place of
+    the 13 KB ``Product_Observational`` label that describes the ``.IMG``.
+    Measured: 4 of 6 acquired products, including **both** halves of the best
+    ``mare_serenitatis`` pair. Products without a browse pyramid were correct
+    only by accident of having a single ``.xml``. See ERROR_LEDGER **E-022**.
+
+    Falling back to the extension when ``Type`` is absent is safe here because
+    the fallback still refuses a URL under ``EXTRAS/BROWSE/``, and because
+    :func:`fetch_label` validates the root element of whatever actually
+    arrives. Neither check trusts the other.
+    """
+    img_url = lbl_url = browse_lbl_url = None
     img_kb = None
+    untyped_xml: list[str] = []
     for f in _as_list((p.get("Product_files") or {}).get("Product_file")):
         url = str(f.get("URL") or "")
         up = url.upper()
-        if up.endswith(".IMG"):
+        ftype = str(f.get("Type") or "").strip().lower()
+        is_label = up.endswith((".XML", ".LBL"))
+        if ftype == "product" and up.endswith(".IMG"):
             img_url = url
             try:
                 img_kb = int(float(f.get("KBytes")))
             except (TypeError, ValueError):
                 img_kb = None
-        elif up.endswith((".XML", ".LBL")):
+        elif ftype == "product" and is_label:
             lbl_url = url
+        elif ftype == "browse" and is_label:
+            browse_lbl_url = url
+        elif not ftype:
+            # Untyped record: keep for the fallback below rather than acting on
+            # it here, so a typed match always wins regardless of list order.
+            if up.endswith(".IMG") and img_url is None:
+                img_url = url
+            elif is_label:
+                untyped_xml.append(url)
+    if lbl_url is None:
+        for url in untyped_xml:
+            if "/EXTRAS/BROWSE/" not in url.upper():
+                lbl_url = url
+                break
     return NacProduct(
         pdsid=str(p.get("pdsid") or ""),
         utc_start=p.get("UTC_start_time"),
@@ -146,6 +214,7 @@ def _parse_product(p: dict) -> NacProduct:
         image_url=img_url,
         label_url=lbl_url,
         image_kbytes=img_kb,
+        browse_label_url=browse_lbl_url,
         raw=p,
     )
 
@@ -324,14 +393,74 @@ def find_illumination_pairs(
     return out
 
 
-def fetch_label(product: NacProduct, dest_dir: Path) -> Path:
-    """Download the PDS label (~13 KB). Cheap, and carries the real geometry."""
-    if not product.label_url:
+def observational_label_url(product: NacProduct) -> str:
+    """The URL of the product's ``Product_Observational`` label.
+
+    Raises if the ODE record does not carry one. **No URL is synthesised.**
+    Deriving the observational URL by rewriting the browse URL, or by swapping
+    the ``.IMG`` extension, would be a pattern that happens to hold for the six
+    products this project has looked at: the browse label lives under
+    ``EXTRAS/BROWSE/<yyyyddd>/`` while the observational label lives under
+    ``DATA/<phase>/<yyyyddd>/NAC/``, and the ``<phase>`` segment (``ESM2``,
+    ``ESM3``, ``ESM4``, ``SCI``, ``MAP``) is not recoverable from the browse
+    path. ODE already returns the correct URL, classified; the only thing
+    required is to read the class rather than the extension.
+    """
+    if product.label_url:
+        return product.label_url
+    if product.browse_label_url:
+        raise ValueError(
+            f"{product.pdsid}: ODE listed only a browse label "
+            f"({product.browse_label_url}) and no Product-class label. The "
+            "observational label URL is not derivable from the browse URL and "
+            "is not guessed at."
+        )
+    raise ValueError(f"{product.pdsid}: no label URL of any kind in the ODE record")
+
+
+def fetch_label(
+    product: NacProduct, dest_dir: Path, *, require_observational: bool = True
+) -> Path:
+    """Download and validate the product's PDS4 label (~13 KB).
+
+    With ``require_observational`` (the default) the label is rejected unless
+    it is a ``Product_Observational`` carrying a usable ``Array_2D_Image``:
+    ``File_Area_Observational``, ``file_name``, ``offset``, both ``Axis_Array``
+    entries and ``Element_Array/data_type`` must all be present, and the
+    label's own ``file_size`` must equal ``offset + lines*samples*itemsize``.
+
+    Two independent checks, on purpose. :func:`_parse_product` picks the URL by
+    ODE's file class; this function validates the *content that arrived*. A
+    redirect, a stale ODE record or a future change in ODE's classification
+    would defeat the first check and be caught by the second. The failure this
+    guards against is not hypothetical -- it is E-022, where a browse label was
+    accepted for four of six products because it was well-formed XML.
+
+    The label is written to disk only after it validates, so a rejected fetch
+    cannot leave a bad label behind for a later run to pick up.
+    """
+    url = observational_label_url(product) if require_observational else (
+        product.label_url or product.browse_label_url)
+    if not url:
         raise ValueError(f"{product.pdsid}: no label URL in the ODE record")
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    out = dest_dir / f"{product.pdsid}{Path(product.label_url).suffix.lower()}"
-    r = requests.get(product.label_url, timeout=_TIMEOUT, headers=_UA, allow_redirects=True)
+
+    r = requests.get(url, timeout=_TIMEOUT, headers=_UA, allow_redirects=True)
     r.raise_for_status()
+    text = r.content.decode("utf-8", errors="replace")
+
+    kind = detect_product_type(text)
+    if require_observational:
+        if kind != "Product_Observational":
+            raise Pds4LabelError(
+                f"{product.pdsid}: {url} returned a {kind}, not a "
+                "Product_Observational. It does not describe the .IMG and "
+                "cannot be used to decode it (ERROR_LEDGER E-022)."
+            )
+        # Raises with the specific missing element, or on a file_size mismatch.
+        validate_structure(parse_image_structure(text))
+
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    out = dest_dir / f"{product.pdsid}{Path(url).suffix.lower()}"
     out.write_bytes(r.content)
     return out
 
@@ -367,6 +496,116 @@ def fetch_image_window(
         content = r.content
     out.write_bytes(content)
     return out
+
+
+def fetch_byte_range(url: str, byte_start: int, byte_count: int) -> bytes:
+    """Exactly ``byte_count`` bytes from ``byte_start``, or raise.
+
+    The strictness is the point. HTTP range handling has three failure modes
+    that all yield *plausible* data:
+
+    1. the server ignores ``Range`` and returns ``200`` with the whole 500 MB
+       product -- the first ``byte_count`` bytes of which are the file header,
+       not the requested tile;
+    2. the connection drops mid-body and a short read looks like a small tile;
+    3. a proxy returns a different range than the one asked for.
+
+    (1) is detected by the status code and the requested window is sliced out
+    of the full body. (2) and (3) are detected by comparing the returned length
+    -- and, when the server sends one, the ``Content-Range`` header -- against
+    what was asked for. Nothing is padded and nothing is truncated silently:
+    a short body raises, because the alternative is an array whose tail is
+    zeros that read as lunar shadow (E-003).
+    """
+    if byte_start < 0 or byte_count <= 0:
+        raise ValueError(f"invalid range: start={byte_start} count={byte_count}")
+    end = byte_start + byte_count - 1
+    headers = {**_UA, "Range": f"bytes={byte_start}-{end}"}
+    r = requests.get(url, timeout=_TIMEOUT, headers=headers, allow_redirects=True)
+    if r.status_code not in (200, 206):
+        r.raise_for_status()
+        raise RuntimeError(f"unexpected status {r.status_code} for range request")
+
+    if r.status_code == 200:
+        body = r.content
+        if len(body) < byte_start + byte_count:
+            raise RuntimeError(
+                f"server ignored the Range header (HTTP 200) and returned "
+                f"{len(body)} bytes, too few to contain the requested window "
+                f"[{byte_start}, {byte_start + byte_count})."
+            )
+        return body[byte_start:byte_start + byte_count]
+
+    cr = r.headers.get("Content-Range", "")
+    if cr:
+        m = re.match(r"bytes\s+(\d+)-(\d+)/", cr)
+        if m and (int(m.group(1)), int(m.group(2))) != (byte_start, end):
+            raise RuntimeError(
+                f"server returned range {cr!r} but {byte_start}-{end} was "
+                "requested; the bytes do not correspond to the planned window."
+            )
+    if len(r.content) != byte_count:
+        raise RuntimeError(
+            f"short range response: asked for {byte_count} bytes from "
+            f"{byte_start}, received {len(r.content)} "
+            f"({len(r.content) - byte_count:+d}). Not padded, not truncated."
+        )
+    return r.content
+
+
+def fetch_image_tile(
+    product: NacProduct,
+    structure: Pds4ImageStructure,
+    *,
+    line0: int,
+    n_lines: int,
+    sample0: int = 0,
+    n_samples: int | None = None,
+    dest_dir: Path | None = None,
+) -> tuple[Any, dict]:
+    """Fetch and decode one tile of a NAC product. Returns ``(array, provenance)``.
+
+    Whole lines are fetched (:func:`~siim.ingest.pds4.plan_tile_byte_range`)
+    and the sample window is applied after decoding, so the HTTP range is a
+    single contiguous interval. ``array[row, col] == array[line, sample]``,
+    0-based, per the coordinate contract.
+
+    The provenance dict records the byte window, the SHA-256 **of the bytes
+    actually received**, and the tile's position in the parent frame. The hash
+    is of the raw range, not of the decoded array: it is what makes the fetch
+    reproducible and what a later reader can re-verify without redoing the
+    decode.
+    """
+    if not product.image_url:
+        raise ValueError(f"{product.pdsid}: no image URL in the ODE record")
+    byte_start, byte_count = plan_tile_byte_range(
+        structure, line0=line0, n_lines=n_lines)
+    raw = fetch_byte_range(product.image_url, byte_start, byte_count)
+    digest = hashlib.sha256(raw).hexdigest()
+    arr = decode_tile(raw, structure, n_lines=n_lines,
+                      sample0=sample0, n_samples=n_samples)
+    prov = {
+        "pdsid": product.pdsid,
+        "image_url": product.image_url,
+        "img_file_name": structure.file_name,
+        "byte_start": byte_start,
+        "byte_count": byte_count,
+        "bytes_sha256": digest,
+        "line0": line0, "n_lines": n_lines,
+        "sample0": sample0,
+        "n_samples": int(structure.samples if n_samples is None else n_samples),
+        "parent_shape_lines_samples": [structure.lines, structure.samples],
+        "data_type": structure.data_type,
+        "numpy_dtype": structure.numpy_dtype,
+        "scaling_factor": structure.scaling_factor,
+        "unit": structure.unit,
+        "index_convention": "array[row=line, column=sample], 0-based",
+        "retrieved_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    if dest_dir is not None:
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        (dest_dir / f"{product.pdsid}.tile_{line0}_{n_lines}.raw").write_bytes(raw)
+    return arr, prov
 
 
 def sha256_of(path: Path, chunk: int = 1 << 20) -> str:

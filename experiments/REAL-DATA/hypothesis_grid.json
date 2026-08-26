@@ -1,0 +1,87 @@
+{
+  "purpose": "Does the H1/H2 line-direction ambiguity explain the registration failure? All four tile combinations, unmodified pipeline.",
+  "pair": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc"
+  ],
+  "model": "affine",
+  "downsample": 2,
+  "ransac_threshold_px": 3.0,
+  "tiles": [
+    {
+      "pdsid": "nac.m1271742202lc",
+      "hypothesis": "H1",
+      "line0": 30126,
+      "sha256_prefix": "56236a0f"
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "hypothesis": "H1",
+      "line0": 18367,
+      "sha256_prefix": "634394e5"
+    },
+    {
+      "pdsid": "nac.m1271742202lc",
+      "hypothesis": "H2",
+      "line0": 18002,
+      "sha256_prefix": "ec240441"
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "hypothesis": "H2",
+      "line0": 29761,
+      "sha256_prefix": "2700949e"
+    }
+  ],
+  "combinations": [
+    {
+      "hyp_a": "H1",
+      "hyp_b": "H1",
+      "line0_a": 30126,
+      "line0_b": 18367,
+      "n_kp_src": 12707,
+      "n_kp_dst": 11412,
+      "n_putative": 35,
+      "n_inliers": 3,
+      "fit_rmse_px": 1.5752910326854155e-12,
+      "n_inliers_failure_flag": true
+    },
+    {
+      "hyp_a": "H1",
+      "hyp_b": "H2",
+      "line0_a": 30126,
+      "line0_b": 29761,
+      "n_kp_src": 12707,
+      "n_kp_dst": 13411,
+      "n_putative": 44,
+      "n_inliers": 4,
+      "fit_rmse_px": 3.4342082169571803e-13,
+      "n_inliers_failure_flag": true
+    },
+    {
+      "hyp_a": "H2",
+      "hyp_b": "H1",
+      "line0_a": 18002,
+      "line0_b": 18367,
+      "n_kp_src": 9740,
+      "n_kp_dst": 11412,
+      "n_putative": 38,
+      "n_inliers": 4,
+      "fit_rmse_px": 0.388836904729209,
+      "n_inliers_failure_flag": true
+    },
+    {
+      "hyp_a": "H2",
+      "hyp_b": "H2",
+      "line0_a": 18002,
+      "line0_b": 29761,
+      "n_kp_src": 9740,
+      "n_kp_dst": 13411,
+      "n_putative": 43,
+      "n_inliers": 5,
+      "fit_rmse_px": 8.134767913360664e-13,
+      "n_inliers_failure_flag": true
+    }
+  ],
+  "conclusion": "All four combinations fail the n_inliers <= 8 operating point. The line-direction ambiguity does NOT explain the failure."
+}

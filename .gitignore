@@ -9,3 +9,10 @@ data/raw/**
 data/processed/**
 !data/**/.gitkeep
 !data/**/README.md
+
+# Raw byte caches of archive products (REAL-DATA-01). These are re-fetchable from
+# PDS by the byte range recorded in data/manifests/, and their SHA-256 is already
+# tracked there, so the bytes themselves are cache and not evidence.
+# Everything else under experiments/REAL-DATA/ -- metrics JSON, diagnostic figures,
+# the hypothesis grid -- IS tracked.
+experiments/**/*.raw

@@ -18,24 +18,24 @@
   http://pds.nasa.gov/pds4/img/v1 https://pds.nasa.gov/pds4/img/v1/PDS4_IMG_1J00_1870.xsd">
 
   <Identification_Area>
-    <logical_identifier>urn:nasa:pds:lro-l-lroc-3-cdr:lrolrc_1040c_data:nac.m1322281266lc</logical_identifier>
+    <logical_identifier>urn:nasa:pds:lro-l-lroc-3-cdr:lrolrc_1034_data:nac.m1271742202lc</logical_identifier>
     <version_id>2.0</version_id>
     <title>Lunar Reconnaissance Orbiter Camera NAC CDR Product</title>
     <information_model_version>1.19.0.0</information_model_version>
     <product_class>Product_Observational</product_class>
     <Alias_List>
       <Alias>
-        <alternate_id>M1322281266LC.IMG</alternate_id>
+        <alternate_id>M1271742202LC.IMG</alternate_id>
         <comment>Original filename at PDS3 archive, on-line at LROC Node</comment>
       </Alias>
       <Alias>
-        <alternate_id>nacl0021b824</alternate_id>
+        <alternate_id>nacl001cb919</alternate_id>
         <comment>PDS3 SOURCE_PRODUCT_ID</comment>
       </Alias>
     </Alias_List>
     <Modification_History>
       <Modification_Detail>
-        <modification_date>2023-09-07</modification_date>
+        <modification_date>2023-09-08</modification_date>
         <version_id>2.0</version_id>
         <description>
           Updated PDS4 label
@@ -53,8 +53,8 @@
   </Identification_Area>
   <Observation_Area>
     <Time_Coordinates>
-      <start_date_time>2019-09-05T00:06:38.642000Z</start_date_time>
-      <stop_date_time>2019-09-05T00:07:09.334000Z</stop_date_time>
+      <start_date_time>2018-01-28T01:28:54.845000Z</start_date_time>
+      <stop_date_time>2018-01-28T01:29:27.328000Z</stop_date_time>
     </Time_Coordinates>
     <Primary_Result_Summary>
       <purpose>Science</purpose>
@@ -109,14 +109,14 @@
         <!-- parameters for all LRO products -->
         <lro:product_type>CDR</lro:product_type>
         <lro:product_version_id>v1.9</lro:product_version_id>
-        <lro:orbit_number>45924</lro:orbit_number>
+        <lro:orbit_number>38731</lro:orbit_number>
         <lro:mission_phase_name>THIRD EXTENDED SCIENCE MISSION</lro:mission_phase_name>
-        <lro:spacecraft_clock_start_count>1/589334798:40028</lro:spacecraft_clock_start_count>
-        <lro:spacecraft_clock_stop_count>1/589334829:19844</lro:spacecraft_clock_stop_count>
+        <lro:spacecraft_clock_start_count>1/538795734:53339</lro:spacecraft_clock_start_count>
+        <lro:spacecraft_clock_stop_count>1/538795767:19432</lro:spacecraft_clock_stop_count>
         <lro:producer_institution_name>Arizona State University</lro:producer_institution_name>
         <lro:LROC_Parameters>
           <!-- Parameters specific to LROC -->
-          <lro:upload_id>SC_2019247_0400_B_V01.txt</lro:upload_id>
+          <lro:upload_id>SC_2018027_0401_B_V01.txt</lro:upload_id>
           <lro:rationale_desc>TARGET OF OPPORTUNITY</lro:rationale_desc>
           <lro:data_quality_id>0</lro:data_quality_id>
           <lro:data_quality_desc>
@@ -130,30 +130,30 @@
             Bit 8: Spare.
           </lro:data_quality_desc>
           <!-- NAC specific attributes -->
-          <lro:preroll_time>2019-09-05T00:06:38.040000Z</lro:preroll_time>
-          <lro:spacecraft_clock_preroll_count>1/589334798:00589</lro:spacecraft_clock_preroll_count>
+          <lro:preroll_time>2018-01-28T01:28:54.208000Z</lro:preroll_time>
+          <lro:spacecraft_clock_preroll_count>1/538795734:11599</lro:spacecraft_clock_preroll_count>
           <lro:frame_id>LEFT</lro:frame_id>
           <!-- NAC environment attributes -->
-          <lro:temperature_scs unit="degC">0.9373850226402283</lro:temperature_scs>
-          <lro:temperature_fpa unit="degC">17.924081802368164</lro:temperature_fpa>
-          <lro:temperature_fpga unit="degC">-14.035539627075195</lro:temperature_fpga>
-          <lro:temperature_telescope unit="degC">9.040375709533691</lro:temperature_telescope>
-          <lro:temperature_scs_raw>2901</lro:temperature_scs_raw>
-          <lro:temperature_fpa_raw>2105</lro:temperature_fpa_raw>
-          <lro:temperature_fpga_raw>3473</lro:temperature_fpga_raw>
-          <lro:temperature_telescope_raw>2528</lro:temperature_telescope_raw>
+          <lro:temperature_scs unit="degC">10.763998031616211</lro:temperature_scs>
+          <lro:temperature_fpa unit="degC">20.25482749938965</lro:temperature_fpa>
+          <lro:temperature_fpga unit="degC">-6.964590072631836</lro:temperature_fpga>
+          <lro:temperature_telescope unit="degC">12.480905532836914</lro:temperature_telescope>
+          <lro:temperature_scs_raw>2446</lro:temperature_scs_raw>
+          <lro:temperature_fpa_raw>1996</lro:temperature_fpa_raw>
+          <lro:temperature_fpga_raw>3227</lro:temperature_fpga_raw>
+          <lro:temperature_telescope_raw>2364</lro:temperature_telescope_raw>
           <!-- NAC imaging attributes -->
-          <lro:line_exposure_duration unit="ms">0.5850666666666667</lro:line_exposure_duration>
-          <lro:line_exposure_code>29</lro:line_exposure_code>
+          <lro:line_exposure_duration unit="ms">0.6192000000000001</lro:line_exposure_duration>
+          <lro:line_exposure_code>33</lro:line_exposure_code>
           <lro:dac_reset_level>199</lro:dac_reset_level>
-          <lro:channel_a_offset>40</lro:channel_a_offset>
-          <lro:channel_b_offset>117</lro:channel_b_offset>
-          <lro:compand_code>3</lro:compand_code>
+          <lro:channel_a_offset>68</lro:channel_a_offset>
+          <lro:channel_b_offset>141</lro:channel_b_offset>
+          <lro:compand_code>0</lro:compand_code>
           <lro:line_code>51</lro:line_code>
           <lro:bterm1>0</lro:bterm1>
-          <lro:bterm2>16</lro:bterm2>
-          <lro:bterm3>69</lro:bterm3>
-          <lro:bterm4>103</lro:bterm4>
+          <lro:bterm2>8</lro:bterm2>
+          <lro:bterm3>25</lro:bterm3>
+          <lro:bterm4>59</lro:bterm4>
           <lro:bterm5>128</lro:bterm5>
           <lro:mterm1>0.5</lro:mterm1>
           <lro:mterm2>0.25</lro:mterm2>
@@ -161,10 +161,10 @@
           <lro:mterm4>0.0625</lro:mterm4>
           <lro:mterm5>0.03125</lro:mterm5>
           <lro:xterm1>0</lro:xterm1>
-          <lro:xterm2>64</lro:xterm2>
-          <lro:xterm3>424</lro:xterm3>
-          <lro:xterm4>536</lro:xterm4>
-          <lro:xterm5>800</lro:xterm5>
+          <lro:xterm2>32</lro:xterm2>
+          <lro:xterm3>136</lro:xterm3>
+          <lro:xterm4>543</lro:xterm4>
+          <lro:xterm5>2207</lro:xterm5>
           <lro:compression_flag>1</lro:compression_flag>
           <lro:mode>7</lro:mode>
         </lro:LROC_Parameters>
@@ -212,11 +212,11 @@
   </Reference_List>
   <File_Area_Observational>
     <File>
-      <file_name>M1322281266LC.IMG</file_name>
+      <file_name>M1271742202LC.IMG</file_name>
       <local_identifier>DATA_FILE</local_identifier>
-      <creation_date_time>2019-09-07T03:21:05.000000Z</creation_date_time>
+      <creation_date_time>2018-01-30T02:01:35.000000Z</creation_date_time>
       <file_size unit="byte">528929736</file_size>
-      <md5_checksum>d53866b856df1420a397c4ab98cdf32e</md5_checksum>
+      <md5_checksum>08bb001d5ac15ec7c4fb11a5cee1346e</md5_checksum>
       <comment>Lunar Reconnaissance Orbiter Camera NAC CDR Product</comment>
     </File>
     <Header>

@@ -1,0 +1,124 @@
+{
+  "pair": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc"
+  ],
+  "manifest": "real_pair_usable_manifest.json",
+  "tiles": [
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1271742202lc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": 483.0,
+        "p0_1": 1250.0,
+        "p1": 1276.0,
+        "p25": 1330.0,
+        "median": 1359.0,
+        "p75": 1400.0,
+        "p99": 1702.0,
+        "p99_9": 2159.0,
+        "max": 3805.0,
+        "mean": 1377.40545296669,
+        "std": 86.52057911238344,
+        "zero_fraction": 0.0,
+        "n_unique": 1990,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9590049309141278,
+          "autocorr_byte_swapped": 0.5933256096731037,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.9590034101308412,
+          "autocorr_shifted_one_byte": 0.5933285716867955
+        },
+        "decode_margin_byte_order": 0.3656793212410241,
+        "decode_margin_alignment": 0.3656748384440457,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9590049309141278
+      },
+      "sha256_matches_manifest": true,
+      "incidence_deg": 29.95,
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter."
+    },
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1335207975rc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": -34.0,
+        "p0_1": 80.0,
+        "p1": 272.0,
+        "p25": 447.0,
+        "median": 473.0,
+        "p75": 508.0,
+        "p99": 769.0,
+        "p99_9": 988.0,
+        "max": 2298.0,
+        "mean": 482.2843487262726,
+        "std": 79.10596855632707,
+        "zero_fraction": 3.5762786865234375e-07,
+        "n_unique": 1746,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9415033261164134,
+          "autocorr_byte_swapped": 0.6680430903414898,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.941503292689222,
+          "autocorr_shifted_one_byte": 0.6680697181114983
+        },
+        "decode_margin_byte_order": 0.2734602357749236,
+        "decode_margin_alignment": 0.27343357457772366,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9415033261164134
+      },
+      "sha256_matches_manifest": true,
+      "incidence_deg": 69.76,
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter."
+    }
+  ],
+  "all_passed": true
+}

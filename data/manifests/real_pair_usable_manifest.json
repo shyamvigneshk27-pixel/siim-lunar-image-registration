@@ -1,0 +1,92 @@
+{
+  "dataset": "LRO NAC (LROC) real image tiles via PDS ODE",
+  "region": "mare_serenitatis",
+  "pair": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc"
+  ],
+  "pair_role": "usable",
+  "incidence_delta_deg": 39.81,
+  "resolution_ratio": 1.0163398692810457,
+  "overlap_latitude_band_deg": [
+    19.39,
+    20.68
+  ],
+  "line_direction_hypothesis": "H1",
+  "chandrayaan2_status": "NOT OBTAINED. No Chandrayaan-2 data is present. No multi-modal claim is supported by this manifest.",
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "tiles": [
+    {
+      "pdsid": "nac.m1271742202lc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1034/DATA/ESM3/2018028/NAC/M1271742202LC.IMG",
+      "img_file_name": "M1271742202LC.IMG",
+      "byte_start": 305121192,
+      "byte_count": 41484288,
+      "bytes_sha256": "56236a0fe23f34843d8bbf937c1239899139d785bdf6886ce33911250af2aa2d",
+      "line0": 30126,
+      "n_lines": 4096,
+      "sample0": 1508,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-25T01:19:17Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1271742202lc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1271742202lc.H1.l30126.tile.npy",
+      "incidence_deg": 29.95,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "ode_map_resolution_m": 0.933,
+      "implied_m_per_line": 0.9754754272474556,
+      "footprint_lat_min": 19.39,
+      "footprint_lat_max": 21.07,
+      "target_latitude_deg": 20.035,
+      "latitude_fraction_along_frame": 0.38392857142857123,
+      "line_direction_hypothesis": "H1",
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter.",
+      "azimuth_status": "Sub-solar AZIMUTH is NOT available from ODE or from the PDS4 labels (E-020). This pair is illumination-varied by INCIDENCE only, and is NOT azimuth-controlled."
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1042B/DATA/ESM4/2020032/NAC/M1335207975RC.IMG",
+      "img_file_name": "M1335207975RC.IMG",
+      "byte_start": 186026040,
+      "byte_count": 41484288,
+      "bytes_sha256": "634394e50d7ace9dd7c4945de93a3a390d11bbf04464f5942f9c50eda2d6fff1",
+      "line0": 18367,
+      "n_lines": 4096,
+      "sample0": 1508,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-25T01:19:32Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1335207975rc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1335207975rc.H1.l18367.tile.npy",
+      "incidence_deg": 69.76,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "ode_map_resolution_m": 0.918,
+      "implied_m_per_line": 0.9580562231894646,
+      "footprint_lat_min": 19.03,
+      "footprint_lat_max": 20.68,
+      "target_latitude_deg": 20.035,
+      "latitude_fraction_along_frame": 0.609090909090909,
+      "line_direction_hypothesis": "H1",
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter.",
+      "azimuth_status": "Sub-solar AZIMUTH is NOT available from ODE or from the PDS4 labels (E-020). This pair is illumination-varied by INCIDENCE only, and is NOT azimuth-controlled."
+    }
+  ]
+}

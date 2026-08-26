@@ -1,0 +1,128 @@
+{
+  "pair": [
+    "nac.m1322281266lc",
+    "nac.m1225876972lc"
+  ],
+  "manifest": "real_pair_terminator_manifest.json",
+  "tiles": [
+    {
+      "passed": false,
+      "failures": [
+        "lag-1 autocorrelation 0.355 < 0.6, and the decode evidence is INCONCLUSIVE here -- on a tile this noisy no decode looks coherent, so correctness must be argued from the same code path succeeding on another frame. This is a DATA-QUALITY limit, not a decoding defect: the scene carries little pixel-scale signal relative to sensor noise. The tile is unsuitable for pixel-scale feature matching and is failed on those grounds, not on ingestion grounds."
+      ],
+      "warnings": [
+        "decode evidence is INCONCLUSIVE: the declared decode beats its byte-swapped alternative by only +0.0022 and its misaligned alternative by +0.0052, both under the 0.1 margin. This test cannot discriminate on a tile with little pixel-scale structure. Correctness of the decode must be argued from elsewhere -- e.g. the same code path scoring decisively on another frame.",
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1322281266lc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": -145.0,
+        "p0_1": -50.0,
+        "p1": -20.0,
+        "p25": 17.0,
+        "median": 29.0,
+        "p75": 41.0,
+        "p99": 79.0,
+        "p99_9": 102.0,
+        "max": 330.0,
+        "mean": 28.86009693145752,
+        "std": 19.64233647988009,
+        "zero_fraction": 0.005947709083557129,
+        "n_unique": 327,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.35529583186847835,
+          "autocorr_byte_swapped": 0.35311732874111945,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.3552864289254108,
+          "autocorr_shifted_one_byte": 0.3500528871037351
+        },
+        "decode_margin_byte_order": 0.0021785031273588995,
+        "decode_margin_alignment": 0.00523354182167568,
+        "decode_verdict": "inconclusive",
+        "lag1_autocorrelation": 0.35529583186847835,
+        "failure_class": "data quality (low SNR), decode inconclusive"
+      },
+      "sha256_matches_manifest": true,
+      "incidence_deg": 89.96,
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter."
+    },
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1225876972lc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": 682.0,
+        "p0_1": 1442.0,
+        "p1": 1465.0,
+        "p25": 1536.0,
+        "median": 1582.0,
+        "p75": 1655.0,
+        "p99": 2136.0,
+        "p99_9": 2598.0,
+        "max": 3862.0,
+        "mean": 1617.120804309845,
+        "std": 133.63309998193532,
+        "zero_fraction": 0.0,
+        "n_unique": 2094,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9759031579536214,
+          "autocorr_byte_swapped": 0.6122727377340758,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.9759026269957404,
+          "autocorr_shifted_one_byte": 0.6122194235490139
+        },
+        "decode_margin_byte_order": 0.3636304202195456,
+        "decode_margin_alignment": 0.36368320344672644,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9759031579536214
+      },
+      "sha256_matches_manifest": true,
+      "incidence_deg": 24.64,
+      "geolocation_status": "APPROXIMATE, PRE-REGISTRATION OVERLAP SELECTION. Line index assumed linear in latitude from the ODE footprint polygon; no camera model or SPICE kernel was used. Cross-track position is the frame centre. This crop is a plausible overlapping region, NOT a geographically registered one, and must never be described as the latter."
+    }
+  ],
+  "all_passed": false
+}
