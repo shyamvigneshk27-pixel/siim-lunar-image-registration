@@ -496,6 +496,284 @@ Per regime, mixed cells: mare FPR **0.4706** (recall 1.000) · highlands **0.307
 
 ---
 
+## 2026-08-25 — Session 3: real LRO NAC ingestion and first real registration
+
+Full stage report: [`stages/REAL-DATA_LRO_NAC.md`](stages/REAL-DATA_LRO_NAC.md). The entries
+below record the *findings*; the report holds the method, commands, provenance and hashes.
+
+---
+
+### RL-026 — The archive told us which label was which, and the code did not read it
+
+**Observation.** Four of six acquired PDS4 labels were `Product_Browse` — descriptions of a JPEG browse pyramid — rather than `Product_Observational`. Both halves of the then-best `mare_serenitatis` pair were affected. Decoding was impossible and nothing said why.
+
+**Evidence.** Root elements of the six stored labels: 4 × `Product_Browse` (~2 KB), 2 × `Product_Observational` (~13 KB); grep for image-structure elements gives 0 hits in the former, 7 in the latter. The live ODE record lists both files with an explicit class — `Type=Product` for `DATA/.../M*.xml` and `Type=Browse` for `EXTRAS/BROWSE/...M*_pyr.xml` — and lists `Browse` *after* `Product`. The parser matched on `.xml` extension and assigned unconditionally, so the last one won. Products with 7 files were wrong; products with 5 files were right by accident. See E-022.
+
+**Interpretation.** `[INTERPRETATION]` This was never a URL-pattern problem, and the fix is not a URL transformation. **The correct URL was in the response the whole time, correctly labelled, and was discarded.** The generalisable form: when a service classifies its own data, inferring the class from a filename throws away better information and fails silently, because both files are valid PDS4 XML served from the same host.
+
+**Unresolved.** Two orphan `Product_Browse` labels (`nac.m1299958135lc`, `nac.m1323460176lc`) from the 2026-08-24 acquisition remain on disk, belong to no manifest, and have not been re-fetched. They block nothing.
+
+**Status:** closed (E-022 FIXED, 5 regression tests).
+
+---
+
+### RL-027 — The decode is provably correct; the proof needed two corrections of its own
+
+**Observation.** A PDS4 `Array_2D_Image` decoder was built and its correctness demonstrated intrinsically — without any reference image — via spatial-coherence comparisons against deliberately wrong decodes.
+
+**Evidence.** `[MEASURED]` The label's `file_size` is declared independently of the array description, giving an exact structural identity: `5064 + 52224 × 5064 × 2 = 528 929 736` ✓ for all four products, which validates offset, both dimensions and element size *together*. Lag-1 autocorrelation, declared vs byte-swapped decode: **0.9590 / 0.5933**, **0.9415 / 0.6680**, **0.9759 / 0.6123**. Positive controls on real imagery: self-registration recovers identity to **1.14e-12** and **1.25e-12**; a known (+40, +25) px shift is recovered as **(40.142, 24.941)** — 0.14 px — with 11 521 inliers.
+
+**Two corrections were required before those numbers meant anything.** `[MEASURED]` The coherence statistic first reported **0.9919 for two different frames**, identical to four decimals, with a vertical correlation of exactly 1.0000: it was measuring the constant `-32768` border columns, whose variance (~3664 DN) dwarfs the scene's (~19.6 DN) — **E-010 recurring**, logged as E-023. Then a **0.0022** margin between two ~0.35 values was reported as proof of a byte-order defect in correct code, logged as E-024 and fixed with an explicit 0.10 evidence margin and an `inconclusive` verdict.
+
+**Interpretation.** `[INTERPRETATION]` The decode chain, preprocessing, detector, matcher, RANSAC and geometry are **sound on real lunar imagery**. This is what bounds the interpretation of RL-029: the registration failure there is not an ingestion or pipeline defect.
+
+**Unresolved.** The 0.14 px shift-recovery figure is a **self-consistency control on a synthetically shifted copy of one real tile**, not a registration of two independent frames. It supports no accuracy claim. `MIN_PLAUSIBLE_AUTOCORR = 0.60` and `DECODE_EVIDENCE_MARGIN = 0.10` are provisional constants fitted to four tiles (D-032).
+
+**Status:** closed for the decoder (61 tests). **Open:** the constants, pending more real products.
+
+---
+
+### RL-028 — Maximising illumination difference selects the terminator, where one frame carries no signal
+
+**Observation.** The pair selector ranks candidates by incidence difference alone. Its top `mare_serenitatis` pick was 89.96° vs 24.64° — a Sun 0.04° above the horizon.
+
+**Evidence.** `[MEASURED]` `nac.m1322281266lc`: DN median **29 ± 19.6** (I/F ≈ 0.00088), lag-1 autocorrelation **0.3553**, versus 1582 ± 133.6 and 0.9759 for its partner — a **55× brightness difference**. Keypoints 2 515 vs 9 706; the pair produced **5 putative matches**. The tile decodes perfectly (`file_size` identity exact, SHA-256 reproducible) and fails the sanity check on *data quality*. A survey bounding both incidences at ≤ 75° returned **32 usable pairs**, the best being `nac.m1271742202lc` × `nac.m1335207975rc` — Δinc 39.8°, footprint IoU **0.516**, resolution ratio 1.016.
+
+**Interpretation.** `[INTERPRETATION]` A difference-maximising criterion with no bound on either operand necessarily selects the extreme of the range, and the extreme of incidence is the terminator. **"Most illumination difference" and "most *informative* illumination difference" are different objectives.** The selector was optimising the wrong one.
+
+**Unresolved.** The 75° ceiling is a **provisional cut, not a validated threshold** — no sweep was run, and no evidence says 75° is where usability ends. `find_illumination_pairs()` is **not yet changed**; D-029 records the decision only.
+
+**Status:** open — E-026 `DOCUMENTED`, D-029 recorded, implementation owed.
+
+---
+
+### RL-029 — The first real registration failed, and the fit residual said it was perfect
+
+**Observation.** The unmodified B1 baseline was run on two real NAC tile pairs. Both failed.
+
+**Evidence.** `[MEASURED]` `usable` pair (Δinc 39.8°): 12 707 / 11 412 keypoints, 35 putative, **3 inliers**, coverage gap 0.4629, **fit RMSE 1.575e-12 px**, verdict **REJECTED / none**, class **C**. `terminator` pair: 2 515 / 9 706 keypoints, 5 putative, **3 inliers**, fit RMSE 1.313e-13 px, REJECTED, class C. The `usable` transform:
+
+```
+ 11.35236   -2.45232   -5801.51978
+ 17.88721   -3.07281   -9344.45726
+```
+
+— an 11–18× scale change and a ~10 000 px translation between two frames of the same region at nearly the same resolution.
+
+**The line-direction ambiguity was tested and does not explain it.** `[MEASURED]` All four H1/H2 tile combinations, on tiles verified distinct by SHA-256 first (see E-025): **3, 4, 4, 5** inliers, all failing `n_inliers <= 8`; three of four again show near-zero fit RMSE (1.575e-12, 3.434e-13, 8.135e-13).
+
+**Interpretation.** `[INTERPRETATION]` **This is E-008 reproduced on real lunar data for the first time.** A pipeline reporting inlier RMSE — as most of the registration literature does — would present a 1.6e-12 px result as picometre-accurate registration. It is catastrophically wrong, and the residual is at its *best* precisely because the solution collapsed to the affine minimal set of 3 correspondences. The project's founding claim now has a real-data instance.
+
+**This is not a positive result about the matcher.** `[NOT VERIFIED]` The registration **failed**. What succeeded is the *rejection* of the failure, and the rejection rests on `n_inliers <= 8` and coverage — both applied, neither validated on real data.
+
+**Unresolved — and this is the stage's central open question.** The cause is **not attributed**. Two hypotheses remain live and the data separates neither:
+(a) **the tiles do not overlap** — the crop is a first-order latitude approximation with no camera model (D-030), and footprint IoU 0.516 is a whole-frame figure that says nothing about two 3.7 km tiles inside those frames;
+(b) **the illumination difference defeats the matcher** — which EXP-003 would predict, except that Δ*azimuth* is unavailable for these products (E-020), so that expectation is not directly applicable either.
+**Evidence insufficient.** The failure must not be attributed to illumination until overlap is established independently (D-031).
+
+**Status:** open. Blocked on RL-030.
+
+---
+
+### RL-030 — Loop closure, the project's only trustworthy GT-free check, is absent from every real-data result
+
+**Observation.** No real-data result in this stage carries loop-closure evidence.
+
+**Evidence.** Loop closure requires three overlapping images with **independently estimated** edges (ADR-0011; E-021 records what happens when the closing edge is derived algebraically instead). Only two real products were acquired per pair, so the check was reported as *not run* rather than as a pass — in the registration summaries and in the demo response alike.
+
+**Interpretation.** `[INTERPRETATION]` The project's strongest correctness argument is currently **synthetic-only**. D-011 was accepted on mathematics and validated on constructed transforms and pipeline-produced synthetic edges (RL-025); it has still never met real overlapping triplets, and ADR-0011's own reversal condition — *"real-data evidence that per-edge errors are correlated in a way that cancels around a loop; or that overlapping triplets are unavailable"* — remains untested.
+
+**Unresolved.** Whether overlapping real triplets are even available at the required overlap in this archive region. Unknown since ANALYSIS §F.1.4 and still unknown.
+
+**Status:** open — the highest-value real-data gap.
+
+---
+
+### RL-031 - The tiles behind the first real registration were 22.75 km apart
+
+**Question.** RL-029b: why did the first real registration fail - overlap, or illumination? The data was said to separate neither.
+
+**Evidence.** `[MEASURED]` `experiments/REAL-DATA-02/overlap_verification.json`. Tile ground footprints were computed from the PDS archive index table's **named** frame corners (`UPPER_LEFT_LATITUDE` ... `LOWER_RIGHT_LONGITUDE`), bilinearly interpolated to the integer tile windows already recorded in the REAL-DATA-01 manifests, projected onto a common local plane and intersected exactly. No pixel was read and no matcher component was used.
+
+| tile pair | intersection | IoU | shared fraction of the worse-covered tile | classification |
+|---|---|---|---|---|
+| `usable_H1` - **the headline 3-inlier run** | **0.0000 km2** | 0.0000 | **0.0 %** (p5-p95 0.0-0.0) | **OVERLAP_INSUFFICIENT** |
+| `usable_H2` | 4.9653 km2 | 0.5330 | **68.59 %** (p5-p95 62.9-74.1) | **OVERLAP_CONFIRMED** |
+| `terminator_H1` | 2.2375 km2 | 0.1835 | 28.29 % (p5-p95 23.4-33.0) | **OVERLAP_UNKNOWN** |
+| `usable_A@H1_B@H2` | 0.0000 km2 | 0.0000 | 0.0 % | OVERLAP_INSUFFICIENT |
+| `usable_A@H2_B@H1` | 0.0000 km2 | 0.0000 | 0.0 % | OVERLAP_INSUFFICIENT |
+
+The `usable_H1` tile centres are **22.75 km** apart - nearly six tile-lengths - against a 3.98 km tile.
+
+**Interpretation.** `[INTERPRETATION]` **REAL-DATA-01's headline number measured nothing about the matcher.** 3 inliers from two disjoint tiles is the correct output of a correctly-working pipeline given inputs that share no ground. The E-008 observation drawn from that run *survives and strengthens*: a fit residual of **1.575e-12 px** was reported for a transform between tiles **22.75 km apart**. What does not survive is any reading of the 3 inliers as evidence about real-data matcher performance.
+
+`registration_usableH2.json` is a different matter. Its tiles are independently confirmed to share **68.6 % / 70.5 %** of their ground, and the unmodified B1 baseline returned 43 putative matches and **5 inliers**, REJECTED. Overlap is excluded as the cause for *that* pair. **The failure is still not attributed** - illumination, mare texture poverty (D-026), the 2x decimation, the 1.6 % resolution ratio and real relief displacement are all untested.
+
+**Cause of the disjoint crop.** Two design mistakes in `acquire_real_pair.py`, both now in the ledger. **E-028**: the line-direction hypothesis was applied globally to a pair, and it is a property of the individual frame - `LRO_FLIGHT_DIRECTION` is **-X** for both usable frames (line 0 at minimum latitude, i.e. H2) and **+X** for both terminator frames (H1). The usable pair was acquired at H1. **E-029**: cross-track position was never matched between frames, costing a further 1.1-1.7 km against a 1.8 km tile.
+
+**A correction to REAL-DATA-01 section 4.5.** That section tested four H1/H2 combinations, saw 3/4/4/5 inliers, and concluded *"All four fail. The direction hypothesis is not the explanation."* Exactly **one** of the four rows has overlapping tiles; the other three are 11-23 km apart and could not have succeeded. The direction hypothesis was resolvable, was not resolved, and *was* the explanation for three of the four rows. The original text stands unedited (integrity rule 3).
+
+**Status:** RL-029b **closed**. Successor thread **RL-031b**: why does `usable_H2` fail at 68.6 % overlap? Needs REAL-DATA-03.
+
+---
+
+### RL-032 - The geometry was in the archive index table, one directory above the data
+
+**Question.** REAL-DATA-01 concluded that no exact pixel -> (lat, lon) mapping was available to this project without SPICE or a camera model (D-030). Was that true?
+
+**Evidence.** `[MEASURED]` An audit of four sources:
+
+| source | positional geometry? |
+|---|---|
+| PDS4 `Product_Observational` label | **none** - no `Cartography`, no `Geometry`, no coordinates of any kind |
+| PDS3 attached header inside the `.IMG` (5064 B, fetched live) | **none** - no geometry keywords at all |
+| ODE product record | `Footprint_geometry`, a 4-vertex WKT ring with an **undocumented vertex order** |
+| **PDS archive index table** (`<VOLUME>/INDEX/INDEX.TAB` + `.LBL`) | **named corners**, plus `NORTH_AZIMUTH`, `SUB_SOLAR_AZIMUTH`, `ORBIT_NODE`, `LRO_FLIGHT_DIRECTION`, `SCALED_PIXEL_WIDTH`/`HEIGHT` |
+
+ODE itself names the source it did not fully expose: `Footprint_souce = "PDS Archive Index Table"`. The tables are 18-54 MB but `FIXED_LENGTH` and sorted by `PRODUCT_ID`, so one row costs a binary search of 15-18 HTTP range requests of 901 bytes. Four products: **~130 KB, no image bytes**.
+
+`[MEASURED]` Every ODE ring vertex matches a named index corner to machine precision, in the order **(UR, LR, LL, UL)** for all four products - fixed, and not the UL-first order anyone would guess.
+
+**What makes the corner names usable.** Each product's own PDS4 label states `disp:Display_Direction` = `(Line, Top to Bottom)` and `(Sample, Left to Right)`, so the top row is the first line and `UPPER_*` is line 0. Corroborated two ways: corner-implied pixel scale agrees with the archive's SPICE-derived `SCALED_PIXEL_HEIGHT`/`WIDTH` within **1.2 % over 8 comparisons**, and the 2-2 split of `UPPER`-is-north follows `LRO_FLIGHT_DIRECTION` exactly - impossible if `UPPER` were a compass label.
+
+**A closed loose end.** REAL-DATA-01 section 18 left an unexplained **1.05** ratio between footprint-implied m/line and ODE's `Map_resolution`, *"possibly a footprint-polygon convention, possibly real along-track scale."* Neither: `Map_resolution` is the index's `RESOLUTION` column, which is **not** the down-scan pixel scale. Against `SCALED_PIXEL_HEIGHT` the ratios are **1.002-1.012**. The 5 % was a comparison against the wrong field.
+
+**A check that failed, recorded as E-027.** A `NORTH_AZIMUTH` cross-check of the corner naming was designed and implemented, and has **no discriminating power**: 268.59 / 274.77 / 267.72 / 272.94 for frames that split 2-2 on line direction. The column's own description says the angle is *"relative to the RDR products"* - the map-projected derivative, north-up by construction. E-024 recurring, caught before it was reported as a result.
+
+**Unresolved, and deliberately not acted on.** `SUB_SOLAR_AZIMUTH` **exists** in this table (144.09 / 175.27 / 177.73 / 120.46 deg) - the first Sun-azimuth information this project has had access to (E-020). `[NOT VERIFIED]` It carries the same RDR-relative caveat, and it was **not used anywhere in REAL-DATA-02**. It also cannot make these pairs azimuth-*controlled*: they were selected on incidence, and a field discovered afterwards cannot retroactively control an experiment.
+
+**Status:** open as **RL-032b** - verify the reference frame of `SUB_SOLAR_AZIMUTH` before any Delta-azimuth number is quoted.
+
+---
+
+### RL-033 - The first valid real-data experiment: the baseline fails at 40 deg of incidence difference and succeeds at 1 deg
+
+**Question.** RL-031b: with shared ground independently confirmed, does the unmodified baseline register two real LRO NAC frames taken under different illumination?
+
+**Design.** Three real NAC tiles of the same patch of Mare Serenitatis, every one cut on the **same ground point** (lon 22.033852, lat 20.035253) by inverting a bilinear ground map built from the archive index table's named frame corners. Overlap was CONFIRMED on all three edges **before** any registration was interpreted, by a gate that exits non-zero otherwise (D-035). Nothing in the matcher, RANSAC, descriptors, thresholds, model, decimation or preprocessing was changed.
+
+**Evidence.** `[MEASURED]` `experiments/REAL-DATA-03/overlap_triplet.json`, `loop_closure_triplet.json`, `transform_vs_geometry.json`.
+
+| edge | dIncidence | overlap (confirmed, matcher-independent) | putative | **inliers** | fit RMSE (px) | coverage gap |
+|---|---|---|---|---|---|---|
+| A -> B | **39.81 deg** | 97.12 % | 32 | **4** | **4.138e-13** | 0.477 |
+| **B -> C** | **0.96 deg** | 85.00 % | 5392 | **5365** | 0.583 | **0.108** |
+| C -> A | **38.85 deg** | 82.72 % | 49 | **4** | 0.885 | 0.441 |
+
+A = `nac.m1271742202lc` (incidence 29.95 deg), B = `nac.m1335207975rc` (69.76 deg), C = `nac.m1452560468lc` (68.80 deg).
+
+**What the evidence eliminates.** Every one of these is eliminated by a *measurement* against the succeeding edge, on the same ground, through the same code:
+
+| candidate | eliminated because |
+|---|---|
+| tiles do not overlap | 97.12 % and 82.72 %, confirmed without the matcher |
+| mare texture poverty (D-026) | B -> C found 5392 putative and 5365 inliers on **the same mare** |
+| 2x decimation | identical on the succeeding edge |
+| resolution mismatch | A<->B has the *smallest* ratio (1.016) and fails; B<->C has 1.074 and succeeds |
+| relief displacement / parallax | the succeeding edge spans the *largest* emission difference (1.17->1.72 deg); the failing C->A spans the smallest (1.72->1.74 deg) |
+| residual window uncertainty | the succeeding edge has *less* confirmed overlap (85.0 %) than the failing A<->B (97.1 %) |
+| affine model limitation | same model on all three edges |
+| a pipeline defect | B -> C is a successful **cross-frame** registration -- a stronger control than REAL-DATA-01's self-registration |
+
+**Interpretation.** `[INTERPRETATION]` **Illumination difference is the only enumerated candidate left standing, and it is still not the established cause.** In a three-frame design, "large dIncidence" is **perfectly confounded** with "the pairing involves frame A" -- A is the only low-incidence frame and appears in both failing edges. dIncidence is separately confounded with dAzimuth, which was **not measured** (RL-032b). Recorded as **D-036**, which does not attribute the failure.
+
+**A prediction, written down before the data exists.** REAL-DATA-04 acquires one more frame D at low incidence on the same ground point. If **D<->A succeeds and D<->B fails**, illumination is the driver. If the reverse, frame identity is, and the surviving candidate is refuted.
+
+**E-008's cleanest instance.** A -> B reports a fit RMSE of **4.138e-13 px** for a transform whose independently measured error is **1614 px** (`transform_vs_geometry.json`), on a pair with 97 % confirmed shared ground. Not synthetic, and not on tiles that turned out to be disjoint.
+
+**Status:** RL-031b **closed**. Successor **RL-033b**: is the driver illumination or frame identity? REAL-DATA-04.
+
+---
+
+### RL-034 - A real registration that a field the matcher never saw predicts to 0.04 %
+
+**Question.** RL-030b asked whether overlapping real NAC triplets exist at all, so that loop closure -- the project's only GT-free estimator that detects a coherent wrong answer -- could meet real data. And if an edge succeeds, can anything corroborate it without ground truth?
+
+**Availability.** `[MEASURED]` Answered cheaply, because REAL-DATA-02's corner geometry lets tile-level overlap be computed *before* anything is fetched. One ODE query over a box around the target returned 60 CDR products; 13 carried a usable four-vertex footprint; **8 frames contain the target ground point with a full 4096x2048 tile inside**. Overlapping real triplets are not scarce in this region. One product was acquired.
+
+**Loop closure on real data, for the first time.** Three edges, each estimated independently from its own image pair; the closing edge was never derived as `(T_BC o T_AB)^-1`, and the independence is **asserted in code** (`_assert_independent`) rather than intended, because E-021 was exactly that derivation manufacturing a zero residual for a registration 64 px wrong.
+
+```
+edges with a transform: 3 / 3
+LOOP CLOSURE RESIDUAL: 1201.04 px
+```
+
+`[INTERPRETATION]` ADR-0011's reversal condition -- *real-data evidence that per-edge errors cancel around a loop* -- is **not** triggered: two edges are independently confirmed catastrophically wrong and the loop reported 1201 px rather than closing. But a loop with two garbage legs **exercises** the estimator without measuring its power. That needs three *successful* real edges.
+
+**Corroborating a success without ground truth.** A new check predicts where each pixel of one tile lands in another from archive corner geometry alone -- no image data, no matcher output (`scripts/check_transform_against_geometry.py`). It is a **bound, not a ground truth**: corner coordinates are quoted to 0.01 deg (~150 m ~ 165 full-frame px).
+
+A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive derives from SPICE and which feeds neither the matcher nor the corner polygon. A transform mapping A's pixels onto B's must scale by the ratio of their ground samplings:
+
+| edge | predicted scales | estimated singular values | relative error | tolerance | agrees |
+|---|---|---|---|---|---|
+| A -> B | 1.01053 / 1.02273 | 0.46759 / 2.06267 | **53.7 % / 101.7 %** | 1.70 % | no |
+| **B -> C** | **1.06742 / 1.07317** | **1.06699 / 1.07851** | **0.04 % / 0.50 %** | 1.83 % | **yes** |
+| C -> A | 0.91111 / 0.92708 | 0.34718 / 0.59103 | **61.9 % / 36.3 %** | 1.83 % | no |
+
+`[INTERPRETATION]` The 5365-inlier edge recovers a scale an independent SPICE-derived archive field predicts to **0.04 %**, inside that field's own quantisation. The two failing edges miss by 36-102 %. This is the strongest corroboration available without ground truth -- and it is **corroboration, not verification**: the edge is **class B**, not class A. Calling it verified would be the over-claim this project exists to avoid.
+
+**A caught design defect.** The check's first version compared a point estimate against a p95 floor with a bare `>` and labelled the succeeding edge INCONSISTENT at 1.55x the floor, while the disagreement's own p5-p95 straddled that floor. That is **E-024** exactly, caught before it was reported. The verdict is now three-valued with a stated margin, and INCONCLUSIVE is reported as a result.
+
+**Status:** RL-030b **closed** on availability. Open as **RL-034b**: measure loop closure's discriminating power on three *successful* real edges.
+
+---
+
+---
+
+### RL-035 — Illumination, not frame identity: the confound broken, and a rule broken with it
+
+**Question.** RL-033b: REAL-DATA-03 left illumination as the only surviving candidate cause of real-data registration failure and refused to attribute it, because across three frames *large Δincidence* and *the pairing involves frame A* were **the same partition**. Can they be separated?
+
+**The prediction, written down before the data existed.** *If D↔A succeeds and D↔B fails, illumination is the driver; if the reverse, frame identity is.* Recorded in REAL-DATA-03 §20, D-036 and RL-033b, and restated in REAL-DATA-04 §2 before frame D was screened.
+
+**The pre-registered acquisition turned out to be impossible, and that is a measurement.** `[MEASURED]` `data/manifests/screen_frame_d.json`, `screen_frame_d_tightbox.json`. Of **17** CDR frames intersecting REAL-DATA-03's target ground point, **8** contain it with a full 4096×2048 tile inside, and their incidences are 29.95, 43.74, 44.44, 45.48, 47.11, 48.47, 52.40, 66.72, 66.88, 68.80, 69.76, 72.29, 74.65, 80.14, 83.63, 149.86, 149.98. **Frame A is the only low-incidence frame over that point.** Widening the ODE box from 60 to 261 to 1021 products changes nothing — a tight box at the target returns the same 8.
+
+**Amendment 1, registered before one image byte was fetched.** A and B are 45 km strips whose *tile-admissible* footprints — the ground on which a whole tile fits, not merely where the frames overlap — intersect in **75.09 km²**. Only the target point had to move. **Frames A and B are unchanged**, so the frame-identity test survives intact; the decision table, the success criterion and the baseline are untouched. Recorded as **D-039** (`shared_tile_target()`), because the shared-*frame* centroid of D-033 can put a point within half a tile of an edge and clamp the window.
+
+**Amendment 2, and E-032 with it.** `[MEASURED]` Authoritative corners for the five surviving candidates broke a rule this project had been quoting. REAL-DATA-02 recorded, and REAL-DATA-03 §10 called a *"fifth independent confirmation"* of, `LRO_FLIGHT_DIRECTION = −X` → line 0 at minimum latitude. Over the **10** frames with authoritative named corners it holds **8/10**: `nac.m1343417565rc` is −X with line 0 at *maximum* latitude and `nac.m124423514lc` is +X with line 0 at *minimum*. `NORTH_AZIMUTH`, quoted as its cross-check, was 267.7–276.8° for all five earlier frames and therefore **had no discriminating power over the line direction in the sample it was validated on**; what it does separate, 10/10, is the **cross-track** sense. No pipeline change was needed — `corners_from_index_geometry()` always read each product's own `disp:Display_Direction` — so the prose was corrected, not the code. The consequence for the experiment: a frame with the opposite orientation yields a tile rotated 180°, which would entangle this stage's causal question with **EXP-004's open orientation-assignment question**, so orientation match became hard filter 1c (**D-038**). **It rejected the stage's own top-ranked candidate** and left exactly one admissible frame.
+
+**Frame D.** `nac.m1299958135lc`, incidence **18.22°**, `Map_resolution` 1.071 m — not chosen, but the only candidate left after the hard filters. Tiles A, B and D cut on one authoritative ground point (22.010350, 19.666255), **no window clamped on either axis**.
+
+**The gate, before any registration was interpreted.** `[MEASURED]` `experiments/REAL-DATA-04/overlap_real_data_04.json`. All three edges `OVERLAP_CONFIRMED` from archive corner geometry alone — no pixel read, no matcher component — and, crucially, **the two decisive edges are overlap-matched to 0.95 percentage points**: D↔A 71.30 % (p5 68.01), D↔B 70.35 % (p5 67.38). The control A↔B is the *most*-overlapping edge at 97.87 %.
+
+**Result.** `[MEASURED]` `experiments/REAL-DATA-04/loop_closure_real_data_04.json`. The unmodified baseline, three edges each estimated independently from its own image pair:
+
+| edge | dIncidence | overlap (confirmed) | putative | **inliers** | ratio | fit RMSE (px) | coverage gap | occupancy |
+|---|---|---|---|---|---|---|---|---|
+| A -> B *(control)* | 39.81 deg | 97.87 % | 50 | **7** | 0.1400 | 1.1053 | 0.4604 | 0.062 |
+| B -> D *(decisive)* | **51.54 deg** | 70.35 % | 29 | **3** | 0.1034 | **1.885e-13** | 0.4268 | 0.047 |
+| **D -> A** *(decisive)* | **11.73 deg** | 71.30 % | **1759** | **1656** | **0.9414** | 0.8779 | **0.1033** | **1.000** |
+
+**D↔A succeeds and D↔B fails — the first row of the pre-registered table, unmodified.** `[INTERPRETATION]` **Illumination is strongly supported and frame identity is refuted.** Recorded as **D-040**, superseding D-036.
+
+**Why frame identity is refuted rather than merely unsupported.** Across the six real edges now measured, on five frames and two ground windows, **every frame appears in both a succeeding and a failing edge** — A in D→A and A→B, B in B→C and B→D, C in B→C and C→A, D in D→A and B→D. **No frame's presence predicts the outcome; Δincidence predicts all six**, separating successes at 0.96° and 11.73° from failures at 38.85°, 39.81°, 39.81° and 51.54°. The specific claim REAL-DATA-03 could not make is now available: **frame A is not defective.** Its keypoint count is comparable in both regimes (9538, 10794, 12593), so the **detector** is not failing — **descriptor matching across illumination** is.
+
+**The mirror-image confound was checked, not assumed away.** Within REAL-DATA-04's triplet alone, B is the only high-incidence frame and sits in both failing edges — precisely the structure that blocked REAL-DATA-03. It does not survive the join, because REAL-DATA-03's succeeding edge B→C contains B. **Neither triplet alone settles this; the two together do.**
+
+**What else the evidence eliminates**, each by a measurement, and each argued *across* both stages because a factor that predicts the outcome in one and anti-predicts it in the other predicts nothing:
+
+| candidate | eliminated because |
+|---|---|
+| amount of overlap | the decisive edges are matched to 0.95 pp and diverge by 552x in inliers; across both stages the **most**-overlapping edges (97.9 %, 97.1 %) fail and the least-overlapping (71.3 %, 85.0 %) succeed |
+| resolution mismatch | succeeding D->A 1.1479 vs failing B->D 1.1667 -- 1.6 % apart; and A<->B has the project's **smallest** ratio (1.0163) and fails at **two** windows |
+| relief displacement (dEmission) | **anti-correlated across stages**: RD-04's succeeding edge has the smallest dEmission of its three (0.01 deg), RD-03's had the largest of its three (0.55 deg), and RD-03's failing C->A had the smallest (0.02 deg) |
+| acquisition interval | RD-04 alone is monotonic (11 months succeeds, 14 and 24 fail) -- but RD-03's **45-month** B->C succeeds while its 24-month A->B fails |
+| frame orientation / EXP-004 | excluded **by design before acquisition** (D-038); estimated rotation on the succeeding edge is +0.28 deg |
+| mare texture poverty, decimation, window clamping, the affine model, a pipeline defect | as REAL-DATA-03, now at a second ground window |
+
+**Corroboration from a field the matcher never saw.** `[MEASURED]` `transform_vs_geometry_real_data_04.json`. D→A's recovered scale matches SPICE-derived `SCALED_PIXEL` to **0.13 % / 0.04 %** inside a 1.67 % tolerance, and its corner-polygon disagreement is **56.3 px against a 105.6 px discrimination floor — 0.53×, the only edge in either stage to fall below that bound** (REAL-DATA-03's best was 1.55×). B→D misses by **78 % / 107 %** and is independently confirmed catastrophically wrong.
+
+**E-008's cleanest instance yet, and it would have inverted the conclusion.** `B → D reports a fit RMSE of 1.885e-13 px` for the transform measured to be **797 px** wrong, while the **succeeding** edge D→A reports **0.878 px**. Had `fit_rmse` been the criterion rather than `n_inliers`, this stage would have concluded the exact opposite of what it concluded. D-003 measured that metric at ROC AUC 0.4947 on synthetic data; this is the second consecutive real stage where it is not merely uninformative but **inverted**.
+
+**One number honestly close to its threshold.** The control A→B returned **7** inliers against a rule of `<= 8`. It is reported as close rather than rounded away — and it does not put the conclusion at risk, because the decisive comparison is 1656 against 3 and **no threshold between 4 and 1655 changes it**.
+
+**Loop closure, a second time on real data.** 943.75 px with two broken legs — again no manufactured small residual, so ADR-0011's reversal condition is still not triggered. Its *discriminating power* remains unmeasured: that needs three **successful** real edges and this triplet has one.
+
+**Scope, which is part of the finding.** This is Δ**incidence**, on **mare** terrain, in **one** region, with **one** instrument, over **five** frames and **two** ground windows. It is **not** an azimuth result — `SUB_SOLAR_AZIMUTH`'s frame is still unverified (RL-032b) — and it does **not** locate the cliff, which is now bracketed to **11.73°–38.85°**, narrowed from 38° but still 27° wide.
+
+**Status:** RL-033b **closed — answered**. Frame identity and illumination *can* be separated, and the separation goes to illumination. **No successor research question is opened.** Under the standing constraint, REAL-DATA-04 is the final high-value causal experiment; the next action is **September 2 demo engineering**, not another stage. EXP-004 remains pre-registered and **not started** — for the first time pointed at a real question (the *mechanism* behind the Δincidence failure), and still not justified before the demo.
+
+
 ## Open threads summary
 
 | ID | Thread | Experiment | Critical path? |
@@ -505,6 +783,13 @@ Per regime, mixed cells: mare FPR **0.4706** (recall 1.000) · highlands **0.307
 | RL-023c | Is realistic mare at 384² too small to answer the question at all? | **EXP-004, first** | **yes — bounds every mare conclusion** |
 | H-004 | Protocol dominates matcher choice on lunar data | EXP-006 | **yes — thesis rests on it** |
 | RL-020b | How often coherent-wrong solutions arise on *real* imagery | needs real data | yes |
+| ~~RL-029b~~ | ~~Why the first real registration failed — overlap, or illumination?~~ | **CLOSED by REAL-DATA-02 (RL-031).** The headline pair's tiles were **22.75 km apart** and share **0.0000 km2**; that run measured nothing about the matcher | — |
+| ~~RL-031b~~ | ~~Why does a confirmed-overlap real pair fail?~~ | **CLOSED by REAL-DATA-03 (RL-033).** Seven candidates eliminated by measurement against a succeeding edge on the same ground; illumination is the only survivor | — |
+| ~~RL-033b~~ | ~~Is the driver illumination, or frame identity?~~ | **CLOSED — ANSWERED by REAL-DATA-04 (RL-035).** Frame D at 18.22° registers against frame A (**1656** inliers, ratio 0.9414, occupancy 1.000) and fails against frame B (**3**), on edges overlap-matched to 0.95 pp. Across six real edges every frame appears on both sides and Δincidence separates all six. **Illumination supported, frame identity refuted** (D-040) | — |
+| **RL-034b** | **Loop closure's discriminating power on real data.** Exercised twice now — 1201.04 px and **943.75 px**, neither a false closure — but both loops had two broken legs | a later stage | **no — deferred behind the September 2 demo.** Needs three mutually low-Δincidence real frames |
+| **RL-032b** | **What frame is `SUB_SOLAR_AZIMUTH` measured in?** It exists in the archive index table but carries the same "relative to the RDR products" caveat that made `NORTH_AZIMUTH` useless (E-027) | **REAL-DATA-03** | yes — it would be this project's first real Sun-azimuth information (E-020) |
+| ~~RL-030b~~ | ~~Are overlapping real NAC triplets available at all?~~ | **CLOSED by REAL-DATA-03 (RL-034): 8 of 60 screened frames contain the target ground point with a full tile inside.** They are not scarce. One was acquired and a real loop was closed | — |
+| **RL-028b** | Where does incidence actually stop being usable? The 75° ceiling is a provisional cut, unswept | a later real-data stage | no |
 | RL-017b | Exact cliff edge between Δaz 15° and 30° on A-regimes | EXP-003 | no |
 | ~~RL-022b~~ | ~~`n_inliers <= 8` in the discriminable regime~~ | **CLOSED by EXP-003 (RL-024): recall transfers, FPR does not (0.0112 → 0.369)** | — |
 | RL-024b | A deployable operating point with an acceptable false-alarm rate in the mixed regime | **EXP-004** | yes |

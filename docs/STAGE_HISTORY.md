@@ -16,6 +16,8 @@ The chronological master record of how this project's understanding evolved.
 > **Reconstruction basis.** Stages before this document existed were reconstructed **from repository artefacts only** — experiment READMEs, metrics JSON/CSV, source, tests, `research_log.md`, `architecture_decisions.md`, `sources.md`.
 >
 > **The repository is not a git repository.** Per-edit chronology, intermediate states and wall-clock timestamps are therefore **not established from repository evidence**. Only the recorded metrics and final state are evidence. All artefacts carry the single date **2026-08-24**.
+>
+> **Scope of that limitation, added 2026-08-25.** The paragraph above is left as written and still applies **to EXP-000, EXP-001 and EXP-002**, which were reconstructed retrospectively. It no longer describes the repository as a whole: version control now exists from the `2ab0d77` baseline onward, so **EXP-003, the documentation audit, the EXP-004 pre-registration and REAL-DATA-01 have real commit chronology**, and REAL-DATA-01's artefacts carry **2026-08-25**, not the single 2026-08-24 date. Where a stage below states a duration or an ordering, it is evidenced by commits and artefacts, not inferred.
 
 ---
 
@@ -101,7 +103,12 @@ And a fifth, from E-005: **evaluation code needs the same scepticism as pipeline
 
 ---
 
-## EXP-003 — Illumination-Invariant Representations
+## EXP-003 — Illumination-Invariant Representations *(plan, as recorded before the stage ran)*
+
+> **Retained verbatim under integrity rule 3.** The four paragraphs below were written when
+> EXP-003 had not started. They are **not** rewritten to match the outcome; the outcome is
+> recorded in the section that follows. The pre-registered criterion is exactly the one the
+> stage was then measured against, and it is worth being able to read what was expected.
 
 **Status: NOT STARTED.** No implementation, no results.
 
@@ -110,6 +117,206 @@ Planned objective: test whether a polarity-agnostic representation moves the ill
 ADR-0004 (polarity-agnostic structure as the default representation) remains `PROPOSED` and states plainly that **if raw intensity wins, the ADR is superseded.** This stage is that test.
 
 Explicitly out of scope until this stage runs: RIFT2, phase congruency, orientation-mod-π, and every learned matcher.
+
+---
+
+## Documentation audit and the `n_inliers` evidence debt
+
+**Status:** COMPLETE · records: [`stages/README.md`](stages/README.md) · [`experiments/EXP-002/objective3_ninliers_sensitivity.json`](../experiments/EXP-002/objective3_ninliers_sensitivity.json)
+
+Between EXP-002 and EXP-003 the whole documentation set was re-derived from the raw artefacts rather than from itself. **153 numeric claims were re-checked; all 153 reconciled.** Three bookkeeping discrepancies were found in the older narrative documents and were **recorded as discrepancies D1–D3 rather than silently corrected**, because quietly fixing your own numbers is not a history. None changed a conclusion.
+
+The audit also closed an evidence debt it exposed. Discrepancy **D2** found that the table headed *"Sensitivity of `n_inliers`"* was in fact `split_consistency`'s, inheriting the E-010 `inf`-sentinel artefact — **the `n_inliers` sensitivity analysis had never been computed.** It was then computed properly, and two things came out of it:
+
+- the operating rule changed form to **`n_inliers <= 8`** (**D-023**). Exactly one case in 384 discriminates — a calibration failure with **exactly 8 inliers and 367.95 px** of true error, which `< 8` misses at no false-alarm saving. On validation the two forms are indistinguishable, because **no validation case has 8 inliers**, so the boundary was never actually tested;
+- the `inf` sentinel was quantified as a proxy for `n_inliers < 8` at **192/192** agreement.
+
+**What we learned.** A documentation audit is not clerical work. It found a missing analysis, changed an operating rule, and produced the D1–D3 record that later made E-023 recognisable as E-010 recurring.
+
+---
+
+## EXP-003 — Illumination-Invariant Representations *(the stage as it actually ran)*
+
+**Status:** COMPLETE — **pre-registered criterion S1 met by no arm** · [full report](stages/EXP-003_illumination_robust_representations.md)
+
+**Objective.** The plan above, executed: 6 arms × 3 regimes × 3 seeds × 11 azimuths = **594 evaluations** on one shared image pair per case, plus 108 loop-closure triplets. Part 1 was frozen before implementation.
+
+**Key results.** `S1_MET_BY_ANY_ARM = false`. Last fully-successful Δaz — mare / highlands / B: baseline **21/27/27** · mod-π **0/21/27** · 2π control **18/27/40** · phase congruency **void/27/30** · RIFT2-MIM **void/0/27**. The two phase-congruency arms fail the Δaz = 0 positive control on mare (24 keypoints at 384²), voiding their mare results.
+
+**H-3.1, H-3.2 and H-3.3 refuted. H-3.4 refuted in the opposite direction** — polarity-agnostic mod-π was the *worst* of the six arms: **0 wins, 38 losses, 61 ties** against its own 2π control on identical keypoints. **H-3.6 refuted on FPR**: `n_inliers <= 8` transfers on recall (0.9857) but not on false alarm (0.0112 → **0.3692**, 33× worse).
+
+**Major errors.** **E-003.2** — loop closure was labelled edge-level, scoring false alarm at **0.617**; with the correct loop-level label it is **0.000** at detection 1.000. A 0.617 swing from a labelling choice alone, and the mislabelled variant is retained in the artefact so the size of the error stays visible (**D-027**).
+
+**What we learned.**
+
+1. **The invariance was provable and was not enough.** Phase congruency is contrast- and polarity-invariant to 1e-6, and still stops at 27–30°, because shadow motion changes *which structures exist*, not merely their contrast.
+2. **The one positive effect came from a control arm.** The upright 2π control extended the B-regime cliff 27° → 40°, and a direct probe found why: SIFT's assigned dominant orientation drifts ~1:1 with Sun azimuth (median |Δangle| 6.69° → 44.77° as Δaz goes 0° → 45°). **This was post-hoc, confounded with a small true rotation, and is held as D-024 — not accepted.**
+3. **Uprightness is not a method.** It survives only because the transforms carried ≤ 8° rotation. An arm that "wins" by discarding rotation invariance has moved the failure, not fixed it.
+
+**What changed next.** **ADR-0004 SUPERSEDED** — it met its own supersession condition, raw intensity won. D-024–D-028 recorded. Pre-registered stop-condition 1 fired, so **learned matchers remain deferred** (D-028).
+
+---
+
+## EXP-004 — Orientation Assignment — **PRE-REGISTERED, NOT IMPLEMENTED**
+
+**Status:** Part 1 frozen; Part 2 empty; **no implementation exists** · [pre-registration](stages/EXP-004_orientation_assignment.md)
+
+EXP-003's orientation observation is post-hoc and confounded, so D-024 holds it as a *pre-registration target* rather than a finding. EXP-004 is that pre-registration: hypotheses H-4.1–H-4.6, success criteria S1–S5 (**both** an illumination criterion and a non-negotiable rotation criterion), five arms sharing identical keypoints, a 6 × 5 factorial that separates Δazimuth from true rotation, disjoint calibration/validation seeds, and four negative controls declared in advance.
+
+**Nothing has been run.** There is no `experiments/EXP-004/`, no runner script, and no arm implementation. The stage is recorded here because the pre-registration itself is a dated artefact — writing the criteria down before the result is the point of it.
+
+---
+
+## REAL-DATA-01 — Real LRO NAC Ingestion and First Real Registration
+
+**Status:** COMPLETE — **ingestion succeeded, the first real registration FAILED (class C / REJECTED)** · [full report](stages/REAL-DATA_LRO_NAC.md)
+
+**Not an EXP-numbered experiment.** No hypothesis was pre-registered, because this is an ingestion and instrumentation stage. Everything in it is reported as measurement.
+
+**Objective.** Turn already-acquired LRO NAC metadata into decoded, provenance-tracked, sanity-checked real image tiles, and run the existing RootSIFT baseline **unmodified** — so the first real-data result measures the pipeline as built, not one tuned to the answer.
+
+**What we built.** A PDS4 `Array_2D_Image` decoder with an explicit dtype table (`SignedLSB2 → <i2`, byte order never inferred); strict byte-range fetching that detects ignored `Range` headers, wrong ranges and short bodies; a quantitative tile-sanity layer; and reproducible acquisition, checking and registration scripts. **`src/siim/ingest` went from 0 tests to 61.**
+
+**Key results.**
+
+- **Decoding is provably correct.** The label's `file_size` is declared independently of the array description, giving an exact identity — `5064 + 52224 × 5064 × 2 = 528 929 736` ✓ on all four products — which validates offset, both dimensions and element size *together*.
+- **The pipeline works on real lunar imagery.** Positive controls: self-registration recovers identity to **1.14e-12**; a known (+40, +25) px shift on a real tile is recovered as **(40.142, 24.941)**.
+- **The first real registration failed.** 12 707 / 11 412 keypoints, 35 putative, **3 inliers**, **fit RMSE 1.575e-12 px**, a transform with 11–18× scale and ~10 000 px translation. Verdict **REJECTED**, class **C**.
+- **The line-direction ambiguity does not explain it.** All four H1/H2 tile combinations fail (**3, 4, 4, 5** inliers).
+
+**Major errors.** Five, of which two are ordinary code defects:
+
+- **E-022** — a `Product_Browse` label was accepted for **4 of 6 products**, both halves of the best pair included. ODE returns both labels with an explicit `Type`; the parser matched on `.xml` extension and the last one won. The correct URL was in the response all along and was discarded.
+- **E-023** — the decode-correctness statistic reported **0.9919 for two different frames**, identical to four decimals: it was measuring the constant `-32768` border columns, not the image. **This is E-010 recurring** in code written much later.
+- **E-024** — a **0.0022** margin between two ~0.35 values was announced as a byte-order defect in correct code.
+- **E-025** — a second acquisition of the same product silently overwrote the first tile, so four "different" conditions returned byte-identical results. An integrity rule 4 violation.
+- **E-026** — maximising Δincidence selects the **terminator**: the top pick was 89.96° vs 24.64°, and the 89.96° frame decodes perfectly and is unusable (DN 29 ± 19.6, autocorrelation 0.3553 against 0.9759 for its partner).
+
+**What we learned.**
+
+1. **E-008 now has a real-data instance.** A fit RMSE of **1.575e-12 px** on a catastrophically wrong answer — a conventional pipeline reporting inlier RMSE would present that as picometre-accurate registration. The project's founding claim was measured on synthetic terrain; it is no longer only synthetic.
+2. **The registration failed and that is the result.** What succeeded is the *rejection*, and the rejection rests on `n_inliers <= 8` and coverage — **both applied here, neither validated on real data**.
+3. **The cause is not attributed.** Two hypotheses remain live and the data separates neither: the tiles may not overlap (the crop is a first-order latitude approximation with no camera model), or the illumination difference may defeat the matcher — though Δ*azimuth* is unavailable for these products (E-020), so even EXP-003's cliff is not directly applicable. **Evidence insufficient**, recorded as D-031.
+4. **An optimisation criterion is a specification of what you will get.** "Most illumination difference" and "most *informative* illumination difference" are different objectives, and the archive has enough range to make the difference fatal.
+5. **Loop closure — the project's only trustworthy GT-free check — has still never met real data.** It needs a third overlapping product, which was not acquired, so it is reported as *not run* rather than as a pass.
+
+**What this stage is NOT.** It is **not** completion of the Chandrayaan-2 objective — OHRC / TMC-2 / IIRS remain behind ISSDC authentication and no such data was obtained, simulated or implied. Both frames are the **same instrument**, so **no multi-modal claim** is supported, and sub-solar azimuth is not published for these products, so **no Sun-azimuth claim** is either.
+
+**What changed next.** D-029–D-032 recorded; RL-026–RL-030 logged; E-022–E-025 fixed with regression tests, E-026 documented. Suite **194 → 260 passed, 2 skipped**.
+
+---
+
+## REAL-DATA-02 - Independent Real-Image Overlap Verification
+
+**Status: COMPLETE - the question is answered, and the answer invalidates REAL-DATA-01's headline pair.**
+
+REAL-DATA-01 ended with a 3-inlier registration it could not interpret, because its only overlap evidence was the registration itself. This stage established overlap **independently of the matcher** - no pixel read, no detector, descriptor, RANSAC, residual or verdict involved - and found:
+
+| tile pair | intersection | IoU | shared fraction of the worse tile | class |
+|---|---|---|---|---|
+| `usable_H1` - **the headline run** | **0.0000 km2** | 0.0000 | **0.0 %** (p5-p95 0.0-0.0) | **OVERLAP_INSUFFICIENT** |
+| `usable_H2` | 4.9653 km2 | 0.5330 | **68.59 %** (p5-p95 62.9-74.1) | **OVERLAP_CONFIRMED** |
+| `terminator_H1` | 2.2375 km2 | 0.1835 | 28.29 % (p5-p95 23.4-33.0) | **OVERLAP_UNKNOWN** |
+| the two mixed H1/H2 grid rows | **0.0000 km2** each | 0.0000 | 0.0 % | **OVERLAP_INSUFFICIENT** |
+
+**The tiles behind the first real registration were 22.75 km apart.** Nearly six tile-lengths, against a 3.98 km tile.
+
+**Where the geometry came from, after two dead ends.** The PDS4 `Product_Observational` label carries no `Cartography` and no `Geometry` - none at all. The 5064-byte PDS3 attached header inside the `.IMG`, fetched live and read, carries no geometry keywords either. ODE's `Footprint_geometry` is a four-vertex ring whose **order is undocumented**, so it cannot say which vertex is image line 0 - and getting that wrong mirrors a tile by up to a whole 48 km frame. The answer is in the **PDS archive index table**, one directory above the data, which ODE itself cites as its footprint source and which names its corners: `UPPER_LEFT_LATITUDE` ... `LOWER_RIGHT_LONGITUDE`, plus `LRO_FLIGHT_DIRECTION`, `SCALED_PIXEL_WIDTH`/`HEIGHT` and `SUB_SOLAR_AZIMUTH`. The tables are 18-54 MB but fixed-length and sorted, so one row costs a binary search of ~16 range requests of 901 bytes. Four products: **~130 KB, no image bytes.**
+
+**What made the corner names usable.** Each product's own PDS4 label states `disp:Display_Direction` = `(Line, Top to Bottom)`, so the top row is the first line and `UPPER_*` is line 0. Corroborated twice: corner-implied pixel scale agrees with the archive's SPICE-derived `SCALED_PIXEL_HEIGHT`/`WIDTH` within **1.2 % over 8 comparisons**, and the 2-2 split of which end is northward follows `LRO_FLIGHT_DIRECTION` exactly - impossible if `UPPER` were a compass label.
+
+**Three failures, all design mistakes rather than code defects.**
+
+1. **E-028** - the line-direction hypothesis was applied globally to a pair, and it is a property of the individual frame. The script's docstring reasoned "same camera, same processing pipeline, so the convention is the same for both": true, and irrelevant, because the readout direction is set by spacecraft attitude and LRO yaw-flips. Both usable frames are H2; the pair was acquired at H1.
+2. **E-029** - cross-track position was never matched between frames, costing a further 1.1-1.7 km against a 1.8 km tile. This is what caps `usable_H2` at 68.6 % and leaves the terminator pair UNKNOWN.
+3. **E-027** - a `NORTH_AZIMUTH` cross-check was designed, implemented, and has no discriminating power: ~270 deg for all four frames regardless of their line direction, because the column is "relative to the RDR products". **E-024 recurring**, caught before it was reported as a result.
+
+The 260-test suite in place at the time was passing throughout and could not have caught any of the three.
+
+**A correction to REAL-DATA-01 section 4.5, recorded rather than applied.** That section tested four H1/H2 combinations, saw 3/4/4/5 inliers, and concluded the direction hypothesis was not the explanation. Exactly one of the four rows has overlapping tiles; the other three are 11-23 km apart and could not have succeeded. The original text stands unedited (integrity rule 3).
+
+**A loose end closed.** REAL-DATA-01 left an unexplained 1.05 ratio between footprint-implied m/line and ODE's `Map_resolution`. It was a comparison against the wrong field: `Map_resolution` is not the down-scan pixel scale. Against `SCALED_PIXEL_HEIGHT` the ratios are 1.002-1.012.
+
+**What survives from REAL-DATA-01, and what does not.** Its ingestion, decoding, sanity validation and positive controls never depended on overlap and are untouched. Its **E-008 demonstration strengthens**: a fit residual of 1.575e-12 px was reported for a transform between tiles sharing *no ground at all*. What does not survive is any reading of the 3 inliers as evidence about real-data matcher performance.
+
+**The one interpretable real-data result the project now has.** `registration_usableH2.json`: two NAC frames with **68.6 % / 70.5 %** independently confirmed shared ground, Delta-incidence 39.8 deg, and the unmodified baseline returns 43 putative matches and **5 inliers**, REJECTED. Overlap is excluded as the cause. **The failure is still not attributed** - illumination, mare texture poverty (D-026), the 2x decimation, the resolution ratio and real relief displacement are all live and untested. `SUB_SOLAR_AZIMUTH` was found in the index table and deliberately **not used**; these pairs remain illumination-varied by incidence only, **not azimuth-controlled**.
+
+**What changed next.** D-033 and D-034 recorded; **D-030 discharged**, D-031 transferred to the `usableH2` run; RL-031 and RL-032 logged, **RL-029b closed**, RL-031b and RL-032b opened; E-027 fixed with regression tests, E-028 and E-029 documented with the fix deferred to REAL-DATA-03. Suite **260 -> 357 passed, 2 skipped**.
+
+---
+
+## REAL-DATA-03 - The First Correctly Controlled Real-Data Registration Experiment
+
+**Status: COMPLETE - the experiment is valid. Two of three edges FAIL; one SUCCEEDS.**
+
+This stage was not a search for a successful registration. It was a search for a **valid** one: give the unmodified baseline two real lunar images that are known, independently of the matcher, to show the same ground, and accept whatever comes out.
+
+**The gate came first, and it is enforced in code.** `verify_tile_overlap.py --require-confirmed` exits non-zero unless every edge is OVERLAP_CONFIRMED, and it was run as a separate command before the baseline (D-035). REAL-DATA-01's headline was a 3-inlier failure on tiles later shown to be 22.75 km apart, and it had no way to tell.
+
+**Acquisition.** Geometry-driven, implementing D-033: three tiles all centred on **one ground point** (lon 22.033852, lat 20.035253), each window derived by inverting a bilinear ground map built from the archive's **named** frame corners, with the line direction read **per frame** rather than assumed. Windows A `l17955 s1811`, B `l29822 s1227`, C `l9088 s717`, all 4096 x 2048. A and B reproduced REAL-DATA-02's projected windows exactly, by an independent code path, and the measured tile-centre separation on the primary edge is **1 metre**.
+
+| edge | overlap of the worse tile | IoU | p5-p95 | class |
+|---|---|---|---|---|
+| A <-> B | **97.12 %** | 0.9695 | 90.03-97.31 % | **CONFIRMED** |
+| A <-> C | 82.72 % | 0.8272 | 78.57-86.38 % | **CONFIRMED** |
+| B <-> C | 85.00 % | 0.8500 | 80.62-88.60 % | **CONFIRMED** |
+
+All three tiles passed sanity; none was discarded.
+
+**The result.** Nothing in the detector, descriptor, matching, RANSAC, threshold, seed, model, decimation or preprocessing was changed.
+
+| edge | dIncidence | putative | **inliers** | ratio | fit RMSE (px) | coverage gap |
+|---|---|---|---|---|---|---|
+| A -> B | **39.81 deg** | 32 | **4** | 0.1250 | **4.138e-13** | 0.477 |
+| **B -> C** | **0.96 deg** | 5392 | **5365** | **0.9950** | 0.583 | **0.108** |
+| C -> A | **38.85 deg** | 49 | **4** | 0.0816 | 0.885 | 0.441 |
+
+**A failure on a valid pair is the deliverable, and this is one.** It is also E-008's cleanest instance yet: a fit residual of 4.138e-13 px - a quarter of a picometre - for a transform whose independently measured error is **1614 px**, on a pair with 97 % confirmed shared ground. Not synthetic, and not on tiles that turned out to be disjoint.
+
+**Seven candidate causes eliminated by measurement.** Each falls to a comparison against the succeeding edge, on the same mare, through the same code: the tiles overlap; mare texture poverty cannot be sufficient (5392 putative matches on that same ground); the 2x decimation is identical; resolution mismatch is backwards (A<->B has the *smallest* ratio in the triplet, 1.016, and fails); relief displacement is backwards (the succeeding edge spans the *largest* emission difference); window uncertainty is backwards (the succeeding edge has *less* overlap); the affine model is common to all three; and the pipeline is proven by a successful **cross-frame** registration, a stronger control than REAL-DATA-01's self-registration.
+
+**And illumination is still not claimed as the cause.** It is the only enumerated candidate left standing, and that is exactly how it is recorded (D-036). Across three frames, "large dIncidence" and "the pairing involves frame A" are the same partition - A is the only low-incidence frame and appears in both failing edges - and dIncidence is separately confounded with dAzimuth, which was not measured.
+
+**A third image, and real loop closure.** Screening found **8 of 60** frames containing the target ground point with a full tile inside: overlapping real triplets are not scarce in this region. One product was acquired, chosen on a criterion **fixed before looking** - minimise the maximum resolution ratio, which it won at 1.091 against 1.179 - not on illumination. Loop closure, the project's only GT-free estimator that detects a coherent wrong answer, then met real data for the first time. Three edges, each estimated **independently from its own image pair**; the independence is asserted in code, because E-021 was precisely an algebraically derived closing edge manufacturing a zero residual for a registration 64 px wrong. Residual **1201.04 px**. ADR-0011's reversal condition is not triggered - but a loop with two garbage legs exercises the estimator without measuring its power.
+
+**Corroborating the success without ground truth.** The 5365-inlier edge recovers a scale that `SCALED_PIXEL_WIDTH`/`HEIGHT` - derived by the archive from SPICE, and seen by neither the matcher nor the corner polygon - predicts to **0.04 % and 0.50 %**, inside that field's own 1.83 % quantisation. The two failing edges miss by 36-102 %. That is the strongest corroboration available without ground truth, and it is **corroboration, not verification**: class B, not class A.
+
+**Two implementation defects, both caught before they reached a reported result.** **E-030**: the raw-tile byte cache was keyed by product and not by window, so the sanity check loaded REAL-DATA-01's bytes for a REAL-DATA-03 tile and computed its decode evidence from a window 22.75 km away - **E-025 recurring in a second script**, with the SHA check catching it and then misattributing it to the range fetch. The failed run is preserved. **E-031**: a figure crash on a three-tile manifest destroyed a set of checks that had already passed, because the report was written after the plot.
+
+**What changed next.** D-035 and D-036 recorded; **D-033 implemented and measured**, D-031 superseded; RL-033 and RL-034 logged, **RL-031b and RL-030b closed**, RL-033b and RL-034b opened; E-030 and E-031 fixed with regression tests. Suite **357 -> 376 passed, 2 skipped**.
+
+---
+
+## Where the project stands
+
+| Stage | Status |
+|---|---|
+| PHASE-0 / EXP-000 — geometry gate | **COMPLETE — PASS** |
+| EXP-001 — RootSIFT baseline + GT harness | **COMPLETE** |
+| EXP-002 — RANSAC, terrain realism, threshold, GT-free estimators | **COMPLETE** |
+| Documentation audit + `n_inliers` evidence debt | **COMPLETE** (D1–D3 recorded, D-023) |
+| EXP-003 — illumination-robust representations | **COMPLETE — criterion NOT met; ADR-0004 superseded** |
+| **EXP-004** — orientation assignment | **PRE-REGISTERED, NOT IMPLEMENTED** |
+| **REAL-DATA-01** — real LRO NAC ingestion | **COMPLETE — ingestion succeeded, registration FAILED (class C / REJECTED).** Its headline pair is now known not to overlap |
+| **REAL-DATA-02** — establish real overlap independently of the matcher | **COMPLETE — question answered.** Headline pair **OVERLAP_INSUFFICIENT** (0.0000 km², 22.75 km apart); `usable_H2` **OVERLAP_CONFIRMED** (68.6 % / 70.5 %); terminator **OVERLAP_UNKNOWN** (28.3 %) |
+| **REAL-DATA-03** — the first correctly controlled real-data registration experiment | **COMPLETE — the experiment is valid.** Overlap CONFIRMED 97.12 % / 82.72 % / 85.00 % **before** interpretation; unmodified baseline **4 inliers at Δinc 39.8°**, **5365 at Δinc 0.96°**; first real loop closure **1201.04 px** |
+| **REAL-DATA-04** — can frame identity and illumination be separated? | **COMPLETE — ANSWERED. Illumination, not frame identity.** D↔A succeeds (1656 inliers, occupancy 1.000, Δinc 11.73°); D↔B fails (3, Δinc 51.54°) on overlap-matched edges. Six real edges now place every frame on both sides |
+| **September 2 demo** | **THE CURRENT PRIORITY** — scientific expansion stopped after REAL-DATA-04 |
+| Chandrayaan-2 (OHRC / TMC-2 / IIRS) | **NOT OBTAINED** — ISSDC authentication required |
+
+**The next stage is the September 2 demo, not another experiment.** REAL-DATA-04 answered the question REAL-DATA-03 could not: **illumination, not frame identity**. One low-incidence frame D registers against A (1656 inliers at Δinc 11.73°) and fails against B (3 at Δinc 51.54°), on edges whose independently confirmed overlap differs by 0.95 pp. Across six real edges, five frames and two ground windows, **every frame now appears in both a succeeding and a failing edge** — frame identity predicts nothing, Δincidence predicts all six, and **frame A is cleared**. D-036 is superseded by D-040, which states the scope: Δ*incidence*, mare terrain, one region, one instrument, and **not** an azimuth result. Two amendments were forced along the way — the pre-registered acquisition was impossible, and **E-032** demoted the flight-direction rule for line 0 to an 8/10 regularity with two counterexamples — both registered before any image byte of D was fetched. **Scientific expansion stops here.** No matcher change, tuning or learned component is justified; EXP-004 remains pre-registered and not started.
+
+*(Historical note, retained under integrity rule 3: the sentence below was written before REAL-DATA-04 ran.)*
+
+**The next stage is REAL-DATA-04.** REAL-DATA-03 produced the project's first valid real-data experiment and narrowed the cause of failure to a single surviving candidate. It could not go further, and the reason is structural: across three frames, *large Δincidence* and *the pairing involves frame A* are the same partition. **One frame settles it** — acquire D at low incidence on the same ground point and run the two edges that decide it. If **D↔A succeeds and D↔B fails**, illumination is the driver; if the reverse, frame identity is and the surviving candidate is refuted. The prediction is written down before the data exists, which is what makes it a test. Second: a triplet of three mutually illumination-similar frames, so loop closure's *discriminating power* on real data can be measured rather than merely exercised. **No matcher change, tuning or learned component is justified until the confound is broken.**
+
+*(Historical note, retained under integrity rule 3: the sentence below was written before REAL-DATA-03 ran.)*
+
+**The next stage is REAL-DATA-03.** REAL-DATA-02 answered the blocking question, and in answering it invalidated the *tiles* rather than the products: the two frames of the `usable` pair do share ground, and the crops taken out of them for the headline result did not. The corrected windows are already computed from archive geometry and project to **97.1 %** tile overlap — a specification, not a measurement, since no such tile has been cut (D-033). Re-acquire at those windows, verify the overlap through the same independent path *before* registering, and acquire a **third overlapping product** so loop closure can meet real data for the first time. **No matcher change, no tuning and no learned component is justified until a real pair capable of succeeding has been supplied.**
+
+*(Historical note, retained under integrity rule 3: the sentence below was written before REAL-DATA-02 ran.)*
+
+**The next stage is REAL-DATA-02.** Until real overlap is established independently of the matcher, every real registration failure is uninterpretable. Its highest-value item is acquiring a **third overlapping product**, so that loop closure can meet real data for the first time.
 
 ---
 
