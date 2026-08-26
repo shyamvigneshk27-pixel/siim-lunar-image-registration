@@ -1,0 +1,2515 @@
+{
+  "stage": "REAL-DATA-05",
+  "step": "1 - candidate screening for frame E",
+  "data_read": "ODE product METADATA ONLY. No image bytes were fetched.",
+  "criteria_source": "docs/stages/REAL-DATA-05_illumination_replication.md section 4.1, frozen before this ran",
+  "screen_provenance": "screen_one / screen_one_shared are IMPORTED unchanged from scripts/screen_frame_d.py; this script only ADDS H5 (fixed-point tier), H6 and H7 on top of their verdict and can never loosen a REAL-DATA-04 criterion.",
+  "criteria": {
+    "tier": "T1 fixed point",
+    "H2_target_lon_lat": [
+      22.010350422685136,
+      19.66625467769675
+    ],
+    "H2_shared_tile_admissible_anchors": null,
+    "H3_full_tile_fits_unclamped": [
+      4096,
+      2048
+    ],
+    "H4_incidence_band_deg": [
+      18.22,
+      30.91
+    ],
+    "H4_incidence_max_deg": 75.0,
+    "H5_orientation_signature_required": [
+      1,
+      -1
+    ],
+    "H6_emission_max_deg": 5.0,
+    "H7_nac_frame_id_required": "LEFT",
+    "H8_not_an_incumbent": [
+      "nac.m1271742202lc",
+      "nac.m1299958135lc",
+      "nac.m1335207975rc"
+    ],
+    "deciding": "minimise the maximum Map_resolution ratio vs A, B, D",
+    "tie_break": "smaller |incidence - incidence_A|"
+  },
+  "ode_query": {
+    "product_type": "CDRNAC4",
+    "minlat": 18.5,
+    "maxlat": 21.5,
+    "westernlon": 21.5,
+    "easternlon": 22.6,
+    "limit": 500,
+    "n_returned": 261
+  },
+  "frame_size_assumption": {
+    "lines": 52224,
+    "samples": 5064,
+    "note": "Nominal NAC CDR dimensions are used to RANK candidates only; the winner's true dimensions come from the archive index table before acquisition, and acquire_real_pair.py refuses to clamp a window."
+  },
+  "footprint_vertex_order_assumption": {
+    "order": [
+      "upper_right",
+      "lower_right",
+      "lower_left",
+      "upper_left"
+    ],
+    "note": "ODE's ring order is undocumented (REAL-DATA-02 section 6.3). Used ONLY to rank candidates."
+  },
+  "incumbents": {
+    "nac.m1271742202lc": {
+      "incidence_deg": 29.95,
+      "map_resolution_m": 0.933
+    },
+    "nac.m1335207975rc": {
+      "incidence_deg": 69.76,
+      "map_resolution_m": 0.918
+    },
+    "nac.m1299958135lc": {
+      "incidence_deg": 18.22,
+      "map_resolution_m": 1.071
+    }
+  },
+  "funnel": {
+    "filter 2": 250,
+    "filter 3": 5,
+    "filter 6": 2,
+    "filter 5": 2,
+    "filter 4": 1,
+    "filter H5": 1
+  },
+  "n_admissible": 0,
+  "ranked_admissible": [],
+  "selected": null,
+  "all_candidates": [
+    {
+      "pdsid": "nac.m1419731111lc",
+      "incidence_deg": 27.99,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.887,
+      "utc_start": "2022-10-06T21:30:44.423000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5018, sample -1.0944), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1419731111rc",
+      "incidence_deg": 28.09,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.886,
+      "utc_start": "2022-10-06T21:30:44.423000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5011, sample -2.2033), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m107901668rc",
+      "incidence_deg": 156.45,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.822,
+      "utc_start": "2009-09-18T08:26:41.460000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1935, sample 6.9545), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m172778361lc",
+      "incidence_deg": 25.63,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-10-09T05:44:54.102000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4926, sample -4.0008), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m172778361rc",
+      "incidence_deg": 25.66,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.476,
+      "utc_start": "2011-10-09T05:44:54.102000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4926, sample -4.7193), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m112628610lc",
+      "incidence_deg": 135.53,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.768,
+      "utc_start": "2009-11-12T01:29:03.353000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2191, sample 5.7115), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m112628610rc",
+      "incidence_deg": 135.59,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.767,
+      "utc_start": "2009-11-12T01:29:03.353000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2179, sample 4.8361), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m116174285lc",
+      "incidence_deg": 82.22,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.925,
+      "utc_start": "2009-12-23T02:23:38.330000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6107, sample -1.2162), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m116174285rc",
+      "incidence_deg": 82.29,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.924,
+      "utc_start": "2009-12-23T02:23:38.330000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.5989, sample -2.2742), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1402111228lc",
+      "incidence_deg": 23.44,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.871,
+      "utc_start": "2022-03-16T23:06:00.721000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0759, sample -3.1463), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1397417159lc",
+      "incidence_deg": 72.01,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.859,
+      "utc_start": "2022-01-21T15:11:32.406000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1275, sample -4.7396), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1396261446lc",
+      "incidence_deg": 92.42,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.953,
+      "utc_start": "2022-01-08T06:09:39.270000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2287, sample 4.7023), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1396261446rc",
+      "incidence_deg": 92.55,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.951,
+      "utc_start": "2022-01-08T06:09:39.270000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2316, sample 4.0135), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1396268476lc",
+      "incidence_deg": 92.5,
+      "emission_deg": "1.72",
+      "map_resolution_m": 1.377,
+      "utc_start": "2022-01-08T08:06:49.138000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1799, sample -2.4608), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1396268476rc",
+      "incidence_deg": 92.63,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.374,
+      "utc_start": "2022-01-08T08:06:49.138000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1739, sample -3.3762), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1386880738rc",
+      "incidence_deg": 29.43,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.972,
+      "utc_start": "2021-09-21T16:24:31.453000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4757, sample 3.5026), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1391570858lc",
+      "incidence_deg": 37.0,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.908,
+      "utc_start": "2021-11-14T23:13:10.765000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.6505, sample 1.6948), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1391570858rc",
+      "incidence_deg": 37.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.907,
+      "utc_start": "2021-11-14T23:13:10.765000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.6539, sample 0.6977), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1378641241rc",
+      "incidence_deg": 60.59,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.803,
+      "utc_start": "2021-06-18T07:39:34.435000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.5970, sample 5.5668), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1378648287lc",
+      "incidence_deg": 60.38,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.803,
+      "utc_start": "2021-06-18T09:36:59.611000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2363, sample -1.1215), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1378648287rc",
+      "incidence_deg": 60.5,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.802,
+      "utc_start": "2021-06-18T09:36:59.611000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2306, sample -2.0697), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1393913191rc",
+      "incidence_deg": 64.49,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.894,
+      "utc_start": "2021-12-12T01:52:04.021000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.7040, sample 5.2745), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1384528877lc",
+      "incidence_deg": 54.63,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.983,
+      "utc_start": "2021-08-25T11:06:49.827000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1424, sample 0.1857), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1384528877rc",
+      "incidence_deg": 54.78,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.981,
+      "utc_start": "2021-08-25T11:06:49.827000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1423, sample -0.8723), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1382185038lc",
+      "incidence_deg": 81.27,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.006,
+      "utc_start": "2021-07-29T08:02:51.415000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -3.5356, sample 4.1272), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1382185038rc",
+      "incidence_deg": 81.42,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.004,
+      "utc_start": "2021-07-29T08:02:51.415000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -3.5892, sample 2.0016), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1371598689lc",
+      "incidence_deg": 33.37,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.785,
+      "utc_start": "2021-03-28T19:23:41.876000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0630, sample -3.8287), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1371598689rc",
+      "incidence_deg": 33.47,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.784,
+      "utc_start": "2021-03-28T19:23:41.876000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0254, sample -4.7053), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1371605686rc",
+      "incidence_deg": 34.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.792,
+      "utc_start": "2021-03-28T21:20:19.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8379, sample 3.4475), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1373951417lc",
+      "incidence_deg": 20.13,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.759,
+      "utc_start": "2021-04-25T00:55:49.911000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1148, sample 0.3113), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1373951417rc",
+      "incidence_deg": 20.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.758,
+      "utc_start": "2021-04-25T00:55:49.911000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1144, sample -0.6116), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1363396554lc",
+      "incidence_deg": 52.24,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.032,
+      "utc_start": "2020-12-23T21:01:26.943000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4494, sample 1.9563), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1363396554rc",
+      "incidence_deg": 52.4,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.03,
+      "utc_start": "2020-12-23T21:01:26.943000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 21690, sample 3713 and run off a 52224x5064 frame",
+      "target_pixel_line": 23737.12548174483,
+      "target_pixel_sample": 4736.354200142639,
+      "unclamped_line0": 21690,
+      "unclamped_sample0": 3713,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1366902571lc",
+      "incidence_deg": 84.9,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.844,
+      "utc_start": "2021-02-02T10:55:03.643000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4930, sample -3.4334), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1366902571rc",
+      "incidence_deg": 85.03,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.843,
+      "utc_start": "2021-02-02T10:55:03.643000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4935, sample -4.3599), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1356349796lc",
+      "incidence_deg": 41.09,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.983,
+      "utc_start": "2020-10-03T07:35:29.402000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4373, sample -0.0996), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1343417565lc",
+      "incidence_deg": 23.9,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2020-05-06T15:18:18.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8225, sample 0.5206), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1343417565rc",
+      "incidence_deg": 23.98,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.964,
+      "utc_start": "2020-05-06T15:18:18.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8411, sample -0.4283), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1269387099lc",
+      "incidence_deg": 20.66,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.948,
+      "utc_start": "2017-12-31T19:17:12.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1153, sample -1.9883), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1269387099rc",
+      "incidence_deg": 20.7,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.947,
+      "utc_start": "2017-12-31T19:17:12.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1146, sample -2.9887), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1269394082rc",
+      "incidence_deg": 18.24,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.933,
+      "utc_start": "2017-12-31T21:13:35.595000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.4355, sample 3.6675), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1277614321rc",
+      "incidence_deg": 84.74,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2018-04-06T00:37:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.3476, sample 3.2340), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1271742202lc",
+      "incidence_deg": 29.95,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.933,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "admissible": false,
+      "rejected_by": "filter 6: nac.m1271742202lc is an incumbent frame",
+      "target_pixel_line": 8460.333641913448,
+      "target_pixel_sample": 2889.979473498225,
+      "unclamped_line0": 6413,
+      "unclamped_sample0": 1866,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1271742202rc",
+      "incidence_deg": 30.06,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1608, sample -0.4017), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1335207975lc",
+      "incidence_deg": 69.62,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.92,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.3832, sample 1.4017), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "incidence_deg": 69.76,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.918,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.76 outside the pre-registered low band [18.22, 30.91] (D-037)",
+      "target_pixel_line": 20124.06742492101,
+      "target_pixel_sample": 2168.3505394038134,
+      "unclamped_line0": 18077,
+      "unclamped_sample0": 1145,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1274089878lc",
+      "incidence_deg": 54.42,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-02-24T05:36:50.958000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6238, sample 4.0752), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1274089878rc",
+      "incidence_deg": 54.55,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.931,
+      "utc_start": "2018-02-24T05:36:50.958000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6259, sample 3.0999), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1274096909lc",
+      "incidence_deg": 54.52,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-02-24T07:34:02.411000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.5801, sample -2.6735), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1261154708lc",
+      "incidence_deg": 74.81,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2017-09-27T12:30:41.666000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1389, sample -1.6479), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1261154708rc",
+      "incidence_deg": 74.96,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.965,
+      "utc_start": "2017-09-27T12:30:41.666000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1385, sample -2.5887), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1252930156lc",
+      "incidence_deg": 149.86,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.535,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2070, sample 0.8817), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1252930156rc",
+      "incidence_deg": 149.98,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.531,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2006, sample -0.0579), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1341069775lc",
+      "incidence_deg": 42.29,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2020-04-09T11:08:28.267000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1517, sample 1.7250), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1341069775rc",
+      "incidence_deg": 42.43,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.965,
+      "utc_start": "2020-04-09T11:08:28.267000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 6162, sample 3137 and run off a 52224x5064 frame",
+      "target_pixel_line": 8209.67271907085,
+      "target_pixel_sample": 4160.707700634227,
+      "unclamped_line0": 6162,
+      "unclamped_sample0": 3137,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1323460176lc",
+      "incidence_deg": 77.0,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.983,
+      "utc_start": "2019-09-18T15:35:09.577000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 77.00 > 75.0 (D-029)",
+      "target_pixel_line": 50141.91703812826,
+      "target_pixel_sample": 2230.9815111100406,
+      "unclamped_line0": 48094,
+      "unclamped_sample0": 1207,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1323460176rc",
+      "incidence_deg": 77.15,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.982,
+      "utc_start": "2019-09-18T15:35:09.577000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.9550, sample -0.4996), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1322274196lc",
+      "incidence_deg": 89.97,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.884,
+      "utc_start": "2019-09-04T22:08:49.007000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8604, sample 1.4286), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1322274196rc",
+      "incidence_deg": 90.11,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.882,
+      "utc_start": "2019-09-04T22:08:49.007000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8604, sample 0.4286), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1310523135lc",
+      "incidence_deg": 51.48,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.821,
+      "utc_start": "2019-04-21T21:57:47.778000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1813, sample -0.5426), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1310523135rc",
+      "incidence_deg": 51.6,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.82,
+      "utc_start": "2019-04-21T21:57:47.778000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1816, sample -1.5038), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1317577922lc",
+      "incidence_deg": 40.43,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.859,
+      "utc_start": "2019-07-12T13:37:34.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8288, sample -2.2585), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1315225542lc",
+      "incidence_deg": 21.13,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.806,
+      "utc_start": "2019-06-15T08:11:15.025000Z",
+      "admissible": false,
+      "rejected_by": "filter H5: frame orientation (-1, -1) does not match the incumbents' (1, -1); its tile would be rotated 180 deg relative to A and B, entangling this stage with EXP-004's open orientation-assignment question (D-038)",
+      "target_pixel_line": 10358.007511829837,
+      "target_pixel_sample": 2109.342569014614,
+      "unclamped_line0": 8311,
+      "unclamped_sample0": 1086,
+      "full_tile_fits_unclamped": true,
+      "resolution_ratio_vs": {
+        "nac.m1271742202lc": 1.157568,
+        "nac.m1335207975rc": 1.138958,
+        "nac.m1299958135lc": 1.328784
+      },
+      "max_resolution_ratio": 1.3287841191066996,
+      "d_incidence_vs_incumbents": {
+        "nac.m1271742202lc": null,
+        "nac.m1335207975rc": null,
+        "nac.m1299958135lc": null
+      },
+      "abs_d_incidence_vs_A": 2.91,
+      "emission_source": "index table, NAMED column",
+      "emission_deg_used": 1.72,
+      "nac_frame_id_from_pdsid": "LEFT",
+      "nac_frame_id_declared": "LEFT",
+      "nac_frame_id_used": "LEFT",
+      "orientation_signature": [
+        -1,
+        -1
+      ],
+      "corner_source": "PDS archive index table, NAMED columns"
+    },
+    {
+      "pdsid": "nac.m1315225542rc",
+      "incidence_deg": 21.16,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.805,
+      "utc_start": "2019-06-15T08:11:15.025000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1979, sample -0.5255), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1231760826lc",
+      "incidence_deg": 97.05,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.635,
+      "utc_start": "2016-10-22T07:32:39.094000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1907, sample 2.2376), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1231760826rc",
+      "incidence_deg": 97.23,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.632,
+      "utc_start": "2016-10-22T07:32:39.094000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1966, sample 1.3724), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1225869984lc",
+      "incidence_deg": 22.96,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.943,
+      "utc_start": "2016-08-15T03:11:57.018000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6854, sample 1.0322), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1225869984rc",
+      "incidence_deg": 23.04,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.941,
+      "utc_start": "2016-08-15T03:11:57.018000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6854, sample 0.0322), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1236465772lc",
+      "incidence_deg": 44.28,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.13,
+      "utc_start": "2016-12-15T18:28:24.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1041, sample 1.8538), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1236465772rc",
+      "incidence_deg": 44.44,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.128,
+      "utc_start": "2016-12-15T18:28:24.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1026, sample 0.9557), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1304654361rc",
+      "incidence_deg": 60.76,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.061,
+      "utc_start": "2019-02-12T23:44:54.303000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5517, sample 4.0019), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1299958135lc",
+      "incidence_deg": 18.22,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.071,
+      "utc_start": "2018-12-20T15:14:28.581000Z",
+      "admissible": false,
+      "rejected_by": "filter 6: nac.m1299958135lc is an incumbent frame",
+      "target_pixel_line": 44510.85186671315,
+      "target_pixel_sample": 2716.121212261346,
+      "unclamped_line0": 42463,
+      "unclamped_sample0": 1693,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1299958135rc",
+      "incidence_deg": 18.23,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.069,
+      "utc_start": "2018-12-20T15:14:28.581000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.8566, sample -0.4113), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1249395235lc",
+      "incidence_deg": 65.12,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.904,
+      "utc_start": "2017-05-14T09:59:28.639000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.0817, sample 2.2785), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1249395235rc",
+      "incidence_deg": 65.26,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.903,
+      "utc_start": "2017-05-14T09:59:28.639000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.0036, sample 1.7361), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1297603528lc",
+      "incidence_deg": 33.77,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.067,
+      "utc_start": "2018-11-23T09:11:01.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0379, sample -1.4626), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1297603528rc",
+      "incidence_deg": 33.91,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.065,
+      "utc_start": "2018-11-23T09:11:01.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0382, sample -2.4073), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1295250081lc",
+      "incidence_deg": 58.68,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.042,
+      "utc_start": "2018-10-27T03:26:53.841000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4931, sample -3.4105), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1295257083lc",
+      "incidence_deg": 58.24,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.03,
+      "utc_start": "2018-10-27T05:23:35.962000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.2906, sample 2.5323), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1295257083rc",
+      "incidence_deg": 58.4,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2018-10-27T05:23:35.962000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.2790, sample 1.4856), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1291713481rc",
+      "incidence_deg": 81.91,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.975,
+      "utc_start": "2018-09-16T05:03:33.805000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.9367, sample 5.0168), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1291720504lc",
+      "incidence_deg": 81.81,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.975,
+      "utc_start": "2018-09-16T07:00:36.969000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8344, sample -0.6499), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1291720504rc",
+      "incidence_deg": 81.96,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.973,
+      "utc_start": "2018-09-16T07:00:36.969000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8290, sample -1.7082), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1212932972lc",
+      "incidence_deg": 45.48,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.082,
+      "utc_start": "2016-03-18T09:35:05.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 8014, sample 3160 and run off a 52224x5064 frame",
+      "target_pixel_line": 10061.59683226153,
+      "target_pixel_sample": 4183.3575205643665,
+      "unclamped_line0": 8014,
+      "unclamped_sample0": 3160,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1212932972rc",
+      "incidence_deg": 45.64,
+      "emission_deg": "1.16",
+      "map_resolution_m": 1.081,
+      "utc_start": "2016-03-18T09:35:05.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1924, sample -0.1212), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1205872034lc",
+      "incidence_deg": 46.95,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.077,
+      "utc_start": "2015-12-27T16:12:47.162000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1876, sample 1.5459), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1205872034rc",
+      "incidence_deg": 47.11,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-12-27T16:12:47.162000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1900, sample 0.6033), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1215288999lc",
+      "incidence_deg": 70.96,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.07,
+      "utc_start": "2016-04-14T16:02:12.462000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1946, sample -1.1508), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1215288999rc",
+      "incidence_deg": 71.13,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.068,
+      "utc_start": "2016-04-14T16:02:12.462000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1812, sample -2.1065), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1209391299lc",
+      "incidence_deg": 160.0,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.024,
+      "utc_start": "2016-02-06T09:47:12.016000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1498, sample -3.2668), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1197625458lc",
+      "incidence_deg": 42.03,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-09-23T05:29:51.629000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 3.5208, sample 3.1056), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1197625458rc",
+      "incidence_deg": 42.18,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.073,
+      "utc_start": "2015-09-23T05:29:51.629000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 3.4334, sample 1.9051), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1197632472lc",
+      "incidence_deg": 42.18,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.083,
+      "utc_start": "2015-09-23T07:26:45.220000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2055, sample -2.7195), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1199981485lc",
+      "incidence_deg": 66.72,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1313, sample 1.2880), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1199981485rc",
+      "incidence_deg": 66.88,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.073,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1271, sample 0.2787), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1182331886lc",
+      "incidence_deg": 43.74,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.197,
+      "utc_start": "2015-03-30T05:16:59.183000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0883, sample 0.3414), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1182331886rc",
+      "incidence_deg": 43.91,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.196,
+      "utc_start": "2015-03-30T05:16:59.183000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0921, sample -0.6126), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1190561167lc",
+      "incidence_deg": 48.66,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.053,
+      "utc_start": "2015-07-03T11:11:40.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5954, sample -3.2296), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1251744297lc",
+      "incidence_deg": 41.78,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.931,
+      "utc_start": "2017-06-10T14:30:30.573000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.9305, sample -0.0902), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1251744297rc",
+      "incidence_deg": 41.91,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.929,
+      "utc_start": "2017-06-10T14:30:30.573000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.9299, sample -1.0165), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1184689606lc",
+      "incidence_deg": 68.9,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.191,
+      "utc_start": "2015-04-26T12:12:19.485000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0272, sample -2.2281), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1192922657lc",
+      "incidence_deg": 26.1,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.03,
+      "utc_start": "2015-07-30T19:09:50.404000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.4523, sample 2.9425), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1192922657rc",
+      "incidence_deg": 26.21,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2015-07-30T19:09:50.404000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.4515, sample 2.0211), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1195269931lc",
+      "incidence_deg": 24.08,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.063,
+      "utc_start": "2015-08-26T23:11:04.091000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.0746, sample 4.9194), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1195269931rc",
+      "incidence_deg": 24.14,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.061,
+      "utc_start": "2015-08-26T23:11:04.091000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.0802, sample 3.3548), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1188213794lc",
+      "incidence_deg": 72.76,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.043,
+      "utc_start": "2015-06-06T07:08:47.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.3492, sample 2.4498), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1188213794rc",
+      "incidence_deg": 72.92,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.041,
+      "utc_start": "2015-06-06T07:08:47.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.3575, sample 1.4740), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1175268993lc",
+      "incidence_deg": 48.29,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.21,
+      "utc_start": "2015-01-07T11:22:06.706000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0863, sample 1.8995), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1175268993rc",
+      "incidence_deg": 48.47,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.209,
+      "utc_start": "2015-01-07T11:22:06.706000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0909, sample 0.9454), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1432613704lc",
+      "incidence_deg": 21.13,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.755,
+      "utc_start": "2023-03-05T00:00:36.928000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1428, sample -0.3324), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1432613704rc",
+      "incidence_deg": 21.15,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.754,
+      "utc_start": "2023-03-05T00:00:36.928000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1413, sample -1.2817), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1167020976lc",
+      "incidence_deg": 39.95,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.175,
+      "utc_start": "2014-10-04T00:15:09.795000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2327, sample 3.0431), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1167020976rc",
+      "incidence_deg": 40.11,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.173,
+      "utc_start": "2014-10-04T00:15:09.795000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2303, sample 2.1713), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1169380454lc",
+      "incidence_deg": 65.15,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.187,
+      "utc_start": "2014-10-31T07:39:47.059000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1351, sample -0.7093), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1169380454rc",
+      "incidence_deg": 65.33,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.185,
+      "utc_start": "2014-10-31T07:39:47.059000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1293, sample -1.6608), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1103416593rc",
+      "incidence_deg": 24.51,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.035,
+      "utc_start": "2012-09-27T20:22:05.954000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.7966, sample 3.4937), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1111670976lc",
+      "incidence_deg": 72.46,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.212,
+      "utc_start": "2013-01-01T09:15:09.684000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.0651, sample 2.5193), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1111670976rc",
+      "incidence_deg": 72.65,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.21,
+      "utc_start": "2013-01-01T09:15:09.684000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.0744, sample 1.5660), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1121096182lc",
+      "incidence_deg": 42.9,
+      "emission_deg": "1.76",
+      "map_resolution_m": 0.96,
+      "utc_start": "2013-04-20T11:21:55.050000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2192, sample 0.0397), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1121096182rc",
+      "incidence_deg": 43.07,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.958,
+      "utc_start": "2013-04-20T11:21:55.050000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2192, sample -0.9689), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1114021882lc",
+      "incidence_deg": 46.39,
+      "emission_deg": "1.76",
+      "map_resolution_m": 0.987,
+      "utc_start": "2013-01-28T14:16:55.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4258, sample -1.5353), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1114021882rc",
+      "incidence_deg": 46.57,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.985,
+      "utc_start": "2013-01-28T14:16:55.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4258, sample -2.4383), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1114029015rc",
+      "incidence_deg": 47.01,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.993,
+      "utc_start": "2013-01-28T16:15:47.794000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.7388, sample 2.5569), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1105766804rc",
+      "incidence_deg": 41.96,
+      "emission_deg": "15.81",
+      "map_resolution_m": 1.056,
+      "utc_start": "2012-10-25T01:12:16.877000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6716, sample 3.0253), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1105773947rc",
+      "incidence_deg": 41.09,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.015,
+      "utc_start": "2012-10-25T03:11:20.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6781, sample 3.3150), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1105781090rc",
+      "incidence_deg": 40.26,
+      "emission_deg": "13.04",
+      "map_resolution_m": 1.047,
+      "utc_start": "2012-10-25T05:10:23.406000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6272, sample 2.9222), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1123448693lc",
+      "incidence_deg": 68.31,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.251,
+      "utc_start": "2013-05-17T16:50:26.131000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2951, sample 2.8270), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1123448693rc",
+      "incidence_deg": 68.51,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.249,
+      "utc_start": "2013-05-17T16:50:26.131000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2894, sample 1.8872), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1108132004lc",
+      "incidence_deg": 66.69,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.311,
+      "utc_start": "2012-11-21T10:12:17.261000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0654, sample 3.1928), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1108132004rc",
+      "incidence_deg": 66.89,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.309,
+      "utc_start": "2012-11-21T10:12:17.261000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0661, sample 2.2302), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1108139151lc",
+      "incidence_deg": 66.75,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.312,
+      "utc_start": "2012-11-21T12:11:24.678000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0584, sample -1.6317), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1142297886lc",
+      "incidence_deg": 74.65,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.226,
+      "utc_start": "2013-12-21T20:43:39.087000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0883, sample 0.5734), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1142297886rc",
+      "incidence_deg": 74.84,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.224,
+      "utc_start": "2013-12-21T20:43:39.087000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0928, sample -0.3977), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1144651432lc",
+      "incidence_deg": 48.44,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.235,
+      "utc_start": "2014-01-18T02:29:25.519000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1031, sample -0.7822), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1144651432rc",
+      "incidence_deg": 48.63,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.233,
+      "utc_start": "2014-01-18T02:29:25.519000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1071, sample -1.6462), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1144658546rc",
+      "incidence_deg": 48.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.232,
+      "utc_start": "2014-01-18T04:27:59.082000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1823, sample 3.2869), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1151723858lc",
+      "incidence_deg": 42.87,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.258,
+      "utc_start": "2014-04-09T23:03:11.914000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0990, sample -1.4467), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1151723858rc",
+      "incidence_deg": 43.05,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.256,
+      "utc_start": "2014-04-09T23:03:11.914000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1113, sample -2.4006), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1138759750rc",
+      "incidence_deg": 65.27,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.25,
+      "utc_start": "2013-11-10T21:54:43.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5250, sample 3.4012), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1131700842rc",
+      "incidence_deg": 27.84,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.981,
+      "utc_start": "2013-08-21T05:06:14.874000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1203, sample 2.6286), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1147005001lc",
+      "incidence_deg": 23.99,
+      "emission_deg": "2.17",
+      "map_resolution_m": 1.214,
+      "utc_start": "2014-02-14T08:15:34.658000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.9934, sample -2.0447), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1154072951lc",
+      "incidence_deg": 67.29,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.215,
+      "utc_start": "2014-05-07T03:34:44.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.7892, sample 2.7677), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1154072951rc",
+      "incidence_deg": 67.48,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.213,
+      "utc_start": "2014-05-07T03:34:44.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.7831, sample 1.7849), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1149360482rc",
+      "incidence_deg": 21.53,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.995,
+      "utc_start": "2014-03-13T14:33:34.708000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4816, sample 3.0405), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1156429261lc",
+      "incidence_deg": 93.07,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.255,
+      "utc_start": "2014-06-03T10:06:34.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2614, sample 1.8682), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1156429261rc",
+      "incidence_deg": 93.27,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.254,
+      "utc_start": "2014-06-03T10:06:34.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2570, sample 0.9050), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1157606721lc",
+      "incidence_deg": 74.34,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.201,
+      "utc_start": "2014-06-17T01:10:54.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1917, sample 2.2620), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1157606721rc",
+      "incidence_deg": 74.52,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.199,
+      "utc_start": "2014-06-17T01:10:54.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1923, sample 1.3882), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1179973535lc",
+      "incidence_deg": 21.89,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.201,
+      "utc_start": "2015-03-02T22:11:08.493000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.5019, sample 3.4241), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1179973535rc",
+      "incidence_deg": 21.99,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.199,
+      "utc_start": "2015-03-02T22:11:08.493000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.5021, sample 2.3648), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1159955968lc",
+      "incidence_deg": 49.98,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.2,
+      "utc_start": "2014-07-14T05:45:00.955000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 3.1787, sample -2.2065), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1159955968rc",
+      "incidence_deg": 50.16,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.198,
+      "utc_start": "2014-07-14T05:45:00.955000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.9493, sample -2.8457), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1159956007lc",
+      "incidence_deg": 49.14,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.171,
+      "utc_start": "2014-07-14T05:45:40.478000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5323, sample -1.8353), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1159963103lc",
+      "incidence_deg": 49.39,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.184,
+      "utc_start": "2014-07-14T07:43:56.096000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0211, sample 3.5433), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1159963103rc",
+      "incidence_deg": 49.56,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.183,
+      "utc_start": "2014-07-14T07:43:56.096000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0256, sample 2.5428), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1172909560lc",
+      "incidence_deg": 74.28,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.176,
+      "utc_start": "2014-12-11T03:58:13.232000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5187, sample -1.7348), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1172909560rc",
+      "incidence_deg": 74.46,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.174,
+      "utc_start": "2014-12-11T03:58:13.232000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5139, sample -2.7336), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1172916736lc",
+      "incidence_deg": 74.59,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.21,
+      "utc_start": "2014-12-11T05:57:49.594000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1446, sample 3.4377), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1172916736rc",
+      "incidence_deg": 74.77,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.208,
+      "utc_start": "2014-12-11T05:57:49.594000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1479, sample 2.5042), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1162312261lc",
+      "incidence_deg": 29.75,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.219,
+      "utc_start": "2014-08-10T12:16:34.035000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5592, sample -0.5870), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1162312261rc",
+      "incidence_deg": 29.88,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.218,
+      "utc_start": "2014-08-10T12:16:34.035000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5712, sample -1.5016), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1164667643lc",
+      "incidence_deg": 21.66,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.197,
+      "utc_start": "2014-09-06T18:32:56.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1938, sample 2.1503), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1164667643rc",
+      "incidence_deg": 21.72,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.196,
+      "utc_start": "2014-09-06T18:32:56.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1935, sample 1.1890), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m188093023rc",
+      "incidence_deg": 22.82,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.024,
+      "utc_start": "2012-04-03T11:49:16.278000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.6400, sample 3.1475), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1096350825lc",
+      "incidence_deg": 72.08,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.304,
+      "utc_start": "2012-07-08T01:39:18.122000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2515, sample 1.1771), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1096350825rc",
+      "incidence_deg": 72.29,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.302,
+      "utc_start": "2012-07-08T01:39:18.122000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.29 outside the pre-registered low band [18.22, 30.91] (D-037)",
+      "target_pixel_line": 13141.414154574744,
+      "target_pixel_sample": 1072.0402989937622,
+      "unclamped_line0": 11094,
+      "unclamped_sample0": 49,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m181023581lc",
+      "incidence_deg": 69.05,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.339,
+      "utc_start": "2012-01-12T16:05:14.784000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.4439, sample 0.3382), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m181023581rc",
+      "incidence_deg": 69.26,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.337,
+      "utc_start": "2012-01-12T16:05:14.784000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.4469, sample -0.5677), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m165699999lc",
+      "incidence_deg": 68.62,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.479,
+      "utc_start": "2011-07-19T07:32:12.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.3197, sample -6.6775), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m165699999rc",
+      "incidence_deg": 68.68,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.478,
+      "utc_start": "2011-07-19T07:32:12.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.3197, sample -8.3264), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m183382443lc",
+      "incidence_deg": 43.44,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.328,
+      "utc_start": "2012-02-08T23:19:36.698000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2017, sample 1.1530), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m183382443rc",
+      "incidence_deg": 43.64,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.326,
+      "utc_start": "2012-02-08T23:19:36.698000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2071, sample 0.2043), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1101066634lc",
+      "incidence_deg": 26.43,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.024,
+      "utc_start": "2012-08-31T15:36:07.275000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2151, sample 2.2262), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1101066634rc",
+      "incidence_deg": 26.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.022,
+      "utc_start": "2012-08-31T15:36:07.275000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2148, sample 1.2785), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m185741283lc",
+      "incidence_deg": 20.46,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.03,
+      "utc_start": "2012-03-07T06:33:36.067000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 7.3125, sample 2.1834), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m185741283rc",
+      "incidence_deg": 20.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.028,
+      "utc_start": "2012-03-07T06:33:36.067000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 7.3125, sample 1.2572), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m185741324lc",
+      "incidence_deg": 22.62,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.046,
+      "utc_start": "2012-03-07T06:34:16.602000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5260, sample 2.0036), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m185741324rc",
+      "incidence_deg": 22.73,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.044,
+      "utc_start": "2012-03-07T06:34:16.602000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5167, sample 1.1150), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m131501654lc",
+      "incidence_deg": 80.08,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.862,
+      "utc_start": "2010-06-18T11:59:46.608000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2153, sample 2.2392), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m131501654rc",
+      "incidence_deg": 80.14,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.861,
+      "utc_start": "2010-06-18T11:59:46.608000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.2153, sample 1.4543), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m139761581lc",
+      "incidence_deg": 21.94,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-09-22T02:25:14.003000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6074, sample -6.3467), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m139761581rc",
+      "incidence_deg": 21.97,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-09-22T02:25:14.003000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.5887, sample -5.9442), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m139768368rc",
+      "incidence_deg": 21.98,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-09-22T04:18:20.633000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.9004, sample 9.0391), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m162161852lc",
+      "incidence_deg": 74.41,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.847,
+      "utc_start": "2011-06-08T08:43:04.767000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0502, sample 4.7223), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m162161852rc",
+      "incidence_deg": 74.48,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.846,
+      "utc_start": "2011-06-08T08:43:04.767000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0498, sample 3.8528), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m132691635rc",
+      "incidence_deg": 87.98,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.493,
+      "utc_start": "2010-07-02T06:32:47.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.7917, sample 6.7804), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m124423514lc",
+      "incidence_deg": 18.0,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-03-28T13:50:47.998000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6699, sample -0.0422), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m124423514rc",
+      "incidence_deg": 18.0,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-03-28T13:50:47.998000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6728, sample -0.9115), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m150368994lc",
+      "incidence_deg": 64.49,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.479,
+      "utc_start": "2011-01-22T20:55:26.416000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -1.8039, sample -7.5664), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m150375724lc",
+      "incidence_deg": 63.94,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-01-22T22:47:36.607000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2592, sample 7.1479), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m150375724rc",
+      "incidence_deg": 64.0,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-01-22T22:47:36.607000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2592, sample 6.1479), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m117345577lc",
+      "incidence_deg": 83.56,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.887,
+      "utc_start": "2010-01-05T15:45:10.670000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4289, sample 1.1276), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m117345577rc",
+      "incidence_deg": 83.63,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.885,
+      "utc_start": "2010-01-05T15:45:10.670000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 20329, sample -427 and run off a 52224x5064 frame",
+      "target_pixel_line": 22376.94727641891,
+      "target_pixel_sample": 596.4848609043789,
+      "unclamped_line0": 20329,
+      "unclamped_sample0": -427,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m135046033lc",
+      "incidence_deg": 64.11,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-07-29T12:32:45.501000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.7724, sample -0.7741), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m135046033rc",
+      "incidence_deg": 64.18,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-07-29T12:32:45.501000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.8019, sample -1.4449), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m126785727lc",
+      "incidence_deg": 32.65,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.483,
+      "utc_start": "2010-04-24T22:01:00.755000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -1.1636, sample -3.6959), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m126785727rc",
+      "incidence_deg": 32.71,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.482,
+      "utc_start": "2010-04-24T22:01:00.755000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -1.1408, sample -5.6141), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m119707150lc",
+      "incidence_deg": 57.33,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.487,
+      "utc_start": "2010-02-01T23:44:43.409000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0697, sample 5.5412), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m119707150rc",
+      "incidence_deg": 57.39,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.486,
+      "utc_start": "2010-02-01T23:44:43.409000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0592, sample 4.5849), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m137400523lc",
+      "incidence_deg": 40.77,
+      "emission_deg": "10.12",
+      "map_resolution_m": 0.497,
+      "utc_start": "2010-08-25T18:34:16.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.7092, sample -5.8024), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m137400523rc",
+      "incidence_deg": 40.83,
+      "emission_deg": "7.29",
+      "map_resolution_m": 0.495,
+      "utc_start": "2010-08-25T18:34:16.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.7092, sample -6.5887), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m146838045lc",
+      "incidence_deg": 75.32,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.871,
+      "utc_start": "2010-12-13T00:06:18.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1796, sample 5.7093), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m146838045rc",
+      "incidence_deg": 75.39,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.869,
+      "utc_start": "2010-12-13T00:06:18.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.1807, sample 4.0296), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1437300650lc",
+      "incidence_deg": 64.92,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.73,
+      "utc_start": "2023-04-28T05:56:22.674000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -3.8646, sample 3.4476), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1437300650rc",
+      "incidence_deg": 65.03,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.729,
+      "utc_start": "2023-04-28T05:56:22.674000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -3.8646, sample 2.4476), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1430263443lc",
+      "incidence_deg": 32.2,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.784,
+      "utc_start": "2023-02-05T19:09:36.254000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2866, sample -3.3055), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1430263443rc",
+      "incidence_deg": 32.3,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.783,
+      "utc_start": "2023-02-05T19:09:36.254000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2830, sample -4.3035), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1430270433rc",
+      "incidence_deg": 32.93,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.784,
+      "utc_start": "2023-02-05T21:06:06.407000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.9400, sample 3.8273), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1443181421lc",
+      "incidence_deg": 49.35,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.933,
+      "utc_start": "2023-07-05T07:29:14.248000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.7400, sample -0.1041), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1443181421rc",
+      "incidence_deg": 49.48,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.932,
+      "utc_start": "2023-07-05T07:29:14.248000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.7716, sample -1.0514), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1445526396lc",
+      "incidence_deg": 24.78,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.919,
+      "utc_start": "2023-08-01T10:52:08.865000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5813, sample 0.3556), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1445526396rc",
+      "incidence_deg": 24.88,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.918,
+      "utc_start": "2023-08-01T10:52:08.865000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5815, sample -0.6055), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1447871829lc",
+      "incidence_deg": 19.04,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.906,
+      "utc_start": "2023-08-28T14:22:42.211000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.6039, sample 0.8015), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1447871829rc",
+      "incidence_deg": 19.11,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.904,
+      "utc_start": "2023-08-28T14:22:42.211000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.5994, sample -0.2029), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1452560468lc",
+      "incidence_deg": 68.8,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.855,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0252, sample 0.2562), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1452560468rc",
+      "incidence_deg": 68.93,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.854,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0187, sample -0.7369), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1453714162lc",
+      "incidence_deg": 94.86,
+      "emission_deg": "3.69",
+      "map_resolution_m": 1.239,
+      "utc_start": "2023-11-04T05:14:54.959000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.1800, sample 1.9192), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1453714162rc",
+      "incidence_deg": 94.96,
+      "emission_deg": "6.54",
+      "map_resolution_m": 1.24,
+      "utc_start": "2023-11-04T05:14:54.959000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 7406, sample 3760 and run off a 52224x5064 frame",
+      "target_pixel_line": 9453.86114974636,
+      "target_pixel_sample": 4783.261161557465,
+      "unclamped_line0": 7406,
+      "unclamped_sample0": 3760,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1456051210lc",
+      "incidence_deg": 66.8,
+      "emission_deg": "1.71",
+      "map_resolution_m": 1.465,
+      "utc_start": "2023-12-01T06:25:43.772000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.0891, sample -4.4672), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1456058166lc",
+      "incidence_deg": 66.95,
+      "emission_deg": "1.71",
+      "map_resolution_m": 1.454,
+      "utc_start": "2023-12-01T08:21:39.948000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2497, sample 4.0461), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1456058166rc",
+      "incidence_deg": 67.06,
+      "emission_deg": "1.15",
+      "map_resolution_m": 1.452,
+      "utc_start": "2023-12-01T08:21:39.948000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2487, sample 3.0269), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1458402348lc",
+      "incidence_deg": 39.84,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.63,
+      "utc_start": "2023-12-28T11:31:20.527000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.2634, sample 5.8848), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1458402348rc",
+      "incidence_deg": 39.95,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.629,
+      "utc_start": "2023-12-28T11:31:20.527000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.2590, sample 3.9628), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1460738557lc",
+      "incidence_deg": 22.95,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.631,
+      "utc_start": "2024-01-24T12:28:09.796000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.9754, sample -3.6783), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1460738557rc",
+      "incidence_deg": 22.99,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.63,
+      "utc_start": "2024-01-24T12:28:09.796000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 3.0366, sample -4.4729), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1463080750rc",
+      "incidence_deg": 32.49,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.78,
+      "utc_start": "2024-02-20T15:04:43.196000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.4094, sample 5.6434), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1463087775lc",
+      "incidence_deg": 32.03,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.784,
+      "utc_start": "2024-02-20T17:01:48.483000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0048, sample -1.3052), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1463087775rc",
+      "incidence_deg": 32.12,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.783,
+      "utc_start": "2024-02-20T17:01:48.483000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.0209, sample -2.2879), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1467772324lc",
+      "incidence_deg": 84.77,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.808,
+      "utc_start": "2024-04-14T22:17:37.119000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.2752, sample 0.5100), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1467772324rc",
+      "incidence_deg": 84.89,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.806,
+      "utc_start": "2024-04-14T22:17:37.119000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -2.3289, sample -0.4301), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1468961710lc",
+      "incidence_deg": 83.51,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.745,
+      "utc_start": "2024-04-28T16:40:43.518000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1361, sample -0.8594), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1468961710rc",
+      "incidence_deg": 83.62,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.744,
+      "utc_start": "2024-04-28T16:40:43.518000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1352, sample -1.8717), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1471310882rc",
+      "incidence_deg": 56.46,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.745,
+      "utc_start": "2024-05-25T21:13:35.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2211, sample 5.9117), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1478330852lc",
+      "incidence_deg": 35.56,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.77,
+      "utc_start": "2024-08-15T03:13:05.444000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6212, sample 6.2738), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1478330852rc",
+      "incidence_deg": 35.66,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.769,
+      "utc_start": "2024-08-15T03:13:05.444000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6228, sample 5.0527), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1478337857lc",
+      "incidence_deg": 35.46,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.771,
+      "utc_start": "2024-08-15T05:09:50.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0127, sample -2.1398), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1478337857rc",
+      "incidence_deg": 35.57,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.77,
+      "utc_start": "2024-08-15T05:09:50.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.0127, sample -3.1428), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1484169138lc",
+      "incidence_deg": 73.75,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.781,
+      "utc_start": "2024-10-21T16:57:50.672000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.2981, sample -0.8960), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1484169138rc",
+      "incidence_deg": 73.87,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.78,
+      "utc_start": "2024-10-21T16:57:50.672000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.3186, sample -1.8857), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1486511871lc",
+      "incidence_deg": 46.21,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.76,
+      "utc_start": "2024-11-17T19:43:24.504000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.8372, sample -0.4370), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1486511871rc",
+      "incidence_deg": 46.32,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.759,
+      "utc_start": "2024-11-17T19:43:24.504000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.8312, sample -1.2528), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1488854540lc",
+      "incidence_deg": 25.53,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.741,
+      "utc_start": "2024-12-14T22:27:52.688000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.2191, sample 0.3126), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1488854540rc",
+      "incidence_deg": 25.6,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.74,
+      "utc_start": "2024-12-14T22:27:52.688000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.2380, sample -0.5724), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1491195842lc",
+      "incidence_deg": 26.14,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.723,
+      "utc_start": "2025-01-11T00:49:34.729000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.7708, sample 2.5797), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1491195842rc",
+      "incidence_deg": 26.2,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.722,
+      "utc_start": "2025-01-11T00:49:34.729000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.7792, sample 1.6713), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1495878470lc",
+      "incidence_deg": 79.25,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.692,
+      "utc_start": "2025-03-06T05:33:22.610000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6425, sample 3.9963), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1495878470rc",
+      "incidence_deg": 79.35,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.691,
+      "utc_start": "2025-03-06T05:33:22.610000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6458, sample 3.0006), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1495885512lc",
+      "incidence_deg": 79.02,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.685,
+      "utc_start": "2025-03-06T07:30:45.151000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.6587, sample -5.5999), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1497074404lc",
+      "incidence_deg": 89.9,
+      "emission_deg": "14.03",
+      "map_resolution_m": 0.87,
+      "utc_start": "2025-03-20T01:45:37.333000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.8378, sample -2.5471), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1497074404rc",
+      "incidence_deg": 90.04,
+      "emission_deg": "16.92",
+      "map_resolution_m": 0.875,
+      "utc_start": "2025-03-20T01:45:37.333000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.8389, sample -3.2641), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1506439741lc",
+      "incidence_deg": 31.65,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.832,
+      "utc_start": "2025-07-06T11:14:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2744, sample -0.2603), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1506439741rc",
+      "incidence_deg": 31.77,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.831,
+      "utc_start": "2025-07-06T11:14:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.2744, sample -1.2603), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1511122032lc",
+      "incidence_deg": 85.24,
+      "emission_deg": "1.73",
+      "map_resolution_m": 1.608,
+      "utc_start": "2025-08-29T15:52:44.417000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.8531, sample -0.8814), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1511122032rc",
+      "incidence_deg": 85.36,
+      "emission_deg": "1.14",
+      "map_resolution_m": 1.605,
+      "utc_start": "2025-08-29T15:52:44.417000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.8505, sample -1.8760), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1514608612lc",
+      "incidence_deg": 50.25,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.653,
+      "utc_start": "2025-10-09T00:22:25.136000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.8766, sample 1.3119), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1514608612rc",
+      "incidence_deg": 50.34,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.652,
+      "utc_start": "2025-10-09T00:22:25.136000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.8758, sample 0.4019), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1519291097lc",
+      "incidence_deg": 26.17,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.669,
+      "utc_start": "2025-12-02T05:03:50.269000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8384, sample -2.3907), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1519291097rc",
+      "incidence_deg": 26.21,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.668,
+      "utc_start": "2025-12-02T05:03:50.269000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 1.8390, sample -3.4662), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1527499328lc",
+      "incidence_deg": 64.65,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.681,
+      "utc_start": "2026-03-07T05:07:41.165000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1163, sample -2.0523), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1527499328rc",
+      "incidence_deg": 64.75,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.68,
+      "utc_start": "2026-03-07T05:07:41.165000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line -0.1164, sample -3.0629), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1532176291lc",
+      "incidence_deg": 17.63,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.67,
+      "utc_start": "2026-04-30T08:17:04.340000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 2.8104, sample -5.9106), and no clamping is applied)"
+    }
+  ],
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "generated_utc": "2026-08-26T13:51:15Z"
+}

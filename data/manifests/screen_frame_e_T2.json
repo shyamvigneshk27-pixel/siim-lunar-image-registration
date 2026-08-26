@@ -1,0 +1,2837 @@
+{
+  "stage": "REAL-DATA-05",
+  "step": "1 - candidate screening for frame E",
+  "data_read": "ODE product METADATA ONLY. No image bytes were fetched.",
+  "criteria_source": "docs/stages/REAL-DATA-05_illumination_replication.md section 4.1, frozen before this ran",
+  "screen_provenance": "screen_one / screen_one_shared are IMPORTED unchanged from scripts/screen_frame_d.py; this script only ADDS H5 (fixed-point tier), H6 and H7 on top of their verdict and can never loosen a REAL-DATA-04 criterion.",
+  "criteria": {
+    "tier": "T2 shared-target",
+    "H2_target_lon_lat": null,
+    "H2_shared_tile_admissible_anchors": [
+      "nac.m1271742202lc",
+      "nac.m1335207975rc",
+      "nac.m1299958135lc"
+    ],
+    "H3_full_tile_fits_unclamped": [
+      4096,
+      2048
+    ],
+    "H4_incidence_band_deg": [
+      18.22,
+      30.91
+    ],
+    "H4_incidence_max_deg": 75.0,
+    "H5_orientation_signature_required": null,
+    "H6_emission_max_deg": 5.0,
+    "H7_nac_frame_id_required": "LEFT",
+    "H8_not_an_incumbent": [
+      "nac.m1271742202lc",
+      "nac.m1299958135lc",
+      "nac.m1335207975rc"
+    ],
+    "deciding": "minimise the maximum Map_resolution ratio vs A, B, D",
+    "tie_break": "smaller |incidence - incidence_A|"
+  },
+  "ode_query": {
+    "product_type": "CDRNAC4",
+    "minlat": 18.5,
+    "maxlat": 21.5,
+    "westernlon": 21.5,
+    "easternlon": 22.6,
+    "limit": 500,
+    "n_returned": 261
+  },
+  "frame_size_assumption": {
+    "lines": 52224,
+    "samples": 5064,
+    "note": "Nominal NAC CDR dimensions are used to RANK candidates only; the winner's true dimensions come from the archive index table before acquisition, and acquire_real_pair.py refuses to clamp a window."
+  },
+  "footprint_vertex_order_assumption": {
+    "order": [
+      "upper_right",
+      "lower_right",
+      "lower_left",
+      "upper_left"
+    ],
+    "note": "ODE's ring order is undocumented (REAL-DATA-02 section 6.3). Used ONLY to rank candidates."
+  },
+  "incumbents": {
+    "nac.m1271742202lc": {
+      "incidence_deg": 29.95,
+      "map_resolution_m": 0.933
+    },
+    "nac.m1335207975rc": {
+      "incidence_deg": 69.76,
+      "map_resolution_m": 0.918
+    },
+    "nac.m1299958135lc": {
+      "incidence_deg": 18.22,
+      "map_resolution_m": 1.071
+    }
+  },
+  "funnel": {
+    "filter 1b": 55,
+    "filter 4": 48,
+    "filter 5": 154,
+    "ADMISSIBLE": 2,
+    "filter 6": 2
+  },
+  "n_admissible": 2,
+  "ranked_admissible": [
+    {
+      "pdsid": "nac.m1315225542lc",
+      "incidence_deg": 21.13,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.806,
+      "utc_start": "2019-06-15T08:11:15.025000Z",
+      "admissible": true,
+      "rejected_by": null,
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ],
+      "shared_tile_admissible_km2": 21.200863849462017,
+      "implied_target_lon_lat": [
+        22.004256304968447,
+        19.635779208221845
+      ],
+      "resolution_ratio_vs": {
+        "nac.m1271742202lc": 1.157568,
+        "nac.m1335207975rc": 1.138958,
+        "nac.m1299958135lc": 1.328784
+      },
+      "max_resolution_ratio": 1.3287841191066996,
+      "abs_d_incidence_vs_A": 2.91,
+      "emission_source": "ODE summary",
+      "emission_deg_used": 1.72,
+      "nac_frame_id_from_pdsid": "LEFT",
+      "nac_frame_id_declared": null,
+      "nac_frame_id_used": "LEFT",
+      "d_incidence_vs_incumbents": {
+        "nac.m1271742202lc": 8.82,
+        "nac.m1335207975rc": 48.63000000000001,
+        "nac.m1299958135lc": 2.91
+      }
+    },
+    {
+      "pdsid": "nac.m1373951417lc",
+      "incidence_deg": 20.13,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.759,
+      "utc_start": "2021-04-25T00:55:49.911000Z",
+      "admissible": true,
+      "rejected_by": null,
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ],
+      "shared_tile_admissible_km2": 2.5036703239273064,
+      "implied_target_lon_lat": [
+        21.9986046061734,
+        19.48281060050357
+      ],
+      "resolution_ratio_vs": {
+        "nac.m1271742202lc": 1.229249,
+        "nac.m1335207975rc": 1.209486,
+        "nac.m1299958135lc": 1.411067
+      },
+      "max_resolution_ratio": 1.4110671936758892,
+      "abs_d_incidence_vs_A": 1.9100000000000001,
+      "emission_source": "ODE summary",
+      "emission_deg_used": 1.71,
+      "nac_frame_id_from_pdsid": "LEFT",
+      "nac_frame_id_declared": null,
+      "nac_frame_id_used": "LEFT",
+      "d_incidence_vs_incumbents": {
+        "nac.m1271742202lc": 9.82,
+        "nac.m1335207975rc": 49.63000000000001,
+        "nac.m1299958135lc": 1.9100000000000001
+      }
+    }
+  ],
+  "selected": "nac.m1315225542lc",
+  "all_candidates": [
+    {
+      "pdsid": "nac.m1419731111lc",
+      "incidence_deg": 27.99,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.887,
+      "utc_start": "2022-10-06T21:30:44.423000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1419731111rc",
+      "incidence_deg": 28.09,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.886,
+      "utc_start": "2022-10-06T21:30:44.423000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m107901668rc",
+      "incidence_deg": 156.45,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.822,
+      "utc_start": "2009-09-18T08:26:41.460000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 156.45 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m172778361lc",
+      "incidence_deg": 25.63,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-10-09T05:44:54.102000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m172778361rc",
+      "incidence_deg": 25.66,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.476,
+      "utc_start": "2011-10-09T05:44:54.102000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m112628610lc",
+      "incidence_deg": 135.53,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.768,
+      "utc_start": "2009-11-12T01:29:03.353000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 135.53 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m112628610rc",
+      "incidence_deg": 135.59,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.767,
+      "utc_start": "2009-11-12T01:29:03.353000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 135.59 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m116174285lc",
+      "incidence_deg": 82.22,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.925,
+      "utc_start": "2009-12-23T02:23:38.330000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 82.22 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m116174285rc",
+      "incidence_deg": 82.29,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.924,
+      "utc_start": "2009-12-23T02:23:38.330000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 82.29 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1402111228lc",
+      "incidence_deg": 23.44,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.871,
+      "utc_start": "2022-03-16T23:06:00.721000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1397417159lc",
+      "incidence_deg": 72.01,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.859,
+      "utc_start": "2022-01-21T15:11:32.406000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.01 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1396261446lc",
+      "incidence_deg": 92.42,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.953,
+      "utc_start": "2022-01-08T06:09:39.270000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 92.42 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1396261446rc",
+      "incidence_deg": 92.55,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.951,
+      "utc_start": "2022-01-08T06:09:39.270000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 92.55 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1396268476lc",
+      "incidence_deg": 92.5,
+      "emission_deg": "1.72",
+      "map_resolution_m": 1.377,
+      "utc_start": "2022-01-08T08:06:49.138000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 92.50 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1396268476rc",
+      "incidence_deg": 92.63,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.374,
+      "utc_start": "2022-01-08T08:06:49.138000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 92.63 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1386880738rc",
+      "incidence_deg": 29.43,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.972,
+      "utc_start": "2021-09-21T16:24:31.453000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1391570858lc",
+      "incidence_deg": 37.0,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.908,
+      "utc_start": "2021-11-14T23:13:10.765000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 37.00 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1391570858rc",
+      "incidence_deg": 37.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.907,
+      "utc_start": "2021-11-14T23:13:10.765000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 37.13 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1378641241rc",
+      "incidence_deg": 60.59,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.803,
+      "utc_start": "2021-06-18T07:39:34.435000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 60.59 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1378648287lc",
+      "incidence_deg": 60.38,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.803,
+      "utc_start": "2021-06-18T09:36:59.611000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 60.38 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1378648287rc",
+      "incidence_deg": 60.5,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.802,
+      "utc_start": "2021-06-18T09:36:59.611000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 60.50 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1393913191rc",
+      "incidence_deg": 64.49,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.894,
+      "utc_start": "2021-12-12T01:52:04.021000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.49 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1384528877lc",
+      "incidence_deg": 54.63,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.983,
+      "utc_start": "2021-08-25T11:06:49.827000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 54.63 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1384528877rc",
+      "incidence_deg": 54.78,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.981,
+      "utc_start": "2021-08-25T11:06:49.827000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 54.78 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1382185038lc",
+      "incidence_deg": 81.27,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.006,
+      "utc_start": "2021-07-29T08:02:51.415000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 81.27 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1382185038rc",
+      "incidence_deg": 81.42,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.004,
+      "utc_start": "2021-07-29T08:02:51.415000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 81.42 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1371598689lc",
+      "incidence_deg": 33.37,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.785,
+      "utc_start": "2021-03-28T19:23:41.876000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 33.37 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1371598689rc",
+      "incidence_deg": 33.47,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.784,
+      "utc_start": "2021-03-28T19:23:41.876000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 33.47 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1371605686rc",
+      "incidence_deg": 34.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.792,
+      "utc_start": "2021-03-28T21:20:19.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 34.13 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1373951417lc",
+      "incidence_deg": 20.13,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.759,
+      "utc_start": "2021-04-25T00:55:49.911000Z",
+      "admissible": true,
+      "rejected_by": null,
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ],
+      "shared_tile_admissible_km2": 2.5036703239273064,
+      "implied_target_lon_lat": [
+        21.9986046061734,
+        19.48281060050357
+      ],
+      "resolution_ratio_vs": {
+        "nac.m1271742202lc": 1.229249,
+        "nac.m1335207975rc": 1.209486,
+        "nac.m1299958135lc": 1.411067
+      },
+      "max_resolution_ratio": 1.4110671936758892,
+      "abs_d_incidence_vs_A": 1.9100000000000001,
+      "emission_source": "ODE summary",
+      "emission_deg_used": 1.71,
+      "nac_frame_id_from_pdsid": "LEFT",
+      "nac_frame_id_declared": null,
+      "nac_frame_id_used": "LEFT",
+      "d_incidence_vs_incumbents": {
+        "nac.m1271742202lc": 9.82,
+        "nac.m1335207975rc": 49.63000000000001,
+        "nac.m1299958135lc": 1.9100000000000001
+      }
+    },
+    {
+      "pdsid": "nac.m1373951417rc",
+      "incidence_deg": 20.13,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.758,
+      "utc_start": "2021-04-25T00:55:49.911000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1363396554lc",
+      "incidence_deg": 52.24,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.032,
+      "utc_start": "2020-12-23T21:01:26.943000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 52.24 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1363396554rc",
+      "incidence_deg": 52.4,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.03,
+      "utc_start": "2020-12-23T21:01:26.943000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 52.40 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1366902571lc",
+      "incidence_deg": 84.9,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.844,
+      "utc_start": "2021-02-02T10:55:03.643000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 84.90 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1366902571rc",
+      "incidence_deg": 85.03,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.843,
+      "utc_start": "2021-02-02T10:55:03.643000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 85.03 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1356349796lc",
+      "incidence_deg": 41.09,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.983,
+      "utc_start": "2020-10-03T07:35:29.402000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 41.09 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1343417565lc",
+      "incidence_deg": 23.9,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2020-05-06T15:18:18.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1343417565rc",
+      "incidence_deg": 23.98,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.964,
+      "utc_start": "2020-05-06T15:18:18.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1269387099lc",
+      "incidence_deg": 20.66,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.948,
+      "utc_start": "2017-12-31T19:17:12.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1269387099rc",
+      "incidence_deg": 20.7,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.947,
+      "utc_start": "2017-12-31T19:17:12.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1269394082rc",
+      "incidence_deg": 18.24,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.933,
+      "utc_start": "2017-12-31T21:13:35.595000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1277614321rc",
+      "incidence_deg": 84.74,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2018-04-06T00:37:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 84.74 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1271742202lc",
+      "incidence_deg": 29.95,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.933,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "admissible": false,
+      "rejected_by": "filter 6: nac.m1271742202lc is an incumbent frame"
+    },
+    {
+      "pdsid": "nac.m1271742202rc",
+      "incidence_deg": 30.06,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1335207975lc",
+      "incidence_deg": 69.62,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.92,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.62 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "incidence_deg": 69.76,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.918,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.76 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1274089878lc",
+      "incidence_deg": 54.42,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-02-24T05:36:50.958000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 54.42 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1274089878rc",
+      "incidence_deg": 54.55,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.931,
+      "utc_start": "2018-02-24T05:36:50.958000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 54.55 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1274096909lc",
+      "incidence_deg": 54.52,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.932,
+      "utc_start": "2018-02-24T07:34:02.411000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 54.52 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1261154708lc",
+      "incidence_deg": 74.81,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2017-09-27T12:30:41.666000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.81 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1261154708rc",
+      "incidence_deg": 74.96,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.965,
+      "utc_start": "2017-09-27T12:30:41.666000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.96 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1252930156lc",
+      "incidence_deg": 149.86,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.535,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 149.86 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1252930156rc",
+      "incidence_deg": 149.98,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.531,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 149.98 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1341069775lc",
+      "incidence_deg": 42.29,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.966,
+      "utc_start": "2020-04-09T11:08:28.267000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.29 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1341069775rc",
+      "incidence_deg": 42.43,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.965,
+      "utc_start": "2020-04-09T11:08:28.267000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.43 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1323460176lc",
+      "incidence_deg": 77.0,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.983,
+      "utc_start": "2019-09-18T15:35:09.577000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 77.00 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1323460176rc",
+      "incidence_deg": 77.15,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.982,
+      "utc_start": "2019-09-18T15:35:09.577000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 77.15 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1322274196lc",
+      "incidence_deg": 89.97,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.884,
+      "utc_start": "2019-09-04T22:08:49.007000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 89.97 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1322274196rc",
+      "incidence_deg": 90.11,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.882,
+      "utc_start": "2019-09-04T22:08:49.007000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 90.11 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1310523135lc",
+      "incidence_deg": 51.48,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.821,
+      "utc_start": "2019-04-21T21:57:47.778000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 51.48 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1310523135rc",
+      "incidence_deg": 51.6,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.82,
+      "utc_start": "2019-04-21T21:57:47.778000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 51.60 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1317577922lc",
+      "incidence_deg": 40.43,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.859,
+      "utc_start": "2019-07-12T13:37:34.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 40.43 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1315225542lc",
+      "incidence_deg": 21.13,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.806,
+      "utc_start": "2019-06-15T08:11:15.025000Z",
+      "admissible": true,
+      "rejected_by": null,
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ],
+      "shared_tile_admissible_km2": 21.200863849462017,
+      "implied_target_lon_lat": [
+        22.004256304968447,
+        19.635779208221845
+      ],
+      "resolution_ratio_vs": {
+        "nac.m1271742202lc": 1.157568,
+        "nac.m1335207975rc": 1.138958,
+        "nac.m1299958135lc": 1.328784
+      },
+      "max_resolution_ratio": 1.3287841191066996,
+      "abs_d_incidence_vs_A": 2.91,
+      "emission_source": "ODE summary",
+      "emission_deg_used": 1.72,
+      "nac_frame_id_from_pdsid": "LEFT",
+      "nac_frame_id_declared": null,
+      "nac_frame_id_used": "LEFT",
+      "d_incidence_vs_incumbents": {
+        "nac.m1271742202lc": 8.82,
+        "nac.m1335207975rc": 48.63000000000001,
+        "nac.m1299958135lc": 2.91
+      }
+    },
+    {
+      "pdsid": "nac.m1315225542rc",
+      "incidence_deg": 21.16,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.805,
+      "utc_start": "2019-06-15T08:11:15.025000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1231760826lc",
+      "incidence_deg": 97.05,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.635,
+      "utc_start": "2016-10-22T07:32:39.094000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 97.05 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1231760826rc",
+      "incidence_deg": 97.23,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.632,
+      "utc_start": "2016-10-22T07:32:39.094000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 97.23 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1225869984lc",
+      "incidence_deg": 22.96,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.943,
+      "utc_start": "2016-08-15T03:11:57.018000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1225869984rc",
+      "incidence_deg": 23.04,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.941,
+      "utc_start": "2016-08-15T03:11:57.018000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1236465772lc",
+      "incidence_deg": 44.28,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.13,
+      "utc_start": "2016-12-15T18:28:24.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 44.28 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1236465772rc",
+      "incidence_deg": 44.44,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.128,
+      "utc_start": "2016-12-15T18:28:24.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 44.44 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1304654361rc",
+      "incidence_deg": 60.76,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.061,
+      "utc_start": "2019-02-12T23:44:54.303000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 60.76 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1299958135lc",
+      "incidence_deg": 18.22,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.071,
+      "utc_start": "2018-12-20T15:14:28.581000Z",
+      "admissible": false,
+      "rejected_by": "filter 6: nac.m1299958135lc is an incumbent frame"
+    },
+    {
+      "pdsid": "nac.m1299958135rc",
+      "incidence_deg": 18.23,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.069,
+      "utc_start": "2018-12-20T15:14:28.581000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1249395235lc",
+      "incidence_deg": 65.12,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.904,
+      "utc_start": "2017-05-14T09:59:28.639000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.12 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1249395235rc",
+      "incidence_deg": 65.26,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.903,
+      "utc_start": "2017-05-14T09:59:28.639000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.26 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1297603528lc",
+      "incidence_deg": 33.77,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.067,
+      "utc_start": "2018-11-23T09:11:01.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 33.77 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1297603528rc",
+      "incidence_deg": 33.91,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.065,
+      "utc_start": "2018-11-23T09:11:01.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 33.91 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1295250081lc",
+      "incidence_deg": 58.68,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.042,
+      "utc_start": "2018-10-27T03:26:53.841000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 58.68 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1295257083lc",
+      "incidence_deg": 58.24,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.03,
+      "utc_start": "2018-10-27T05:23:35.962000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 58.24 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1295257083rc",
+      "incidence_deg": 58.4,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2018-10-27T05:23:35.962000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 58.40 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1291713481rc",
+      "incidence_deg": 81.91,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.975,
+      "utc_start": "2018-09-16T05:03:33.805000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 81.91 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1291720504lc",
+      "incidence_deg": 81.81,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.975,
+      "utc_start": "2018-09-16T07:00:36.969000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 81.81 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1291720504rc",
+      "incidence_deg": 81.96,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.973,
+      "utc_start": "2018-09-16T07:00:36.969000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 81.96 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1212932972lc",
+      "incidence_deg": 45.48,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.082,
+      "utc_start": "2016-03-18T09:35:05.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 45.48 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1212932972rc",
+      "incidence_deg": 45.64,
+      "emission_deg": "1.16",
+      "map_resolution_m": 1.081,
+      "utc_start": "2016-03-18T09:35:05.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 45.64 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1205872034lc",
+      "incidence_deg": 46.95,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.077,
+      "utc_start": "2015-12-27T16:12:47.162000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 46.95 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1205872034rc",
+      "incidence_deg": 47.11,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-12-27T16:12:47.162000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 47.11 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1215288999lc",
+      "incidence_deg": 70.96,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.07,
+      "utc_start": "2016-04-14T16:02:12.462000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 70.96 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1215288999rc",
+      "incidence_deg": 71.13,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.068,
+      "utc_start": "2016-04-14T16:02:12.462000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 71.13 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1209391299lc",
+      "incidence_deg": 160.0,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.024,
+      "utc_start": "2016-02-06T09:47:12.016000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 160.00 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1197625458lc",
+      "incidence_deg": 42.03,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-09-23T05:29:51.629000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.03 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1197625458rc",
+      "incidence_deg": 42.18,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.073,
+      "utc_start": "2015-09-23T05:29:51.629000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.18 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1197632472lc",
+      "incidence_deg": 42.18,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.083,
+      "utc_start": "2015-09-23T07:26:45.220000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.18 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1199981485lc",
+      "incidence_deg": 66.72,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.72 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1199981485rc",
+      "incidence_deg": 66.88,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.073,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.88 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1182331886lc",
+      "incidence_deg": 43.74,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.197,
+      "utc_start": "2015-03-30T05:16:59.183000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.74 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1182331886rc",
+      "incidence_deg": 43.91,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.196,
+      "utc_start": "2015-03-30T05:16:59.183000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.91 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1190561167lc",
+      "incidence_deg": 48.66,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.053,
+      "utc_start": "2015-07-03T11:11:40.665000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.66 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1251744297lc",
+      "incidence_deg": 41.78,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.931,
+      "utc_start": "2017-06-10T14:30:30.573000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 41.78 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1251744297rc",
+      "incidence_deg": 41.91,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.929,
+      "utc_start": "2017-06-10T14:30:30.573000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 41.91 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1184689606lc",
+      "incidence_deg": 68.9,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.191,
+      "utc_start": "2015-04-26T12:12:19.485000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.90 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1192922657lc",
+      "incidence_deg": 26.1,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.03,
+      "utc_start": "2015-07-30T19:09:50.404000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1192922657rc",
+      "incidence_deg": 26.21,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.028,
+      "utc_start": "2015-07-30T19:09:50.404000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1195269931lc",
+      "incidence_deg": 24.08,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.063,
+      "utc_start": "2015-08-26T23:11:04.091000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1195269931rc",
+      "incidence_deg": 24.14,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.061,
+      "utc_start": "2015-08-26T23:11:04.091000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1188213794lc",
+      "incidence_deg": 72.76,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.043,
+      "utc_start": "2015-06-06T07:08:47.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.76 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1188213794rc",
+      "incidence_deg": 72.92,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.041,
+      "utc_start": "2015-06-06T07:08:47.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.92 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1175268993lc",
+      "incidence_deg": 48.29,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.21,
+      "utc_start": "2015-01-07T11:22:06.706000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.29 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1175268993rc",
+      "incidence_deg": 48.47,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.209,
+      "utc_start": "2015-01-07T11:22:06.706000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.47 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1432613704lc",
+      "incidence_deg": 21.13,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.755,
+      "utc_start": "2023-03-05T00:00:36.928000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1432613704rc",
+      "incidence_deg": 21.15,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.754,
+      "utc_start": "2023-03-05T00:00:36.928000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1167020976lc",
+      "incidence_deg": 39.95,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.175,
+      "utc_start": "2014-10-04T00:15:09.795000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 39.95 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1167020976rc",
+      "incidence_deg": 40.11,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.173,
+      "utc_start": "2014-10-04T00:15:09.795000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 40.11 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1169380454lc",
+      "incidence_deg": 65.15,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.187,
+      "utc_start": "2014-10-31T07:39:47.059000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.15 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1169380454rc",
+      "incidence_deg": 65.33,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.185,
+      "utc_start": "2014-10-31T07:39:47.059000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.33 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1103416593rc",
+      "incidence_deg": 24.51,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.035,
+      "utc_start": "2012-09-27T20:22:05.954000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1111670976lc",
+      "incidence_deg": 72.46,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.212,
+      "utc_start": "2013-01-01T09:15:09.684000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.46 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1111670976rc",
+      "incidence_deg": 72.65,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.21,
+      "utc_start": "2013-01-01T09:15:09.684000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.65 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1121096182lc",
+      "incidence_deg": 42.9,
+      "emission_deg": "1.76",
+      "map_resolution_m": 0.96,
+      "utc_start": "2013-04-20T11:21:55.050000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.90 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1121096182rc",
+      "incidence_deg": 43.07,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.958,
+      "utc_start": "2013-04-20T11:21:55.050000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.07 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1114021882lc",
+      "incidence_deg": 46.39,
+      "emission_deg": "1.76",
+      "map_resolution_m": 0.987,
+      "utc_start": "2013-01-28T14:16:55.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 46.39 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1114021882rc",
+      "incidence_deg": 46.57,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.985,
+      "utc_start": "2013-01-28T14:16:55.285000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 46.57 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1114029015rc",
+      "incidence_deg": 47.01,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.993,
+      "utc_start": "2013-01-28T16:15:47.794000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 47.01 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1105766804rc",
+      "incidence_deg": 41.96,
+      "emission_deg": "15.81",
+      "map_resolution_m": 1.056,
+      "utc_start": "2012-10-25T01:12:16.877000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 41.96 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1105773947rc",
+      "incidence_deg": 41.09,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.015,
+      "utc_start": "2012-10-25T03:11:20.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 41.09 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1105781090rc",
+      "incidence_deg": 40.26,
+      "emission_deg": "13.04",
+      "map_resolution_m": 1.047,
+      "utc_start": "2012-10-25T05:10:23.406000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 40.26 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1123448693lc",
+      "incidence_deg": 68.31,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.251,
+      "utc_start": "2013-05-17T16:50:26.131000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.31 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1123448693rc",
+      "incidence_deg": 68.51,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.249,
+      "utc_start": "2013-05-17T16:50:26.131000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.51 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1108132004lc",
+      "incidence_deg": 66.69,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.311,
+      "utc_start": "2012-11-21T10:12:17.261000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.69 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1108132004rc",
+      "incidence_deg": 66.89,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.309,
+      "utc_start": "2012-11-21T10:12:17.261000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.89 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1108139151lc",
+      "incidence_deg": 66.75,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.312,
+      "utc_start": "2012-11-21T12:11:24.678000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.75 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1142297886lc",
+      "incidence_deg": 74.65,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.226,
+      "utc_start": "2013-12-21T20:43:39.087000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.65 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1142297886rc",
+      "incidence_deg": 74.84,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.224,
+      "utc_start": "2013-12-21T20:43:39.087000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.84 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1144651432lc",
+      "incidence_deg": 48.44,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.235,
+      "utc_start": "2014-01-18T02:29:25.519000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.44 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1144651432rc",
+      "incidence_deg": 48.63,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.233,
+      "utc_start": "2014-01-18T02:29:25.519000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.63 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1144658546rc",
+      "incidence_deg": 48.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.232,
+      "utc_start": "2014-01-18T04:27:59.082000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 48.58 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1151723858lc",
+      "incidence_deg": 42.87,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.258,
+      "utc_start": "2014-04-09T23:03:11.914000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 42.87 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1151723858rc",
+      "incidence_deg": 43.05,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.256,
+      "utc_start": "2014-04-09T23:03:11.914000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.05 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1138759750rc",
+      "incidence_deg": 65.27,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.25,
+      "utc_start": "2013-11-10T21:54:43.390000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.27 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1131700842rc",
+      "incidence_deg": 27.84,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.981,
+      "utc_start": "2013-08-21T05:06:14.874000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1147005001lc",
+      "incidence_deg": 23.99,
+      "emission_deg": "2.17",
+      "map_resolution_m": 1.214,
+      "utc_start": "2014-02-14T08:15:34.658000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1154072951lc",
+      "incidence_deg": 67.29,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.215,
+      "utc_start": "2014-05-07T03:34:44.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 67.29 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1154072951rc",
+      "incidence_deg": 67.48,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.213,
+      "utc_start": "2014-05-07T03:34:44.271000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 67.48 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1149360482rc",
+      "incidence_deg": 21.53,
+      "emission_deg": "1.18",
+      "map_resolution_m": 0.995,
+      "utc_start": "2014-03-13T14:33:34.708000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1156429261lc",
+      "incidence_deg": 93.07,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.255,
+      "utc_start": "2014-06-03T10:06:34.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 93.07 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1156429261rc",
+      "incidence_deg": 93.27,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.254,
+      "utc_start": "2014-06-03T10:06:34.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 93.27 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1157606721lc",
+      "incidence_deg": 74.34,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.201,
+      "utc_start": "2014-06-17T01:10:54.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.34 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1157606721rc",
+      "incidence_deg": 74.52,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.199,
+      "utc_start": "2014-06-17T01:10:54.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.52 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1179973535lc",
+      "incidence_deg": 21.89,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.201,
+      "utc_start": "2015-03-02T22:11:08.493000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1179973535rc",
+      "incidence_deg": 21.99,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.199,
+      "utc_start": "2015-03-02T22:11:08.493000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1159955968lc",
+      "incidence_deg": 49.98,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.2,
+      "utc_start": "2014-07-14T05:45:00.955000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.98 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1159955968rc",
+      "incidence_deg": 50.16,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.198,
+      "utc_start": "2014-07-14T05:45:00.955000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 50.16 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1159956007lc",
+      "incidence_deg": 49.14,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.171,
+      "utc_start": "2014-07-14T05:45:40.478000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.14 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1159963103lc",
+      "incidence_deg": 49.39,
+      "emission_deg": "1.75",
+      "map_resolution_m": 1.184,
+      "utc_start": "2014-07-14T07:43:56.096000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.39 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1159963103rc",
+      "incidence_deg": 49.56,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.183,
+      "utc_start": "2014-07-14T07:43:56.096000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.56 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1172909560lc",
+      "incidence_deg": 74.28,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.176,
+      "utc_start": "2014-12-11T03:58:13.232000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.28 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1172909560rc",
+      "incidence_deg": 74.46,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.174,
+      "utc_start": "2014-12-11T03:58:13.232000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.46 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1172916736lc",
+      "incidence_deg": 74.59,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.21,
+      "utc_start": "2014-12-11T05:57:49.594000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.59 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1172916736rc",
+      "incidence_deg": 74.77,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.208,
+      "utc_start": "2014-12-11T05:57:49.594000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.77 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1162312261lc",
+      "incidence_deg": 29.75,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.219,
+      "utc_start": "2014-08-10T12:16:34.035000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1162312261rc",
+      "incidence_deg": 29.88,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.218,
+      "utc_start": "2014-08-10T12:16:34.035000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1164667643lc",
+      "incidence_deg": 21.66,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.197,
+      "utc_start": "2014-09-06T18:32:56.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1164667643rc",
+      "incidence_deg": 21.72,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.196,
+      "utc_start": "2014-09-06T18:32:56.828000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m188093023rc",
+      "incidence_deg": 22.82,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.024,
+      "utc_start": "2012-04-03T11:49:16.278000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1096350825lc",
+      "incidence_deg": 72.08,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.304,
+      "utc_start": "2012-07-08T01:39:18.122000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.08 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1096350825rc",
+      "incidence_deg": 72.29,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.302,
+      "utc_start": "2012-07-08T01:39:18.122000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.29 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m181023581lc",
+      "incidence_deg": 69.05,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.339,
+      "utc_start": "2012-01-12T16:05:14.784000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.05 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m181023581rc",
+      "incidence_deg": 69.26,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.337,
+      "utc_start": "2012-01-12T16:05:14.784000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.26 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m165699999lc",
+      "incidence_deg": 68.62,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.479,
+      "utc_start": "2011-07-19T07:32:12.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.62 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m165699999rc",
+      "incidence_deg": 68.68,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.478,
+      "utc_start": "2011-07-19T07:32:12.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.68 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m183382443lc",
+      "incidence_deg": 43.44,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.328,
+      "utc_start": "2012-02-08T23:19:36.698000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.44 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m183382443rc",
+      "incidence_deg": 43.64,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.326,
+      "utc_start": "2012-02-08T23:19:36.698000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.64 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1101066634lc",
+      "incidence_deg": 26.43,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.024,
+      "utc_start": "2012-08-31T15:36:07.275000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1101066634rc",
+      "incidence_deg": 26.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.022,
+      "utc_start": "2012-08-31T15:36:07.275000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m185741283lc",
+      "incidence_deg": 20.46,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.03,
+      "utc_start": "2012-03-07T06:33:36.067000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m185741283rc",
+      "incidence_deg": 20.58,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.028,
+      "utc_start": "2012-03-07T06:33:36.067000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m185741324lc",
+      "incidence_deg": 22.62,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.046,
+      "utc_start": "2012-03-07T06:34:16.602000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m185741324rc",
+      "incidence_deg": 22.73,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.044,
+      "utc_start": "2012-03-07T06:34:16.602000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m131501654lc",
+      "incidence_deg": 80.08,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.862,
+      "utc_start": "2010-06-18T11:59:46.608000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 80.08 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m131501654rc",
+      "incidence_deg": 80.14,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.861,
+      "utc_start": "2010-06-18T11:59:46.608000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 80.14 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m139761581lc",
+      "incidence_deg": 21.94,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-09-22T02:25:14.003000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m139761581rc",
+      "incidence_deg": 21.97,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-09-22T02:25:14.003000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m139768368rc",
+      "incidence_deg": 21.98,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-09-22T04:18:20.633000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m162161852lc",
+      "incidence_deg": 74.41,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.847,
+      "utc_start": "2011-06-08T08:43:04.767000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.41 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m162161852rc",
+      "incidence_deg": 74.48,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.846,
+      "utc_start": "2011-06-08T08:43:04.767000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.48 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m132691635rc",
+      "incidence_deg": 87.98,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.493,
+      "utc_start": "2010-07-02T06:32:47.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 87.98 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m124423514lc",
+      "incidence_deg": 18.0,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-03-28T13:50:47.998000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 18.00 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m124423514rc",
+      "incidence_deg": 18.0,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-03-28T13:50:47.998000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 18.00 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m150368994lc",
+      "incidence_deg": 64.49,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.479,
+      "utc_start": "2011-01-22T20:55:26.416000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.49 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m150375724lc",
+      "incidence_deg": 63.94,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-01-22T22:47:36.607000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 63.94 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m150375724rc",
+      "incidence_deg": 64.0,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.477,
+      "utc_start": "2011-01-22T22:47:36.607000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.00 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m117345577lc",
+      "incidence_deg": 83.56,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.887,
+      "utc_start": "2010-01-05T15:45:10.670000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 83.56 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m117345577rc",
+      "incidence_deg": 83.63,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.885,
+      "utc_start": "2010-01-05T15:45:10.670000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 83.63 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m135046033lc",
+      "incidence_deg": 64.11,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.491,
+      "utc_start": "2010-07-29T12:32:45.501000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.11 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m135046033rc",
+      "incidence_deg": 64.18,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.49,
+      "utc_start": "2010-07-29T12:32:45.501000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.18 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m126785727lc",
+      "incidence_deg": 32.65,
+      "emission_deg": "1.69",
+      "map_resolution_m": 0.483,
+      "utc_start": "2010-04-24T22:01:00.755000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.65 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m126785727rc",
+      "incidence_deg": 32.71,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.482,
+      "utc_start": "2010-04-24T22:01:00.755000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.71 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m119707150lc",
+      "incidence_deg": 57.33,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.487,
+      "utc_start": "2010-02-01T23:44:43.409000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 57.33 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m119707150rc",
+      "incidence_deg": 57.39,
+      "emission_deg": "1.14",
+      "map_resolution_m": 0.486,
+      "utc_start": "2010-02-01T23:44:43.409000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 57.39 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m137400523lc",
+      "incidence_deg": 40.77,
+      "emission_deg": "10.12",
+      "map_resolution_m": 0.497,
+      "utc_start": "2010-08-25T18:34:16.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 40.77 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m137400523rc",
+      "incidence_deg": 40.83,
+      "emission_deg": "7.29",
+      "map_resolution_m": 0.495,
+      "utc_start": "2010-08-25T18:34:16.168000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 40.83 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m146838045lc",
+      "incidence_deg": 75.32,
+      "emission_deg": "1.68",
+      "map_resolution_m": 0.871,
+      "utc_start": "2010-12-13T00:06:18.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 75.32 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m146838045rc",
+      "incidence_deg": 75.39,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.869,
+      "utc_start": "2010-12-13T00:06:18.392000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 75.39 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1437300650lc",
+      "incidence_deg": 64.92,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.73,
+      "utc_start": "2023-04-28T05:56:22.674000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.92 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1437300650rc",
+      "incidence_deg": 65.03,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.729,
+      "utc_start": "2023-04-28T05:56:22.674000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 65.03 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1430263443lc",
+      "incidence_deg": 32.2,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.784,
+      "utc_start": "2023-02-05T19:09:36.254000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.20 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1430263443rc",
+      "incidence_deg": 32.3,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.783,
+      "utc_start": "2023-02-05T19:09:36.254000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.30 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1430270433rc",
+      "incidence_deg": 32.93,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.784,
+      "utc_start": "2023-02-05T21:06:06.407000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.93 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1443181421lc",
+      "incidence_deg": 49.35,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.933,
+      "utc_start": "2023-07-05T07:29:14.248000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.35 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1443181421rc",
+      "incidence_deg": 49.48,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.932,
+      "utc_start": "2023-07-05T07:29:14.248000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 49.48 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1445526396lc",
+      "incidence_deg": 24.78,
+      "emission_deg": "1.73",
+      "map_resolution_m": 0.919,
+      "utc_start": "2023-08-01T10:52:08.865000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1445526396rc",
+      "incidence_deg": 24.88,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.918,
+      "utc_start": "2023-08-01T10:52:08.865000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1447871829lc",
+      "incidence_deg": 19.04,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.906,
+      "utc_start": "2023-08-28T14:22:42.211000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1447871829rc",
+      "incidence_deg": 19.11,
+      "emission_deg": "1.19",
+      "map_resolution_m": 0.904,
+      "utc_start": "2023-08-28T14:22:42.211000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1452560468lc",
+      "incidence_deg": 68.8,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.855,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.80 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1452560468rc",
+      "incidence_deg": 68.93,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.854,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.93 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1453714162lc",
+      "incidence_deg": 94.86,
+      "emission_deg": "3.69",
+      "map_resolution_m": 1.239,
+      "utc_start": "2023-11-04T05:14:54.959000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 94.86 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1453714162rc",
+      "incidence_deg": 94.96,
+      "emission_deg": "6.54",
+      "map_resolution_m": 1.24,
+      "utc_start": "2023-11-04T05:14:54.959000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 94.96 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1456051210lc",
+      "incidence_deg": 66.8,
+      "emission_deg": "1.71",
+      "map_resolution_m": 1.465,
+      "utc_start": "2023-12-01T06:25:43.772000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.80 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1456058166lc",
+      "incidence_deg": 66.95,
+      "emission_deg": "1.71",
+      "map_resolution_m": 1.454,
+      "utc_start": "2023-12-01T08:21:39.948000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 66.95 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1456058166rc",
+      "incidence_deg": 67.06,
+      "emission_deg": "1.15",
+      "map_resolution_m": 1.452,
+      "utc_start": "2023-12-01T08:21:39.948000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 67.06 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1458402348lc",
+      "incidence_deg": 39.84,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.63,
+      "utc_start": "2023-12-28T11:31:20.527000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 39.84 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1458402348rc",
+      "incidence_deg": 39.95,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.629,
+      "utc_start": "2023-12-28T11:31:20.527000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 39.95 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1460738557lc",
+      "incidence_deg": 22.95,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.631,
+      "utc_start": "2024-01-24T12:28:09.796000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1460738557rc",
+      "incidence_deg": 22.99,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.63,
+      "utc_start": "2024-01-24T12:28:09.796000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1463080750rc",
+      "incidence_deg": 32.49,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.78,
+      "utc_start": "2024-02-20T15:04:43.196000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.49 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1463087775lc",
+      "incidence_deg": 32.03,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.784,
+      "utc_start": "2024-02-20T17:01:48.483000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.03 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1463087775rc",
+      "incidence_deg": 32.12,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.783,
+      "utc_start": "2024-02-20T17:01:48.483000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 32.12 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1467772324lc",
+      "incidence_deg": 84.77,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.808,
+      "utc_start": "2024-04-14T22:17:37.119000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 84.77 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1467772324rc",
+      "incidence_deg": 84.89,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.806,
+      "utc_start": "2024-04-14T22:17:37.119000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 84.89 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1468961710lc",
+      "incidence_deg": 83.51,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.745,
+      "utc_start": "2024-04-28T16:40:43.518000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 83.51 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1468961710rc",
+      "incidence_deg": 83.62,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.744,
+      "utc_start": "2024-04-28T16:40:43.518000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 83.62 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1471310882rc",
+      "incidence_deg": 56.46,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.745,
+      "utc_start": "2024-05-25T21:13:35.155000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 56.46 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1478330852lc",
+      "incidence_deg": 35.56,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.77,
+      "utc_start": "2024-08-15T03:13:05.444000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 35.56 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1478330852rc",
+      "incidence_deg": 35.66,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.769,
+      "utc_start": "2024-08-15T03:13:05.444000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 35.66 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1478337857lc",
+      "incidence_deg": 35.46,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.771,
+      "utc_start": "2024-08-15T05:09:50.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 35.46 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1478337857rc",
+      "incidence_deg": 35.57,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.77,
+      "utc_start": "2024-08-15T05:09:50.357000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 35.57 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1484169138lc",
+      "incidence_deg": 73.75,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.781,
+      "utc_start": "2024-10-21T16:57:50.672000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 73.75 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1484169138rc",
+      "incidence_deg": 73.87,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.78,
+      "utc_start": "2024-10-21T16:57:50.672000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 73.87 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1486511871lc",
+      "incidence_deg": 46.21,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.76,
+      "utc_start": "2024-11-17T19:43:24.504000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 46.21 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1486511871rc",
+      "incidence_deg": 46.32,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.759,
+      "utc_start": "2024-11-17T19:43:24.504000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 46.32 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1488854540lc",
+      "incidence_deg": 25.53,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.741,
+      "utc_start": "2024-12-14T22:27:52.688000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1488854540rc",
+      "incidence_deg": 25.6,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.74,
+      "utc_start": "2024-12-14T22:27:52.688000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1491195842lc",
+      "incidence_deg": 26.14,
+      "emission_deg": "1.71",
+      "map_resolution_m": 0.723,
+      "utc_start": "2025-01-11T00:49:34.729000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1491195842rc",
+      "incidence_deg": 26.2,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.722,
+      "utc_start": "2025-01-11T00:49:34.729000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1495878470lc",
+      "incidence_deg": 79.25,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.692,
+      "utc_start": "2025-03-06T05:33:22.610000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 79.25 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1495878470rc",
+      "incidence_deg": 79.35,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.691,
+      "utc_start": "2025-03-06T05:33:22.610000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 79.35 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1495885512lc",
+      "incidence_deg": 79.02,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.685,
+      "utc_start": "2025-03-06T07:30:45.151000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 79.02 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1497074404lc",
+      "incidence_deg": 89.9,
+      "emission_deg": "14.03",
+      "map_resolution_m": 0.87,
+      "utc_start": "2025-03-20T01:45:37.333000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 89.90 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1497074404rc",
+      "incidence_deg": 90.04,
+      "emission_deg": "16.92",
+      "map_resolution_m": 0.875,
+      "utc_start": "2025-03-20T01:45:37.333000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 90.04 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1506439741lc",
+      "incidence_deg": 31.65,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.832,
+      "utc_start": "2025-07-06T11:14:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 31.65 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1506439741rc",
+      "incidence_deg": 31.77,
+      "emission_deg": "1.16",
+      "map_resolution_m": 0.831,
+      "utc_start": "2025-07-06T11:14:34.002000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 31.77 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1511122032lc",
+      "incidence_deg": 85.24,
+      "emission_deg": "1.73",
+      "map_resolution_m": 1.608,
+      "utc_start": "2025-08-29T15:52:44.417000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 85.24 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1511122032rc",
+      "incidence_deg": 85.36,
+      "emission_deg": "1.14",
+      "map_resolution_m": 1.605,
+      "utc_start": "2025-08-29T15:52:44.417000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 85.36 > 75.0 (D-029)"
+    },
+    {
+      "pdsid": "nac.m1514608612lc",
+      "incidence_deg": 50.25,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.653,
+      "utc_start": "2025-10-09T00:22:25.136000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 50.25 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1514608612rc",
+      "incidence_deg": 50.34,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.652,
+      "utc_start": "2025-10-09T00:22:25.136000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 50.34 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1519291097lc",
+      "incidence_deg": 26.17,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.669,
+      "utc_start": "2025-12-02T05:03:50.269000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1519291097rc",
+      "incidence_deg": 26.21,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.668,
+      "utc_start": "2025-12-02T05:03:50.269000Z",
+      "admissible": false,
+      "rejected_by": "filter 1b: no ground on which the incumbents AND this frame can all centre a full 4096x2048 tile",
+      "corner_source": "ODE footprint ring, inferred vertex order (ranking only)",
+      "frame_lines_samples": [
+        52224,
+        5064
+      ]
+    },
+    {
+      "pdsid": "nac.m1527499328lc",
+      "incidence_deg": 64.65,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.681,
+      "utc_start": "2026-03-07T05:07:41.165000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.65 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1527499328rc",
+      "incidence_deg": 64.75,
+      "emission_deg": "1.15",
+      "map_resolution_m": 0.68,
+      "utc_start": "2026-03-07T05:07:41.165000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 64.75 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    },
+    {
+      "pdsid": "nac.m1532176291lc",
+      "incidence_deg": 17.63,
+      "emission_deg": "1.7",
+      "map_resolution_m": 0.67,
+      "utc_start": "2026-04-30T08:17:04.340000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 17.63 outside the pre-registered low band [18.22, 30.91] (D-037)"
+    }
+  ],
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "generated_utc": "2026-08-26T13:54:07Z"
+}
