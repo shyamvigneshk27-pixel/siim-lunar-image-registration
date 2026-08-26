@@ -1,0 +1,297 @@
+{
+  "stage": "REAL-DATA-04",
+  "step": "1 - candidate screening for frame D",
+  "data_read": "ODE product METADATA ONLY. No image bytes were fetched.",
+  "criteria_source": "docs/stages/REAL-DATA-04_illumination_vs_frame_identity.md section 3, frozen before this ran",
+  "criteria": {
+    "hard_1_same_ground_point": [
+      22.033852048576282,
+      20.03525252164036
+    ],
+    "hard_2_full_tile_fits_unclamped": [
+      4096,
+      2048
+    ],
+    "hard_3_incidence_max_deg": 75.0,
+    "hard_4_incidence_band_deg": [
+      9.95,
+      39.95
+    ],
+    "hard_5_not_an_incumbent": [
+      "nac.m1271742202lc",
+      "nac.m1335207975rc",
+      "nac.m1452560468lc"
+    ],
+    "deciding": "minimise the maximum Map_resolution ratio vs A, B, C",
+    "tie_break": "smaller |incidence - incidence_A|"
+  },
+  "ode_query": {
+    "product_type": "CDRNAC4",
+    "minlat": 20.02,
+    "maxlat": 20.05,
+    "westernlon": 22.02,
+    "easternlon": 22.05,
+    "limit": 2000,
+    "n_returned": 17
+  },
+  "frame_size_assumption": {
+    "lines": 52224,
+    "samples": 5064,
+    "note": "ODE does not publish IMAGE_LINES / LINE_SAMPLES in the product summary. Nominal NAC CDR dimensions are used to RANK candidates only; the winner's true dimensions come from the archive index table before acquisition, and acquire_real_pair.py refuses to clamp a window."
+  },
+  "footprint_vertex_order_assumption": {
+    "order": [
+      "upper_right",
+      "lower_right",
+      "lower_left",
+      "upper_left"
+    ],
+    "note": "ODE's ring order is undocumented (REAL-DATA-02 section 6.3). This inference is used ONLY to rank candidates. No claim rests on it; the chosen frame's corners are re-fetched from the NAMED index columns."
+  },
+  "incumbents": {
+    "nac.m1271742202lc": {
+      "incidence_deg": 29.95,
+      "map_resolution_m": 0.933
+    },
+    "nac.m1335207975rc": {
+      "incidence_deg": 69.76,
+      "map_resolution_m": 0.918
+    },
+    "nac.m1452560468lc": {
+      "incidence_deg": 68.8,
+      "map_resolution_m": 0.855
+    }
+  },
+  "funnel": {
+    "filter 3": 5,
+    "filter 6": 1,
+    "filter 5": 6,
+    "filter 2": 4,
+    "filter 4": 1
+  },
+  "n_admissible": 0,
+  "ranked_admissible": [],
+  "selected": null,
+  "all_candidates": [
+    {
+      "pdsid": "nac.m1363396554rc",
+      "incidence_deg": 52.4,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.03,
+      "utc_start": "2020-12-23T21:01:26.943000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 32267, sample 3798 and run off a 52224x5064 frame",
+      "target_pixel_line": 34314.92267419368,
+      "target_pixel_sample": 4821.247236806619,
+      "unclamped_line0": 32267,
+      "unclamped_sample0": 3798,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1271742202lc",
+      "incidence_deg": 29.95,
+      "emission_deg": "1.74",
+      "map_resolution_m": 0.933,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "admissible": false,
+      "rejected_by": "filter 6: nac.m1271742202lc is an incumbent frame",
+      "target_pixel_line": 20002.7567521907,
+      "target_pixel_sample": 2834.9878080582666,
+      "unclamped_line0": 17955,
+      "unclamped_sample0": 1811,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "incidence_deg": 69.76,
+      "emission_deg": "1.17",
+      "map_resolution_m": 0.918,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 69.76 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 31869.026700453363,
+      "target_pixel_sample": 2250.1875788142515,
+      "unclamped_line0": 29822,
+      "unclamped_sample0": 1227,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1252930156lc",
+      "incidence_deg": 149.86,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.535,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line -0.0019, sample 0.8664), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1252930156rc",
+      "incidence_deg": 149.98,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.531,
+      "utc_start": "2017-06-24T07:54:49.422000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line 0.0033, sample -0.0751), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1236465772rc",
+      "incidence_deg": 44.44,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.128,
+      "utc_start": "2016-12-15T18:28:24.846000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 2282, sample 3900 and run off a 52224x5064 frame",
+      "target_pixel_line": 4329.431087963799,
+      "target_pixel_sample": 4923.251266768306,
+      "unclamped_line0": 2282,
+      "unclamped_sample0": 3900,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1212932972lc",
+      "incidence_deg": 45.48,
+      "emission_deg": "1.77",
+      "map_resolution_m": 1.082,
+      "utc_start": "2016-03-18T09:35:05.476000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 45.48 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 20159.47036414689,
+      "target_pixel_sample": 4020.830774126361,
+      "unclamped_line0": 18112,
+      "unclamped_sample0": 2997,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1205872034rc",
+      "incidence_deg": 47.11,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-12-27T16:12:47.162000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line -1904, sample 2171 and run off a 52224x5064 frame",
+      "target_pixel_line": 143.33695581625517,
+      "target_pixel_sample": 3194.96970891763,
+      "unclamped_line0": -1904,
+      "unclamped_sample0": 2171,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1199981485lc",
+      "incidence_deg": 66.72,
+      "emission_deg": "1.74",
+      "map_resolution_m": 1.075,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line 0.9393, sample 1.0592), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m1199981485rc",
+      "incidence_deg": 66.88,
+      "emission_deg": "1.17",
+      "map_resolution_m": 1.073,
+      "utc_start": "2015-10-20T11:56:58.712000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 46768, sample -717 and run off a 52224x5064 frame",
+      "target_pixel_line": 48815.123010121635,
+      "target_pixel_sample": 306.25465255019526,
+      "unclamped_line0": 46768,
+      "unclamped_sample0": -717,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1182331886lc",
+      "incidence_deg": 43.74,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.197,
+      "utc_start": "2015-03-30T05:16:59.183000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 43.74 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 4488.479639608018,
+      "target_pixel_sample": 1540.1959695571372,
+      "unclamped_line0": 2441,
+      "unclamped_sample0": 517,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1175268993rc",
+      "incidence_deg": 48.47,
+      "emission_deg": "1.18",
+      "map_resolution_m": 1.209,
+      "utc_start": "2015-01-07T11:22:06.706000Z",
+      "admissible": false,
+      "rejected_by": "filter 3: a 4096x2048 tile centred on the target would start at line 2249, sample 3954 and run off a 52224x5064 frame",
+      "target_pixel_line": 4296.472130665681,
+      "target_pixel_sample": 4977.353339732726,
+      "unclamped_line0": 2249,
+      "unclamped_sample0": 3954,
+      "full_tile_fits_unclamped": false
+    },
+    {
+      "pdsid": "nac.m1142297886lc",
+      "incidence_deg": 74.65,
+      "emission_deg": "1.76",
+      "map_resolution_m": 1.226,
+      "utc_start": "2013-12-21T20:43:39.087000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 74.65 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 4450.8333168513855,
+      "target_pixel_sample": 3180.553732193581,
+      "unclamped_line0": 2403,
+      "unclamped_sample0": 2157,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1096350825rc",
+      "incidence_deg": 72.29,
+      "emission_deg": "1.19",
+      "map_resolution_m": 1.302,
+      "utc_start": "2012-07-08T01:39:18.122000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 72.29 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 3773.584794820127,
+      "target_pixel_sample": 1713.1120671926797,
+      "unclamped_line0": 1726,
+      "unclamped_sample0": 690,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m131501654rc",
+      "incidence_deg": 80.14,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.861,
+      "utc_start": "2010-06-18T11:59:46.608000Z",
+      "admissible": false,
+      "rejected_by": "filter 2: target not inside the frame ((lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line 0.0227, sample 1.0846), and no clamping is applied)"
+    },
+    {
+      "pdsid": "nac.m117345577rc",
+      "incidence_deg": 83.63,
+      "emission_deg": "1.13",
+      "map_resolution_m": 0.885,
+      "utc_start": "2010-01-05T15:45:10.670000Z",
+      "admissible": false,
+      "rejected_by": "filter 4: incidence 83.63 > 75.0 (D-029)",
+      "target_pixel_line": 34386.56795251213,
+      "target_pixel_sample": 2553.117242115948,
+      "unclamped_line0": 32339,
+      "unclamped_sample0": 1530,
+      "full_tile_fits_unclamped": true
+    },
+    {
+      "pdsid": "nac.m1452560468lc",
+      "incidence_deg": 68.8,
+      "emission_deg": "1.72",
+      "map_resolution_m": 0.855,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "admissible": false,
+      "rejected_by": "filter 5: incidence 68.80 outside the pre-registered low band [9.95, 39.95] (D-037)",
+      "target_pixel_line": 11135.585781900325,
+      "target_pixel_sample": 1740.6835671067224,
+      "unclamped_line0": 9088,
+      "unclamped_sample0": 717,
+      "full_tile_fits_unclamped": true
+    }
+  ],
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "generated_utc": "2026-08-26T07:53:35Z"
+}

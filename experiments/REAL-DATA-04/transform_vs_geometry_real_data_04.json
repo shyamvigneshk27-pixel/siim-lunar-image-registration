@@ -1,0 +1,299 @@
+{
+  "stage": "REAL-DATA-03",
+  "check": "estimated transform vs archive corner geometry",
+  "generated_utc": "2026-08-26T08:18:25Z",
+  "status": "INDEPENDENT BOUND, NOT GROUND TRUTH. The prediction reads no image data and uses no matcher output; it is limited by the 0.01 deg quantisation of the archive corner coordinates (~150 m ~ 165 full-frame px). It separates a plausible registration from a catastrophically wrong one. It certifies NO accuracy, and in particular NO sub-pixel accuracy.",
+  "manifest": "real_quad_d_geo_manifest.json",
+  "registration": "experiments/REAL-DATA-04/loop_closure_real_data_04.json",
+  "model": "affine",
+  "downsample": 2,
+  "monte_carlo": {
+    "n_draws": 200,
+    "seed": 20260826,
+    "corner_quantisation_deg": 0.005
+  },
+  "edges": [
+    {
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "n_predicted_correspondences": 81,
+      "n_inliers_reported": 7,
+      "predicted_transform_matrix": [
+        [
+          0.9960287533989105,
+          0.01207444825402191,
+          -10.652771388591702
+        ],
+        [
+          0.0002497680581318918,
+          1.0175332711359182,
+          -18.203929355703963
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "estimated_transform_matrix": [
+        [
+          0.9900904078028925,
+          0.030710965086484604,
+          -116.15188348936448
+        ],
+        [
+          0.046631296394481464,
+          0.9803332832426361,
+          -13.889340041035325
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "disagreement_px": {
+        "median": 92.23868384853996,
+        "p90": 107.19022723489626,
+        "max": 122.62443940876494,
+        "n_points": 8192
+      },
+      "singular_values_estimated": [
+        1.0242216465521745,
+        0.9462663587862089
+      ],
+      "singular_values_predicted": [
+        1.0191912189153307,
+        0.9944055256466316
+      ],
+      "disagreement_px_p5_p95": [
+        41.136660062186316,
+        164.65249468777327
+      ],
+      "discrimination_floor_px": {
+        "quantisation_p95": 89.12362550064675,
+        "bilinear_model_term": 13.738401653758709,
+        "total": 102.86202715440547
+      },
+      "excess_over_floor": 0.8967223999006079,
+      "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY: the disagreement is fully explained by the archive's own uncertainty",
+      "scale_cross_check": {
+        "available": true,
+        "src_scaled_pixel_m": [
+          0.9,
+          0.96
+        ],
+        "dst_scaled_pixel_m": [
+          0.88,
+          0.95
+        ],
+        "predicted_scales_sorted": [
+          1.0105263157894737,
+          1.0227272727272727
+        ],
+        "estimated_singular_values_sorted": [
+          0.9462663587862089,
+          1.0242216465521745
+        ],
+        "relative_error": [
+          0.06359058245114747,
+          0.0014611655176817668
+        ],
+        "estimated_rotation_deg": 2.696525032873343,
+        "estimated_anisotropy": 1.0823819710403317,
+        "predicted_anisotropy": 1.0120738636363635,
+        "quantisation_relative": 0.005681818181818182,
+        "note": "SCALED_PIXEL_* are quoted to two decimals, so the predicted ratio carries roughly 0.8% of quantisation. Agreement below that is agreement; the test discriminates a wrong SCALE, not a wrong translation.",
+        "agrees_within_quantisation": false,
+        "tolerance_used": 0.017045454545454544
+      }
+    },
+    {
+      "edge": "nac.m1335207975rc -> nac.m1299958135lc",
+      "n_predicted_correspondences": 81,
+      "n_inliers_reported": 3,
+      "predicted_transform_matrix": [
+        [
+          0.8103892528523385,
+          -0.005894221034384454,
+          102.88852427680422
+        ],
+        [
+          0.010347966989763648,
+          0.8680465436088123,
+          130.12583181721084
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "estimated_transform_matrix": [
+        [
+          -0.47123990252010983,
+          0.12483564895114681,
+          830.1419671689252
+        ],
+        [
+          -1.7306010943700876,
+          -0.2488054446044741,
+          2229.71922947356
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "disagreement_px": {
+        "median": 797.5011875408463,
+        "p90": 1471.939761670786,
+        "max": 2221.978849062379,
+        "n_points": 8192
+      },
+      "singular_values_estimated": [
+        1.805676136686759,
+        0.18457781956663086
+      ],
+      "singular_values_predicted": [
+        0.8681717161671236,
+        0.8103426661108447
+      ],
+      "disagreement_px_p5_p95": [
+        776.9734906375076,
+        822.6257189135175
+      ],
+      "discrimination_floor_px": {
+        "quantisation_p95": 69.00226893296723,
+        "bilinear_model_term": 13.738401653758709,
+        "total": 82.74067058672594
+      },
+      "excess_over_floor": 9.638563258983172,
+      "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY: the disagreement exceeds the archive's uncertainty by more than 3x even at its optimistic end",
+      "scale_cross_check": {
+        "available": true,
+        "src_scaled_pixel_m": [
+          0.88,
+          0.95
+        ],
+        "dst_scaled_pixel_m": [
+          1.05,
+          1.09
+        ],
+        "predicted_scales_sorted": [
+          0.8380952380952381,
+          0.8715596330275228
+        ],
+        "estimated_singular_values_sorted": [
+          0.18457781956663086,
+          1.805676136686759
+        ],
+        "relative_error": [
+          0.7797651016534518,
+          1.0717757778827028
+        ],
+        "estimated_rotation_deg": -105.2322445958206,
+        "estimated_anisotropy": 9.782736305620551,
+        "predicted_anisotropy": 1.039929107589658,
+        "quantisation_relative": 0.005681818181818182,
+        "note": "SCALED_PIXEL_* are quoted to two decimals, so the predicted ratio carries roughly 0.8% of quantisation. Agreement below that is agreement; the test discriminates a wrong SCALE, not a wrong translation.",
+        "agrees_within_quantisation": false,
+        "tolerance_used": 0.017045454545454544
+      }
+    },
+    {
+      "edge": "nac.m1299958135lc -> nac.m1271742202lc",
+      "n_predicted_correspondences": 81,
+      "n_inliers_reported": 1656,
+      "predicted_transform_matrix": [
+        [
+          1.2389824149887523,
+          -0.005314115999730556,
+          -116.30218191652637
+        ],
+        [
+          -0.014760577984421755,
+          1.1320647495211364,
+          -127.90479852513363
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "estimated_transform_matrix": [
+        [
+          1.167121643875759,
+          -0.0034206471098307124,
+          -100.80160643030308
+        ],
+        [
+          0.005653445577317761,
+          1.133999091002151,
+          -189.7140895489572
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "disagreement_px": {
+        "median": 56.31845044140236,
+        "p90": 63.520183310614556,
+        "max": 70.29706732690492,
+        "n_points": 8192
+      },
+      "singular_values_estimated": [
+        1.1671681750974099,
+        1.1339704508100228
+      ],
+      "singular_values_predicted": [
+        1.2399259606110125,
+        1.1311400215949683
+      ],
+      "disagreement_px_p5_p95": [
+        25.167358723533475,
+        123.66676412341167
+      ],
+      "discrimination_floor_px": {
+        "quantisation_p95": 91.8832634252578,
+        "bilinear_model_term": 13.738401653758709,
+        "total": 105.62166507901651
+      },
+      "excess_over_floor": 0.5332092653459878,
+      "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY: the disagreement is fully explained by the archive's own uncertainty",
+      "scale_cross_check": {
+        "available": true,
+        "src_scaled_pixel_m": [
+          1.05,
+          1.09
+        ],
+        "dst_scaled_pixel_m": [
+          0.9,
+          0.96
+        ],
+        "predicted_scales_sorted": [
+          1.1354166666666667,
+          1.1666666666666667
+        ],
+        "estimated_singular_values_sorted": [
+          1.1339704508100228,
+          1.1671681750974099
+        ],
+        "relative_error": [
+          0.0012737313966772411,
+          0.00042986436920841185
+        ],
+        "estimated_rotation_deg": 0.27753408532291163,
+        "estimated_anisotropy": 1.0292756519922306,
+        "predicted_anisotropy": 1.0275229357798166,
+        "quantisation_relative": 0.005555555555555556,
+        "note": "SCALED_PIXEL_* are quoted to two decimals, so the predicted ratio carries roughly 0.8% of quantisation. Agreement below that is agreement; the test discriminates a wrong SCALE, not a wrong translation.",
+        "agrees_within_quantisation": true,
+        "tolerance_used": 0.016666666666666666
+      }
+    }
+  ]
+}

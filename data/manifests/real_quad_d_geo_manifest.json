@@ -1,0 +1,243 @@
+{
+  "dataset": "LRO NAC (LROC) real image tiles via PDS ODE",
+  "stage": "REAL-DATA-03",
+  "region": "mare_serenitatis",
+  "pair": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc",
+    "nac.m1299958135lc"
+  ],
+  "pair_role": "real_data_04_illumination_vs_frame_identity",
+  "selection_method": "GEOMETRY-DRIVEN: every tile is centred on one ground point, derived from the archive index table's named frame corners. Supersedes the footprint-latitude / global-hypothesis path (E-028, E-029, D-033).",
+  "target_ground_point_lon_lat": [
+    22.010350422685136,
+    19.66625467769675
+  ],
+  "target_selection": "centroid of the intersection of all 3 frames' TILE-ADMISSIBLE footprints for a 4096x2048 tile (REAL-DATA-04 amendment 1; supersedes the shared-frame centroid, which does not guarantee an unclamped window)",
+  "index_geometry_sources": [
+    "data\\manifests\\real_pair_index_geometry.json",
+    "data\\manifests\\real_frame_d_candidates_index_geometry.json"
+  ],
+  "incidence_deg": [
+    29.95,
+    69.76,
+    18.22
+  ],
+  "incidence_delta_deg": 51.540000000000006,
+  "resolution_ratio": 1.1666666666666665,
+  "line_direction_hypothesis": "NOT APPLICABLE -- read per frame from the archive, not assumed",
+  "chandrayaan2_status": "NOT OBTAINED. No Chandrayaan-2 data is present. No multi-modal claim is supported by this manifest.",
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "tiles": [
+    {
+      "pdsid": "nac.m1271742202lc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1034/DATA/ESM3/2018028/NAC/M1271742202LC.IMG",
+      "img_file_name": "M1271742202LC.IMG",
+      "byte_start": 64955928,
+      "byte_count": 41484288,
+      "bytes_sha256": "ea54552687d226a8504df5919c54efeabc01a41d59954003501da4220f305223",
+      "line0": 6413,
+      "n_lines": 4096,
+      "sample0": 1866,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-26T08:11:57Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1271742202lc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1271742202lc.geo.l6413s1866.tile.npy",
+      "incidence_deg": 29.95,
+      "emission_deg": 1.74,
+      "utc_start": "2018-01-28T01:28:54.845000Z",
+      "ode_map_resolution_m": 0.933,
+      "selection_method": "GEOMETRY-DRIVEN (REAL-DATA-03, D-033)",
+      "target_ground_point_lon_lat": [
+        22.010350422685136,
+        19.66625467769675
+      ],
+      "target_selection": "centroid of the intersection of all 3 frames' TILE-ADMISSIBLE footprints for a 4096x2048 tile (REAL-DATA-04 amendment 1; supersedes the shared-frame centroid, which does not guarantee an unclamped window)",
+      "window_detail": {
+        "target_pixel_line": 8460.333641913448,
+        "target_pixel_sample": 2889.979473498225,
+        "unclamped_line0": 6413,
+        "unclamped_sample0": 1866,
+        "clamped_lines": 0,
+        "clamped_samples": 0,
+        "fully_inside_frame": true
+      },
+      "index_geometry_sources": [
+        "data\\manifests\\real_pair_index_geometry.json",
+        "data\\manifests\\real_frame_d_candidates_index_geometry.json"
+      ],
+      "index_corners_lon_lat": {
+        "upper_left": [
+          22.08,
+          19.39
+        ],
+        "upper_right": [
+          21.93,
+          19.4
+        ],
+        "lower_left": [
+          22.19,
+          21.06
+        ],
+        "lower_right": [
+          22.02,
+          21.07
+        ]
+      },
+      "lro_flight_direction": "-X",
+      "orbit_node": "A",
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted.",
+      "azimuth_status": "Sub-solar AZIMUTH was NOT used. The archive index table does carry SUB_SOLAR_AZIMUTH, but it is stated to be relative to the RDR products and that frame is unverified (RL-032b). This pair is illumination-varied by INCIDENCE only and is NOT azimuth-controlled."
+    },
+    {
+      "pdsid": "nac.m1335207975rc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1042B/DATA/ESM4/2020032/NAC/M1335207975RC.IMG",
+      "img_file_name": "M1335207975RC.IMG",
+      "byte_start": 183088920,
+      "byte_count": 41484288,
+      "bytes_sha256": "4df468905a75008e81f99d3fac7cbf56a1701c03db85410150331d0cfea0b17f",
+      "line0": 18077,
+      "n_lines": 4096,
+      "sample0": 1145,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-26T08:12:13Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1335207975rc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1335207975rc.geo.l18077s1145.tile.npy",
+      "incidence_deg": 69.76,
+      "emission_deg": 1.17,
+      "utc_start": "2020-02-01T14:51:48.224000Z",
+      "ode_map_resolution_m": 0.918,
+      "selection_method": "GEOMETRY-DRIVEN (REAL-DATA-03, D-033)",
+      "target_ground_point_lon_lat": [
+        22.010350422685136,
+        19.66625467769675
+      ],
+      "target_selection": "centroid of the intersection of all 3 frames' TILE-ADMISSIBLE footprints for a 4096x2048 tile (REAL-DATA-04 amendment 1; supersedes the shared-frame centroid, which does not guarantee an unclamped window)",
+      "window_detail": {
+        "target_pixel_line": 20124.06742492101,
+        "target_pixel_sample": 2168.3505394038134,
+        "unclamped_line0": 18077,
+        "unclamped_sample0": 1145,
+        "clamped_lines": 0,
+        "clamped_samples": 0,
+        "fully_inside_frame": true
+      },
+      "index_geometry_sources": [
+        "data\\manifests\\real_pair_index_geometry.json",
+        "data\\manifests\\real_frame_d_candidates_index_geometry.json"
+      ],
+      "index_corners_lon_lat": {
+        "upper_left": [
+          22.03,
+          19.03
+        ],
+        "upper_right": [
+          21.88,
+          19.04
+        ],
+        "lower_left": [
+          22.15,
+          20.67
+        ],
+        "lower_right": [
+          21.99,
+          20.68
+        ]
+      },
+      "lro_flight_direction": "-X",
+      "orbit_node": "A",
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted.",
+      "azimuth_status": "Sub-solar AZIMUTH was NOT used. The archive index table does carry SUB_SOLAR_AZIMUTH, but it is stated to be relative to the RDR products and that frame is unverified (RL-032b). This pair is illumination-varied by INCIDENCE only and is NOT azimuth-controlled."
+    },
+    {
+      "pdsid": "nac.m1299958135lc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1038A/DATA/ESM3/2018354/NAC/M1299958135LC.IMG",
+      "img_file_name": "M1299958135LC.IMG",
+      "byte_start": 430070328,
+      "byte_count": 41484288,
+      "bytes_sha256": "40ec585fec7558f844bfd187320dbf059b0a83d160fb6c856f063751031834f1",
+      "line0": 42463,
+      "n_lines": 4096,
+      "sample0": 1693,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-26T08:12:29Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1299958135lc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1299958135lc.geo.l42463s1693.tile.npy",
+      "incidence_deg": 18.22,
+      "emission_deg": 1.75,
+      "utc_start": "2018-12-20T15:14:28.581000Z",
+      "ode_map_resolution_m": 1.071,
+      "selection_method": "GEOMETRY-DRIVEN (REAL-DATA-03, D-033)",
+      "target_ground_point_lon_lat": [
+        22.010350422685136,
+        19.66625467769675
+      ],
+      "target_selection": "centroid of the intersection of all 3 frames' TILE-ADMISSIBLE footprints for a 4096x2048 tile (REAL-DATA-04 amendment 1; supersedes the shared-frame centroid, which does not guarantee an unclamped window)",
+      "window_detail": {
+        "target_pixel_line": 44510.85186671315,
+        "target_pixel_sample": 2716.121212261346,
+        "unclamped_line0": 42463,
+        "unclamped_sample0": 1693,
+        "clamped_lines": 0,
+        "clamped_samples": 0,
+        "fully_inside_frame": true
+      },
+      "index_geometry_sources": [
+        "data\\manifests\\real_pair_index_geometry.json",
+        "data\\manifests\\real_frame_d_candidates_index_geometry.json"
+      ],
+      "index_corners_lon_lat": {
+        "upper_left": [
+          22.01,
+          18.05
+        ],
+        "upper_right": [
+          21.82,
+          18.06
+        ],
+        "lower_left": [
+          22.13,
+          19.94
+        ],
+        "lower_right": [
+          21.94,
+          19.95
+        ]
+      },
+      "lro_flight_direction": "-X",
+      "orbit_node": "A",
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted.",
+      "azimuth_status": "Sub-solar AZIMUTH was NOT used. The archive index table does carry SUB_SOLAR_AZIMUTH, but it is stated to be relative to the RDR products and that frame is unverified (RL-032b). This pair is illumination-varied by INCIDENCE only and is NOT azimuth-controlled."
+    }
+  ]
+}

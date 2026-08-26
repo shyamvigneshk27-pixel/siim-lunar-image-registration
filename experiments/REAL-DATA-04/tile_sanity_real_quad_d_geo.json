@@ -1,0 +1,185 @@
+{
+  "pair": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc",
+    "nac.m1299958135lc"
+  ],
+  "manifest": "real_quad_d_geo_manifest.json",
+  "tiles": [
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1271742202lc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": 379.0,
+        "p0_1": 1280.0,
+        "p1": 1302.0,
+        "p25": 1357.0,
+        "median": 1390.0,
+        "p75": 1442.0,
+        "p99": 1785.0,
+        "p99_9": 2151.0,
+        "max": 3604.0,
+        "mean": 1414.2081565856934,
+        "std": 96.33080861769238,
+        "zero_fraction": 0.0,
+        "n_unique": 2015,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9639625085069417,
+          "autocorr_byte_swapped": 0.6156741773044054,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.9639626061824434,
+          "autocorr_shifted_one_byte": 0.6157489233888871
+        },
+        "decode_margin_byte_order": 0.3482883312025362,
+        "decode_margin_alignment": 0.34821368279355636,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9639625085069417
+      },
+      "sha256_matches_manifest": true,
+      "raw_bytes_source": "fetched 41484288 bytes from 64955928",
+      "incidence_deg": 29.95,
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted."
+    },
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1335207975rc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": -34.0,
+        "p0_1": 83.0,
+        "p1": 284.0,
+        "p25": 443.0,
+        "median": 468.0,
+        "p75": 501.0,
+        "p99": 741.0,
+        "p99_9": 956.0,
+        "max": 2298.0,
+        "mean": 476.8220010995865,
+        "std": 73.22483847391894,
+        "zero_fraction": 3.5762786865234375e-07,
+        "n_unique": 1706,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9357640463842481,
+          "autocorr_byte_swapped": 0.6727324513008762,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.9357708927294135,
+          "autocorr_shifted_one_byte": 0.6727343216241974
+        },
+        "decode_margin_byte_order": 0.2630315950833719,
+        "decode_margin_alignment": 0.26303657110521605,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9357640463842481
+      },
+      "sha256_matches_manifest": true,
+      "raw_bytes_source": "fetched 41484288 bytes from 183088920",
+      "incidence_deg": 69.76,
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted."
+    },
+    {
+      "passed": true,
+      "failures": [],
+      "warnings": [
+        "NOT CHECKED, and not checkable intrinsically: whether the tile is the intended region of the Moon. An offset wrong by a whole number of lines yields a valid image of the wrong place. Only an independent geolocated reference could detect that, and none is available for these products."
+      ],
+      "stats": {
+        "label": "nac.m1299958135lc",
+        "shape": [
+          4096,
+          2048
+        ],
+        "dtype_decoded": "float64",
+        "n_pixels": 8388608,
+        "finite_fraction": 1.0,
+        "n_nan": 0,
+        "n_inf": 0,
+        "min": 1044.0,
+        "p0_1": 1591.0,
+        "p1": 1616.0,
+        "p25": 1676.0,
+        "median": 1718.0,
+        "p75": 1771.0,
+        "p99": 2145.0,
+        "p99_9": 2524.0,
+        "max": 4088.0,
+        "mean": 1742.937386751175,
+        "std": 104.780537673767,
+        "zero_fraction": 0.0,
+        "n_unique": 1900,
+        "saturation_fractions": {
+          "missing_constant": 0.0,
+          "high_instrument_saturation": 0.0,
+          "high_representation_saturation": 0.0,
+          "low_instrument_saturation": 0.0,
+          "low_representation_saturation": 0.0
+        },
+        "fraction_below_valid_minimum": 0.0,
+        "byte_order": {
+          "autocorr_as_declared": 0.9601345267271267,
+          "autocorr_byte_swapped": 0.5094992137559233,
+          "declared_dtype": "<i2",
+          "swapped_dtype": ">i2"
+        },
+        "byte_alignment": {
+          "autocorr_aligned": 0.9601384788726504,
+          "autocorr_shifted_one_byte": 0.5094527703519236
+        },
+        "decode_margin_byte_order": 0.4506353129712034,
+        "decode_margin_alignment": 0.45068570852072676,
+        "decode_verdict": "consistent",
+        "lag1_autocorrelation": 0.9601345267271267
+      },
+      "sha256_matches_manifest": true,
+      "raw_bytes_source": "fetched 41484288 bytes from 430070328",
+      "incidence_deg": 18.22,
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted."
+    }
+  ],
+  "all_passed": true
+}
