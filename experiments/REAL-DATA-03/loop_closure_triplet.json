@@ -1,0 +1,224 @@
+{
+  "stage": "REAL-DATA-03",
+  "phase": "6 - real loop closure",
+  "data": "REAL LRO NAC. NOT SYNTHETIC.",
+  "manifest": "real_triplet_geo_manifest.json",
+  "products": [
+    "nac.m1271742202lc",
+    "nac.m1335207975rc",
+    "nac.m1452560468lc"
+  ],
+  "incidence_deg": [
+    29.95,
+    69.76,
+    68.8
+  ],
+  "tile_sha256": [
+    "de96b5e885dc9871b4df8ad4168b38ee25c4ec1a5bc80dde690eda932d73f3c3",
+    "9df3e88129c1a438695ef65a63bdcd1869b71d2205eb86a7bd4ea029864c6657",
+    "2eaa0639322be4de7ec104becb179ecfa50686efd68e36ab71c956d0300538c1"
+  ],
+  "shape_after_decimation": [
+    2048,
+    1024
+  ],
+  "baseline": {
+    "pipeline": "run_rootsift_baseline (B1), UNMODIFIED",
+    "model": "affine",
+    "ransac_threshold_px": 3.0,
+    "seed": 0,
+    "downsample": 2,
+    "preprocessing": "1-99 percentile stretch per image, identical to register_real_pair.py"
+  },
+  "overlap_evidence": "Every edge was classified OVERLAP_CONFIRMED by scripts/verify_tile_overlap.py from archive corner geometry, BEFORE this ran and INDEPENDENTLY of the matcher: experiments/REAL-DATA-03/overlap_triplet.json",
+  "edges": [
+    {
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "estimated_from": "its own image pair",
+      "n_keypoints_src": 9538,
+      "n_keypoints_dst": 12420,
+      "n_putative_mutual_ratio_matches": 32,
+      "n_inliers": 4,
+      "inlier_ratio": 0.125,
+      "fit_rmse_px": 4.1382633578908315e-13,
+      "transform_estimated": true,
+      "n_inliers_failure_flag": true,
+      "wall_s": 4.137426800094545,
+      "transform_matrix": [
+        [
+          -0.5230380279446685,
+          0.5406641190361868,
+          314.7983810036714
+        ],
+        [
+          0.12455946615814595,
+          -1.972779351468188,
+          2316.1132128995796
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "coverage_max_uncovered_disc_ratio": 0.4767323675870726,
+      "coverage_occupancy": 0.046875
+    },
+    {
+      "edge": "nac.m1335207975rc -> nac.m1452560468lc",
+      "estimated_from": "its own image pair",
+      "n_keypoints_src": 12420,
+      "n_keypoints_dst": 11477,
+      "n_putative_mutual_ratio_matches": 5392,
+      "n_inliers": 5365,
+      "inlier_ratio": 0.9949925816023739,
+      "fit_rmse_px": 0.5829079860626339,
+      "transform_estimated": true,
+      "n_inliers_failure_flag": false,
+      "wall_s": 3.0050789997912943,
+      "transform_matrix": [
+        [
+          1.0776524901752906,
+          0.028178504727742575,
+          91.84091279038614
+        ],
+        [
+          -0.03251886872330661,
+          1.0669851710310696,
+          -28.737402683378832
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "coverage_max_uncovered_disc_ratio": 0.10758155745250321,
+      "coverage_occupancy": 0.875
+    },
+    {
+      "edge": "nac.m1452560468lc -> nac.m1271742202lc",
+      "estimated_from": "its own image pair",
+      "n_keypoints_src": 11477,
+      "n_keypoints_dst": 9538,
+      "n_putative_mutual_ratio_matches": 49,
+      "n_inliers": 4,
+      "inlier_ratio": 0.08163265306122448,
+      "fit_rmse_px": 0.8850864772888422,
+      "transform_estimated": true,
+      "n_inliers_failure_flag": true,
+      "wall_s": 6.857266000006348,
+      "transform_matrix": [
+        [
+          0.4088674456982205,
+          0.012902418586296713,
+          415.9235385041801
+        ],
+        [
+          -0.24131731504099557,
+          0.4942445774792452,
+          1180.3737485599622
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "coverage_max_uncovered_disc_ratio": 0.44060894010238205,
+      "coverage_occupancy": 0.046875
+    }
+  ],
+  "edge_independence": "Each edge was estimated by a separate run of the full baseline on its own image pair. The closing edge was NOT derived as (T_BC o T_AB)^-1; that derivation is E-021 and manufactures a zero residual for an arbitrarily wrong solution. Asserted in code by _assert_independent().",
+  "loop_closure_residual_px": 1201.0378963072235,
+  "verdict_edge": "nac.m1271742202lc -> nac.m1335207975rc",
+  "verdict_edge_rationale": "the edge with the fewest inliers",
+  "verdict": {
+    "status": "REJECTED",
+    "confidence": "none",
+    "reasons": [
+      "Too few verified correspondences: 4 (threshold 8). Near the model's degrees of freedom, a fit can match its own points exactly while being catastrophically wrong.",
+      "Loop closure fails: composing the three estimated transforms around the image triplet leaves 1201.04 px of error instead of returning to the start. A uniformly shifted -- and therefore perfectly self-consistent -- wrong answer cannot hide from this.",
+      "Correspondences are clustered: 0.477 of the overlap has no nearby constraint, so the alignment is extrapolated there even if it is accurate where the points are."
+    ],
+    "evidence": [
+      {
+        "name": "n_inliers",
+        "value": 4.0,
+        "verdict": "decisive_against",
+        "weight": "decisive",
+        "statement": "Only 4 inliers (rule: reject at <= 8). Validated at recall 1.000 on 192 unseen cases (EXP-002)."
+      },
+      {
+        "name": "loop_error_px",
+        "value": 1201.0378963072235,
+        "verdict": "decisive_against",
+        "weight": "decisive",
+        "statement": "Loop closure 1201.04 px (reject at >= 2.0). Detection 1.000 at false alarm 0.000 (EXP-003)."
+      },
+      {
+        "name": "coverage_max_gap",
+        "value": 0.4767323675870726,
+        "verdict": "against",
+        "weight": "strong",
+        "statement": "Largest unconstrained region is 0.477 of the image (target <= 0.15). The transform is extrapolating where there are no correspondences."
+      },
+      {
+        "name": "inlier_ratio",
+        "value": 0.125,
+        "verdict": "against",
+        "weight": "supporting",
+        "statement": "4/32 putative matches survived geometric verification. Self-consistency only: misses 8.7% of failures (EXP-002)."
+      },
+      {
+        "name": "fit_rmse",
+        "value": 4.1382633578908315e-13,
+        "verdict": "inconclusive",
+        "weight": "excluded",
+        "statement": "Reported for transparency and EXCLUDED from the verdict. ROC AUC 0.4947 as a failure detector on 192 unseen cases (EXP-002 objective 3, pre-declared negative control). Inverted in the failure regime: EXP-001 measured 10 of 17 catastrophic failures reporting fit RMSE below 1e-12 px while 190-2400 px wrong."
+      }
+    ],
+    "metrics": {
+      "n_putative": 32,
+      "n_inliers": 4,
+      "inlier_ratio": 0.125,
+      "coverage_max_gap": 0.4767323675870726,
+      "coverage_occupancy": 0.046875,
+      "fit_rmse": 4.1382633578908315e-13,
+      "loop_error_px": 1201.0378963072235,
+      "transform_model": "affine",
+      "transform_matrix": [
+        [
+          -0.5230380279446685,
+          0.5406641190361868,
+          314.7983810036714
+        ],
+        [
+          0.12455946615814595,
+          -1.972779351468188,
+          2316.1132128995796
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ]
+    },
+    "excluded": {
+      "fit_rmse": "ROC AUC 0.4947 as a failure detector on 192 unseen cases (EXP-002 objective 3, pre-declared negative control). Inverted in the failure regime: EXP-001 measured 10 of 17 catastrophic failures reporting fit RMSE below 1e-12 px while 190-2400 px wrong.",
+      "held_out_residual": "Detection 0.200 against coherent wrong solutions (EXP-002 objective 4, ADR-0011). A match set 64 px wrong yielded 0.468 px -- lower than a correct-but-noisy set at 1.424 px. Degeneracy detector only.",
+      "cycle_consistency": "Blind to symmetric errors by construction (E-012): forward +64 px and backward -64 px cancel exactly, scoring 0.000 on wrong cases against 0.325 on the correct one -- an inverted signal."
+    }
+  },
+  "classification": "C",
+  "classification_reason": "registration failure on at least one edge: n_inliers <= 8, the EXP-002 operating point (not validated on real data). A loop residual computed from a failed edge is not evidence of anything.",
+  "claims_not_supported": [
+    "NO ground-truth accuracy claim: none exists for these products.",
+    "NO sub-pixel accuracy claim on real imagery.",
+    "A loop residual is a CONSISTENCY bound, not an accuracy. Three edges wrong in a way that cancels around the loop would score well; the frequency of that on real data is unmeasured.",
+    "NO Sun-AZIMUTH claim: azimuth was not used (RL-032b). These frames differ in INCIDENCE only and are NOT azimuth-controlled.",
+    "NO Chandrayaan-2 or multi-modal claim: one instrument throughout.",
+    "NO validation of n_inliers <= 8 on real data: applied, not validated."
+  ]
+}

@@ -1,0 +1,715 @@
+{
+  "stage": "REAL-DATA-02",
+  "generated_utc": "2026-08-26T04:09:28Z",
+  "question": "Do the tile pairs given to the matcher in REAL-DATA-01 cover the same ground?",
+  "primary_evidence_is_independent_of_the_matcher": true,
+  "what_was_not_used": [
+    "the feature detector and descriptor",
+    "putative matches, RANSAC, inlier counts, inlier ratio",
+    "fit RMSE and every residual",
+    "loop closure",
+    "the verdict engine",
+    "the decoded pixel values themselves -- no image was read"
+  ],
+  "preregistered_criteria": {
+    "confirm_at": 0.5,
+    "insufficient_below": 0.2,
+    "evaluated_on": "the shared fraction of the WORSE-COVERED tile, at the p5 (confirm) and p95 (insufficient) ends of the Monte Carlo uncertainty interval",
+    "confirm_at_justification": "The synthetic regime in which this project's matcher was measured holds source-to-target overlap at 0.757 at worst and 0.945 typically (scripts/exp002_common.py). 0.50 is below that floor and is not a claim of equivalent difficulty."
+  },
+  "geometry_source": {
+    "manifest": "data/manifests/real_pair_index_geometry.json",
+    "source": "PDS Archive Index Table (per-volume INDEX.TAB + INDEX.LBL) under https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0. This is the source ODE itself cites in Footprint_souce.",
+    "absent_from": [
+      "PDS4 Product_Observational label (no Cartography/Geometry class)",
+      "PDS3 attached header inside the .IMG (no geometry keywords)"
+    ],
+    "manifests": [
+      "data\\manifests\\real_pair_index_geometry.json",
+      "data\\manifests\\real_pair_index_geometry_C.json"
+    ]
+  },
+  "corner_naming": {
+    "question": "does UPPER_* in the index table mean image line 0?",
+    "primary_evidence": "Each product's own PDS4 label states disp:Display_Direction = (Line, Top to Bottom) and (Sample, Left to Right). The top row of the displayed image is therefore the first line, so UPPER_* is line 0 and *_LEFT is sample 0. This is archive documentation about the specific products, not a convention assumed from elsewhere.",
+    "corroboration_pixel_scale": {
+      "statement": "Corner-implied pixel scale is compared against SCALED_PIXEL_HEIGHT/WIDTH, which the archive derives from SPICE and which do not depend on these corner values.",
+      "n_comparisons": 10,
+      "ratio_min": 0.9687994269612609,
+      "ratio_max": 1.0116808650003979,
+      "ratio_mean": 1.0014075861344203
+    },
+    "corroboration_flight_direction": {
+      "statement": "If UPPER_* were a compass label it would be the northern edge of every frame. It is not: the four frames split 2-2, and the split follows LRO_FLIGHT_DIRECTION exactly. A spacecraft yaw flip reverses the along-track readout direction, which is what an image-position label should track and a compass label cannot.",
+      "partition": {
+        "+X": [
+          "MAX"
+        ],
+        "-X": [
+          "MIN"
+        ]
+      },
+      "partitions_cleanly": true
+    },
+    "non_corroboration_north_azimuth": {
+      "statement": "A NORTH_AZIMUTH cross-check was implemented and turned out to have no discriminating power for these products. Its own column description says the angle is 'relative to the RDR products' -- the map-projected derivative, which is north-up by construction -- and the measurement bears that out. It is reported and NOT used; a disagreement from a test with no power is not evidence (E-024).",
+      "n_frames_with_azimuth": 5,
+      "azimuths_where_upper_is_north": [
+        267.72,
+        268.59
+      ],
+      "azimuths_where_upper_is_south": [
+        272.94,
+        274.77,
+        276.76
+      ],
+      "has_power": false,
+      "reason": "frames split 2/3 on line direction, but their NORTH_AZIMUTH group means differ by only 6.67 deg (< 15 deg): the column does not track the line direction of these products and cannot test the corner naming",
+      "mean_azimuth_upper_north": 268.155,
+      "mean_azimuth_upper_south": 274.8233333333333,
+      "group_separation_deg": 6.668333333333351
+    },
+    "per_frame": {
+      "nac.m1225876972lc": {
+        "upper_is_northward": true,
+        "line0_at_latitude": "MAX",
+        "real_data_01_hypothesis_this_corresponds_to": "H1",
+        "orbit_node": "A",
+        "lro_flight_direction": "+X",
+        "corner_implied_m_per_line": 1.0084770120268174,
+        "scaled_pixel_height_m": 1.0,
+        "ratio_vs_scaled_pixel_height": 1.0084770120268174,
+        "corner_implied_m_per_sample": 0.9273553410291925,
+        "scaled_pixel_width_m": 0.92,
+        "ratio_vs_scaled_pixel_width": 1.007994935901296,
+        "resolution_m": 0.962,
+        "ratio_vs_resolution": 1.048312902314779,
+        "north_azimuth_check": {
+          "north_azimuth_deg": 268.59,
+          "lat_upper_mean": 21.21,
+          "lat_lower_mean": 19.475,
+          "observed_upper_is_northward": true,
+          "predicted_upper_is_northward": true,
+          "agrees": true,
+          "note": "NORTH_AZIMUTH 268.59 deg puts north towards decreasing line; the corner latitudes put the UPPER pair north of the LOWER pair"
+        }
+      },
+      "nac.m1271742202lc": {
+        "upper_is_northward": false,
+        "line0_at_latitude": "MIN",
+        "real_data_01_hypothesis_this_corresponds_to": "H2",
+        "orbit_node": "A",
+        "lro_flight_direction": "-X",
+        "corner_implied_m_per_line": 0.971213630400382,
+        "scaled_pixel_height_m": 0.96,
+        "ratio_vs_scaled_pixel_height": 1.0116808650003979,
+        "corner_implied_m_per_sample": 0.9009814059703012,
+        "scaled_pixel_width_m": 0.9,
+        "ratio_vs_scaled_pixel_width": 1.0010904510781125,
+        "resolution_m": 0.933,
+        "ratio_vs_resolution": 1.0409578032158435,
+        "north_azimuth_check": {
+          "north_azimuth_deg": 274.77,
+          "lat_upper_mean": 19.395,
+          "lat_lower_mean": 21.064999999999998,
+          "observed_upper_is_northward": false,
+          "predicted_upper_is_northward": true,
+          "agrees": false,
+          "note": "NORTH_AZIMUTH 274.77 deg puts north towards decreasing line; the corner latitudes put the UPPER pair south of the LOWER pair"
+        }
+      },
+      "nac.m1322281266lc": {
+        "upper_is_northward": true,
+        "line0_at_latitude": "MAX",
+        "real_data_01_hypothesis_this_corresponds_to": "H1",
+        "orbit_node": "A",
+        "lro_flight_direction": "+X",
+        "corner_implied_m_per_line": 0.921930926635405,
+        "scaled_pixel_height_m": 0.92,
+        "ratio_vs_scaled_pixel_height": 1.0020988332993532,
+        "corner_implied_m_per_sample": 0.845176224835926,
+        "scaled_pixel_width_m": 0.84,
+        "ratio_vs_scaled_pixel_width": 1.0061621724237215,
+        "resolution_m": 0.879,
+        "ratio_vs_resolution": 1.0488406446364107,
+        "north_azimuth_check": {
+          "north_azimuth_deg": 267.72,
+          "lat_upper_mean": 20.775,
+          "lat_lower_mean": 19.19,
+          "observed_upper_is_northward": true,
+          "predicted_upper_is_northward": true,
+          "agrees": true,
+          "note": "NORTH_AZIMUTH 267.72 deg puts north towards decreasing line; the corner latitudes put the UPPER pair north of the LOWER pair"
+        }
+      },
+      "nac.m1335207975rc": {
+        "upper_is_northward": false,
+        "line0_at_latitude": "MIN",
+        "real_data_01_hypothesis_this_corresponds_to": "H2",
+        "orbit_node": "A",
+        "lro_flight_direction": "-X",
+        "corner_implied_m_per_line": 0.9543225468533955,
+        "scaled_pixel_height_m": 0.95,
+        "ratio_vs_scaled_pixel_height": 1.0045500493193638,
+        "corner_implied_m_per_sample": 0.8750237018093159,
+        "scaled_pixel_width_m": 0.88,
+        "ratio_vs_scaled_pixel_width": 0.9943451156924044,
+        "resolution_m": 0.918,
+        "ratio_vs_resolution": 1.0395670445026093,
+        "north_azimuth_check": {
+          "north_azimuth_deg": 272.94,
+          "lat_upper_mean": 19.035,
+          "lat_lower_mean": 20.675,
+          "observed_upper_is_northward": false,
+          "predicted_upper_is_northward": true,
+          "agrees": false,
+          "note": "NORTH_AZIMUTH 272.94 deg puts north towards decreasing line; the corner latitudes put the UPPER pair south of the LOWER pair"
+        }
+      },
+      "nac.m1452560468lc": {
+        "upper_is_northward": false,
+        "line0_at_latitude": "MIN",
+        "real_data_01_hypothesis_this_corresponds_to": "H2",
+        "orbit_node": "A",
+        "lro_flight_direction": "-X",
+        "corner_implied_m_per_line": 0.8979005296809133,
+        "scaled_pixel_height_m": 0.89,
+        "ratio_vs_scaled_pixel_height": 1.0088769996414755,
+        "corner_implied_m_per_sample": 0.7944155301082338,
+        "scaled_pixel_width_m": 0.82,
+        "ratio_vs_scaled_pixel_width": 0.9687994269612609,
+        "resolution_m": 0.855,
+        "ratio_vs_resolution": 1.0501760581063313,
+        "north_azimuth_check": {
+          "north_azimuth_deg": 276.76,
+          "lat_upper_mean": 19.71,
+          "lat_lower_mean": 21.25,
+          "observed_upper_is_northward": false,
+          "predicted_upper_is_northward": true,
+          "agrees": false,
+          "note": "NORTH_AZIMUTH 276.76 deg puts north towards decreasing line; the corner latitudes put the UPPER pair south of the LOWER pair"
+        }
+      }
+    }
+  },
+  "cases": [
+    {
+      "case": "triplet::m1271742202lc-m1335207975rc",
+      "role": "edge of triplet",
+      "note": "",
+      "products": [
+        "nac.m1271742202lc",
+        "nac.m1335207975rc"
+      ],
+      "tile_windows": [
+        {
+          "pdsid": "nac.m1271742202lc",
+          "line0": 17955,
+          "n_lines": 4096,
+          "sample0": 1811,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1271742202lc.geo.l17955s1811.tile.npy",
+          "bytes_sha256": "de96b5e885dc9871b4df8ad4168b38ee25c4ec1a5bc80dde690eda932d73f3c3"
+        },
+        {
+          "pdsid": "nac.m1335207975rc",
+          "line0": 29822,
+          "n_lines": 4096,
+          "sample0": 1227,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1335207975rc.geo.l29822s1227.tile.npy",
+          "bytes_sha256": "9df3e88129c1a438695ef65a63bdcd1869b71d2205eb86a7bd4ea029864c6657"
+        }
+      ],
+      "coordinate_system": "ground: (lon, lat) degrees east-positive, from the PDS archive index table; areas in a local equirectangular plane in km, centred on the mean of the two tile rings, sphere R = 1737.4 km",
+      "primary": {
+        "area_a_km2": 7.237867970087692,
+        "area_b_km2": 7.0429504599632065,
+        "area_intersection_km2": 7.02973925203872,
+        "iou": 0.9694748987647743,
+        "fraction_of_a": 0.9712444715889933,
+        "fraction_of_b": 0.9981241941144429,
+        "min_fraction": 0.9712444715889933
+      },
+      "monte_carlo": {
+        "n_draws": 4000,
+        "seed": 20260826,
+        "corner_quantisation_deg": 0.005,
+        "min_fraction_p5": 0.9002679587315134,
+        "min_fraction_p50": 0.9434202973478423,
+        "min_fraction_p95": 0.9730746005799493,
+        "min_fraction_min": 0.8561361101509296,
+        "min_fraction_max": 0.9839741339302797
+      },
+      "alternative_corner_reading": {
+        "description": "UPPER_* read as the LAST image line instead of the first, i.e. the mirror of what each product's PDS4 disp:Display_Direction states. Reported so the dependence on that reading is visible, not to endorse it.",
+        "area_a_km2": 7.4511862945595215,
+        "area_b_km2": 6.943263903684177,
+        "area_intersection_km2": 0.0,
+        "iou": 0.0,
+        "fraction_of_a": 0.0,
+        "fraction_of_b": 0.0,
+        "min_fraction": 0.0
+      },
+      "geometry_scale": {
+        "tile_cross_track_km": 1.811049131844006,
+        "tile_along_track_km": 3.9775113788210823,
+        "tile_centre_separation_km": 0.0009995619219168672,
+        "tile_centre_separation_km_alternative_reading": 22.855217216401524
+      },
+      "classification": "OVERLAP_CONFIRMED",
+      "classification_reason": "even at the pessimistic end of the geometric uncertainty 0.900 of the worse-covered tile is shared ground, at or above the 0.50 criterion",
+      "evidence_is_independent_of_matcher": true,
+      "evidence_used": [
+        "PDS archive index table corner coordinates (UPPER_LEFT ... LOWER_RIGHT latitude/longitude) via data/manifests/real_pair_index_geometry.json",
+        "PDS4 disp:Display_Direction from each product's stored label, which states that Line runs Top to Bottom and Sample Left to Right",
+        "the integer tile windows recorded in the REAL-DATA-01 manifests",
+        "IMAGE_LINES / LINE_SAMPLES from the same index row"
+      ],
+      "assumptions": [
+        "the ground coordinate of an arbitrary pixel is bilinear in (line, sample) between the four named corners -- an approximation, bounded below by the SCALED_PIXEL agreement",
+        "corner coordinates carry independent uniform rounding error of +/-0.005 deg",
+        "a sphere of radius 1737.4 km, and a local equirectangular plane for area"
+      ],
+      "polygons_km": {
+        "a": [
+          [
+            0.7934225104673175,
+            -2.0471086749279137
+          ],
+          [
+            -1.0134721824324833,
+            -1.9245096263041075
+          ],
+          [
+            -0.8017906878513271,
+            2.046361070096185
+          ],
+          [
+            1.0231673278658848,
+            1.923762021472271
+          ]
+        ],
+        "b": [
+          [
+            0.7673345760464618,
+            -2.0106945668350953
+          ],
+          [
+            -1.0261328263388552,
+            -1.8880955182111812
+          ],
+          [
+            -0.7725138907756877,
+            2.0114421716669315
+          ],
+          [
+            1.029985173018284,
+            1.8888431230431255
+          ]
+        ],
+        "a_alternative": [
+          [
+            1.7421820642219537,
+            13.330742998914815
+          ],
+          [
+            -0.13649653979200738,
+            13.453342047538728
+          ],
+          [
+            -0.3481584487920996,
+            9.482471351138436
+          ],
+          [
+            1.5124585036921272,
+            9.35987230251463
+          ]
+        ],
+        "b_alternative": [
+          [
+            0.3250269020215753,
+            -9.518137854399418
+          ],
+          [
+            -1.4519088090342003,
+            -9.395538805775612
+          ],
+          [
+            -1.7055042788038504,
+            -13.295076495653616
+          ],
+          [
+            0.062400606486906304,
+            -13.41767554427753
+          ]
+        ]
+      },
+      "registration_artefact": null,
+      "secondary_registration": null
+    },
+    {
+      "case": "triplet::m1271742202lc-m1452560468lc",
+      "role": "edge of triplet",
+      "note": "",
+      "products": [
+        "nac.m1271742202lc",
+        "nac.m1452560468lc"
+      ],
+      "tile_windows": [
+        {
+          "pdsid": "nac.m1271742202lc",
+          "line0": 17955,
+          "n_lines": 4096,
+          "sample0": 1811,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1271742202lc.geo.l17955s1811.tile.npy",
+          "bytes_sha256": "de96b5e885dc9871b4df8ad4168b38ee25c4ec1a5bc80dde690eda932d73f3c3"
+        },
+        {
+          "pdsid": "nac.m1452560468lc",
+          "line0": 9088,
+          "n_lines": 4096,
+          "sample0": 717,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1452560468lc.geo.l9088s717.tile.npy",
+          "bytes_sha256": "2eaa0639322be4de7ec104becb179ecfa50686efd68e36ab71c956d0300538c1"
+        }
+      ],
+      "coordinate_system": "ground: (lon, lat) degrees east-positive, from the PDS archive index table; areas in a local equirectangular plane in km, centred on the mean of the two tile rings, sphere R = 1737.4 km",
+      "primary": {
+        "area_a_km2": 7.23786840162,
+        "area_b_km2": 5.98680366802324,
+        "area_intersection_km2": 5.98680366802324,
+        "iou": 0.8271501132409725,
+        "fraction_of_a": 0.8271501132409725,
+        "fraction_of_b": 1.0,
+        "min_fraction": 0.8271501132409725
+      },
+      "monte_carlo": {
+        "n_draws": 4000,
+        "seed": 20260826,
+        "corner_quantisation_deg": 0.005,
+        "min_fraction_p5": 0.7856818858712058,
+        "min_fraction_p50": 0.8230169445311029,
+        "min_fraction_p95": 0.8637776466770994,
+        "min_fraction_min": 0.7442186410778208,
+        "min_fraction_max": 0.8942984310309469
+      },
+      "alternative_corner_reading": {
+        "description": "UPPER_* read as the LAST image line instead of the first, i.e. the mirror of what each product's PDS4 disp:Display_Direction states. Reported so the dependence on that reading is visible, not to endorse it.",
+        "area_a_km2": 7.421205254419558,
+        "area_b_km2": 5.962162757021364,
+        "area_intersection_km2": 0.0,
+        "iou": 0.0,
+        "fraction_of_a": 0.0,
+        "fraction_of_b": 0.0,
+        "min_fraction": 0.0
+      },
+      "geometry_scale": {
+        "tile_cross_track_km": 1.8110492393265933,
+        "tile_along_track_km": 3.9775113796122756,
+        "tile_centre_separation_km": 0.00033370245486045243,
+        "tile_centre_separation_km_alternative_reading": 15.041952188545194
+      },
+      "classification": "OVERLAP_CONFIRMED",
+      "classification_reason": "even at the pessimistic end of the geometric uncertainty 0.786 of the worse-covered tile is shared ground, at or above the 0.50 criterion",
+      "evidence_is_independent_of_matcher": true,
+      "evidence_used": [
+        "PDS archive index table corner coordinates (UPPER_LEFT ... LOWER_RIGHT latitude/longitude) via data/manifests/real_pair_index_geometry.json",
+        "PDS4 disp:Display_Direction from each product's stored label, which states that Line runs Top to Bottom and Sample Left to Right",
+        "the integer tile windows recorded in the REAL-DATA-01 manifests",
+        "IMAGE_LINES / LINE_SAMPLES from the same index row"
+      ],
+      "assumptions": [
+        "the ground coordinate of an arbitrary pixel is bilinear in (line, sample) between the four named corners -- an approximation, bounded below by the SCALED_PIXEL agreement",
+        "corner coordinates carry independent uniform rounding error of +/-0.005 deg",
+        "a sphere of radius 1737.4 km, and a local equirectangular plane for area"
+      ],
+      "polygons_km": {
+        "a": [
+          [
+            0.7932314753713382,
+            -2.046824617708253
+          ],
+          [
+            -1.0136633252581755,
+            -1.924225569084447
+          ],
+          [
+            -0.801981818056258,
+            2.0466451273158457
+          ],
+          [
+            1.0229763064676285,
+            1.9240460786919316
+          ]
+        ],
+        "b": [
+          [
+            0.6385763773191091,
+            -1.9533898041629902
+          ],
+          [
+            -0.9739380906130514,
+            -1.7081917069153778
+          ],
+          [
+            -0.6388576965815276,
+            1.9535692945556133
+          ],
+          [
+            0.9736567713506329,
+            1.7083711973080007
+          ]
+        ],
+        "a_alternative": [
+          [
+            0.15311799711450053,
+            -5.543715502191799
+          ],
+          [
+            -1.7180014429743613,
+            -5.421116453567885
+          ],
+          [
+            -1.9288116964206974,
+            -9.391987149968177
+          ],
+          [
+            -0.07568123391703258,
+            -9.514586198591983
+          ]
+        ],
+        "b_alternative": [
+          [
+            1.8621335005223956,
+            9.176132778191624
+          ],
+          [
+            0.2562559339648855,
+            9.421330875439452
+          ],
+          [
+            -0.07744531242365044,
+            5.75956987396846
+          ],
+          [
+            1.5284322541340611,
+            5.51437177672074
+          ]
+        ]
+      },
+      "registration_artefact": null,
+      "secondary_registration": null
+    },
+    {
+      "case": "triplet::m1335207975rc-m1452560468lc",
+      "role": "edge of triplet",
+      "note": "",
+      "products": [
+        "nac.m1335207975rc",
+        "nac.m1452560468lc"
+      ],
+      "tile_windows": [
+        {
+          "pdsid": "nac.m1335207975rc",
+          "line0": 29822,
+          "n_lines": 4096,
+          "sample0": 1227,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1335207975rc.geo.l29822s1227.tile.npy",
+          "bytes_sha256": "9df3e88129c1a438695ef65a63bdcd1869b71d2205eb86a7bd4ea029864c6657"
+        },
+        {
+          "pdsid": "nac.m1452560468lc",
+          "line0": 9088,
+          "n_lines": 4096,
+          "sample0": 717,
+          "n_samples": 2048,
+          "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1452560468lc.geo.l9088s717.tile.npy",
+          "bytes_sha256": "2eaa0639322be4de7ec104becb179ecfa50686efd68e36ab71c956d0300538c1"
+        }
+      ],
+      "coordinate_system": "ground: (lon, lat) degrees east-positive, from the PDS archive index table; areas in a local equirectangular plane in km, centred on the mean of the two tile rings, sphere R = 1737.4 km",
+      "primary": {
+        "area_a_km2": 7.04295032729624,
+        "area_b_km2": 5.986803198308756,
+        "area_intersection_km2": 5.986803198308756,
+        "iou": 0.8500419455048274,
+        "fraction_of_a": 0.8500419455048273,
+        "fraction_of_b": 1.0,
+        "min_fraction": 0.8500419455048273
+      },
+      "monte_carlo": {
+        "n_draws": 4000,
+        "seed": 20260826,
+        "corner_quantisation_deg": 0.005,
+        "min_fraction_p5": 0.8061799638525601,
+        "min_fraction_p50": 0.8454429908817402,
+        "min_fraction_p95": 0.8859990609360374,
+        "min_fraction_min": 0.7631565542659313,
+        "min_fraction_max": 0.9167183313838557
+      },
+      "alternative_corner_reading": {
+        "description": "UPPER_* read as the LAST image line instead of the first, i.e. the mirror of what each product's PDS4 disp:Display_Direction states. Reported so the dependence on that reading is visible, not to endorse it.",
+        "area_a_km2": 6.9323080297505335,
+        "area_b_km2": 5.976803601905065,
+        "area_intersection_km2": 0.0,
+        "iou": 0.0,
+        "fraction_of_a": 0.0,
+        "fraction_of_b": 0.0,
+        "min_fraction": 0.0
+      },
+      "geometry_scale": {
+        "tile_cross_track_km": 1.797652838832862,
+        "tile_along_track_km": 3.908373002704769,
+        "tile_centre_separation_km": 0.0006846925800052427,
+        "tile_centre_separation_km_alternative_reading": 37.8819422094179
+      },
+      "classification": "OVERLAP_CONFIRMED",
+      "classification_reason": "even at the pessimistic end of the geometric uncertainty 0.806 of the worse-covered tile is shared ground, at or above the 0.50 criterion",
+      "evidence_is_independent_of_matcher": true,
+      "evidence_used": [
+        "PDS archive index table corner coordinates (UPPER_LEFT ... LOWER_RIGHT latitude/longitude) via data/manifests/real_pair_index_geometry.json",
+        "PDS4 disp:Display_Direction from each product's stored label, which states that Line runs Top to Bottom and Sample Left to Right",
+        "the integer tile windows recorded in the REAL-DATA-01 manifests",
+        "IMAGE_LINES / LINE_SAMPLES from the same index row"
+      ],
+      "assumptions": [
+        "the ground coordinate of an arbitrary pixel is bilinear in (line, sample) between the four named corners -- an approximation, bounded below by the SCALED_PIXEL agreement",
+        "corner coordinates carry independent uniform rounding error of +/-0.005 deg",
+        "a sphere of radius 1737.4 km, and a local equirectangular plane for area"
+      ],
+      "polygons_km": {
+        "a": [
+          [
+            0.7674752212124726,
+            -2.010784312031353
+          ],
+          [
+            -1.0259921473895768,
+            -1.8881852634074388
+          ],
+          [
+            -0.7723732166037899,
+            2.011352426470674
+          ],
+          [
+            1.0301258132367863,
+            1.8887533778468677
+          ]
+        ],
+        "b": [
+          [
+            0.6389080692236622,
+            -1.9537636065789086
+          ],
+          [
+            -0.9736062721933421,
+            -1.708565509331296
+          ],
+          [
+            -0.6385259044516589,
+            1.953195492139695
+          ],
+          [
+            0.9739884369653453,
+            1.7079973948920826
+          ]
+        ],
+        "a_alternative": [
+          [
+            -0.5700213203631787,
+            -16.985989180479407
+          ],
+          [
+            -2.3441531795261574,
+            -16.8633901318556
+          ],
+          [
+            -2.597348497431284,
+            -20.762927821733605
+          ],
+          [
+            -0.8322332141661184,
+            -20.88552687035752
+          ]
+        ],
+        "b_alternative": [
+          [
+            2.5581098999139806,
+            20.582739953218248
+          ],
+          [
+            0.9482888978428232,
+            20.827938050466077
+          ],
+          [
+            0.6137682058294394,
+            17.166177048995085
+          ],
+          [
+            2.223589207900799,
+            16.920978951747365
+          ]
+        ]
+      },
+      "registration_artefact": null,
+      "secondary_registration": null
+    }
+  ],
+  "projected_geometry_driven_windows": [
+    {
+      "case": "triplet",
+      "feasible": true,
+      "status": "PROJECTION from geometry only. No tile was cut and no registration was run; this is a specification for a future stage, not a result.",
+      "target_ground_point_lon_lat": [
+        22.033852048576282,
+        20.03525252164036
+      ],
+      "target_is": "centroid of the intersection of the two frames' full footprints",
+      "tiles": [
+        {
+          "pdsid": "nac.m1271742202lc",
+          "line0": 17955,
+          "n_lines": 4096,
+          "sample0": 1811,
+          "n_samples": 2048,
+          "line0_used_in_real_data_01": 17955,
+          "sample0_used_in_real_data_01": 1811,
+          "line0_delta": 0,
+          "sample0_delta": 0
+        },
+        {
+          "pdsid": "nac.m1335207975rc",
+          "line0": 29822,
+          "n_lines": 4096,
+          "sample0": 1227,
+          "n_samples": 2048,
+          "line0_used_in_real_data_01": 29822,
+          "sample0_used_in_real_data_01": 1227,
+          "line0_delta": 0,
+          "sample0_delta": 0
+        }
+      ],
+      "projected_overlap": {
+        "area_a_km2": 7.237867970087692,
+        "area_b_km2": 7.0429504599632065,
+        "area_intersection_km2": 7.02973925203872,
+        "iou": 0.9694748987647743,
+        "fraction_of_a": 0.9712444715889933,
+        "fraction_of_b": 0.9981241941144429,
+        "min_fraction": 0.9712444715889933
+      }
+    }
+  ],
+  "claims_not_supported": [
+    "No ground-truth registration accuracy on real imagery.",
+    "No claim that any real registration succeeded.",
+    "No attribution of any registration failure to illumination: Sun AZIMUTH remains unavailable for these products from ODE and from the PDS4 labels, and the index table's SUB_SOLAR_AZIMUTH is stated to be relative to the RDR products, so it has not been used here.",
+    "No Chandrayaan-2 data, no multi-modal capability, no azimuth-controlled pair.",
+    "No claim that a tile whose overlap is CONFIRMED is registered: confirmed overlap means shared ground, not a known transform."
+  ],
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University."
+}

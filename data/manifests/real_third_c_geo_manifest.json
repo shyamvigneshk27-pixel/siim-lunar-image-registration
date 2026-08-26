@@ -1,0 +1,97 @@
+{
+  "dataset": "LRO NAC (LROC) real image tiles via PDS ODE",
+  "stage": "REAL-DATA-03",
+  "region": "mare_serenitatis",
+  "pair": [
+    "nac.m1452560468lc"
+  ],
+  "pair_role": "third_product_for_loop_closure",
+  "selection_method": "GEOMETRY-DRIVEN: every tile is centred on one ground point, derived from the archive index table's named frame corners. Supersedes the footprint-latitude / global-hypothesis path (E-028, E-029, D-033).",
+  "target_ground_point_lon_lat": [
+    22.033852048576282,
+    20.03525252164036
+  ],
+  "target_selection": "supplied on the command line",
+  "index_geometry_sources": [
+    "data\\manifests\\real_pair_index_geometry_C.json"
+  ],
+  "incidence_deg": [
+    68.8
+  ],
+  "incidence_delta_deg": 0.0,
+  "resolution_ratio": 1.0,
+  "line_direction_hypothesis": "NOT APPLICABLE -- read per frame from the archive, not assumed",
+  "chandrayaan2_status": "NOT OBTAINED. No Chandrayaan-2 data is present. No multi-modal claim is supported by this manifest.",
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "tiles": [
+    {
+      "pdsid": "nac.m1452560468lc",
+      "image_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/DATA/ESM5/2023294/NAC/M1452560468LC.IMG",
+      "img_file_name": "M1452560468LC.IMG",
+      "byte_start": 92048328,
+      "byte_count": 41484288,
+      "bytes_sha256": "2eaa0639322be4de7ec104becb179ecfa50686efd68e36ab71c956d0300538c1",
+      "line0": 9088,
+      "n_lines": 4096,
+      "sample0": 717,
+      "n_samples": 2048,
+      "parent_shape_lines_samples": [
+        52224,
+        5064
+      ],
+      "data_type": "SignedLSB2",
+      "numpy_dtype": "<i2",
+      "scaling_factor": 3.05185094759972e-05,
+      "unit": "Scaled I/F",
+      "index_convention": "array[row=line, column=sample], 0-based",
+      "retrieved_utc": "2026-08-26T04:08:05Z",
+      "region": "mare_serenitatis",
+      "label_path": "data\\metadata\\mare_serenitatis\\nac.m1452560468lc.xml",
+      "tile_npy": "data\\processed\\mare_serenitatis\\nac.m1452560468lc.geo.l9088s717.tile.npy",
+      "incidence_deg": 68.8,
+      "emission_deg": 1.72,
+      "utc_start": "2023-10-21T20:46:41.301000Z",
+      "ode_map_resolution_m": 0.855,
+      "selection_method": "GEOMETRY-DRIVEN (REAL-DATA-03, D-033)",
+      "target_ground_point_lon_lat": [
+        22.033852048576282,
+        20.03525252164036
+      ],
+      "target_selection": "supplied on the command line",
+      "window_detail": {
+        "target_pixel_line": 11135.585781900325,
+        "target_pixel_sample": 1740.6835671067224,
+        "unclamped_line0": 9088,
+        "unclamped_sample0": 717,
+        "clamped_lines": 0,
+        "clamped_samples": 0,
+        "fully_inside_frame": true
+      },
+      "index_geometry_sources": [
+        "data\\manifests\\real_pair_index_geometry_C.json"
+      ],
+      "index_corners_lon_lat": {
+        "upper_left": [
+          22.05,
+          19.7
+        ],
+        "upper_right": [
+          21.91,
+          19.72
+        ],
+        "lower_left": [
+          22.2,
+          21.24
+        ],
+        "lower_right": [
+          22.06,
+          21.26
+        ]
+      },
+      "lro_flight_direction": "-X",
+      "orbit_node": "A",
+      "geolocation_status": "Tile window derived by inverting a bilinear ground map built from the PDS archive index table's NAMED frame corners, with the corner naming taken from this product's own PDS4 disp:Display_Direction. This is a GEOMETRY-DRIVEN OVERLAP SELECTION on both axes -- it supersedes the footprint-latitude approximation of REAL-DATA-01 (E-028, E-029). It is still NOT a geographic registration: no camera model or SPICE kernel was used, corner coordinates are quoted to 0.01 deg (~150 m), and the ground map is bilinear. Overlap must be verified by scripts/verify_tile_overlap.py before any registration result is interpreted.",
+      "azimuth_status": "Sub-solar AZIMUTH was NOT used. The archive index table does carry SUB_SOLAR_AZIMUTH, but it is stated to be relative to the RDR products and that frame is unverified (RL-032b). This pair is illumination-varied by INCIDENCE only and is NOT azimuth-controlled."
+    }
+  ]
+}

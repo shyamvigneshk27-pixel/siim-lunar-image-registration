@@ -1,0 +1,71 @@
+{
+  "stage": "REAL-DATA-02",
+  "purpose": "Named image-corner coordinates for the REAL-DATA-01 NAC frames, so tile ground footprints can be computed independently of the feature matcher.",
+  "source": "PDS Archive Index Table (per-volume INDEX.TAB + INDEX.LBL) under https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0. This is the source ODE itself cites in Footprint_souce.",
+  "geometry_absent_from": [
+    "PDS4 Product_Observational label (no Cartography/Geometry class)",
+    "PDS3 attached header inside the .IMG (no geometry keywords)"
+  ],
+  "corner_naming_assumption": "UPPER_* is taken to mean the first image LINE and LOWER_* the last, following the PDS image convention that line 1 is the top row. This is an ASSUMPTION about the column semantics; it is cross-checked against NORTH_AZIMUTH, ORBIT_NODE and LRO_FLIGHT_DIRECTION in scripts/verify_tile_overlap.py and the check is reported with the result.",
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "chandrayaan2_status": "NOT OBTAINED. Nothing here involves Chandrayaan-2 and no multi-modal claim rests on it.",
+  "products": {
+    "nac.m1452560468lc": {
+      "index_lbl_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/INDEX/INDEX.LBL",
+      "index_tab_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/INDEX/INDEX.TAB",
+      "index_lbl_sha256": "01c742e027e3c8990ce8dceebf7d625bb676b36a9822f85d33b0b76cbb083a88",
+      "index_lbl_declared_md5": null,
+      "record_bytes": 902,
+      "file_records": 18236,
+      "row_index_0based": 3434,
+      "row_byte_range": [
+        3097468,
+        3098369
+      ],
+      "row_sha256": "98e854e029442c9faeebee609dfaa2bcf63387bea25bc3012a3dc0fab9bf8aba",
+      "raw_row": "\"LROLRC_1057B\",\" LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/DATA/ESM5/2023294/NAC/M1452560468LC.IMG\",\"LRO\",\"LROC\",\"nacl002e72fd\",\"M1452560468LC\",\"        v1.9\",\" MOON\",64458,  -0.003,\" FIFTH EXTENDED SCIENCE MISSION\",\"                                                      TARGET OF OPPORTUNITY\",  0,\" 2023-10-21 20:46:40.717\",\" 2023-10-21 20:46:41.301\",\" 2023-10-21 20:47:11.097\",\" 1\",\"719614000:45154\",\" 719614001:17907\",\"  719614031:4584\",719614001,  17907,719614031,   4584,0.000568000,9.99999,\" LEFT\", 200, 20, 86,  7,\"  N/A\",999,999,\"                                   N/A\",99999,9999.99,999,9,3,1,0,   2.717,  18.158, -12.827,   7.841,9999.999,9999.999,9999.999,9999.999,9999.999,9999.999, 52224,5064,16,   0.82,  0.89,  0.855, 1.72, 68.80, 70.52,276.76,177.10, -0.07, 89.33, 20.49, 21.97,148897161.6,182.45, 20.48, 22.06, 19.72, 21.91, 21.26, 22.06, 21.24, 22.20, 19.70, 22.05,  81.55,1819.10,\"A\",\"-X\"\r\n",
+      "range_requests_used": 17,
+      "fields": {
+        "PRODUCT_ID": "M1452560468LC",
+        "UPPER_LEFT_LATITUDE": "19.70",
+        "UPPER_LEFT_LONGITUDE": "22.05",
+        "UPPER_RIGHT_LATITUDE": "19.72",
+        "UPPER_RIGHT_LONGITUDE": "21.91",
+        "LOWER_LEFT_LATITUDE": "21.24",
+        "LOWER_LEFT_LONGITUDE": "22.20",
+        "LOWER_RIGHT_LATITUDE": "21.26",
+        "LOWER_RIGHT_LONGITUDE": "22.06",
+        "CENTER_LATITUDE": "20.48",
+        "CENTER_LONGITUDE": "22.06",
+        "NORTH_AZIMUTH": "276.76",
+        "SUB_SOLAR_AZIMUTH": "177.10",
+        "SUB_SOLAR_LATITUDE": "-0.07",
+        "SUB_SOLAR_LONGITUDE": "89.33",
+        "SUB_SPACECRAFT_LATITUDE": "20.49",
+        "SUB_SPACECRAFT_LONGITUDE": "21.97",
+        "ORBIT_NODE": "A",
+        "LRO_FLIGHT_DIRECTION": "-X",
+        "SLEW_ANGLE": "-0.003",
+        "IMAGE_LINES": "52224",
+        "LINE_SAMPLES": "5064",
+        "SCALED_PIXEL_WIDTH": "0.82",
+        "SCALED_PIXEL_HEIGHT": "0.89",
+        "RESOLUTION": "0.855",
+        "INCIDENCE_ANGLE": "68.80",
+        "EMISSION_ANGLE": "1.72",
+        "PHASE_ANGLE": "70.52",
+        "NAC_FRAME_ID": "LEFT",
+        "ORBIT_NUMBER": "64458",
+        "START_TIME": "2023-10-21 20:46:41.301",
+        "STOP_TIME": "2023-10-21 20:47:11.097",
+        "FILE_SPECIFICATION_NAME": "LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/DATA/ESM5/2023294/NAC/M1452560468LC.IMG"
+      },
+      "columns_requested_but_absent": [],
+      "retrieved_utc": "2026-08-26T04:00:37Z",
+      "volume": "LROLRC_1057B",
+      "img_url": "https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/DATA/ESM5/2023294/NAC/M1452560468LC.IMG",
+      "product_id": "M1452560468LC",
+      "source_manifest": "(none -- resolved live from ODE)"
+    }
+  }
+}
