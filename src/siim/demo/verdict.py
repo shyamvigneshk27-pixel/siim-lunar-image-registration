@@ -37,6 +37,30 @@ information about correctness:
   here for transparency and is **structurally excluded from the verdict** --
   see ``EXCLUDED_FROM_VERDICT``.
 
+What this engine deliberately does NOT evaluate
+------------------------------------------------
+It assesses **correspondence evidence** -- how many points survived geometric
+verification, how they are distributed, whether an independent loop closes. It
+does **not** assess whether the estimated transform is geometrically plausible
+for the scene. REAL-DATA-04's ``B -> D`` edge recovered singular values of
+1.806 and 0.185 with a rotation of -105.2 deg between two near-nadir frames of
+the same ground -- a physically absurd result -- and this engine rejected it on
+``n_inliers = 3`` without ever remarking on the transform itself.
+
+That gap is recorded here as a **limitation, not a defect to be patched**.
+Transform plausibility is checked by a separate instrument,
+``scripts/check_transform_against_geometry.py``, which compares the estimate
+against archive corner geometry and SPICE-derived ``SCALED_PIXEL``. It runs
+**after** the decision, deliberately: it classifies a passing edge (class B vs
+class C) and is reported either way, but it cannot move an edge across the
+pass/fail line, because that line was fixed before the data existed.
+
+**Do not add geometric plausibility as a verdict criterion.** Doing so would
+introduce a new rejection path into a rule that REAL-DATA-03, -04 and -05 all
+declare they applied unchanged, and would retroactively alter what those stages
+were evaluated under. The correct place for a new check is a new diagnostic
+reported beside the verdict, not inside it.
+
 Confidence is therefore an ordinal band backed by named evidence, not a
 probability. A number like 0.97 would imply a calibration this project has not
 earned, and §12 forbids inventing one.

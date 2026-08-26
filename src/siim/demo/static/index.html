@@ -712,6 +712,16 @@ function stepVerdict(vm, v, d) {
     ${vm.real && vm.d.verdict_note
       ? `<div class="note" style="margin-top:12px"><b>Why not “VERIFIED”?</b>
          ${esc(vm.d.verdict_note)}</div>` : ""}
+    ${d.loop_closure_error
+      ? `<div class="note" style="margin-top:12px;border-left:3px solid var(--fail);
+              padding-left:11px">
+         <b>Correction to the evidence above.</b> The verdict says loop closure
+         was not evaluated because it needs a third overlapping image. On this
+         run a third image was available and the check <b>failed</b>:
+         <span class="n">${esc(d.loop_closure_error)}</span>.
+         The verdict wording is pre-registered and is not edited to match, so
+         the failure is reported here instead. Loop closure did not pass — it
+         did not run.</div>` : ""}
     ${corr}
     ${vm.real ? `<ul class="caveats">${
       vm.d.caveats.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
@@ -787,6 +797,19 @@ function provenance(d) {
         <td class="n" style="font-size:10px">${esc(x.bytes_sha256.slice(0, 28))}…</td>
       </tr>`).join("")}
     </table>
+    ${p.artefacts && p.artefacts.length ? `
+    <div class="stepsub" style="margin:15px 0 8px">Recorded artefacts these numbers were read from</div>
+    <table>
+      <tr><th>Role</th><th>File — open it and check</th></tr>
+      ${p.artefacts.map(a => `<tr>
+        <td>${esc(a.role)}</td>
+        <td class="n" style="font-size:11px">${esc(a.path)}</td>
+      </tr>`).join("")}
+    </table>
+    <div class="note" style="margin-top:8px">Every figure on this page is read
+      from these files, not recomputed for display. To confirm the page cannot
+      drift from them, run
+      <span class="n">python -m pytest tests/test_demo_real_data.py -q</span>.</div>` : ""}
     <div class="srcline"><b>overlay integrity:</b>
       ${d.overlay_integrity.n_putative} correspondences,
       ${d.overlay_integrity.n_inliers} inliers — agrees with the recorded artefact.

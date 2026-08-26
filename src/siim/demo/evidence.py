@@ -184,13 +184,63 @@ CAUSAL_SUMMARY = ("Across the measured real-data edges, registration outcome "
 
 
 def _read(path: Path, what: str) -> dict:
+    """Load a recorded artefact, or fail in a way the reader can act on.
+
+    A *missing* artefact and a *corrupt* one are the same class of problem --
+    the recorded evidence cannot be read -- so both raise
+    :class:`DemoDataMissing` and both name the file. Only the absent case used
+    to be handled: a truncated or malformed artefact raised a bare
+    ``JSONDecodeError`` that reached the endpoint uncaught and reached the
+    reader as a 500 and a stack trace, which says nothing about which file is
+    at fault. Neither path ever substitutes or recomputes a value.
+    """
     if not path.exists():
         raise DemoDataMissing(
             f"{what} not found at {path}. The demo reads recorded experiment "
             "artefacts and will not substitute or recompute them.")
-    return json.loads(path.read_text(encoding="utf-8"))
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as exc:
+        raise DemoDataMissing(
+            f"{what} at {path} could not be read ({type(exc).__name__}: "
+            f"{exc}). The demo reads recorded experiment artefacts and will "
+            "not substitute or recompute them.") from exc
+    try:
+        loaded = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise DemoDataMissing(
+            f"{what} at {path} is not valid JSON (line {exc.lineno}, column "
+            f"{exc.colno}: {exc.msg}). The artefact is corrupt or truncated; "
+            "restore it from version control or re-run the stage that wrote "
+            "it. The demo will not substitute or recompute it.") from exc
+    if not isinstance(loaded, dict):
+        raise DemoDataMissing(
+            f"{what} at {path} parsed as {type(loaded).__name__}, not a JSON "
+            "object. The artefact is not the recorded structure this demo "
+            "reads, and no value will be substituted for it.")
+    return loaded
 
 
+# Artefact readers are cached for the life of the process, keyed by path only.
+#
+# The assumption that makes this correct: **recorded artefacts are immutable.**
+# A file under ``experiments/`` is the output of a stage that has already run;
+# integrity rule 4 forbids overwriting one, and a re-run writes a new path
+# rather than replacing an old one. Under that assumption a path identifies its
+# contents uniquely and caching on it cannot serve a stale value.
+#
+# This is deliberately keyed on path alone rather than on ``(path, mtime,
+# size)``. Editing an artefact under a running server is not a workflow this
+# demo supports, and a staleness check would suggest it is. If you DO edit one
+# while the server is up, restart it -- or call ``.cache_clear()``, which the
+# tests do.
+#
+# Note the failure mode this cache does *not* have: it stores only what
+# :func:`_read` returned, so a missing or corrupt artefact raises every time
+# and is never cached as a substitute value. E-030's stale-cache defect was a
+# different shape -- a *byte* cache keyed by product but not by tile window, so
+# one tile's bytes were served for another's. These caches are keyed by the
+# full artefact path, which carries the stage and the window.
 @lru_cache(maxsize=None)
 def _loop(rel: str) -> dict:
     return _read(EXPERIMENTS / rel, f"loop-closure artefact {rel}")
@@ -465,6 +515,12 @@ def build_real_scenario(scenario: str) -> dict[str, Any]:
             "whose legs failed, so attributing it to this single edge would be "
             "false. The strongest available check therefore did not run, and "
             "the verdict says so instead of assuming a pass."),
+        # Always None here, and that is a statement rather than a default: for a
+        # recorded edge the loop residual is deliberately withheld (see
+        # verdict_note above), never failed. The key exists so the response
+        # shape matches the live path, where a non-null value means the check
+        # was attempted and errored.
+        "loop_closure_error": None,
 
         "corroboration": _geometry_check(sc["geometry_artefact"], sc["edge"]),
 
@@ -479,6 +535,22 @@ def build_real_scenario(scenario: str) -> dict[str, Any]:
         "overlay_integrity": integrity,
 
         "provenance": {
+            # Every file this case's numbers were read out of, so the reader can
+            # open them directly instead of taking the displayed values on
+            # trust. These are repo-relative paths, not values: nothing here is
+            # a measurement, and nothing is recomputed to produce it.
+            "artefacts": [
+                {"role": "overlap (step 1)",
+                 "path": f"experiments/{sc['overlap_artefact']}"},
+                {"role": "registration + verdict inputs (steps 2-4)",
+                 "path": f"experiments/{sc['loop_artefact']}"},
+                {"role": "archive-geometry corroboration",
+                 "path": f"experiments/{sc['geometry_artefact']}"},
+                {"role": "acquisition manifest (byte ranges, SHA-256)",
+                 "path": f"data/manifests/{sc['manifest']}"},
+                {"role": "certified correspondence overlay",
+                 "path": "src/siim/demo/assets/real_data_04.json"},
+            ],
             "mission": "Lunar Reconnaissance Orbiter · LROC NAC (CDR)",
             "archive": "NASA PDS, via Orbital Data Explorer",
             "region": _manifest(sc["manifest"]).get("region"),

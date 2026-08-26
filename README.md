@@ -1,7 +1,86 @@
-# SIIM — Sun-angle Invariant Image Matching
+# SIIM — Satellite / Lunar Image Integrity & Matching
 
-**SIH 2026 · Problem Statement 26166 (ISRO)**
-Multi-modal, Sun-angle and scale invariant image correspondence using Chandrayaan-2 optical images (OHRC, TMC-2, IIRS) against lunar reference imagery (LRO NAC).
+**SIH 2026 · Problem Statement 26166 (ISRO)** · CPU-only · runs offline
+
+> **A lunar image-registration system that refuses to report an alignment it cannot defend.**
+
+Registration failure is not the danger in orbital imagery. **Silent** registration failure is —
+an aligner that returns a confident, self-consistent, wrong answer, and a quality metric that
+agrees with it. SIIM is built around that problem: it establishes overlap *before* it
+interprets anything, excludes the metric the field normally trusts, corroborates against data
+the matcher never saw, and states the scope of every claim it makes.
+
+## Run it — one command
+
+```bash
+python -m pip install -e ".[dev]"
+python scripts/run_demo.py --open
+```
+
+That is the whole setup. **No network access, no API keys, no build step, no GPU.** Every
+real-data number in the demonstrator is read from a recorded artefact under `experiments/`
+and every image is a local PNG, so it behaves identically on a disconnected laptop. If port
+8000 is busy the launcher moves to the next free port and says so.
+
+**What you will see**, in four steps on one page, for a real pair of LRO NAC frames:
+
+| | |
+|---|---|
+| **1 · Do these images even overlap?** | Answered from archive corner geometry with **no pixel read and no matcher involved**, with the archive's own coordinate quantisation propagated by Monte Carlo |
+| **2 · What did the matcher find?** | The unmodified RootSIFT + LO-RANSAC baseline, with its correspondences drawn on the real tiles |
+| **3 · What does the evidence say?** | Inlier count, coverage, loop closure — and `fit_rmse` shown but **flagged as excluded from the verdict** |
+| **4 · Should this be trusted?** | `VERIFIED` / `REJECTED` / `INCONCLUSIVE` **with the reasons**, the pre-registered pass/fail rule stated separately, and every number naming the file it came from |
+
+Three real cases are loaded (one that succeeds, one that fails, one control) plus a
+**controlled synthetic adversarial case**: an alignment that is 64 px wrong, self-consistent,
+and reports a near-zero fit residual. Comparing that case against the real failing edge is the
+fastest way to see what this project is actually about.
+
+## How to verify the demo evidence
+
+The demonstrator's real-data figures are **read from recorded experiment
+artefacts**, not recomputed while you watch. That is deliberate — it keeps the
+page identical to the stage reports that justify it — but it means "read from a
+file" and "typed into a file" look the same from the outside. Three mechanisms
+exist so you don't have to take it on trust:
+
+| | |
+|---|---|
+| **The overlay is certified when it is built** | `scripts/build_demo_assets.py` re-runs the identical seeded pipeline and **refuses to write** unless every recomputed statistic matches the recorded artefact exactly |
+| **It is re-checked at load time** | `_check_asset_matches_artefact` in `src/siim/demo/evidence.py` re-verifies that certification on every request, so a hand-edited asset is rejected rather than displayed |
+| **Tests pin the page to the artefacts** | the displayed numbers are asserted equal to the recorded ones, edge by edge |
+
+Run the third one yourself — it takes a few seconds and needs no network:
+
+```bash
+python -m pytest tests/test_demo_real_data.py tests/test_demo_evidence_integrity.py -q
+```
+
+Those cover, among other things: displayed numbers equal recorded numbers; every
+step names the artefact it came from; a missing **or corrupt** artefact produces
+a clean error naming the file rather than a silent substitution; an overlay that
+disagrees with its artefact is refused; and a diagnostic that *fails* is never
+displayed as a diagnostic that was *not applicable*.
+
+In the demo itself, each real case's provenance panel lists the exact repo-relative
+path of every file its numbers were read from, alongside the byte ranges and
+SHA-256 of the archive imagery. Open any of them and check.
+
+## What is honestly claimed, and what is not
+
+| | |
+|---|---|
+| **Real LRO NAC, end to end** | Byte-range fetched from the public PDS archive, SHA-256 recorded, PDS4-decoded, sanity-gated, registered by an unmodified baseline |
+| **Δincidence predicts registration outcome** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54° |
+| **The RMSE trap, on real data** | A real edge reports a fit RMSE of `1.885e-13 px` for a transform independently measured **797 px wrong** |
+| **NOT proven: illumination as *the* cause** | Frame identity is **substantially weakened, not conclusively refuted** — see D-040-N1. The replication (REAL-DATA-05) returned **UNRESOLVED** |
+| **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication. **No multi-modal claim is supported anywhere in this repository** |
+| **NO ground truth on real imagery** | None exists for these products. A succeeding real edge is *corroborated*, never verified |
+| **NO Sun-azimuth claim** | Every real result is illumination-varied by **incidence only** |
+
+The project is named for Sun-angle invariance, and the honest position is that **we measured
+the classical baseline and it is not Sun-angle invariant**. That measurement — on real archive
+imagery, against criteria fixed before the data existed — is the contribution.
 
 ---
 
@@ -115,18 +194,32 @@ This is a hypothesis carried over from SAR-optical imagery, not an established l
 - **Know that a confident answer can still be wrong.** A correspondence set displaced by exactly one crater spacing is 64 px wrong and perfectly self-consistent: fit RMSE reads ~0, held-out residual reads 0.47 px. Measured: `fit_rmse` scores **ROC AUC 0.495** as a failure detector — chance. Only **loop closure** over three images catches it (100% detection, 0% false alarm).
 - **Know when it has failed.** A system that is right 90% of the time and knows which 10% is worth more operationally than one that is right 95% and cannot tell you when it is not.
 
-## Quick start
+## Reproducing the experiments
+
+**None of this is needed to evaluate the project** — see *Run it* at the top of this file.
+Everything below re-derives results that are already recorded under `experiments/`.
 
 ```bash
-python -m pip install -e ".[dev,viz]"
-python -m pytest tests/ -q            # 376 passed, 2 skipped
+python -m pip install -e ".[dev,viz,experiments]"
+python -m pytest tests/ -q            # 497 passed, 2 skipped
+```
+
+**Offline** — synthetic experiments, no network:
+
+```bash
 python scripts/run_exp000.py          # geometry gate measurements
 python scripts/run_exp001.py          # classical baseline vs synthetic ground truth
 python scripts/run_exp002_ransac.py   # LO-RANSAC defect: before/after
 python scripts/run_exp002_terrain.py  # terrain realism + regime comparison
 python scripts/run_exp002_threshold.py  # failure threshold, disjoint validation
 python scripts/run_exp002_gtfree.py     # GT-free estimators vs coherent wrong answers
+```
 
+**Requires network, and re-fetches ~166 MB of archive imagery.** The decoded tiles are
+gitignored; the manifests under `data/manifests/` carry the byte ranges and SHA-256 that make
+them reproducible. The demonstrator does **not** need any of this.
+
+```bash
 # real LRO NAC (network; tiles are gitignored and must be fetched once)
 python scripts/acquire_real_pair.py     # observational labels + byte-range image tiles
 python scripts/check_real_tiles.py      # Phase-6 sanity checks + diagnostic figures
