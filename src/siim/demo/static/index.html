@@ -3,210 +3,1005 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>SIIM — Match · Register · Verify · Explain</title>
+<title>SIIM — Register only when the evidence agrees</title>
 <style>
+/* --------------------------------------------------------------------------
+   Colour roles.
+
+   Outcome marks (SUCCEED / FAIL) use blue + red, NOT green + red. Green vs red
+   collides under deuteranopia (validated: CVD dE 4.1 — a fail); blue vs red on
+   this surface measures CVD dE 25.7 and clears every check. Both still ship a
+   glyph and a word, so colour never carries the meaning alone.
+
+   Verdict status blocks use the reserved status palette and are always paired
+   with an icon and the status word.
+   -------------------------------------------------------------------------- */
 :root{
-  --bg:#0b0f14; --panel:#131a23; --line:#243140; --ink:#e6edf5; --dim:#8fa3b8;
-  --ok:#3fb950; --bad:#f85149; --warn:#d29922; --acc:#58a6ff;
+  --surface-0:#0b0e12; --surface-1:#0e1116; --surface-2:#151a21; --surface-3:#1b222b;
+  --line:#232c38; --line-2:#2f3a49;
+  --ink:#eef3f9; --ink-2:#a7b6c8; --ink-3:#71829a;
+
+  --succeed:#3987e5;  --succeed-soft:rgba(57,135,229,.14);
+  --fail:#d03b3b;     --fail-soft:rgba(208,59,59,.14);
+
+  --good:#0ca30c; --warning:#fab219; --serious:#ec835a; --critical:#d03b3b;
+
+  --real:#5aa9ff; --synth:#c98500;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font:14px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;
-  align-items:baseline;gap:16px;flex-wrap:wrap}
-h1{font-size:18px;margin:0;letter-spacing:.3px}
-.tag{font-size:11px;color:var(--dim);border:1px solid var(--line);
-  padding:2px 8px;border-radius:999px}
-main{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 61px)}
-aside{border-right:1px solid var(--line);padding:16px;overflow-y:auto}
-section{padding:20px 24px;overflow-y:auto}
-button.sc{display:block;width:100%;text-align:left;background:var(--panel);
-  color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px 12px;
-  margin-bottom:8px;cursor:pointer;font:inherit}
-button.sc:hover{border-color:var(--acc)}
-button.sc.active{border-color:var(--acc);background:#16202b}
-button.sc .t{font-weight:600;font-size:13px}
-button.sc .b{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4}
-.run{width:100%;background:var(--acc);color:#04121f;border:0;border-radius:8px;
-  padding:11px;font-weight:700;cursor:pointer;font-size:14px}
-.run:disabled{opacity:.5;cursor:wait}
-.imgs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-.imgs figure{margin:0}
-.imgs img,canvas{width:100%;border:1px solid var(--line);border-radius:8px;display:block;
-  image-rendering:pixelated;background:#000}
-figcaption{font-size:11px;color:var(--dim);margin-top:6px}
-.verdict{border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid var(--line)}
-.verdict.VERIFIED{border-color:var(--ok);background:#0e2213}
-.verdict.REJECTED{border-color:var(--bad);background:#2a1113}
-.verdict.INCONCLUSIVE{border-color:var(--warn);background:#241d0c}
-.vhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.vstat{font-size:22px;font-weight:800;letter-spacing:.5px}
-.VERIFIED .vstat{color:var(--ok)} .REJECTED .vstat{color:var(--bad)}
-.INCONCLUSIVE .vstat{color:var(--warn)}
-.conf{font-size:11px;border:1px solid currentColor;border-radius:999px;padding:2px 9px;
-  text-transform:uppercase;letter-spacing:.6px}
-.reasons{margin:12px 0 0;padding-left:18px}
-.reasons li{margin-bottom:7px}
+html,body{height:100%}
+body{margin:0;background:var(--surface-0);color:var(--ink);
+  font:15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-weight:650;letter-spacing:-.01em}
+
+/* ---------------------------------------------------------------- masthead */
+header{padding:20px 28px 18px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface-2),var(--surface-0));
+  display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:14px}
+.brand .mark{font-size:34px;font-weight:800;letter-spacing:.06em;
+  background:linear-gradient(92deg,#eef3f9,#5aa9ff);-webkit-background-clip:text;
+  background-clip:text;color:transparent}
+.brand .full{font-size:13.5px;color:var(--ink-2);letter-spacing:.02em}
+.tagline{font-size:17px;color:var(--ink);font-style:italic;opacity:.92;
+  border-left:2px solid var(--succeed);padding-left:14px}
+.scope{margin-left:auto;text-align:right;font-size:11px;color:var(--ink-3);
+  line-height:1.5;max-width:330px}
+.scope b{color:var(--ink-2);font-weight:600}
+
+/* ------------------------------------------------------------------ layout */
+/* One scroller, not two. A nested overflow pane means the presenter can scroll
+   the wrong thing on stage and land on a blank rectangle. */
+main{display:grid;grid-template-columns:264px minmax(0,1fr);
+  align-items:start}
+aside{border-right:1px solid var(--line);padding:18px 16px 40px;
+  background:var(--surface-1);position:sticky;top:0;
+  max-height:100vh;overflow-y:auto}
+section#stage{padding:22px 28px 64px;min-width:0}
+
+/* ------------------------------------------------------------ case chooser */
+.grp{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:20px 0 9px;font-weight:700}
+.grp:first-child{margin-top:0}
+button.case{display:block;width:100%;text-align:left;background:var(--surface-2);
+  color:var(--ink);border:1px solid var(--line);border-radius:10px;
+  padding:11px 12px;margin-bottom:8px;cursor:pointer;font:inherit;
+  transition:border-color .12s,background .12s}
+button.case:hover{border-color:var(--line-2);background:var(--surface-3)}
+button.case.active{border-color:var(--succeed);background:#132234;
+  box-shadow:0 0 0 1px var(--succeed) inset}
+button.case .badge{display:inline-block;font-size:9px;font-weight:800;
+  letter-spacing:.1em;padding:2px 6px;border-radius:4px;margin-bottom:6px}
+.badge.real{background:rgba(90,169,255,.16);color:var(--real);
+  border:1px solid rgba(90,169,255,.4)}
+.badge.synth{background:rgba(201,133,0,.16);color:#e2a53a;
+  border:1px solid rgba(201,133,0,.45)}
+button.case .t{font-weight:650;font-size:13.5px;line-height:1.35}
+button.case .s{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.4}
+.runbtn{width:100%;background:var(--succeed);color:#04121f;border:0;
+  border-radius:10px;padding:12px;font-weight:750;cursor:pointer;font-size:14px;
+  margin-top:6px}
+.runbtn:disabled{opacity:.45;cursor:wait}
+.sidenote{font-size:10.5px;color:var(--ink-3);margin-top:14px;line-height:1.5}
+
+/* ------------------------------------------------------------------- steps */
+.stephead{display:flex;align-items:center;gap:13px;margin:0 0 14px}
+.stepnum{width:30px;height:30px;flex:0 0 30px;border-radius:50%;
+  border:1.5px solid var(--line-2);display:grid;place-items:center;
+  font-size:13px;font-weight:750;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.stepq{font-size:19px;font-weight:650}
+.stepsub{font-size:11.5px;color:var(--ink-3);letter-spacing:.04em;
+  text-transform:uppercase;font-weight:700}
+.card{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;
+  padding:20px 22px;margin-bottom:18px}
+.card.tight{padding:16px 18px}
+
+/* ---------------------------------------------------------------- headline */
+.casehead{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;
+  margin-bottom:18px}
+.casehead .h{font-size:27px;font-weight:750;letter-spacing:-.02em}
+.casehead .sub{font-size:13.5px;color:var(--ink-2);margin-top:3px}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.pill{font-size:10.5px;font-weight:700;letter-spacing:.07em;padding:4px 9px;
+  border-radius:999px;border:1px solid var(--line-2);color:var(--ink-3)}
+.pill.real{border-color:rgba(90,169,255,.5);color:var(--real);
+  background:rgba(90,169,255,.1)}
+.pill.synth{border-color:rgba(201,133,0,.5);color:#e2a53a;
+  background:rgba(201,133,0,.1)}
+.pill.outcome-SUCCEED{border-color:var(--succeed);color:var(--succeed);
+  background:var(--succeed-soft)}
+.pill.outcome-FAIL{border-color:var(--fail);color:#f07a7a;background:var(--fail-soft)}
+
+/* --------------------------------------------------------------- stat tile */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px}
+.tile{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;
+  padding:13px 14px}
+.tile .lab{font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:700}
+.tile .val{font-size:25px;font-weight:700;font-variant-numeric:tabular-nums;
+  margin-top:5px;letter-spacing:-.02em;line-height:1.1}
+.tile .note{font-size:10.5px;color:var(--ink-3);margin-top:5px;line-height:1.4}
+.tile.hero .val{font-size:38px}
+.tile.good .val{color:var(--succeed)} .tile.bad .val{color:#f07a7a}
+.tile.mute .val{color:var(--ink-3)}
+.tile.struck .val{text-decoration:line-through;text-decoration-thickness:2px;
+  text-decoration-color:rgba(208,59,59,.75)}
+
+/* ------------------------------------------------------------ gate / badge */
+.gate{display:flex;align-items:center;gap:12px;padding:11px 15px;border-radius:10px;
+  font-weight:700;font-size:14px;border:1px solid;margin-bottom:14px}
+.gate.ok{border-color:rgba(12,163,12,.55);background:rgba(12,163,12,.1);color:#5fd35f}
+.gate.no{border-color:rgba(208,59,59,.55);background:var(--fail-soft);color:#f07a7a}
+.gate .ic{font-size:17px}
+
+/* -------------------------------------------------------------- geometry */
+.geowrap{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);
+  gap:22px;align-items:center}
+svg.geo{width:100%;height:auto;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:10px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);
+  margin-top:9px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;
+  margin-right:6px;vertical-align:-1px}
+
+/* ----------------------------------------------------------- uncertainty */
+.ubar{position:relative;height:9px;border-radius:5px;background:var(--surface-3);
+  margin:11px 0 6px}
+.ubar .rng{position:absolute;top:0;bottom:0;background:rgba(57,135,229,.55);
+  border-radius:5px}
+.ubar .pt{position:absolute;top:-4px;width:2px;height:17px;background:var(--ink)}
+.ubar .thr{position:absolute;top:-4px;width:2px;height:17px;background:var(--warning)}
+.uscale{position:relative;height:34px;font-size:10.5px;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+.uscale .end{position:absolute;top:0}
+.uscale .thrlab{position:absolute;top:0;color:var(--warning);white-space:nowrap;
+  transform:translateX(-50%);font-weight:650}
+
+/* ------------------------------------------------------------- image pair */
+/* NAC tiles are 2:1 portrait. Left at full column width they are ~1200 px tall
+   and swallow the slide, so height is capped and the frame letterboxes. */
+.imgs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.imgs figure{margin:0;text-align:center}
+.imgs img{display:block;margin:0 auto;width:auto;max-width:100%;max-height:300px;
+  border:1px solid var(--line);border-radius:10px;background:#000}
+.imgs figcaption{text-align:left}
+figcaption{font-size:11px;color:var(--ink-3);margin-top:7px;line-height:1.45}
+figcaption b{color:var(--ink-2)}
+canvas#corr{display:block;max-width:100%;max-height:380px;height:auto;
+  margin:0 auto;border:1px solid var(--line);border-radius:10px;background:#000}
+
+/* ---------------------------------------------------------------- reveal */
+.reveal{border:1px solid var(--line-2);border-radius:13px;overflow:hidden;
+  background:var(--surface-2)}
+.reveal .rh{padding:13px 18px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.reveal .rh .t{font-weight:750;font-size:15px}
+.beat{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;
+  padding:16px 18px;border-bottom:1px solid var(--line);
+  opacity:0;transform:translateY(9px);transition:opacity .5s ease,transform .5s ease}
+.beat:last-child{border-bottom:0}
+.beat.on{opacity:1;transform:none}
+.beat .arrow{display:grid;place-items:center;font-size:19px;color:var(--ink-3)}
+.beat .bt{font-size:15px;font-weight:650;margin-bottom:3px}
+.beat .bv{font-family:var(--mono);font-size:22px;font-weight:700;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.beat .bx{font-size:12.5px;color:var(--ink-2);margin-top:4px;line-height:1.5}
+.beat.b-look .bv{color:var(--succeed)}
+.beat.b-bad .bv{color:#f07a7a}
+.beat.b-end{background:rgba(208,59,59,.09)}
+.beat.b-end .bv{color:#f07a7a;font-size:27px;letter-spacing:.04em}
+.replay{margin-left:auto;background:transparent;border:1px solid var(--line-2);
+  color:var(--ink-2);border-radius:8px;padding:6px 12px;cursor:pointer;
+  font:inherit;font-size:12px}
+.replay:hover{border-color:var(--succeed);color:var(--succeed)}
+
+/* --------------------------------------------------------------- verdict */
+.verdict{border-radius:14px;padding:20px 22px;border:1.5px solid;margin-bottom:6px}
+.verdict.VERIFIED{border-color:var(--good);background:rgba(12,163,12,.09)}
+.verdict.REJECTED{border-color:var(--critical);background:rgba(208,59,59,.09)}
+.verdict.INCONCLUSIVE{border-color:var(--warning);background:rgba(250,178,25,.09)}
+.vhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.vic{font-size:27px;line-height:1}
+.vstat{font-size:31px;font-weight:800;letter-spacing:.02em}
+.VERIFIED .vstat{color:#4fce4f} .REJECTED .vstat{color:#f07a7a}
+.INCONCLUSIVE .vstat{color:var(--warning)}
+.conf{font-size:11px;border:1px solid currentColor;border-radius:999px;
+  padding:3px 10px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+.reasons{margin:14px 0 0;padding-left:20px}
+.reasons li{margin-bottom:8px;line-height:1.55}
+.outcome-line{font-size:14px;margin-top:14px;padding-top:13px;
+  border-top:1px solid var(--line);color:var(--ink-2)}
+.outcome-line b{color:var(--ink)}
+
+/* ----------------------------------------------------------------- table */
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--dim);font-weight:600}
-td.v{font-variant-numeric:tabular-nums;white-space:nowrap}
-.w-decisive{color:var(--acc);font-weight:700}
-.w-excluded{color:var(--dim);text-decoration:line-through}
-.e-supports{color:var(--ok)} .e-against{color:var(--warn)}
-.e-decisive_against{color:var(--bad);font-weight:700}
-.banner{border-radius:8px;padding:10px 13px;font-size:12.5px;margin-bottom:14px;
-  border:1px solid var(--warn);background:#241d0c;color:#f0d58a}
-.banner.gt{border-color:var(--line);background:var(--panel);color:var(--dim)}
-h3{font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--dim);
-  margin:22px 0 8px}
-.muted{color:var(--dim);font-size:12px}
-.pill{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:999px;
-  border:1px solid var(--line);color:var(--dim);margin-right:6px}
-.pill.live{border-color:var(--ok);color:var(--ok)}
-.pill.synth{border-color:var(--warn);color:var(--warn)}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);
+  vertical-align:top}
+th{color:var(--ink-3);font-weight:700;font-size:10.5px;letter-spacing:.09em;
+  text-transform:uppercase}
+tr:last-child td{border-bottom:0}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap;font-family:var(--mono)}
+.w-decisive{color:var(--succeed);font-weight:700}
+.w-excluded{color:var(--ink-3)}
+.w-excluded .sig{text-decoration:line-through;text-decoration-color:var(--fail)}
+.e-supports{color:#4fce4f} .e-against{color:var(--warning)}
+.e-decisive_against{color:#f07a7a;font-weight:700}
+.e-inconclusive{color:var(--ink-3)}
+
+/* ------------------------------------------------------------- strip plot */
+.strip{width:100%;height:auto;overflow:visible}
+.strip .ax{stroke:var(--line-2);stroke-width:1}
+.strip .gr{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.strip text{fill:var(--ink-3);font-size:11px;
+  font-family:ui-sans-serif,system-ui,sans-serif}
+.strip text.lbl{fill:var(--ink-2);font-size:11.5px;font-weight:650}
+.strip text.axt{fill:var(--ink-3);font-size:11px}
+.strip .band{fill:rgba(250,178,25,.07)}
+.strip .bandline{stroke:var(--warning);stroke-width:1;stroke-dasharray:3 3}
+
+/* -------------------------------------------------------------- footnotes */
+.note{font-size:12px;color:var(--ink-3);line-height:1.6}
+.note b{color:var(--ink-2)}
+.srcline{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);
+  margin-top:11px;word-break:break-all}
+.srcline b{color:var(--ink-2);font-family:inherit}
+ul.caveats{margin:9px 0 0;padding-left:19px;font-size:11.5px;color:var(--ink-3)}
+ul.caveats li{margin-bottom:5px;line-height:1.5}
+.notclaimed{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.notclaimed span{font-size:10.5px;border:1px solid var(--line-2);border-radius:6px;
+  padding:4px 8px;color:var(--ink-3)}
+.err{border:1px solid var(--critical);background:rgba(208,59,59,.1);
+  border-radius:11px;padding:16px 18px;color:#f0a0a0;font-size:13.5px}
+.loading{color:var(--ink-3);font-size:14px;padding:40px 0;text-align:center}
+@media (max-width:1180px){
+  main{grid-template-columns:1fr} aside{border-right:0;border-bottom:1px solid var(--line)}
+  .geowrap{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
+
 <header>
-  <h1>SIIM</h1>
-  <span class="tag">Match · Register · <b>Verify</b> · <b>Explain</b></span>
-  <span class="tag">SIH 2026 · PS 26166</span>
-  <span class="muted" id="datastatus"></span>
+  <div class="brand">
+    <span class="mark">SIIM</span>
+    <span class="full">Satellite / Lunar Image<br>Integrity &amp; Matching</span>
+  </div>
+  <div class="tagline">Register only when the evidence agrees.</div>
+  <div class="scope" id="scope"></div>
 </header>
 
 <main>
 <aside>
-  <h3 style="margin-top:0">Scenario</h3>
-  <div id="scenarios"></div>
-  <button class="run" id="run">Run registration</button>
-  <h3>Not used in the verdict</h3>
-  <div id="excluded" class="muted"></div>
+  <div class="grp">Real LRO NAC</div>
+  <div id="cases-real"></div>
+  <div class="grp">Controlled synthetic</div>
+  <div id="cases-synth"></div>
+  <button class="runbtn" id="run">Run case</button>
+  <div class="sidenote" id="datastatus"></div>
 </aside>
 
-<section>
-  <div id="out"><p class="muted">Pick a scenario and run it. Every number shown is
-  computed in the request; nothing is cached.</p></div>
+<section id="stage">
+  <div class="loading">Loading…</div>
 </section>
 </main>
 
 <script>
+"use strict";
 const $ = s => document.querySelector(s);
-let SC = [], current = null;
-
-fetch('/api/scenarios').then(r=>r.json()).then(d=>{
-  SC = d.scenarios;
-  $('#scenarios').innerHTML = SC.map(s=>
-    `<button class="sc" data-id="${s.id}">
-       <div class="t">${s.adversarial?'⚠ ':''}${s.title}</div>
-       <div class="b">${s.blurb}</div>
-     </button>`).join('');
-  document.querySelectorAll('.sc').forEach(b=>b.onclick=()=>{
-    document.querySelectorAll('.sc').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); current = b.dataset.id;
-  });
-  document.querySelector('.sc').click();
-  $('#datastatus').textContent =
-    'real LRO NAC: ' + d.data_status.real_lro_nac + '  ·  Chandrayaan-2: NOT AVAILABLE';
-  $('#excluded').innerHTML = Object.entries(d.excluded_from_verdict)
-    .map(([k,v])=>`<div style="margin-bottom:9px"><code style="color:#f0d58a">${k}</code><br>${v}</div>`).join('');
-});
-
-$('#run').onclick = async () => {
-  const btn = $('#run'); btn.disabled = true; btn.textContent = 'Running…';
-  try {
-    const r = await fetch('/api/run', {method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({scenario: current})});
-    render(await r.json());
-  } catch (e) {
-    $('#out').innerHTML = `<div class="banner">Request failed: ${e}</div>`;
-  }
-  btn.disabled = false; btn.textContent = 'Run registration';
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fx = (v, n = 2) => (v == null || !isFinite(v)) ? "—" : (+v).toFixed(n);
+const pct = v => (v == null || !isFinite(v)) ? "—" : (100 * v).toFixed(2) + "%";
+/** Keep tiny magnitudes in exponential form — the whole point of the B→D beat
+ *  is that 1.885e-13 is legible AS a vanishing number, not rounded to 0.00. */
+const sci = v => {
+  if (v == null || !isFinite(v)) return "—";
+  const a = Math.abs(v);
+  return (a !== 0 && (a < 1e-3 || a >= 1e5)) ? (+v).toExponential(3) : (+v).toFixed(4);
 };
 
-function render(d){
-  const v = d.verdict, gt = d.ground_truth;
-  const advBanner = d.adversarial_construction
-    ? `<div class="banner"><b>Controlled synthetic adversarial case.</b> ${d.adversarial_note}</div>` : '';
-  const gtLine = gt.available
-    ? `<div class="banner gt"><b>Ground truth (synthetic only):</b> true registration error
-        <b>${gt.true_error_median_px===null?'not finite':gt.true_error_median_px.toFixed(2)+' px'}</b>.
-        ${gt.note}</div>` : '';
+let SCEN = [], current = null, revealTimers = [];
 
-  $('#out').innerHTML = `
-    <div>
-      <span class="pill ${d.computation==='live'?'live':''}">${d.computation.toUpperCase()} COMPUTATION</span>
-      <span class="pill synth">${d.data_source.toUpperCase()}</span>
-      <span class="pill">${d.timing.pipeline_s.toFixed(3)} s pipeline</span>
-    </div>
-    <h3>${d.title}</h3>
-    ${advBanner}
-    <div class="imgs">
-      <figure><img src="${d.source_png}"><figcaption>Source</figcaption></figure>
-      <figure><img src="${d.reference_png}"><figcaption>Reference</figcaption></figure>
-    </div>
-    <figure style="margin:0 0 18px"><canvas id="corr"></canvas>
-      <figcaption>Correspondences — <span style="color:#3fb950">green = inlier</span>,
-      <span style="color:#f85149">red = rejected</span>.
-      ${d.n_keypoints_src} / ${d.n_keypoints_dst} keypoints detected.</figcaption></figure>
+/* ------------------------------------------------------------------ boot */
+Promise.all([
+  fetch("/api/scenarios").then(r => r.json()),
+  fetch("/api/evidence/illumination").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([d, ill]) => {
+  SCEN = d.scenarios;
+  const card = s => `
+    <button class="case" data-id="${esc(s.id)}">
+      <span class="badge ${s.data_source === "real_lro_nac" ? "real" : "synth"}">${
+        s.data_source === "real_lro_nac" ? "REAL DATA" : "SYNTHETIC"}</span>
+      <div class="t">${s.adversarial ? "⚠ " : ""}${esc(
+        String(s.title).replace(/^⚠\s*/, ""))}</div>
+      <div class="s">${esc(s.subtitle || s.headline || "")}</div>
+    </button>`;
+  $("#cases-real").innerHTML =
+    SCEN.filter(s => s.data_source === "real_lro_nac").map(card).join("");
+  $("#cases-synth").innerHTML =
+    SCEN.filter(s => s.data_source !== "real_lro_nac").map(card).join("");
+  document.querySelectorAll("button.case").forEach(b => b.onclick = () => {
+    document.querySelectorAll("button.case").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    current = b.dataset.id;
+    run();
+  });
+  $("#datastatus").innerHTML =
+    `<b style="color:var(--ink-2)">Real data:</b> ${esc(d.data_status.real_lro_nac)}<br><br>
+     <b style="color:var(--ink-2)">Chandrayaan-2:</b> ${esc(d.data_status.chandrayaan2_ohrc_tmc2_iirs)}`;
+  window.__ILL = ill;
+  $("#scope").innerHTML = ill
+    ? `<b>Evidence scope</b><br>${esc(ill.scope)}`
+    : `<b>Evidence scope</b><br>LRO NAC · Mare Serenitatis`;
+  const first = document.querySelector("#cases-real button.case")
+             || document.querySelector("button.case");
+  if (first) first.click();
+});
 
-    <div class="verdict ${v.status}">
-      <div class="vhead">
-        <span class="vstat">${v.status}</span>
-        <span class="conf">confidence: ${v.confidence}</span>
-      </div>
-      <ul class="reasons">${v.reasons.map(r=>`<li>${r}</li>`).join('')}</ul>
-    </div>
+$("#run").onclick = () => run();
 
-    ${gtLine}
-
-    <h3>Evidence</h3>
-    <table>
-      <tr><th>Signal</th><th>Value</th><th>Weight</th><th>Reads as</th><th>Why</th></tr>
-      ${v.evidence.map(e=>`<tr>
-        <td class="w-${e.weight}">${e.name}</td>
-        <td class="v">${e.value===null?'—':(+e.value).toPrecision(4)}</td>
-        <td class="w-${e.weight}">${e.weight}</td>
-        <td class="e-${e.verdict}">${e.verdict.replace('_',' ')}</td>
-        <td class="muted">${e.statement}</td></tr>`).join('')}
-    </table>
-
-    <h3>Estimated transform (${v.metrics.transform_model||'—'})</h3>
-    <table><tr><th>Matrix</th><td class="v">${
-      (v.metrics.transform_matrix||[]).map(row=>row.map(x=>(+x).toFixed(5).padStart(11)).join(' ')).join('<br>')
-    }</td></tr>
-    <tr><th>Timing</th><td class="v">detect ${d.timing.detect_describe_s.toFixed(3)}s ·
-      match ${d.timing.match_s.toFixed(3)}s · RANSAC ${d.timing.ransac_s.toFixed(3)}s</td></tr></table>`;
-
-  drawCorr(d);
+async function run() {
+  if (!current) return;
+  const btn = $("#run");
+  btn.disabled = true; btn.textContent = "Running…";
+  revealTimers.forEach(clearTimeout); revealTimers = [];
+  try {
+    const r = await fetch("/api/run", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({scenario: current})});
+    const j = await r.json();
+    if (!r.ok) {
+      $("#stage").innerHTML =
+        `<div class="err"><b>Cannot show this case.</b><br>${esc(j.detail || r.statusText)}
+         <br><br>The demo reads recorded experiment artefacts and will never
+         substitute synthetic pixels under a real-data label.</div>`;
+    } else {
+      render(j);
+    }
+  } catch (e) {
+    $("#stage").innerHTML = `<div class="err">Request failed: ${esc(e)}</div>`;
+  }
+  btn.disabled = false; btn.textContent = "Run case";
 }
 
-function drawCorr(d){
-  const c = $('#corr'), ctx = c.getContext('2d');
-  const im1 = new Image(), im2 = new Image();
+/* ------------------------------------------------ normalise the two shapes */
+function viewModel(d) {
+  const real = d.data_source === "real_lro_nac";
+  const m = d.verdict.metrics || {};
+  if (real) {
+    return {
+      real, d,
+      title: d.title, subtitle: d.subtitle, headline: d.headline, blurb: d.blurb,
+      outcome: d.outcome, deltaInc: d.delta_incidence_deg,
+      overlap: d.step1_overlap, reg: d.step2_registration,
+      corr: d.correspondences, grid: d.correspondence_grid_shape,
+      imgs: {src: d.images.src, dst: d.images.dst,
+             scale: d.images.preview_decimation_from_matcher_grid},
+      nIn: d.step2_registration.n_inliers,
+      nPut: d.step2_registration.n_putative,
+      ratio: d.step2_registration.inlier_ratio,
+      rmse: d.step2_registration.fit_rmse_px,
+      gap: d.step2_registration.coverage_gap,
+      occ: d.step2_registration.coverage_occupancy,
+      loop: m.loop_error_px,
+    };
+  }
+  const inl = d.correspondences.inlier || [];
+  return {
+    real, d,
+    title: d.title, subtitle: null, headline: null, blurb: d.blurb,
+    outcome: (m.n_inliers != null && m.n_inliers > 8) ? "SUCCEED" : "FAIL",
+    deltaInc: null, overlap: null,
+    reg: {n_keypoints_src: d.n_keypoints_src, n_keypoints_dst: d.n_keypoints_dst},
+    corr: d.correspondences, grid: [384, 384],
+    imgs: {src: d.source_png, dst: d.reference_png, scale: 1},
+    nIn: m.n_inliers, nPut: m.n_putative, ratio: m.inlier_ratio,
+    rmse: m.fit_rmse, gap: m.coverage_max_gap, occ: m.coverage_occupancy,
+    loop: m.loop_error_px,
+    inlCount: inl.length,
+  };
+}
+
+/* --------------------------------------------------------------- renderer */
+function render(d) {
+  const vm = viewModel(d), v = d.verdict;
+  const isFailStory = vm.real && vm.outcome === "FAIL";
+
+  $("#stage").innerHTML = `
+    <div class="pills">
+      <span class="pill ${vm.real ? "real" : "synth"}">${
+        vm.real ? "REAL LRO NAC DATA" : "CONTROLLED SYNTHETIC"}</span>
+      <span class="pill">${esc(d.computation === "recorded_artefact"
+        ? "READ FROM RECORDED ARTEFACT" : "COMPUTED LIVE THIS REQUEST")}</span>
+      ${vm.deltaInc != null
+        ? `<span class="pill">Δ INCIDENCE ${fx(vm.deltaInc)}°</span>` : ""}
+      <span class="pill outcome-${vm.outcome}">${
+        vm.outcome === "SUCCEED" ? "✓ REGISTRATION SUCCEEDS"
+                                 : "✕ REGISTRATION FAILS"}</span>
+      ${d.adversarial_construction
+        ? `<span class="pill" style="border-color:var(--warning);color:var(--warning)">
+             ⚠ ADVERSARIAL CONSTRUCTION</span>` : ""}
+    </div>
+
+    <div class="casehead">
+      <div>
+        <div class="h">${esc(vm.title)}</div>
+        ${vm.subtitle ? `<div class="sub">${esc(vm.subtitle)}</div>` : ""}
+        ${vm.headline ? `<div class="sub" style="color:var(--ink);margin-top:7px;
+            font-weight:650;font-size:15px">${esc(vm.headline)}</div>` : ""}
+      </div>
+    </div>
+
+    ${d.adversarial_construction ? `
+      <div class="card tight" style="border-color:rgba(250,178,25,.5);
+           background:rgba(250,178,25,.07)">
+        <b style="color:var(--warning)">CONTROLLED SYNTHETIC ADVERSARIAL CASE.</b>
+        ${esc(d.adversarial_note || "")}
+        <div class="note" style="margin-top:8px">This is not real-data evidence and
+        is never presented as such. It exists to demonstrate the second principle:
+        <b>low residual and many correspondences can still be insufficient without
+        independent loop-closure evidence.</b></div>
+      </div>` : ""}
+
+    ${stepOverlap(vm)}
+    ${stepRegistration(vm)}
+    ${stepEvidence(vm, v, isFailStory)}
+    ${stepVerdict(vm, v, d)}
+    ${illuminationPanel(vm)}
+    ${provenance(d)}
+  `;
+
+  drawCorrespondences(vm);
+  if (vm.overlap) drawGeometry(vm.overlap);
+  drawStrip();
+  if (isFailStory) startReveal();
+}
+
+/* ---------------------------------------------- STEP 1 — the overlap gate */
+function stepOverlap(vm) {
+  const head = `<div class="stephead">
+      <div class="stepnum">1</div>
+      <div><div class="stepq">Do these images actually see the same ground?</div>
+      <div class="stepsub">Ground overlap · verified before the matcher runs</div></div>
+    </div>`;
+  if (!vm.overlap) {
+    return `<div class="card">${head}
+      <div class="gate ok"><span class="ic">✓</span>
+        <span>NOT APPLICABLE — synthetic pair constructed with known shared ground</span></div>
+      <div class="note">The overlap gate exists for real acquisitions, where whether two
+      tiles cover the same ground is an open question that must be answered
+      <b>independently of the matcher</b>. A synthetic pair is generated from one
+      height field, so it shares ground by construction.</div>
+    </div>`;
+  }
+  const o = vm.overlap, p5 = o.p5, p95 = o.p95;
+  const lo = 0.4, hi = 1.0, sp = x => Math.max(0, Math.min(100, (x - lo) / (hi - lo) * 100));
+  return `<div class="card">${head}
+    <div class="gate ${o.classification === "OVERLAP_CONFIRMED" ? "ok" : "no"}">
+      <span class="ic">${o.classification === "OVERLAP_CONFIRMED" ? "✓" : "✕"}</span>
+      <span>${esc(o.classification)} — ${pct(o.min_fraction)} minimum shared fraction</span>
+    </div>
+    <div class="geowrap">
+      <div>
+        <svg class="geo" id="geo" viewBox="0 0 300 300" role="img"
+             aria-label="Ground footprints of the two tiles, from archive geometry"></svg>
+        <div class="legend">
+          <span><i style="background:rgba(57,135,229,.45);
+            border:1px solid var(--succeed)"></i>${esc(o.pdsid_a || "tile 1")}</span>
+          <span><i style="background:rgba(250,178,25,.35);
+            border:1px solid var(--warning)"></i>${esc(o.pdsid_b || "tile 2")}</span>
+        </div>
+      </div>
+      <div>
+        <div class="tiles">
+          <div class="tile hero good"><div class="lab">Minimum shared fraction</div>
+            <div class="val">${pct(o.min_fraction)}</div>
+            <div class="note">of the worse-covered tile</div></div>
+          <div class="tile"><div class="lab">Intersection</div>
+            <div class="val">${fx(o.area_intersection_km2, 3)}</div>
+            <div class="note">km² · IoU ${fx(o.iou, 4)}</div></div>
+          <div class="tile"><div class="lab">Tile centres apart</div>
+            <div class="val">${fx(1000 * o.centre_separation_km, 0)} m</div>
+            <div class="note">both cut on one ground point</div></div>
+        </div>
+        <div style="margin-top:15px">
+          <div class="note"><b>Uncertainty propagated, not assumed away.</b>
+          ${o.n_draws} Monte Carlo draws over the ±0.005° archive corner quantisation.</div>
+          <div class="ubar">
+            <div class="rng" style="left:${sp(p5)}%;width:${Math.max(1.2, sp(p95) - sp(p5))}%"></div>
+            <div class="pt" style="left:${sp(o.min_fraction)}%"></div>
+            <div class="thr" style="left:${sp(0.5)}%"></div>
+          </div>
+          <div class="uscale">
+            <span class="end" style="left:0">40%</span>
+            <span class="thrlab" style="left:${sp(0.5)}%">▲ 50%<br>CONFIRM criterion</span>
+            <span class="end" style="right:0">100%</span>
+          </div>
+          <div class="note" style="margin-top:7px">Pessimistic bound (p5)
+            <b>${pct(p5)}</b> — still above the criterion fixed in advance.</div>
+        </div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:15px">${esc(o.method)}</div>
+    <div class="note" style="margin-top:8px"><b>The gate is enforced in code.</b>
+      ${esc(o.gate)}</div>
+    <div class="srcline"><b>source:</b> ${esc(o.source)}</div>
+  </div>`;
+}
+
+/* ---------------------------------------------------- STEP 2 — registration */
+function stepRegistration(vm) {
+  const d = vm.d;
+  const prod = vm.real ? d.provenance.products : null;
+  const cap = (i) => prod
+    ? `<b>${esc(prod[i].pdsid)}</b> · incidence ${fx(prod[i].incidence_deg)}° ·
+       ${esc((prod[i].utc_start || "").slice(0, 10))} ·
+       ${fx(prod[i].map_resolution_m, 3)} m/px`
+    : (i === 0 ? "<b>Source</b> — synthetic render" : "<b>Reference</b> — synthetic render");
+  return `<div class="card">
+    <div class="stephead">
+      <div class="stepnum">2</div>
+      <div><div class="stepq">Can the images establish a consistent transform?</div>
+      <div class="stepsub">Registration · unmodified RootSIFT baseline, affine, seed 0</div></div>
+    </div>
+    <div class="imgs">
+      <figure><img src="${esc(vm.imgs.src)}" alt="source tile">
+        <figcaption>${cap(0)}</figcaption></figure>
+      <figure><img src="${esc(vm.imgs.dst)}" alt="reference tile">
+        <figcaption>${cap(1)}</figcaption></figure>
+    </div>
+    <figure style="margin:0">
+      <canvas id="corr"></canvas>
+      <figcaption>
+        <span style="color:var(--succeed)">■ blue = inlier (survived geometric verification)</span> ·
+        <span style="color:#f07a7a">■ red = rejected</span> ·
+        ${vm.reg.n_keypoints_src} / ${vm.reg.n_keypoints_dst} keypoints detected
+      </figcaption>
+    </figure>
+    <div class="tiles" style="margin-top:16px">
+      <div class="tile"><div class="lab">Putative matches</div>
+        <div class="val">${vm.nPut == null ? "—" : vm.nPut}</div>
+        <div class="note">mutual NN, ratio 0.8</div></div>
+      <div class="tile ${vm.outcome === "SUCCEED" ? "good" : "bad"}">
+        <div class="lab">Inliers</div>
+        <div class="val">${vm.nIn == null ? "—" : vm.nIn}</div>
+        <div class="note">geometrically verified</div></div>
+      <div class="tile"><div class="lab">Inlier ratio</div>
+        <div class="val">${fx(vm.ratio, 4)}</div><div class="note">of putative</div></div>
+    </div>
+    ${vm.real ? `<div class="srcline"><b>source:</b> ${esc(vm.reg.source)}<br>
+      <b>baseline:</b> ${esc(vm.reg.baseline.pipeline)} · model ${esc(vm.reg.baseline.model)}
+      · RANSAC ${vm.reg.baseline.ransac_threshold_px} px · seed ${vm.reg.baseline.seed}
+      · ${esc(vm.reg.baseline.preprocessing)}<br>
+      <b>edge estimated from:</b> ${esc(vm.reg.estimated_from)}</div>` : ""}
+  </div>`;
+}
+
+/* -------------------------------------------------------- STEP 3 — evidence */
+function stepEvidence(vm, v, isFailStory) {
+  const head = `<div class="stephead">
+      <div class="stepnum">3</div>
+      <div><div class="stepq">Do independent signals agree?</div>
+      <div class="stepsub">Evidence · each signal weighted by what it was measured to be worth</div></div>
+    </div>`;
+
+  const trap = isFailStory ? `
+    <div class="reveal" id="reveal">
+      <div class="rh"><span class="t">The RMSE trap</span>
+        <span class="note">watch what the most-quoted number does here</span>
+        <button class="replay" id="replay">↻ Replay</button></div>
+      <div class="beat b-look" data-beat="0">
+        <div class="arrow"></div>
+        <div><div class="bt">The fit RMSE looks flawless</div>
+          <div class="bv">${sci(vm.rmse)} px</div>
+          <div class="bx">A conventional pipeline reports this as a sub-picometre
+            registration. It is the number most systems would put on the slide.</div></div>
+      </div>
+      <div class="beat b-bad" data-beat="1">
+        <div class="arrow">↓</div>
+        <div><div class="bt">but only ${vm.nIn} of ${vm.nPut} correspondences survive</div>
+          <div class="bv">${vm.nIn} / ${vm.nPut} inliers</div>
+          <div class="bx">An affine model has 6 degrees of freedom. With
+            ${vm.nIn} points it can fit its own correspondences <i>exactly</i> and
+            still be arbitrarily wrong — which is precisely why the residual is
+            small. The residual is small <b>because</b> the evidence is thin.</div></div>
+      </div>
+      <div class="beat b-bad" data-beat="2">
+        <div class="arrow">↓</div>
+        <div><div class="bt">coverage is poor</div>
+          <div class="bv">gap ${fx(vm.gap, 4)} · occupancy ${fx(vm.occ, 3)}</div>
+          <div class="bx">${pct(vm.gap)} of the overlap has no nearby constraint, and
+            only ${pct(vm.occ)} of the grid is occupied. The transform is
+            extrapolating almost everywhere.</div></div>
+      </div>
+      <div class="beat b-end" data-beat="3">
+        <div class="arrow">↓</div>
+        <div><div class="bt">verdict</div>
+          <div class="bv">✕ REJECTED</div>
+          <div class="bx"><b>Extremely low fit RMSE does not imply a valid
+            registration.</b> The RMSE is shown, unaltered, and then structurally
+            excluded from the decision — it was measured at ROC AUC 0.4947 as a
+            failure detector, which is a coin flip.</div></div>
+      </div>
+    </div>` : "";
+
+  const tiles = `
+    <div class="tiles" style="margin-top:${isFailStory ? 18 : 0}px">
+      <div class="tile ${vm.nIn > 8 ? "good" : "bad"}"><div class="lab">Inliers</div>
+        <div class="val">${vm.nIn == null ? "—" : vm.nIn}</div>
+        <div class="note">reject at ≤ 8 (D-023)</div></div>
+      <div class="tile ${vm.gap != null && vm.gap <= 0.15 ? "good" : "bad"}">
+        <div class="lab">Coverage gap</div><div class="val">${fx(vm.gap, 4)}</div>
+        <div class="note">target ≤ 0.15</div></div>
+      <div class="tile ${vm.occ != null && vm.occ >= 0.5 ? "good" : "bad"}">
+        <div class="lab">Occupancy</div><div class="val">${fx(vm.occ, 3)}</div>
+        <div class="note">grid cells constrained</div></div>
+      <div class="tile ${vm.loop == null ? "mute" : (vm.loop < 2 ? "good" : "bad")}">
+        <div class="lab">Loop closure</div>
+        <div class="val">${vm.loop == null ? "not run" : fx(vm.loop, 3)}</div>
+        <div class="note">${vm.loop == null
+          ? "needs a third overlapping image" : "px · reject at ≥ 2"}</div></div>
+      <div class="tile struck mute"><div class="lab">Fit RMSE</div>
+        <div class="val">${sci(vm.rmse)}</div>
+        <div class="note">EXCLUDED from the verdict</div></div>
+    </div>`;
+
+  const table = `
+    <h3 style="font-size:12px;letter-spacing:.09em;text-transform:uppercase;
+        color:var(--ink-3);margin:20px 0 8px">Every signal, and what it is worth</h3>
+    <table>
+      <tr><th>Signal</th><th>Value</th><th>Weight</th><th>Reads as</th><th>Basis</th></tr>
+      ${v.evidence.map(e => `<tr>
+        <td class="w-${esc(e.weight)}"><span class="sig">${esc(e.name)}</span></td>
+        <td class="n">${e.value === null ? "—" : sci(e.value)}</td>
+        <td class="w-${esc(e.weight)}">${esc(e.weight)}</td>
+        <td class="e-${esc(e.verdict)}">${esc(e.verdict.replace(/_/g, " "))}</td>
+        <td class="note">${esc(e.statement)}</td></tr>`).join("")}
+    </table>`;
+
+  return `<div class="card">${head}${trap}${tiles}${table}</div>`;
+}
+
+/* --------------------------------------------------------- STEP 4 — verdict */
+function stepVerdict(vm, v, d) {
+  const ic = {VERIFIED: "✓", REJECTED: "✕", INCONCLUSIVE: "?"}[v.status] || "•";
+  const corr = d.corroboration ? `
+    <div class="card tight" style="margin-top:14px">
+      <div class="stepsub" style="margin-bottom:9px">Independent corroboration —
+        deliberately NOT part of the verdict</div>
+      <div class="tiles">
+        <div class="tile"><div class="lab">Archive geometry</div>
+          <div class="val" style="font-size:15px;line-height:1.35">${
+            esc((d.corroboration.verdict || "").split(":")[0])}</div>
+          <div class="note">median ${fx(d.corroboration.median_disagreement_px, 1)} px vs
+            ${fx(d.corroboration.discrimination_floor_px, 1)} px floor
+            (${fx(d.corroboration.excess_over_floor, 2)}×)</div></div>
+        ${d.corroboration.scaled_pixel ? `
+        <div class="tile ${d.corroboration.scaled_pixel.agrees ? "good" : "bad"}">
+          <div class="lab">SPICE-derived SCALED_PIXEL</div>
+          <div class="val" style="font-size:19px">${
+            d.corroboration.scaled_pixel.agrees ? "agrees" : "disagrees"}</div>
+          <div class="note">relative error ${
+            (d.corroboration.scaled_pixel.relative_error || [])
+              .map(x => fx(100 * x, 2) + "%").join(" / ")} ·
+            tolerance ${fx(100 * d.corroboration.scaled_pixel.tolerance, 2)}%<br>
+            a field the matcher never saw</div></div>` : ""}
+      </div>
+      <div class="note" style="margin-top:11px">${esc(d.corroboration.why_excluded)}</div>
+      <div class="srcline"><b>source:</b> ${esc(d.corroboration.source)}</div>
+    </div>` : "";
+
+  return `<div class="card">
+    <div class="stephead">
+      <div class="stepnum">4</div>
+      <div><div class="stepq">So — should this alignment be trusted?</div>
+      <div class="stepsub">Verdict · with the reason, not a score</div></div>
+    </div>
+    <div class="verdict ${esc(v.status)}">
+      <div class="vhead"><span class="vic">${ic}</span>
+        <span class="vstat">${esc(v.status)}</span>
+        <span class="conf">confidence: ${esc(v.confidence)}</span></div>
+      <ul class="reasons">${v.reasons.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+      ${vm.real ? `<div class="outcome-line">
+        <b>Registration outcome (pre-registered criterion):</b>
+        ${vm.outcome === "SUCCEED" ? "✓ SUCCEED" : "✕ FAIL"} —
+        ${esc(vm.d.outcome_rule)}</div>` : ""}
+    </div>
+    ${vm.real && vm.d.verdict_note
+      ? `<div class="note" style="margin-top:12px"><b>Why not “VERIFIED”?</b>
+         ${esc(vm.d.verdict_note)}</div>` : ""}
+    ${corr}
+    ${vm.real ? `<ul class="caveats">${
+      vm.d.caveats.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+    ${!vm.real && vm.d.ground_truth && vm.d.ground_truth.available ? `
+      <div class="card tight" style="margin-top:14px;border-color:var(--line-2)">
+        <b>Ground truth — available only because this is synthetic.</b>
+        True registration error
+        <b style="font-family:var(--mono)">${fx(vm.d.ground_truth.true_error_median_px, 2)} px</b>.
+        <div class="note" style="margin-top:6px">${esc(vm.d.ground_truth.note)}</div>
+      </div>` : ""}
+  </div>`;
+}
+
+/* --------------------------------------------- the cross-edge causal panel */
+function illuminationPanel(vm) {
+  const ill = window.__ILL;
+  if (!ill || !vm.real) return "";
+  return `<div class="card">
+    <div class="stephead">
+      <div class="stepnum">★</div>
+      <div><div class="stepq">Why does one edge work and the other not?</div>
+      <div class="stepsub">Real-data causal evidence · every measured edge</div></div>
+    </div>
+    <svg class="strip" id="strip" viewBox="0 0 900 330" role="img"
+      aria-label="Registration outcome against illumination difference for six real edges"></svg>
+    <table style="margin-top:14px">
+      <tr><th>Edge</th><th>Stage</th><th>Window</th><th>Δ incidence</th>
+          <th>Overlap</th><th>Putative</th><th>Inliers</th><th>Outcome</th></tr>
+      ${ill.rows.map(r => `<tr>
+        <td><b>${esc(r.label)}</b></td>
+        <td class="note">${esc(r.stage)}</td>
+        <td class="note">${esc(r.window)}</td>
+        <td class="n">${fx(r.delta_incidence_deg)}°</td>
+        <td class="n">${pct(r.overlap_min_fraction)}</td>
+        <td class="n">${r.n_putative}</td>
+        <td class="n" style="color:${r.outcome === "SUCCEED"
+          ? "var(--succeed)" : "#f07a7a"};font-weight:700">${r.n_inliers}</td>
+        <td style="color:${r.outcome === "SUCCEED" ? "var(--succeed)" : "#f07a7a"};
+            font-weight:700">${r.outcome === "SUCCEED" ? "✓ SUCCEED" : "✕ FAIL"}</td>
+      </tr>`).join("")}
+    </table>
+    <div class="note" style="margin-top:14px;font-size:13.5px;color:var(--ink)">
+      <b>${esc(ill.summary)}</b></div>
+    <div class="note" style="margin-top:6px">${esc(ill.separation.statement)}
+      ${esc(ill.frame_identity.statement)}</div>
+    <div class="note" style="margin-top:10px;color:var(--ink-2)">
+      <b>Scope of this evidence:</b> ${esc(ill.scope)}</div>
+    <div class="notclaimed">${ill.not_claimed.map(n =>
+      `<span>${esc(n)}</span>`).join("")}</div>
+    <div class="srcline"><b>sources:</b> ${ill.sources.map(esc).join(" · ")}</div>
+  </div>`;
+}
+
+function provenance(d) {
+  if (!d.provenance || !d.provenance.products) return "";
+  const p = d.provenance;
+  return `<div class="card">
+    <div class="stepsub" style="margin-bottom:11px">Provenance — every byte traceable</div>
+    <div class="note">${esc(p.mission)} · ${esc(p.archive)} · region
+      <b>${esc(p.region)}</b> · target ground point
+      <b>${p.target_ground_point_lon_lat.map(x => (+x).toFixed(6)).join(", ")}</b>
+      · ${esc(p.licence)} · credit <b>${esc(p.credit)}</b></div>
+    <table style="margin-top:11px">
+      <tr><th>Role</th><th>Product</th><th>IMG</th><th>Incidence</th><th>Acquired</th>
+          <th>Tile window</th><th>Byte range</th><th>SHA-256 of bytes</th></tr>
+      ${p.products.map(x => `<tr>
+        <td>${esc(x.role)}</td><td class="n">${esc(x.pdsid)}</td>
+        <td class="n">${esc(x.img_file_name)}</td>
+        <td class="n">${fx(x.incidence_deg)}°</td>
+        <td class="n">${esc((x.utc_start || "").slice(0, 10))}</td>
+        <td class="n">l${x.line0}+${x.n_lines} s${x.sample0}+${x.n_samples}</td>
+        <td class="n">${x.byte_start}+${x.byte_count}</td>
+        <td class="n" style="font-size:10px">${esc(x.bytes_sha256.slice(0, 28))}…</td>
+      </tr>`).join("")}
+    </table>
+    <div class="srcline"><b>overlay integrity:</b>
+      ${d.overlay_integrity.n_putative} correspondences,
+      ${d.overlay_integrity.n_inliers} inliers — agrees with the recorded artefact.
+      <br><b>computation:</b> ${esc(d.computation_note)}</div>
+  </div>`;
+}
+
+/* -------------------------------------------------------------- the reveal */
+function startReveal() {
+  const beats = [...document.querySelectorAll("#reveal .beat")];
+  const play = () => {
+    revealTimers.forEach(clearTimeout); revealTimers = [];
+    beats.forEach(b => b.classList.remove("on"));
+    beats.forEach((b, i) => revealTimers.push(
+      setTimeout(() => b.classList.add("on"), 450 + i * 1250)));
+  };
+  const btn = document.getElementById("replay");
+  if (btn) btn.onclick = play;
+  play();
+}
+
+/* ------------------------------------------------- correspondence overlay */
+function drawCorrespondences(vm) {
+  const c = document.getElementById("corr");
+  if (!c) return;
+  const ctx = c.getContext("2d");
+  const a = new Image(), b = new Image();
   let n = 0;
   const go = () => {
     if (++n < 2) return;
-    const W = im1.width + im2.width, H = Math.max(im1.height, im2.height);
+    const W = a.width + b.width, H = Math.max(a.height, b.height);
     c.width = W; c.height = H;
-    ctx.drawImage(im1, 0, 0); ctx.drawImage(im2, im1.width, 0);
-    const {src, dst, inlier} = d.correspondences;
-    // outliers first so inliers draw on top
+    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
+    ctx.drawImage(a, 0, 0); ctx.drawImage(b, a.width, 0);
+    const {src, dst, inlier} = vm.corr;
+    // The matcher works in its own grid; the preview PNG may be decimated
+    // further. Scale by the ratio the API reports rather than assuming 1:1.
+    const gridW = vm.grid ? vm.grid[1] : a.width;
+    const k = a.width / gridW;
+    // Outliers first, so the inliers that matter draw on top of them.
     [false, true].forEach(want => {
-      ctx.strokeStyle = want ? 'rgba(63,185,80,.75)' : 'rgba(248,81,73,.35)';
-      ctx.lineWidth = want ? 1.1 : 0.7;
+      ctx.strokeStyle = want ? "rgba(57,135,229,.70)" : "rgba(208,59,59,.45)";
+      ctx.lineWidth = want ? 1.1 : 0.9;
+      ctx.beginPath();
       for (let i = 0; i < src.length; i++) {
         if (!!inlier[i] !== want) continue;
-        ctx.beginPath();
-        ctx.moveTo(src[i][0], src[i][1]);
-        ctx.lineTo(dst[i][0] + im1.width, dst[i][1]);
-        ctx.stroke();
+        ctx.moveTo(src[i][0] * k, src[i][1] * k);
+        ctx.lineTo(dst[i][0] * k + a.width, dst[i][1] * k);
       }
+      ctx.stroke();
     });
   };
-  im1.onload = go; im2.onload = go;
-  im1.src = d.source_png; im2.src = d.reference_png;
+  a.onload = go; b.onload = go;
+  a.src = vm.imgs.src; b.src = vm.imgs.dst;
+}
+
+/* --------------------------------------------------- ground-footprint plot */
+function drawGeometry(o) {
+  const svg = document.getElementById("geo");
+  if (!svg || !o.polygons_km) return;
+  const A = o.polygons_km.a, B = o.polygons_km.b;
+  if (!A || !B) return;
+  const all = A.concat(B);
+  const xs = all.map(p => p[0]), ys = all.map(p => p[1]);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const pad = 26, S = 300;
+  const span = Math.max(maxX - minX, maxY - minY) || 1;
+  const sc = (S - 2 * pad) / span;
+  // y flipped: km north is up on screen.
+  const px = p => [pad + (p[0] - minX) * sc, S - pad - (p[1] - minY) * sc];
+  const path = poly => poly.map((p, i) =>
+    (i ? "L" : "M") + px(p).map(v => v.toFixed(1)).join(",")).join(" ") + " Z";
+  svg.innerHTML = `
+    <path d="${path(A)}" fill="rgba(57,135,229,.42)" stroke="#3987e5" stroke-width="1.6"/>
+    <path d="${path(B)}" fill="rgba(250,178,25,.30)" stroke="#fab219" stroke-width="1.6"/>
+    <text x="${S / 2}" y="${S - 7}" text-anchor="middle"
+      style="fill:#71829a;font-size:10.5px">
+      tile ground footprints · ${(maxX - minX).toFixed(2)} × ${(maxY - minY).toFixed(2)} km
+    </text>`;
+}
+
+/* ------------------------------------ Δincidence vs verified correspondences
+ * A dot plot rather than a two-row strip: putting inliers on a log y-axis
+ * shows BOTH facts at once — that Δincidence separates the edges left-to-right,
+ * and that the separation is three orders of magnitude, not a near miss. The
+ * reject rule (n_inliers ≤ 8) draws as a reference line, so the decision is
+ * visible rather than asserted.
+ *
+ * Outcome is encoded three ways — colour, mark shape, and a direct label —
+ * because blue/red alone is not identity for every reader.
+ */
+function drawStrip() {
+  const svg = document.getElementById("strip");
+  const ill = window.__ILL;
+  if (!svg || !ill || !ill.rows.length) return;
+  const W = 900, H = 330, L = 66, R = 24, T = 34, B = 56;
+  const maxD = Math.max(60, ...ill.rows.map(r => r.delta_incidence_deg));
+  const x = d => L + (d / maxD) * (W - L - R);
+  // log10 y, decades 10^0 .. 10^4
+  const yMin = 0, yMax = 4;
+  const y = n => (H - B) - ((Math.log10(Math.max(1, n)) - yMin) / (yMax - yMin))
+                            * (H - T - B);
+
+  const p = [];
+  const gap = ill.separation;
+  const bandA = gap.max_succeeding_delta_deg, bandB = gap.min_failing_delta_deg;
+  if (bandA != null && bandB != null) {
+    p.push(`<rect class="band" x="${x(bandA).toFixed(1)}" y="${T}"
+      width="${(x(bandB) - x(bandA)).toFixed(1)}" height="${H - T - B}"/>`);
+    [bandA, bandB].forEach(v => p.push(`<line class="bandline"
+      x1="${x(v).toFixed(1)}" y1="${T}" x2="${x(v).toFixed(1)}" y2="${H - B}"/>`));
+    p.push(`<text class="axt" x="${((x(bandA) + x(bandB)) / 2).toFixed(1)}"
+      y="${T - 12}" text-anchor="middle" style="fill:#fab219">
+      not probed — ${bandA.toFixed(2)}° to ${bandB.toFixed(2)}°</text>`);
+  }
+
+  // y gridlines, one per decade
+  for (let d = yMin; d <= yMax; d++) {
+    const yy = y(Math.pow(10, d));
+    p.push(`<line class="gr" x1="${L}" y1="${yy.toFixed(1)}"
+      x2="${W - R}" y2="${yy.toFixed(1)}"/>`);
+    p.push(`<text class="axt" x="${L - 9}" y="${(yy + 4).toFixed(1)}"
+      text-anchor="end">${Math.pow(10, d).toLocaleString()}</text>`);
+  }
+  // x ticks
+  for (let t = 0; t <= maxD; t += 10) {
+    p.push(`<text class="axt" x="${x(t).toFixed(1)}" y="${H - B + 19}"
+      text-anchor="middle">${t}°</text>`);
+  }
+  p.push(`<line class="ax" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/>`);
+  p.push(`<line class="ax" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"/>`);
+  p.push(`<text class="axt" x="${((W + L) / 2).toFixed(0)}" y="${H - 12}"
+    text-anchor="middle">Δ solar incidence between the two frames</text>`);
+  p.push(`<text class="axt" x="${-((H - B + T) / 2).toFixed(0)}" y="15"
+    transform="rotate(-90)" text-anchor="middle">verified correspondences (log)</text>`);
+
+  // the decision rule, drawn
+  const yRule = y(8);
+  p.push(`<line x1="${L}" y1="${yRule.toFixed(1)}" x2="${W - R}"
+    y2="${yRule.toFixed(1)}" stroke="#fab219" stroke-width="1.5"
+    stroke-dasharray="6 4"/>`);
+  p.push(`<text class="axt" x="${W - R - 4}" y="${(yRule - 8).toFixed(1)}"
+    text-anchor="end" style="fill:#fab219">reject at ≤ 8 inliers (pre-registered)</text>`);
+
+  // legend — identity carried by shape and word, not colour alone
+  p.push(`<circle cx="${L + 8}" cy="${T - 14}" r="7" fill="#3987e5"
+    stroke="#0e1116" stroke-width="2"/>`);
+  p.push(`<text class="lbl" x="${L + 21}" y="${T - 10}" style="fill:#3987e5">✓ SUCCEED</text>`);
+  p.push(`<rect x="${L + 108}" y="${T - 21}" width="13" height="13"
+    transform="rotate(45 ${L + 114.5} ${T - 14.5})" fill="#d03b3b"
+    stroke="#0e1116" stroke-width="2"/>`);
+  p.push(`<text class="lbl" x="${L + 129}" y="${T - 10}" style="fill:#f07a7a">✕ FAIL</text>`);
+
+  /* Marks and direct labels.
+   *
+   * Two passes, because two different things collide. A→B (39.81°, 4 inliers)
+   * and C→A (38.85°, 4) land 11 px apart with identical y — the marks overlap
+   * each other, and then their labels overlap whatever the label placer does.
+   * So pass 1 nudges coincident MARKS apart vertically (the nudge is cosmetic
+   * and is never read off the axis — the value is in the label and the table),
+   * and pass 2 places each LABEL in the first candidate slot that clears every
+   * mark and every label already down.
+   */
+  const rows = [...ill.rows].sort((a, b) =>
+    a.delta_incidence_deg - b.delta_incidence_deg);
+  // Every mark sits at its TRUE (Δincidence, inliers). Nothing is jittered.
+  // An earlier version nudged coincident marks apart vertically and pushed the
+  // 7-inlier edge above the "reject at ≤ 8" line — a mark reading as a pass
+  // when it is a failure. Three failing edges genuinely cluster near 39°;
+  // they are drawn small with a surface ring so the cluster reads as three
+  // marks, and the labels fan out around them.
+  const marks = rows.map(r => ({
+    r, cx: x(r.delta_incidence_deg), cy: y(r.n_inliers),
+    ok: r.outcome === "SUCCEED",
+  }));
+
+  const placed = marks.map(m =>
+    ({x0: m.cx - 9, x1: m.cx + 9, y0: m.cy - 9, y1: m.cy + 9}));
+  const fits = b => !placed.some(q =>
+    !(b.x1 < q.x0 || b.x0 > q.x1 || b.y1 < q.y0 || b.y0 > q.y1));
+
+  marks.forEach(({cx, cy, ok}) => {
+    const col = ok ? "#3987e5" : "#d03b3b";
+    p.push(ok
+      ? `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="6.5" fill="${col}"
+           stroke="#0e1116" stroke-width="2"/>`
+      : `<rect x="${(cx - 6).toFixed(1)}" y="${(cy - 6).toFixed(1)}"
+           width="12" height="12" fill="${col}" stroke="#0e1116" stroke-width="2"
+           transform="rotate(45 ${cx.toFixed(1)} ${cy.toFixed(1)})"/>`);
+  });
+
+  marks.forEach(({r, cx, cy}) => {
+    const txt = `${r.label} · ${r.n_inliers}`;
+    const w = txt.length * 6.8 + 6;
+    const cands = [
+      {dx: 15, dy: 4, a: "start"}, {dx: -15, dy: 4, a: "end"},
+      {dx: 0, dy: -16, a: "middle"}, {dx: 0, dy: 24, a: "middle"},
+      {dx: 15, dy: -14, a: "start"}, {dx: -15, dy: -14, a: "end"},
+      {dx: 15, dy: 22, a: "start"}, {dx: -15, dy: 22, a: "end"},
+    ];
+    const box = o => {
+      const x0 = o.a === "start" ? cx + o.dx
+               : o.a === "end" ? cx + o.dx - w : cx - w / 2;
+      return {x0, x1: x0 + w, y0: cy + o.dy - 11, y1: cy + o.dy + 4};
+    };
+    const c = cands.find(o => {
+      const b = box(o);
+      return fits(b) && b.x0 > 2 && b.x1 < W - 2 && b.y0 > 2 && b.y1 < H - 2;
+    }) || cands[0];
+    placed.push(box(c));
+    p.push(`<text class="lbl" x="${(cx + c.dx).toFixed(1)}"
+      y="${(cy + c.dy).toFixed(1)}" text-anchor="${c.a}">${esc(txt)}</text>`);
+  });
+  svg.innerHTML = p.join("");
 }
 </script>
 </body>

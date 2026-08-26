@@ -7,11 +7,27 @@ measured.
 
 Honesty rules baked into the response shape (§16):
 
-* every result carries ``computation`` = ``"live"`` or ``"cached"``; nothing
-  can be displayed as live that was not computed in the request;
+* every result carries ``computation``:
+
+  - ``"live"`` -- computed in this request, for the synthetic scenarios;
+  - ``"recorded_artefact"`` -- read from a file under ``experiments/``, for
+    the real-data scenarios, which name the artefact they came from.
+
+  Nothing may be displayed as live that was not computed in the request, and
+  nothing read from disk may be displayed as live;
 * every result carries ``data_source`` = ``"synthetic"`` or ``"real_lro_nac"``;
 * ``fit_rmse`` is returned but flagged ``excluded_from_verdict`` so the UI
   cannot present it as the reason for anything.
+
+Why the real-data scenarios read rather than recompute
+------------------------------------------------------
+The demo's real-data numbers are REAL-DATA-04's published result. Recomputing
+them for display would let the demo drift from the stage report that justifies
+them, and would put a live 10-second registration on the critical path of a
+presentation. So they are read from the recorded artefacts and carry their
+provenance -- see :mod:`siim.demo.evidence`. The correspondence *overlay*
+coordinates come from a build-time asset that is written only when re-running
+the identical seeded pipeline reproduces every recorded statistic exactly.
 
 Run:  python -m uvicorn siim.demo.api:app --reload --port 8000
       (from the repo root, with src/ on PYTHONPATH)
@@ -39,6 +55,13 @@ from pydantic import BaseModel  # noqa: E402
 
 from siim.baselines import run_rootsift_baseline  # noqa: E402
 from siim.data import TERRAIN_REGIMES, height_field, make_pair  # noqa: E402
+from siim.demo.evidence import (  # noqa: E402
+    REAL_SCENARIOS,
+    DemoDataMissing,
+    build_real_scenario,
+    illumination_evidence,
+    real_data_status,
+)
 from siim.demo.verdict import EXCLUDED_FROM_VERDICT, assess  # noqa: E402
 from siim.evaluation import correspondence_metrics  # noqa: E402
 from siim.evaluation.gtfree import loop_closure  # noqa: E402
@@ -48,6 +71,7 @@ app = FastAPI(title="SIIM — Sun-angle Invariant Image Matching",
               version="0.1.0-demo")
 
 STATIC = Path(__file__).resolve().parent / "static"
+ASSETS = Path(__file__).resolve().parent / "assets"
 SHAPE = (384, 384)
 
 
@@ -87,6 +111,26 @@ SCENARIOS: dict[str, dict[str, Any]] = {
         "shift_px": 64.0,
     },
 }
+
+# -- REAL DATA -------------------------------------------------------------
+# Declared in siim.demo.evidence, which reads every number out of a recorded
+# artefact under experiments/. Merged in rather than written out here so the
+# demo cannot acquire a real-data number that no experiment produced.
+#
+# REAL-DATA-01's pair was removed from this list, deliberately. It was the
+# `real_lro_nac` scenario, and REAL-DATA-02 later measured its two tiles to be
+# **22.75 km apart, sharing 0.0000 km2** (E-028, E-029). Demonstrating a
+# registration failure on tiles that do not overlap would show the audience a
+# failure whose cause is the acquisition, not the matcher -- the exact
+# confusion REAL-DATA-02 and -03 existed to remove. It is superseded by the
+# REAL-DATA-04 edges below, whose overlap is CONFIRMED before the matcher runs.
+for _sid, _sc in REAL_SCENARIOS.items():
+    SCENARIOS[_sid] = {
+        "title": _sc["title"], "regime": None, "delta_azimuth": None,
+        "seed": None, "blurb": _sc["blurb"], "adversarial": False,
+        "real": True, "role": _sc["role"], "subtitle": _sc["subtitle"],
+        "headline": _sc["headline"],
+    }
 
 
 class RunRequest(BaseModel):
@@ -161,22 +205,39 @@ def _build_third_view(sc: dict, pair):
 
 @app.get("/api/scenarios")
 def scenarios() -> dict:
+    real = real_data_status()
     return {
         "scenarios": [
-            {"id": k, "title": v["title"], "blurb": v["blurb"],
+            {"id": k, "title": v["title"], "subtitle": v.get("subtitle"),
+             "blurb": v["blurb"], "headline": v.get("headline"),
              "regime": v["regime"], "delta_azimuth": v["delta_azimuth"],
-             "adversarial": v["adversarial"]}
+             "adversarial": v["adversarial"], "role": v.get("role"),
+             "data_source": ("real_lro_nac" if v.get("real") else "synthetic")}
             for k, v in SCENARIOS.items()
         ],
         "data_status": {
-            "synthetic": "available",
-            "real_lro_nac": "labels acquired; image tiles not yet ingested",
+            "synthetic": "available — generated live in each request",
+            "real_lro_nac": (
+                ("AVAILABLE — recorded REAL-DATA-04 artefacts on disk; no "
+                 "network access needed")
+                if real["available"] else
+                ("UNAVAILABLE — missing " + ", ".join(real["missing"]))),
             "chandrayaan2_ohrc_tmc2_iirs": (
                 "NOT AVAILABLE — requires an authenticated ISSDC account. "
-                "No multi-modal claim is supported."),
+                "No multi-modal claim is supported anywhere in this demo."),
         },
+        "real_data_files": real,
         "excluded_from_verdict": EXCLUDED_FROM_VERDICT,
     }
+
+
+@app.get("/api/evidence/illumination")
+def evidence_illumination() -> dict:
+    """The cross-edge causal panel: every measured real edge, from artefacts."""
+    try:
+        return illumination_evidence()
+    except DemoDataMissing as exc:
+        raise HTTPException(503, str(exc)) from exc
 
 
 @app.post("/api/run")
@@ -184,6 +245,15 @@ def run(req: RunRequest) -> dict:
     sc = SCENARIOS.get(req.scenario)
     if sc is None:
         raise HTTPException(404, f"unknown scenario {req.scenario!r}")
+    if sc.get("real"):
+        # Read, never recomputed. A DemoDataMissing here means an artefact is
+        # absent or an overlay disagrees with the numbers beside it; both are
+        # reported as 503 with the file named. The demo never falls back to
+        # synthetic pixels under a real-data label.
+        try:
+            return build_real_scenario(req.scenario)
+        except DemoDataMissing as exc:
+            raise HTTPException(503, str(exc)) from exc
 
     t0 = time.perf_counter()
     pair = _build_pair(sc)
@@ -245,6 +315,8 @@ def run(req: RunRequest) -> dict:
         # -- honesty flags (§16) -------------------------------------------
         "computation": "live",
         "data_source": "synthetic",
+        "real_data_caveats": None,
+        "provenance": None,
         "adversarial_construction": bool(sc.get("adversarial")),
         "adversarial_note": (
             f"The estimate was deliberately displaced by {sc.get('shift_px')} px "
@@ -286,3 +358,7 @@ def index() -> FileResponse:
 
 if STATIC.is_dir():
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
+if ASSETS.is_dir():
+    # Tile previews for the real-data scenarios. Served from disk rather than
+    # inlined as base64 so the page stays small and the browser caches them.
+    app.mount("/assets", StaticFiles(directory=ASSETS), name="assets")

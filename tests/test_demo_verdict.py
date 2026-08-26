@@ -158,3 +158,40 @@ def test_verdict_is_json_serialisable(points):
     import json
     v = _assess(translation(1.0, 1.0), points, fit_rmse=0.1, loop_error_px=0.05)
     json.dumps(v.as_dict())
+
+
+# ---------------------------------------------------------------------------
+# real-data scenario: added alongside the synthetic ones, never replacing them
+# ---------------------------------------------------------------------------
+
+def _client():
+    from fastapi.testclient import TestClient
+    from siim.demo.api import app
+    return TestClient(app)
+
+
+def test_synthetic_adversarial_scenarios_survive_real_data_integration():
+    """The coherent-wrong construction is the case that demonstrates the
+    project's central claim. Adding real data must not displace it."""
+    d = _client().get("/api/scenarios").json()
+    ids = {s["id"] for s in d["scenarios"]}
+    assert {"easy_same_sun", "coherent_wrong"} <= ids
+    by_id = {s["id"]: s for s in d["scenarios"]}
+    assert by_id["coherent_wrong"]["adversarial"] is True
+    assert by_id["easy_same_sun"]["data_source"] == "synthetic"
+
+
+def test_every_scenario_declares_its_data_source():
+    for s in _client().get("/api/scenarios").json()["scenarios"]:
+        assert s["data_source"] in ("synthetic", "real_lro_nac")
+
+
+
+# The three tests that stood here targeted the ``real_lro_nac`` scenario, which
+# REAL-DATA-02 retired: its two tiles are 22.75 km apart and share no ground
+# (E-028, E-029), so demonstrating a "failure" on it would have shown a failure
+# of the acquisition, not of the matcher. They are not restored, because
+# tests/test_demo_real_data.py now asserts the same three properties against the
+# edges that replaced it -- no ground-truth claim, no synthetic substitution for
+# a missing artefact, and a triplet loop residual never attributed to one edge --
+# and additionally asserts that the retired scenario is no longer offered.
