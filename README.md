@@ -18,8 +18,9 @@ Multi-modal, Sun-angle and scale invariant image correspondence using Chandrayaa
 | EXP-004 — Orientation assignment | **pre-registered, NOT started.** Part 1 frozen; no implementation exists |
 | REAL-DATA-02 — Establish real overlap independently of the matcher | **complete — question answered.** The REAL-DATA-01 headline pair does **not** overlap — `experiments/REAL-DATA-02/` |
 | REAL-DATA-03 — The first correctly controlled real-data registration experiment | **complete — the experiment is valid; 2 of 3 edges fail, 1 succeeds** — `experiments/REAL-DATA-03/` |
-| REAL-DATA-04 — Can frame identity and illumination be separated? | **complete — ANSWERED.** D↔A succeeds (1656 inliers at Δinc 11.73°), D↔B fails (3 at 51.54°). **Illumination attributed, frame identity refuted** — `experiments/REAL-DATA-04/` |
-| **September 2 demo** | **the current priority.** Scientific expansion stopped after REAL-DATA-04 |
+| REAL-DATA-04 — Can frame identity and illumination be separated? | **complete — ANSWERED.** D↔A succeeds (1656 inliers at Δinc 11.73°), D↔B fails (3 at 51.54°). **Illumination attributed (D-040); frame identity substantially weakened, NOT conclusively refuted** — `experiments/REAL-DATA-04/` |
+| REAL-DATA-05 — Does the illumination result replicate on a second low-incidence frame? | **complete — UNRESOLVED, BY DATA AVAILABILITY.** The pre-registered screen returned **zero** admissible frames at every tier and rung; no image byte was fetched and no registration was run. The replication is still owed — `data/manifests/screen_frame_e_*.json` |
+| **September 2 demo** | **the current priority.** Scientific expansion stopped after REAL-DATA-05 |
 | Chandrayaan-2 (OHRC / TMC-2 / IIRS) | **NOT OBTAINED** — ISSDC authentication required. No multi-modal claim is supported |
 
 **Where the real data stands.** The project now ingests, decodes and verifies genuine LRO NAC
@@ -43,9 +44,24 @@ edges:
 **A failure on a valid pair is the result, and this is one.** Seven candidate causes —
 overlap, mare texture, decimation, resolution mismatch, relief displacement, window
 uncertainty, the affine model — are eliminated by measurement against the succeeding edge on
-the same ground. **Illumination difference is the only survivor, and it is deliberately not
-claimed as the cause**: across three frames it is perfectly confounded with frame identity.
-One more frame settles it, and the prediction is already written down.
+the same ground. At that point illumination was the only survivor and was deliberately **not**
+claimed as the cause: across three frames it was perfectly confounded with frame identity.
+
+**REAL-DATA-04 broke that confound with a fourth frame D**, against a decision table frozen
+before the data existed. D↔A succeeds (**1656** inliers at Δinc 11.73°) and D↔B fails (**3**
+at 51.54°) on edges whose independently confirmed overlap differs by 0.95 percentage points.
+Across the six real edges now measured, every frame appears in both a succeeding and a failing
+edge, and Δincidence separates all six.
+
+**What that does and does not license.** Illumination — specifically Δ*incidence* — is the
+attributed cause, in the scope D-040 states. Frame identity is **substantially weakened, not
+conclusively refuted**: the argument is a join across two stages, and frames A and D each have
+**n = 1** observations in the successful regime. **REAL-DATA-05 was the pre-registered
+replication and it returned UNRESOLVED** — of 906 archive products, only two sit in the
+required incidence band over shared ground, and both are orientation-incompatible with the
+incumbents, so the screen returned zero admissible frames and the stage stopped rather than
+relax a criterion. The replication is owed, and **EXP-004** (orientation assignment,
+pre-registered and not started) is now the measured blocker on it.
 
 Loop closure also met real data for the first time — three **independently estimated** edges,
 residual 1201.04 px, no false closure.

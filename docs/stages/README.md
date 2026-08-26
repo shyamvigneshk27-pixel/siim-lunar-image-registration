@@ -299,8 +299,9 @@ A one-screen orientation. Every figure is traced in the stage report that produc
 | **EXP-004** — orientation assignment | **PRE-REGISTERED, NOT STARTED.** Part 1 frozen; Part 2 empty; no implementation exists |
 | **REAL-DATA-02** — establish real overlap independently of the matcher | **COMPLETE — question answered.** Headline pair **OVERLAP_INSUFFICIENT** (0.0000 km², centres 22.75 km apart); `usable_H2` **OVERLAP_CONFIRMED** (68.6 % / 70.5 %); terminator **OVERLAP_UNKNOWN** (28.3 %) |
 | **REAL-DATA-03** — geometry-driven re-acquisition + a third product for loop closure | **COMPLETE — the experiment is valid.** Overlap CONFIRMED 97.12 % / 82.72 % / 85.00 % **before** interpretation; unmodified baseline gives **4 inliers at Δinc 39.8°** and **5365 at Δinc 0.96°**; first real loop closure at **1201.04 px** |
-| **REAL-DATA-04** — can frame identity and illumination be separated? | **COMPLETE — ANSWERED.** Overlap CONFIRMED 97.87 % / 71.30 % / 70.35 % **before** interpretation, the two decisive edges matched to 0.95 pp. **D↔A succeeds (1656 inliers, occupancy 1.000 at Δinc 11.73°); D↔B fails (3 at 51.54°).** Six real edges now place every frame on both sides, so **Δincidence predicts all six and frame identity predicts nothing**. Illumination attributed (D-040), frame A cleared |
-| **September 2 demo** | **THE CURRENT PRIORITY.** Scientific expansion stopped after REAL-DATA-04, as planned |
+| **REAL-DATA-04** — can frame identity and illumination be separated? | **COMPLETE — ANSWERED.** Overlap CONFIRMED 97.87 % / 71.30 % / 70.35 % **before** interpretation, the two decisive edges matched to 0.95 pp. **D↔A succeeds (1656 inliers, occupancy 1.000 at Δinc 11.73°); D↔B fails (3 at 51.54°).** Six real edges now place every frame on both sides, so **Δincidence predicts all six and frame identity predicts nothing across that set**. Illumination attributed (D-040); frame identity **substantially weakened, NOT conclusively refuted** — A and D each have n = 1 in the successful regime |
+| **REAL-DATA-05** — does the illumination result replicate on a second low-incidence frame? | **CLOSED — UNRESOLVED, BY DATA AVAILABILITY.** The pre-registered screen returned **zero** admissible frames at every tier and rung. Of 906 archive products, 8 can centre a full tile on shared ground; only 2 are in the required incidence band and **both are orientation-incompatible** with the incumbents (rejected by H5, REAL-DATA-04's own filter). **No image byte fetched, no registration run, decision table never reached.** The replication debt stands |
+| **September 2 demo** | **THE CURRENT PRIORITY.** Scientific expansion stopped after REAL-DATA-05 |
 
 **REAL-DATA-01 is a real-data *validation* stage, not completion of the Chandrayaan-2
 objective.** It proves the project can obtain, decode, verify and register-attempt genuine
@@ -322,11 +323,20 @@ registers against frame **A** — **1656 inliers**, inlier ratio 0.9414, coverag
 **51.54°** — on two edges whose independently confirmed overlap differs by **0.95 percentage
 points**. That is the first row of the table REAL-DATA-03 wrote down before the data existed.
 
-**Frame identity is refuted, not merely unsupported.** Across the **six** real edges now
-measured, on five frames and two ground windows, **every frame appears in both a succeeding
-and a failing edge**. No frame's presence predicts the outcome. Δincidence predicts all six,
-separating successes at 0.96° and 11.73° from failures at 38.85°, 39.81°, 39.81° and 51.54°.
-**Frame A is not defective** — the claim REAL-DATA-03 could not make.
+**Frame identity is substantially weakened — not conclusively refuted.** Across the **six**
+real edges now measured, on five frames and two ground windows, **every frame appears in both
+a succeeding and a failing edge**. No frame's presence predicts the outcome across that set.
+Δincidence does, separating successes at 0.96° and 11.73° from failures at 38.85°, 39.81°,
+39.81° and 51.54°.
+
+Two limits keep this short of a refutation, and both are structural rather than a matter of
+emphasis. **The argument is a join across two stages, not a within-experiment result**: inside
+REAL-DATA-04's own triplet, frame B sits in both failing edges and no succeeding one — exactly
+the partition that blocked REAL-DATA-03, mirrored from A onto B — and it is only
+REAL-DATA-03's B→C success that breaks it, at a different ground window. And **frames A and D
+each have n = 1 observations in the successful regime**: the single D→A edge carries the whole
+claim for both. **REAL-DATA-05 was the pre-registered replication and returned UNRESOLVED**,
+so that debt is undischarged. See the superseding note on **D-040**.
 
 The succeeding edge is corroborated by a field the matcher never saw: its recovered scale
 matches SPICE-derived `SCALED_PIXEL` to **0.04 % / 0.13 %**, and it is the only edge in either

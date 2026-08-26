@@ -3,6 +3,15 @@
 **Classification: DEMO-CRITICAL.** **Scientific experimentation is stopped.** REAL-DATA-04
 was the final causal experiment; this track is now the only active work.
 
+*(Updated 2026-08-26: REAL-DATA-05 ran afterwards as the pre-registered replication of
+REAL-DATA-04 and closed **UNRESOLVED, BY DATA AVAILABILITY** — its screen returned zero
+admissible frames, so no image byte was fetched and no registration was run. **It produced no
+number this demo shows or could show**, and the three real edges below are unchanged. Its one
+consequence for the demo is a wording constraint, already satisfied: frame identity is
+**substantially weakened, not conclusively refuted** (D-040-N1), and the page's fixed
+`CAUSAL_SUMMARY` only ever claims that outcome **tracks** illumination rather than frame
+identity, which remains within the evidence.)*
+
 **Freeze: 2026-09-01.** After freeze: bug fixes, reliability, UI polish, docs and
 rehearsal only. No algorithm, dependency, architecture or dataset changes.
 
