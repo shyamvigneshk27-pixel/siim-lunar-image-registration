@@ -39,6 +39,7 @@ import base64
 import io
 import sys
 import time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -260,6 +261,80 @@ def evidence_illumination() -> dict:
         raise HTTPException(503, str(exc)) from exc
 
 
+# ---------------------------------------------------------------------------
+# provenance: serve the exact files the displayed numbers were read from
+# ---------------------------------------------------------------------------
+
+#: Every advertised artefact is JSON. Declaring that is what makes a browser
+#: render one in a tab instead of downloading it, which is the difference
+#: between a check a judge can watch and a file in a downloads folder.
+ARTEFACT_MEDIA_TYPE = "application/json"
+
+
+@lru_cache(maxsize=1)
+def advertised_artefacts() -> frozenset[str]:
+    """The repo-relative paths the page itself offers the reader to open.
+
+    An allow-list, not a directory mount. The only files this endpoint will
+    ever serve are the ones already named on the page, so no request can reach
+    a path the demo does not display -- there is nothing to traverse to. It is
+    built from the same ``provenance.artefacts`` list the UI renders and the
+    same ``sources`` the illumination panel cites, so the link and the label
+    cannot drift apart.
+
+    A scenario whose artefacts are missing contributes nothing rather than
+    raising: the endpoint's job is to serve what is advertised, and what is
+    advertised is decided by :mod:`siim.demo.evidence`.
+    """
+    paths: set[str] = set()
+    for sid in REAL_SCENARIOS:
+        try:
+            built = build_real_scenario(sid)
+        except DemoDataMissing:
+            continue
+        paths.update(a["path"] for a in built["provenance"]["artefacts"])
+    try:
+        paths.update(illumination_evidence()["sources"])
+    except DemoDataMissing:
+        pass
+    return frozenset(paths)
+
+
+@app.get("/artefact/{path:path}")
+def artefact(path: str) -> FileResponse:
+    """Serve one advertised provenance artefact, byte for byte.
+
+    The provenance panel invites the reader to open these files and check the
+    displayed numbers against them. That invitation used to be printable text
+    only: the path was shown and nothing served it, so taking it up meant
+    leaving the demo for an editor and a repository checkout. Serving the file
+    turns the anti-hardcoding check into a click, which is the whole point of
+    printing the path.
+
+    Nothing is transformed on the way out -- no pretty-printing, no filtering,
+    no re-serialisation. A file that is reformatted in transit is no longer
+    evidence about what is on disk.
+    """
+    rel = path.replace("\\", "/").strip("/")
+    if rel not in advertised_artefacts():
+        raise HTTPException(
+            404, f"{rel!r} is not one of the artefacts this page advertises. "
+                 "Only the files named in a provenance panel are served.")
+    full = ROOT / rel
+    if not full.is_file():
+        # Advertised but absent: the same class of problem as a missing
+        # artefact anywhere else in this demo, and reported the same way --
+        # named, and never substituted.
+        raise HTTPException(
+            503, f"{rel} is advertised on the page but is not on disk. The "
+                 "demo reads recorded experiment artefacts and will not "
+                 "substitute or recompute them.")
+    return FileResponse(
+        full, media_type=ARTEFACT_MEDIA_TYPE,
+        # inline, so the browser shows it rather than downloading it.
+        headers={"Content-Disposition": f'inline; filename="{full.name}"'})
+
+
 @app.post("/api/run")
 def run(req: RunRequest) -> dict:
     sc = SCENARIOS.get(req.scenario)
@@ -394,7 +469,23 @@ def run(req: RunRequest) -> dict:
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(STATIC / "index.html")
+    """The demonstrator page, never from the browser's cache.
+
+    The response carries no ``Cache-Control``, so a browser is free to apply
+    heuristic freshness and serve a copy it already has without asking. It
+    does: re-opening the URL after the page changed showed the previous
+    version, with no error and nothing on screen to say so. That is the worst
+    shape a demo defect can take -- a page that looks fine and is out of date --
+    and the fix that was applied five minutes earlier appears not to have
+    worked.
+
+    ``no-store`` costs nothing here: the page is one local file on one local
+    request. The tile previews under ``/assets`` are deliberately left
+    cacheable -- they are immutable, and re-fetching megabytes of PNG on every
+    case switch is a visible stutter on stage.
+    """
+    return FileResponse(STATIC / "index.html",
+                        headers={"Cache-Control": "no-store"})
 
 
 if STATIC.is_dir():

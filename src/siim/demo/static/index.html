@@ -113,6 +113,13 @@ button.case .s{font-size:11px;color:var(--ink-3);margin-top:3px;line-height:1.4}
 .pill.outcome-SUCCEED{border-color:var(--succeed);color:var(--succeed);
   background:var(--succeed-soft)}
 .pill.outcome-FAIL{border-color:var(--fail);color:#f07a7a;background:var(--fail-soft)}
+/* The adversarial case satisfies the inlier rule and is still wrong. Neither
+   outcome colour may be used for it: blue would claim a success the page then
+   spends four steps refuting. */
+.pill.outcome-CONSTRUCTED_WRONG{border-color:var(--warning);color:var(--warning);
+  background:rgba(250,178,25,.12)}
+a.filelink{color:var(--real);text-decoration:underline;text-underline-offset:2px}
+a.filelink:hover{color:var(--ink)}
 
 /* --------------------------------------------------------------- stat tile */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px}
@@ -404,6 +411,34 @@ function viewModel(d) {
   };
 }
 
+/* ------------------------------------------------- the top-of-page outcome */
+/* For a real edge this mark is the pre-registered D-023 outcome, and step 4
+   prints the rule that produced it right beside the verdict.
+
+   The adversarial case is the one place where that rule passes on an answer
+   that is wrong by construction: 1273 inliers, and the estimate deliberately
+   displaced by one crater spacing. Marking it "REGISTRATION SUCCEEDS" put a
+   claim at the top of the page that the next four steps exist to refute, and
+   left it standing above a REJECTED verdict and a 64 px ground-truth error.
+   The mark states what actually passed instead. */
+function outcomePill(d, vm) {
+  if (d.adversarial_construction) {
+    const gt = d.ground_truth && d.ground_truth.available
+      ? d.ground_truth.true_error_median_px : null;
+    return {
+      cls: "CONSTRUCTED_WRONG",
+      text: (gt == null || !isFinite(gt))
+        ? "⚠ INLIER RULE PASSES — ANSWER IS WRONG BY CONSTRUCTION"
+        : `⚠ INLIER RULE PASSES — ANSWER IS ${fx(gt)} px WRONG`,
+    };
+  }
+  return {
+    cls: vm.outcome,
+    text: vm.outcome === "SUCCEED" ? "✓ REGISTRATION SUCCEEDS"
+                                   : "✕ REGISTRATION FAILS",
+  };
+}
+
 /* --------------------------------------------------------------- renderer */
 function render(d) {
   const vm = viewModel(d), v = d.verdict;
@@ -417,9 +452,8 @@ function render(d) {
         ? "READ FROM RECORDED ARTEFACT" : "COMPUTED LIVE THIS REQUEST")}</span>
       ${vm.deltaInc != null
         ? `<span class="pill">Δ INCIDENCE ${fx(vm.deltaInc)}°</span>` : ""}
-      <span class="pill outcome-${vm.outcome}">${
-        vm.outcome === "SUCCEED" ? "✓ REGISTRATION SUCCEEDS"
-                                 : "✕ REGISTRATION FAILS"}</span>
+      <span class="pill outcome-${esc(outcomePill(d, vm).cls)}">${
+        esc(outcomePill(d, vm).text)}</span>
       ${d.adversarial_construction
         ? `<span class="pill" style="border-color:var(--warning);color:var(--warning)">
              ⚠ ADVERSARIAL CONSTRUCTION</span>` : ""}
@@ -452,6 +486,11 @@ function render(d) {
     ${illuminationPanel(vm)}
     ${provenance(d)}
   `;
+
+  // A case switch must land on the case. The stage is re-rendered in
+  // place, so without this the reader keeps the previous case's scroll offset
+  // and a click on "B -> D" lands halfway down step 1 with no title in view.
+  window.scrollTo(0, 0);
 
   drawCorrespondences(vm);
   if (vm.overlap) drawGeometry(vm.overlap);
@@ -710,7 +749,9 @@ function stepVerdict(vm, v, d) {
         ${esc(vm.d.outcome_rule)}</div>` : ""}
     </div>
     ${vm.real && vm.d.verdict_note
-      ? `<div class="note" style="margin-top:12px"><b>Why not “VERIFIED”?</b>
+      ? `<div class="note" style="margin-top:12px"><b>${
+         v.status === "INCONCLUSIVE" ? "Why not “VERIFIED”?"
+                                     : "Why loop closure did not run here"}</b>
          ${esc(vm.d.verdict_note)}</div>` : ""}
     ${d.loop_closure_error
       ? `<div class="note" style="margin-top:12px;border-left:3px solid var(--fail);
@@ -803,12 +844,16 @@ function provenance(d) {
       <tr><th>Role</th><th>File — open it and check</th></tr>
       ${p.artefacts.map(a => `<tr>
         <td>${esc(a.role)}</td>
-        <td class="n" style="font-size:11px">${esc(a.path)}</td>
+        <td class="n" style="font-size:11px"><a class="filelink"
+          href="/artefact/${esc(a.path)}" target="_blank"
+          rel="noopener">${esc(a.path)}</a></td>
       </tr>`).join("")}
     </table>
-    <div class="note" style="margin-top:8px">Every figure on this page is read
-      from these files, not recomputed for display. To confirm the page cannot
-      drift from them, run
+    <div class="note" style="margin-top:8px"><b>Each path opens the raw file
+      in a new tab</b> — the same bytes on disk, unmodified, so a displayed
+      number can be checked against its source in seconds. Every figure on this
+      page is read from these files, not recomputed for display. To confirm the
+      page cannot drift from them, run
       <span class="n">python -m pytest tests/test_demo_real_data.py -q</span>.</div>` : ""}
     <div class="srcline"><b>overlay integrity:</b>
       ${d.overlay_integrity.n_putative} correspondences,
