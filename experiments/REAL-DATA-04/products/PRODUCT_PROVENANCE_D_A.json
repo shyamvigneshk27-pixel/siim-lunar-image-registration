@@ -1,0 +1,113 @@
+{
+  "product_class": "a registered product; no ground truth exists for it; corroborated, not verified; class B.",
+  "what_this_is": "The problem statement's 'registered product' and 'corresponding match points' deliverables, for the one real edge that passes the pre-registered inlier rule.",
+  "what_this_is_NOT": [
+    "NOT evidence that the registration is correct. No ground truth exists for these products; REAL-DATA-04 section 15 Q3 classes this edge B (corroborated), not A (verified).",
+    "NOT an accuracy measurement. residual_px is a FIT residual, measured on the points that determined the transform (D-003).",
+    "The difference image is NOT a registration error map. The two frames differ by 11.73 deg of solar incidence, so real radiometric difference is EXPECTED and dominates. Do not read its magnitude as misalignment.",
+    "NOT Chandrayaan-2 and NOT multi-modal. Both frames are LRO NAC."
+  ],
+  "nothing_was_estimated_here": "No matcher ran. The transform is read from the recorded artefact and the correspondences from the certified overlay asset, so this mode cannot produce a number that disagrees with the stage.",
+  "edge": "nac.m1299958135lc -> nac.m1271742202lc",
+  "source_product": "nac.m1299958135lc",
+  "reference_product": "nac.m1271742202lc",
+  "sources": {
+    "registration_artefact": "experiments/REAL-DATA-04/loop_closure_real_data_04.json",
+    "overlay_asset": "src/siim/demo/assets/real_data_04.json",
+    "acquisition_manifest": "data/manifests/real_quad_d_geo_manifest.json",
+    "index_geometry": [
+      "data/manifests/real_pair_index_geometry.json",
+      "data/manifests/real_frame_d_selected_index_geometry.json",
+      "data/manifests/real_frame_d_candidates_index_geometry.json"
+    ]
+  },
+  "source_sha256": {
+    "experiments/REAL-DATA-04/loop_closure_real_data_04.json": "2d24b5115cf4f28eefd86afcfca37d610a94b46f5454503a2bdecac13c9d338e",
+    "src/siim/demo/assets/real_data_04.json": "c03729740af0b97eeb665b12bbe0e84ede79de776f72cd2d88fe80688c92402f"
+  },
+  "baseline_as_recorded": {
+    "pipeline": "run_rootsift_baseline (B1), UNMODIFIED",
+    "model": "affine",
+    "ransac_threshold_px": 3.0,
+    "seed": 0,
+    "downsample": 2,
+    "preprocessing": "1-99 percentile stretch per image, identical to register_real_pair.py"
+  },
+  "transform_matrix": [
+    [
+      1.167121643875759,
+      -0.0034206471098307124,
+      -100.80160643030308
+    ],
+    [
+      0.005653445577317761,
+      1.133999091002151,
+      -189.7140895489572
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "recorded_statistics": {
+    "n_keypoints_src": 12593,
+    "n_keypoints_dst": 10794,
+    "n_putative_mutual_ratio_matches": 1759,
+    "n_inliers": 1656,
+    "inlier_ratio": 0.9414440022740194,
+    "fit_rmse_px": 0.8779232510137617,
+    "coverage_max_uncovered_disc_ratio": 0.10334689225690416,
+    "coverage_occupancy": 1.0
+  },
+  "match_points": {
+    "n_rows": 1759,
+    "n_inliers": 1656,
+    "residual_px_definition": "||T(src) - dst|| in decimated reference pixels; a FIT residual",
+    "inlier_residual_max_px": 2.9584659802204305,
+    "ground_coordinates": "FrameCorners.lonlat_at on each product's own named archive corners; corner naming verified per product from its PDS4 disp:Display_Direction"
+  },
+  "registered_image": {
+    "shape_rows_cols": [
+      2048,
+      1024
+    ],
+    "valid_fraction": 1.0,
+    "nodata_pixels": 0,
+    "nodata_rgb": [
+      255,
+      0,
+      255
+    ],
+    "valid_min": -0.06549331472928815,
+    "valid_median": 0.18716957097471942,
+    "valid_max": 1.165945752079331,
+    "out_of_unit_range_fraction": 0.009543418884277344,
+    "why_values_can_fall_outside_0_1": "The source is normalised to [0, 1] before warping, but `warp` resamples with a cubic spline (order=3), which overshoots at high-contrast edges -- crater rims and shadow boundaries here. Standard, expected, and NOT a defect: the overshoot is a property of the interpolator, not of the registration. The reported min/max are the TRUE resampled values; only the PNG render clips to [0, 255]. Use order=1 to remove it at the cost of softening the texture the matcher works on."
+  },
+  "difference_image": {
+    "shape_rows_cols": [
+      2048,
+      1024
+    ],
+    "valid_fraction": 1.0,
+    "nodata_pixels": 0,
+    "colour_span_plus_minus": 0.20118563185349672,
+    "colour_span_basis": "99th percentile of |difference| over valid pixels",
+    "valid_mean_abs_difference": 0.035590416641397137,
+    "valid_median_signed_difference": 0.012219188858531259
+  },
+  "coverage_cross_check": {
+    "available": true,
+    "warp_valid_fraction": 1.0,
+    "archive_geometry_fraction_of_reference_tile": 0.9999999999999999,
+    "absolute_difference": 1.1102230246251565e-16,
+    "source_case": "real_data_04::m1271742202lc-m1299958135lc",
+    "source_artefact": "experiments/REAL-DATA-04/overlap_real_data_04.json",
+    "note": "The warp coverage is a pixel-domain quantity from the estimated transform; the archive fraction is from corner geometry with no pixel read and no matcher. Descriptive only -- it discriminates COVERAGE, not alignment, and is not a verdict input.",
+    "discriminating_power": "NONE on this edge, and that is stated rather than counted as a confirmation. Both quantities are SATURATED at 1.0 -- the reference tile lies wholly inside the source footprint -- so no possible disagreement could have shown up here and the agreement to 1e-16 confirms nothing. This is E-027's lesson applied to a check this script itself adds: before calling an agreement a confirmation, ask what result would have falsified it. The check becomes informative only on an edge where the fraction is strictly below 1."
+  },
+  "nodata_convention": "Magenta (255, 0, 255) marks pixels outside the warped source. Zero-fill is not used: near-zero is a legal lunar value and would be indistinguishable from shadow (E-003).",
+  "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+  "generated_utc": "2026-08-29T08:49:09Z"
+}

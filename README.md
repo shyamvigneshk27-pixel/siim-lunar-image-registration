@@ -112,7 +112,7 @@ exactly is still a wrong answer — which is the entire point of this project.
 | **Δazimuth measured, and it does NOT explain the outcomes** | `[MEASURED]` `scripts/check_solar_geometry.py` — ground solar azimuth computed from the archive's sub-solar point. **Δincidence separates all six edges (11.73° → 38.85°); Δazimuth does not** (the strongest success sits at Δaz 50.29°, above three of four failures). **Not pre-registered** — run after the fact as a confound check |
 | **Δphase and Δincidence are NOT separable here** | Every frame is near-nadir (emission ≤ 1.75°), so phase = incidence + emission and the two deltas agree to **2.56°**. Lunar photometry is **phase**-driven, so *incidence* is our **label** for the variable, not a demonstrated mechanism. Separating them needs an off-nadir frame we do not have |
 | **NO sub-pixel accuracy on real imagery** | The PS's headline accuracy requirement. Sub-pixel is shown **only against synthetic ground truth under fixed illumination** (0.009–0.386 px, EXP-001). `check_transform_against_geometry.py` states in its own output that it *"certifies NO accuracy, and in particular NO sub-pixel accuracy."* **No sub-pixel refinement stage is implemented** |
-| **NO registered product, NO exported match points** | Two named PS deliverables. `geometry/resample.warp` exists and is tested; it has never been applied to a real pair, and no correspondence list is exported in ground coordinates |
+| **Registered product + match points: produced, for ONE edge** | The two named PS deliverables now exist for the D→A edge — `experiments/REAL-DATA-04/products/`: 1759 correspondences with full-frame pixel and archive-derived ground coordinates, the warped source tile, and a difference image. **Emitted from recorded evidence; no matcher runs and nothing is estimated.** Labelled *"a registered product; no ground truth exists for it; corroborated, not verified; class B."* An edge the pre-registered rule **rejected** is refused a product |
 | **Scale: 4× on mare, 8× on highlands — the PS implies 320:1** | `[MEASURED]` `experiments/EXP-001/scale_limit_probe.json`. **Every** failure beyond those ratios is **detector starvation**, not descriptor failure — mare yields *literally zero* SIFT keypoints at 128², which is D-026's texture poverty in its sharpest form. The fix is normalising to a common GSD before matching (D-005): **designed, not implemented**, and untestable here because no cross-modal data exists |
 | **The pipeline runs on tiles, not full frames** | `[MEASURED]` matching is O(keypoints²): 0.18 s at 0.26 Mpx, 5.68 s at 1.05 Mpx. A full 264 Mpx NAC frame extrapolates to ~100 h/edge and ~2 GB of descriptors. Every real result used 2048×1024 decimated tiles (4.5–10.1 s). Tiling is what the geometry layer is built for; **the tiling driver is not written** |
 | **NOT established: that the synthetic illumination model predicts real behaviour** | The two disagree, in both directions, and we state it rather than wait to be told. EXP-001 measured Δelevation −30° (≈ Δincidence 30°) as **survivable** — 49 inliers, 0.81 px — where real Δincidence 38.85° gives **4**. EXP-003 put the Δazimuth cliff at **21–27°** on A-regimes, where real edge D→A succeeds with **1656** inliers at Δaz **50.29°**. *(That real edge also has small Δincidence, so it is not a controlled azimuth test — but the synthetic model offers no mechanism by which small Δincidence rescues large Δazimuth.)* Likely causes, none measured: Lambertian shading with cast shadows omits the Hapke backscatter and opposition surge that dominate real regolith; the synthetic scene is highlands where the real data is mare; the synthetic sweep never reaches the 70° incidence regime of frames B and C. **EXP-001/002/003 remain internally valid; their external validity to lunar imagery is unsupported** |
@@ -241,7 +241,7 @@ Everything below re-derives results that are already recorded under `experiments
 
 ```bash
 python -m pip install -e ".[dev,viz,experiments]"
-python -m pytest tests/ -q            # 583 passed, 2 skipped
+python -m pytest tests/ -q            # 605 passed, 2 skipped
                                       # (4 skipped on a fresh clone: the two
                                       #  re-derivation tests report CANNOT CHECK
                                       #  until the gitignored tiles are fetched)
@@ -269,6 +269,10 @@ gitignored; the manifests under `data/manifests/` carry the byte ranges and SHA-
 them reproducible. The demonstrator does **not** need any of this.
 
 ```bash
+# the two named PS deliverables, from RECORDED evidence -- runs NO matcher
+# and estimates nothing; needs the tiles only for the warp
+python scripts/register_real_triplet.py --emit-product        --manifest real_quad_d_geo_manifest.json --outdir REAL-DATA-04        --overlap-artefact experiments/REAL-DATA-04/overlap_real_data_04.json
+
 # real LRO NAC (network; tiles are gitignored and must be fetched once)
 python scripts/acquire_real_pair.py     # observational labels + byte-range image tiles
 python scripts/check_real_tiles.py      # Phase-6 sanity checks + diagnostic figures
