@@ -187,7 +187,7 @@ CAUSAL_SUMMARY = ("Across the measured real-data edges, registration outcome "
 # ---------------------------------------------------------------------------
 
 
-def _read(path: Path, what: str) -> dict:
+def _read(path: Path, what: str, *, require: tuple[str, ...] = ()) -> dict:
     """Load a recorded artefact, or fail in a way the reader can act on.
 
     A *missing* artefact and a *corrupt* one are the same class of problem --
@@ -197,6 +197,22 @@ def _read(path: Path, what: str) -> dict:
     ``JSONDecodeError`` that reached the endpoint uncaught and reached the
     reader as a 500 and a stack trace, which says nothing about which file is
     at fault. Neither path ever substitutes or recomputes a value.
+
+    ``require`` closes the rest of that class. Handling only *unparseable* JSON
+    left a gap one step further in: an artefact that is valid JSON but not the
+    recorded **structure** -- ``{"hello": "world"}`` in place of the
+    loop-closure file -- got past every check here and raised ``KeyError:
+    'edges'`` deep in an accessor, reaching the reader as exactly the 500 and
+    the file-less stack trace this function exists to prevent. Found by handing
+    the demo a structurally wrong artefact during the pre-freeze audit; the
+    README's promise that *"a missing or corrupt artefact produces a clean
+    error naming the file"* was true for a truncated file and not for this one.
+
+    The guard is deliberately shallow -- top-level keys only. It is not a
+    schema validator and must not become one: its job is to convert an
+    unhandled ``KeyError`` into a named ``DemoDataMissing``, not to certify the
+    artefact, which is what ``_check_asset_matches_artefact`` and the recorded
+    statistics comparisons already do against real values.
     """
     if not path.exists():
         raise DemoDataMissing(
@@ -222,6 +238,13 @@ def _read(path: Path, what: str) -> dict:
             f"{what} at {path} parsed as {type(loaded).__name__}, not a JSON "
             "object. The artefact is not the recorded structure this demo "
             "reads, and no value will be substituted for it.")
+    absent = [k for k in require if k not in loaded]
+    if absent:
+        raise DemoDataMissing(
+            f"{what} at {path} is valid JSON but is missing the required "
+            f"top-level key(s) {absent}. The artefact is not the recorded "
+            "structure this demo reads -- restore it from version control or "
+            "re-run the stage that wrote it. No value will be substituted.")
     return loaded
 
 
@@ -247,27 +270,32 @@ def _read(path: Path, what: str) -> dict:
 # full artefact path, which carries the stage and the window.
 @lru_cache(maxsize=None)
 def _loop(rel: str) -> dict:
-    return _read(EXPERIMENTS / rel, f"loop-closure artefact {rel}")
+    return _read(EXPERIMENTS / rel, f"loop-closure artefact {rel}",
+                 require=("edges", "baseline", "stage"))
 
 
 @lru_cache(maxsize=None)
 def _overlap(rel: str) -> dict:
-    return _read(EXPERIMENTS / rel, f"overlap artefact {rel}")
+    return _read(EXPERIMENTS / rel, f"overlap artefact {rel}",
+                 require=("cases",))
 
 
 @lru_cache(maxsize=None)
 def _geometry(rel: str) -> dict:
-    return _read(EXPERIMENTS / rel, f"transform-vs-geometry artefact {rel}")
+    return _read(EXPERIMENTS / rel, f"transform-vs-geometry artefact {rel}",
+                 require=("edges",))
 
 
 @lru_cache(maxsize=None)
 def _manifest(name: str) -> dict:
-    return _read(MANIFESTS / name, f"acquisition manifest {name}")
+    return _read(MANIFESTS / name, f"acquisition manifest {name}",
+                 require=("tiles",))
 
 
 @lru_cache(maxsize=None)
 def _assets() -> dict:
-    a = _read(ASSETS / "real_data_04.json", "demo overlay assets")
+    a = _read(ASSETS / "real_data_04.json", "demo overlay assets",
+              require=("edges", "verified_against_artefact"))
     v = a.get("verified_against_artefact") or {}
     if not v.get("all_match"):
         raise DemoDataMissing(

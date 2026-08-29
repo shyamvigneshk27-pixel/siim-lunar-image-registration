@@ -1,8 +1,9 @@
 """The demo must never describe a failure as a property of the data.
 
-Two failure modes are covered here, both found by audit rather than by a crash,
-and both of the same shape: the demo had one code path that turned "something
-went wrong" into a statement about the imagery or into a bare stack trace.
+Three failure modes are covered here, all found by audit rather than by a
+crash, and all of the same shape: the demo had a code path that turned
+"something went wrong" into a statement about the imagery or into a bare stack
+trace.
 
 1. **Loop closure that errors must not be displayed as loop closure that was
    never applicable.** The verdict engine treats a missing ``loop_error_px`` as
@@ -20,8 +21,15 @@ went wrong" into a statement about the imagery or into a bare stack trace.
    uncaught, which reached the reader as a 500 and a stack trace naming no
    file. Both are the same problem: the recorded evidence cannot be read.
 
-Neither fix changes a verdict criterion, and neither introduces a fallback:
-every path here still refuses to substitute or recompute a value.
+3. **Valid JSON that is not the recorded STRUCTURE must fail the same way.**
+   Fixing (2) left the class open one step further in: an artefact that parses
+   but is not the recorded shape got past every check and raised ``KeyError``
+   inside an accessor -- the same 500, the same file-less stack trace. Closed by
+   ``_read(..., require=(...))``, with each cached loader declaring the
+   top-level keys its accessors dereference.
+
+No fix here changes a verdict criterion, and none introduces a fallback:
+every path still refuses to substitute or recompute a value.
 """
 
 from __future__ import annotations
@@ -167,10 +175,13 @@ def test_a_corrupt_artefact_surfaces_as_503_not_500(tmp_path):
     bad.write_text('{"edges": [', encoding="utf-8")
     real = ev._read
 
-    def corrupt(path, what):
+    def corrupt(path, what, **kw):
+        # ``**kw`` forwards ``require=`` -- the loaders declare their required
+        # top-level keys, and a mock that dropped them would silently test a
+        # weaker _read than the one that ships.
         if path.name == "loop_closure_real_data_04.json":
-            return real(bad, what)
-        return real(path, what)
+            return real(bad, what, **kw)
+        return real(path, what, **kw)
 
     ev._loop.cache_clear(); ev._overlap.cache_clear(); ev._assets.cache_clear()
     try:
@@ -303,3 +314,84 @@ def test_a_changed_loop_residual_changes_the_displayed_sentence():
         "the displayed sentence did not change when the recorded loop "
         "residual changed -- the number is hard-coded")
     assert "12.34 px" in after
+
+
+# ---------------------------------------------------------------------------
+# 3. Valid JSON that is not the recorded STRUCTURE must also fail cleanly
+# ---------------------------------------------------------------------------
+#
+# Found by handing the demo a structurally wrong artefact during the pre-freeze
+# audit. Case 2 above fixed *unparseable* JSON; one step further in, a file that
+# is valid JSON but not the recorded shape -- `{"hello": "world"}` where the
+# loop-closure artefact belongs -- got past every check and raised
+# `KeyError: 'edges'` inside an accessor, reaching the reader as exactly the
+# 500 and the file-less stack trace this module exists to prevent.
+#
+# README.md promises "a missing **or corrupt** artefact produces a clean error
+# naming the file rather than a silent substitution". That was true for a
+# truncated file and false for this one, and a judge could establish it in a
+# minute. `_read(..., require=(...))` closes the class; these pin it.
+
+
+@pytest.mark.parametrize("payload,missing", [
+    ('{"hello": "world"}', "edges"),
+    ('{"edges": []}', "baseline"),
+    ('{"baseline": {}, "stage": "X"}', "edges"),
+])
+def test_valid_json_of_the_wrong_shape_is_a_data_error_naming_the_key(
+        tmp_path, payload, missing):
+    bad = tmp_path / "loop_closure_real_data_04.json"
+    bad.write_text(payload, encoding="utf-8")
+    with pytest.raises(ev.DemoDataMissing) as exc:
+        ev._read(bad, "loop-closure artefact",
+                 require=("edges", "baseline", "stage"))
+    msg = str(exc.value)
+    assert "missing the required top-level key" in msg
+    assert missing in msg
+    assert str(bad) in msg, "the error must name the file"
+    assert "No value will be substituted" in msg
+
+
+def test_a_structurally_wrong_artefact_surfaces_as_503_not_500(tmp_path):
+    """End to end. This is the case that used to produce KeyError: 'edges'."""
+    bad = tmp_path / "loop_closure_real_data_04.json"
+    bad.write_text('{"hello": "world"}', encoding="utf-8")
+    real = ev._read
+
+    def swap(path, what, **kw):
+        if path.name == "loop_closure_real_data_04.json":
+            return real(bad, what, **kw)
+        return real(path, what, **kw)
+
+    ev._loop.cache_clear(); ev._overlap.cache_clear(); ev._assets.cache_clear()
+    try:
+        with mock.patch.object(ev, "_read", side_effect=swap):
+            r = _client().post("/api/run", json={"scenario": "real_da_success"})
+        assert r.status_code == 503, (
+            "valid JSON of the wrong shape must not reach the reader as a 500")
+        detail = r.json()["detail"]
+        assert "missing the required top-level key" in detail
+        assert "loop_closure_real_data_04.json" in detail
+    finally:
+        ev._loop.cache_clear(); ev._overlap.cache_clear(); ev._assets.cache_clear()
+
+
+def test_every_cached_loader_declares_the_keys_its_accessors_dereference():
+    """The guard is only as good as its coverage of the loaders."""
+    import inspect
+    src = inspect.getsource(ev)
+    for loader in ("_loop", "_overlap", "_geometry", "_manifest", "_assets"):
+        body = src.split(f"def {loader}(")[1].split("\ndef ")[0]
+        assert "require=" in body, (
+            f"{loader} does not declare required keys, so a structurally wrong "
+            "artefact reaching it would still raise KeyError")
+
+
+def test_the_real_recorded_artefacts_satisfy_their_declared_requirements():
+    """Guards the guard: the shipped artefacts must actually have these keys.
+
+    If this fails, the requirement lists are wrong -- not the artefacts.
+    """
+    for sid in ev.REAL_SCENARIOS:
+        d = ev.build_real_scenario(sid)
+        assert d["verdict"]["status"] in ("VERIFIED", "REJECTED", "INCONCLUSIVE")
