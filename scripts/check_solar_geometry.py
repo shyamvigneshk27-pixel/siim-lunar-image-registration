@@ -152,6 +152,10 @@ def main() -> None:
                 "archive_SUB_SOLAR_AZIMUTH": float(f["SUB_SOLAR_AZIMUTH"]),
                 "archive_azimuth_minus_ground_deg": angular_difference_deg(
                     float(f["SUB_SOLAR_AZIMUTH"]), g.azimuth_deg),
+                "phase_angle_deg": float(f["PHASE_ANGLE"]),
+                "emission_angle_deg": float(f["EMISSION_ANGLE"]),
+                "phase_minus_incidence_deg": (float(f["PHASE_ANGLE"])
+                                              - float(f["INCIDENCE_ANGLE"])),
             }
             frames[key] = row
             frame_rows.append(row)
@@ -201,6 +205,7 @@ def main() -> None:
                                            - b["published_incidence_deg"]),
                 "delta_azimuth_deg": angular_difference_deg(
                     a["ground_solar_azimuth_deg"], b["ground_solar_azimuth_deg"]),
+                "delta_phase_deg": abs(a["phase_angle_deg"] - b["phase_angle_deg"]),
                 "n_inliers": e["n_inliers"],
                 # The pre-registered rule (D-023), applied, never re-derived.
                 "outcome": "FAIL" if e["n_inliers_failure_flag"] else "SUCCEED",
@@ -223,19 +228,28 @@ def main() -> None:
             "gap_deg": lo_f - hi_s,
         }
 
-    inc, az = separates("delta_incidence_deg"), separates("delta_azimuth_deg")
+    inc = separates("delta_incidence_deg")
+    az = separates("delta_azimuth_deg")
+    ph = separates("delta_phase_deg")
+
+    # Phase vs incidence: are they even distinguishable in this dataset?
+    max_emission = max(r["emission_angle_deg"] for r in frame_rows)
+    phase_inc_gap = max(abs(e["delta_phase_deg"] - e["delta_incidence_deg"])
+                        for e in edges)
 
     print(f"\n3. THE SIX MEASURED EDGES  (n = {len(edges)}; "
           f"{len(succeeding)} succeed, {len(failing)} fail)")
-    print(f"   {'stage':13s} {'edge':46s} {'dInc':>7s} {'dAz':>7s} "
+    print(f"   {'stage':13s} {'edge':46s} {'dInc':>7s} {'dAz':>7s} {'dPhase':>8s} "
           f"{'inliers':>8s}  outcome")
     for e in sorted(edges, key=lambda r: r["delta_incidence_deg"]):
         print(f"   {e['stage']:13s} {e['edge'][:46]:46s} "
               f"{e['delta_incidence_deg']:7.2f} {e['delta_azimuth_deg']:7.2f} "
+              f"{e['delta_phase_deg']:8.2f} "
               f"{e['n_inliers']:8d}  {e['outcome']}")
 
     print("\n4. RESULT")
-    for name, r in (("delta_incidence", inc), ("delta_azimuth", az)):
+    for name, r in (("delta_incidence", inc), ("delta_azimuth", az),
+                    ("delta_phase", ph)):
         if r["separates"]:
             print(f"   {name:16s} SEPARATES the outcomes "
                   f"(max succeeding {r['max_succeeding_deg']:.2f} < "
@@ -245,6 +259,18 @@ def main() -> None:
             print(f"   {name:16s} does NOT separate the outcomes "
                   f"(max succeeding {r['max_succeeding_deg']:.2f} >= "
                   f"min failing {r['min_failing_deg']:.2f})")
+
+    print("\n5. PHASE AND INCIDENCE ARE NOT SEPARABLE IN THIS DATASET")
+    print(f"   Max emission angle over all frames: {max_emission:.2f} deg.")
+    print("   Every frame is near-nadir, so phase = incidence + emission to")
+    print(f"   first order, and |dPhase - dInc| <= {phase_inc_gap:.2f} deg over all")
+    print(f"   {len(edges)} edges. dPhase separates the outcomes for the same")
+    print("   ARITHMETIC reason dIncidence does, and no measurement here")
+    print("   distinguishes them.")
+    print("   This matters: lunar regolith photometry is PHASE-driven (opposition")
+    print("   surge, Hapke backscatter), so 'incidence' is this project's LABEL")
+    print("   for the variable, not a demonstrated mechanism. Separating them")
+    print("   requires an OFF-NADIR frame, which this project does not have.")
 
     print("\n   WHAT THIS DOES AND DOES NOT LICENSE")
     print("   Does:     on THESE six edges, Dazimuth is not a variable that")
@@ -281,10 +307,27 @@ def main() -> None:
         },
         "frames": frame_rows,
         "edges": edges,
-        "separation": {"delta_incidence_deg": inc, "delta_azimuth_deg": az},
+        "separation": {"delta_incidence_deg": inc, "delta_azimuth_deg": az,
+                       "delta_phase_deg": ph},
+        "phase_incidence_collinearity": {
+            "max_emission_angle_deg": max_emission,
+            "max_abs_delta_phase_minus_delta_incidence_deg": phase_inc_gap,
+            "separable": False,
+            "note": ("Every frame is near-nadir, so phase = incidence + "
+                     "emission to first order and the two deltas agree to "
+                     f"{phase_inc_gap:.2f} deg over all edges. dPhase separates "
+                     "the outcomes for the same arithmetic reason dIncidence "
+                     "does. Lunar photometry is phase-driven, so 'incidence' "
+                     "is this project's LABEL for the variable, not a "
+                     "demonstrated mechanism. Separating them requires an "
+                     "off-nadir frame."),
+        },
         "limits": [
             "n = 6 edges; this orders outcomes, it does not establish cause.",
             "Not an azimuth-CONTROLLED experiment; that debt stands.",
+            "dPhase and dIncidence are collinear here and are NOT separated. "
+            "Lunar BRDF is phase-driven; the attributed variable is labelled "
+            "incidence but the data cannot distinguish the two.",
             "Spherical geometry: local slope is not modelled.",
             "Incidence is evaluated at the tile target; the archive states it "
             "at the frame centre, which is why the tolerance is 2 deg.",

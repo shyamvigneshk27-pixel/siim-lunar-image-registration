@@ -1,5 +1,45 @@
 # REAL-DATA-04 — Can frame identity and illumination be separated?
 
+> ## ⚠ SUPERSEDED IN PART — 2026-08-26, by D-040-N1
+>
+> **The Status line below, §11.3's heading and §15 Q5 state that frame identity is
+> _refuted_. That claim is withdrawn as too strong.** The defensible statement is:
+> **frame identity is substantially weakened as an explanation, but NOT conclusively
+> refuted.**
+>
+> Two structural limits, neither a matter of emphasis:
+>
+> 1. **The refutation is a cross-stage join, not a within-experiment result.** Inside
+>    this stage's own triplet {A, B, D}, frame **B** sits in both failing edges and no
+>    succeeding one — precisely the partition that blocked REAL-DATA-03, mirrored from
+>    A onto B. Only REAL-DATA-03's B→C success breaks it, and that is at a **different
+>    ground window**.
+> 2. **n = 1.** Frames A and D each have exactly **one** observation in the successful
+>    regime, and it is the **same** observation — the single D→A edge carries the whole
+>    claim for both.
+>
+> **REAL-DATA-05 was the pre-registered replication and returned UNRESOLVED, BY DATA
+> AVAILABILITY.** Of 906 archive products only 2 sit in the required incidence band over
+> shared ground, and both are orientation-incompatible with the incumbents. No image byte
+> was fetched and no registration was run, so **nothing in this note is a new
+> measurement**.
+>
+> **Every number in this report stands unchanged**, and Δincidence remains the attributed
+> cause in the scope D-040 states. What discharges this note is a **replication** — a
+> second, independently selected low-incidence frame that passes against A and fails
+> against B. **EXP-004 is the measured blocker on obtaining one.**
+>
+> Two later measurements bear on this report and neither is folded into it:
+> `scripts/check_solar_geometry.py` (2026-08-29, **not pre-registered**) finds that
+> **Δazimuth does not separate these six edges while Δincidence does**, and that Δphase is
+> collinear with Δincidence to ±2.6° and cannot be separated from it in this near-nadir
+> dataset. `scripts/rederive_recorded_registrations.py` re-derives every number in §10
+> from the tile bytes exactly.
+>
+> **The body below is preserved exactly as written, under integrity rule 3** — the same
+> discipline E-032 applied: the claim is corrected in the ledger and in this banner, and
+> the report is not rewritten to look better than it was.
+
 **Stage ID:** REAL-DATA-04
 **Name:** Break the Δincidence / frame-identity confound with one more real frame
 **Status:** **COMPLETE — the experiment is valid. D↔A SUCCEEDS, D↔B FAILS. Illumination strongly supported; frame identity refuted.**

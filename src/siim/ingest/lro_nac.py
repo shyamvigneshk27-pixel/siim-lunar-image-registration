@@ -334,12 +334,28 @@ def footprint_overlap(a_wkt: str | None, b_wkt: str | None, *, grid: int = 220) 
     return float((ina & inb).sum() / union) if union else 0.0
 
 
+#: Incidence ceiling for a usable frame (D-029). Above this a NAC frame is at
+#: or near the terminator and carries almost no signal: the REAL-DATA-01
+#: terminator frame measured DN median **29 +/- 20** with a lag-1
+#: autocorrelation of **0.355**, against 0.976 for the usable frame on the same
+#: ground. Selecting on maximum incidence *difference* alone drives the choice
+#: straight to that frame, which is exactly what happened (E-024), and the
+#: resulting "illumination" pair was really a signal-starvation pair.
+#:
+#: 75 deg is a **provisional cut, not a measured threshold**, and is recorded as
+#: such in D-029. It sits above every frame this project has successfully used
+#: (max 69.76 deg) and below the 89.96 deg frame that failed, so it separates
+#: the observed cases without having been fitted to them.
+MAX_USABLE_INCIDENCE_DEG: float = 75.0
+
+
 def find_illumination_pairs(
     products: list[NacProduct],
     *,
     min_incidence_delta_deg: float = 15.0,
     min_footprint_overlap: float = 0.20,
     max_resolution_ratio: float = 1.5,
+    max_incidence_deg: float = MAX_USABLE_INCIDENCE_DEG,
 ) -> list[tuple[NacProduct, NacProduct, dict]]:
     """Candidate pairs of the same ground area under different illumination.
 
@@ -354,6 +370,25 @@ def find_illumination_pairs(
     ``NacProduct.sub_solar_azimuth_proxy``). Until that is done, an
     incidence-selected pair is an *illumination-varied* pair, not a
     *azimuth-varied* one, and must not be described as the latter.
+
+    Parameters
+    ----------
+    max_incidence_deg
+        **The ceiling of D-029, implemented here.** A difference-only criterion
+        is unbounded above, so it maximises its objective by walking to the
+        terminator -- and a frame with no signal is not an illumination
+        condition, it is an absence of data. REAL-DATA-01 paid for this
+        (E-024): its selected "best" pair contained an 89.96 deg frame whose
+        tile failed the sanity gate on data quality. D-029 was recorded then
+        and, until now, was *recorded and not implemented* -- so the selector
+        that produced the failure was still capable of producing it. Set to
+        ``float("inf")`` to restore the pre-D-029 behaviour, which is what
+        REAL-DATA-01 ran under.
+
+        This changes **no recorded artefact**: REAL-DATA-03, -04 and -05 all
+        acquired frames by geometry-driven screening
+        (``screen_frame_d.py`` / ``screen_frame_e.py``), which never called
+        this function.
     """
     out = []
     for i in range(len(products)):
@@ -361,6 +396,8 @@ def find_illumination_pairs(
             a, b = products[i], products[j]
             if None in (a.incidence_deg, b.incidence_deg):
                 continue
+            if max(a.incidence_deg, b.incidence_deg) > max_incidence_deg:
+                continue  # D-029: at least one frame is at the terminator
             d_inc = abs(a.incidence_deg - b.incidence_deg)
             if d_inc < min_incidence_delta_deg:
                 continue

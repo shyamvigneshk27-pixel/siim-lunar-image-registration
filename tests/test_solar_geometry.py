@@ -135,6 +135,8 @@ def _frames_and_edges():
                 "recomputed": g.incidence_deg,
                 "ground_az": g.azimuth_deg,
                 "archive_az": float(f["SUB_SOLAR_AZIMUTH"]),
+                "phase": float(f["PHASE_ANGLE"]),
+                "emission": float(f["EMISSION_ANGLE"]),
             }
         reg = json.loads((EXPERIMENTS / reg_rel).read_text(encoding="utf-8"))
         for e in reg["edges"]:
@@ -144,6 +146,7 @@ def _frames_and_edges():
                 "stage": stage, "edge": e["edge"],
                 "d_inc": abs(a["published"] - b["published"]),
                 "d_az": angular_difference_deg(a["ground_az"], b["ground_az"]),
+                "d_phase": abs(a["phase"] - b["phase"]),
                 "n_inliers": e["n_inliers"],
                 "outcome": "FAIL" if e["n_inliers_failure_flag"] else "SUCCEED",
             })
@@ -247,3 +250,55 @@ class TestConfoundCheckOnRealFrames:
             expected = "FAIL" if e["n_inliers"] <= 8 else "SUCCEED"
             assert e["outcome"] == expected, (
                 f"{e['edge']}: recorded flag disagrees with D-023's rule")
+
+
+class TestPhaseIncidenceCollinearity:
+    """Phase and incidence cannot be separated by this dataset, and that is a
+    limitation the project must state rather than be told.
+
+    Lunar regolith photometry is **phase-driven** -- the opposition surge and
+    the Hapke backscatter lobe are functions of phase angle, not incidence --
+    so an ISRO photometry reviewer's natural variable is phase, not incidence.
+    Because every frame here is near-nadir, phase = incidence + emission to
+    first order and the two are collinear. D-040's attributed variable is
+    therefore correctly *labelled* incidence but is not *demonstrated* to be
+    incidence rather than phase.
+    """
+
+    def test_every_frame_is_near_nadir(self):
+        """The premise of the collinearity: emission is negligible."""
+        frames, _ = _frames_and_edges()
+        assert max(v["emission"] for v in frames.values()) < 5.0
+
+    def test_delta_phase_and_delta_incidence_are_collinear(self):
+        _, edges = _frames_and_edges()
+        gap = max(abs(e["d_phase"] - e["d_inc"]) for e in edges)
+        assert gap < 3.0, (
+            f"dPhase and dIncidence now differ by up to {gap:.2f} deg; if that "
+            "is real the two are becoming separable and D-040's scope can be "
+            "sharpened -- do not relax this test, replace it")
+
+    def test_delta_phase_separates_the_outcomes_for_the_same_arithmetic_reason(self):
+        """Phase 'works' only because it is incidence in disguise here.
+
+        Recorded so that a future reader cannot present dPhase separating the
+        outcomes as independent corroboration of the illumination finding. It
+        is the same measurement twice.
+        """
+        _, edges = _frames_and_edges()
+        hi_s = max(e["d_phase"] for e in edges if e["outcome"] == "SUCCEED")
+        lo_f = min(e["d_phase"] for e in edges if e["outcome"] == "FAIL")
+        assert hi_s < lo_f
+        assert hi_s == pytest.approx(12.92, abs=0.05)
+
+    def test_no_off_nadir_frame_exists_to_separate_them(self):
+        """The measurement that would break the collinearity, and its absence.
+
+        Separating phase from incidence needs a frame at appreciable emission
+        over the same ground. None exists here, so the debt is real and open.
+        """
+        frames, _ = _frames_and_edges()
+        off_nadir = [k for k, v in frames.items() if v["emission"] > 10.0]
+        assert not off_nadir, (
+            "an off-nadir frame is now available; phase and incidence can be "
+            "separated and REAL-DATA-04's scope should be revisited")

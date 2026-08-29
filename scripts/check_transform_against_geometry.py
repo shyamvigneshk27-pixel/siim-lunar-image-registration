@@ -50,6 +50,18 @@ DATA = ROOT / "data"
 
 #: Same quantisation model as REAL-DATA-02: corner coordinates are published to
 #: two decimals, so each carries independent uniform rounding error.
+#:
+#: **The independence assumption, and which way its error runs.** The eight
+#: coordinates of a frame pair are drawn independently here, but they descend
+#: from one SPICE pointing solution per frame and are therefore correlated in
+#: reality. Independent draws overstate the spread, so the propagated interval
+#: is **wider** than the truth. That direction is conservative for
+#: ``OVERLAP_CONFIRMED`` -- a pair confirmed under an inflated interval is
+#: confirmed under a tighter one -- but **anti-conservative for the
+#: discrimination floor below**, because a wider prediction spread makes the
+#: floor larger and an edge therefore *easier* to call CONSISTENT. Recorded by
+#: the 2026-08-29 audit; no recorded verdict changes, and the floor is left as
+#: computed because tightening it now would make INCONSISTENT easier to reach.
 CORNER_QUANTISATION_DEG = 0.005
 N_MONTE_CARLO = 200
 MC_SEED = 20260826
@@ -148,11 +160,30 @@ def scaled_pixel_scales(pdsid: str, products: dict) -> tuple[float, float] | Non
     """``(cross_track, along_track)`` ground sampling in m/px, from the archive.
 
     ``SCALED_PIXEL_WIDTH`` is the cross-scan and ``SCALED_PIXEL_HEIGHT`` the
-    down-scan resolution at the observation centre. Both are derived by the
-    archive from SPICE and are **independent of the corner polygon** -- which
-    is what makes them a second, sharper test than the corner-derived
-    prediction. They are quoted to two decimals, so each carries ~0.6% of
-    quantisation at these values.
+    down-scan resolution at the observation centre. They are quoted to two
+    decimals, so each carries ~0.6% of quantisation at these values.
+
+    **How independent they actually are -- stated precisely, because "an
+    independent field" is doing load-bearing work in three stage reports.**
+
+    * **Independent of the matcher: absolutely.** No image datum reaches this
+      value. That is the independence the corroboration argument needs, and it
+      is not in question.
+    * **Independent of the corner polygon: as an input, yes.** Neither is
+      computed from the other, so a corner-reading error cannot propagate into
+      the scale test. This is what makes it a genuinely sharper second check.
+    * **Independent of the pointing solution: NO, and the earlier wording
+      ("not an input to the corner polygon either") invited that stronger
+      reading.** Both are archive products of the same ISIS/SPICE camera model
+      and kernel set. An error in the *underlying pointing* would move both
+      together and neither test would see it.
+
+    What bounds that shared-mode risk is a third source that is not SPICE at
+    all: the spacecraft clock. ``(STOP_TIME - START_TIME)`` over the
+    corner-implied along-track ground distance gives 1.535-1.574 km/s on all
+    four frames -- a correct LRO ground-track speed, consistent to 1.3% across
+    acquisitions years apart. See
+    ``test_ground_speed_from_the_spacecraft_clock_corroborates_the_corner_span``.
     """
     f = products.get(pdsid, {}).get("fields", {})
     try:

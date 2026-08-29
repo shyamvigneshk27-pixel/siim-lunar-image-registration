@@ -66,6 +66,39 @@ In the demo itself, each real case's provenance panel lists the exact repo-relat
 path of every file its numbers were read from, alongside the byte ranges and
 SHA-256 of the archive imagery. Open any of them and check.
 
+### The strongest version of that check: re-derive the numbers from the pixels
+
+Every mechanism above compares **a recorded number against another recorded
+number**. A sufficiently careful hand-edit would survive all three. Re-running
+the pipeline would not.
+
+```bash
+python scripts/rederive_recorded_registrations.py
+```
+
+This loads the archive tile bytes, applies each stage's preprocessing, runs the
+**unmodified** baseline, and compares **54 quantities** against the recorded
+artefacts — keypoint counts, putative counts, inliers, inlier ratio, fit RMSE,
+both coverage metrics and the full 3×3 transform matrix, for all six real edges
+of REAL-DATA-03 and REAL-DATA-04. It exits non-zero on any disagreement, and the
+baseline configuration is read **out of each artefact** rather than hard-coded,
+so it cannot pass by checking a configuration nobody ran.
+
+Current result: **all 54 re-derive exactly** — including `4.138e-13 px`,
+`1.885e-13 px`, and every transform matrix to `max|Δ| = 0`.
+
+It needs the decoded tiles, which are gitignored (~166 MB, re-fetchable by the
+byte ranges and SHA-256 in `data/manifests/`). Without them it exits **2** —
+*cannot check* — which is deliberately a different answer from **1**, *checked
+and wrong*. `tests/test_rederivation.py` runs it when the tiles are present and
+**skips** otherwise, reporting the skip as "cannot check", never as a pass.
+
+**What a pass establishes:** the recorded numbers are genuine pipeline output.
+**What it does not:** that any registration is *correct*. The B→D edge
+reproduces its `1.885e-13 px` fit residual to every digit while being
+independently measured hundreds of pixels wrong. Reproducing a wrong answer
+exactly is still a wrong answer — which is the entire point of this project.
+
 ## What is honestly claimed, and what is not
 
 | | |
@@ -76,7 +109,14 @@ SHA-256 of the archive imagery. Open any of them and check.
 | **NOT proven: illumination as *the* cause** | Frame identity is **substantially weakened, not conclusively refuted** — see D-040-N1. The replication (REAL-DATA-05) returned **UNRESOLVED** |
 | **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication. **No multi-modal claim is supported anywhere in this repository** |
 | **NO ground truth on real imagery** | None exists for these products. A succeeding real edge is *corroborated*, never verified |
-| **NO Sun-azimuth claim** | Every real result is illumination-varied by **incidence only** |
+| **Δazimuth measured, and it does NOT explain the outcomes** | `[MEASURED]` `scripts/check_solar_geometry.py` — ground solar azimuth computed from the archive's sub-solar point. **Δincidence separates all six edges (11.73° → 38.85°); Δazimuth does not** (the strongest success sits at Δaz 50.29°, above three of four failures). **Not pre-registered** — run after the fact as a confound check |
+| **Δphase and Δincidence are NOT separable here** | Every frame is near-nadir (emission ≤ 1.75°), so phase = incidence + emission and the two deltas agree to **2.56°**. Lunar photometry is **phase**-driven, so *incidence* is our **label** for the variable, not a demonstrated mechanism. Separating them needs an off-nadir frame we do not have |
+| **NO sub-pixel accuracy on real imagery** | The PS's headline accuracy requirement. Sub-pixel is shown **only against synthetic ground truth under fixed illumination** (0.009–0.386 px, EXP-001). `check_transform_against_geometry.py` states in its own output that it *"certifies NO accuracy, and in particular NO sub-pixel accuracy."* **No sub-pixel refinement stage is implemented** |
+| **NO registered product, NO exported match points** | Two named PS deliverables. `geometry/resample.warp` exists and is tested; it has never been applied to a real pair, and no correspondence list is exported in ground coordinates |
+| **Scale: 4× on mare, 8× on highlands — the PS implies 320:1** | `[MEASURED]` `experiments/EXP-001/scale_limit_probe.json`. **Every** failure beyond those ratios is **detector starvation**, not descriptor failure — mare yields *literally zero* SIFT keypoints at 128², which is D-026's texture poverty in its sharpest form. The fix is normalising to a common GSD before matching (D-005): **designed, not implemented**, and untestable here because no cross-modal data exists |
+| **The pipeline runs on tiles, not full frames** | `[MEASURED]` matching is O(keypoints²): 0.18 s at 0.26 Mpx, 5.68 s at 1.05 Mpx. A full 264 Mpx NAC frame extrapolates to ~100 h/edge and ~2 GB of descriptors. Every real result used 2048×1024 decimated tiles (4.5–10.1 s). Tiling is what the geometry layer is built for; **the tiling driver is not written** |
+| **NOT established: that the synthetic illumination model predicts real behaviour** | The two disagree, in both directions, and we state it rather than wait to be told. EXP-001 measured Δelevation −30° (≈ Δincidence 30°) as **survivable** — 49 inliers, 0.81 px — where real Δincidence 38.85° gives **4**. EXP-003 put the Δazimuth cliff at **21–27°** on A-regimes, where real edge D→A succeeds with **1656** inliers at Δaz **50.29°**. *(That real edge also has small Δincidence, so it is not a controlled azimuth test — but the synthetic model offers no mechanism by which small Δincidence rescues large Δazimuth.)* Likely causes, none measured: Lambertian shading with cast shadows omits the Hapke backscatter and opposition surge that dominate real regolith; the synthetic scene is highlands where the real data is mare; the synthetic sweep never reaches the 70° incidence regime of frames B and C. **EXP-001/002/003 remain internally valid; their external validity to lunar imagery is unsupported** |
+| **NO Sun-azimuth *invariance* claim** | Every real result is illumination-varied by **incidence** (see the two rows above for what that does and does not mean) |
 
 The project is named for Sun-angle invariance, and the honest position is that **we measured
 the classical baseline and it is not Sun-angle invariant**. That measurement — on real archive
@@ -201,7 +241,10 @@ Everything below re-derives results that are already recorded under `experiments
 
 ```bash
 python -m pip install -e ".[dev,viz,experiments]"
-python -m pytest tests/ -q            # 559 passed, 2 skipped
+python -m pytest tests/ -q            # 583 passed, 2 skipped
+                                      # (4 skipped on a fresh clone: the two
+                                      #  re-derivation tests report CANNOT CHECK
+                                      #  until the gitignored tiles are fetched)
 ```
 
 Every real-data number is a function of the OpenCV SIFT build, so the exact
