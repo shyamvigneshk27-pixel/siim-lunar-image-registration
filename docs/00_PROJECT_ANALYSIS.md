@@ -59,6 +59,40 @@ IIRS covers **800–5000 nm in ~256 contiguous bands at 80 m GSD** `[FACT]`. Bey
 
 **Design consequence:** IIRS must not be treated as "one image". We select the sub-1.5 µm reflectance-dominated bands (or synthesise a panchromatic from them) as the matching channel, and say so openly. Feeding a full IIRS cube to a generic learned matcher is the mistake that looks sophisticated and fails.
 
+> ## ⚠ B2's DESIGN CONSEQUENCE IS SUPERSEDED — 2026-08-24, by EXP-003 / ADR-0004
+>
+> **The physics below is unaffected. The prescription is withdrawn.**
+>
+> B2 concludes that *"the illumination-robust representation **must be polarity-agnostic** —
+> gradient orientation modulo π, or phase congruency."* **EXP-003 tested exactly that and
+> refuted it**, and **ADR-0004**, which encoded this prescription, is `SUPERSEDED`:
+>
+> * **mod-π was the worst of the six arms.** Head-to-head against an otherwise-identical 2π
+>   descriptor on **identical keypoints**, it **wins 0, loses 38, ties 61**. Last
+>   fully-successful Δazimuth **0°** on mare against the raw-intensity baseline's 21°.
+> * **Phase congruency did not rescue it.** Contrast- and polarity-invariant *by
+>   construction* — verified to 1e-6 and exactly 0.0 — and still bounded at 27–30° on the
+>   A-regimes; **void on mare**, where both PC arms failed the Δaz = 0 positive control.
+> * **Raw intensity won.** No arm met the pre-registered bar S1.
+> * **The mechanism B2 missed:** shadow *movement* changes **which structures exist**, not
+>   merely their contrast or polarity — which is why a polarity-agnostic representation
+>   cannot repair it. The post-hoc probe found SIFT's assigned **dominant orientation**
+>   drifting ~1:1 with Sun azimuth, so the failure is orientation **assignment**, not
+>   orientation **binning**. That is held as **D-024**, a *pre-registration target for
+>   EXP-004* — **not an accepted decision**, because it is post-hoc, single-stage, synthetic
+>   and confounded with the custom descriptor. **EXP-004 is not started.**
+>
+> **Why this banner exists here and not only in the ADR register.** `README.md` declares:
+> *"The design documents are normative. Code that contradicts them is a bug."* A normative
+> document that still prescribes a refuted method would make correct code look like a
+> defect. Recorded here, at the section, for the same reason E-032 was recorded against the
+> claim rather than against the code.
+>
+> **The section body below is preserved exactly as written**, under the working rule that a
+> record is never rewritten to make a result look better. See `architecture_decisions.md`
+> ADR-0004, `stages/EXP-003_illumination_robust_representations.md`, and D-024 in
+> `stages/DECISION_LEDGER.md`.
+
 ### B2 — Illumination variation with shadow reversal `[FACT]`
 
 This is not merely a contrast change. When Sun azimuth differs by ~180°, the illuminated and shadowed walls of every crater **swap**, and the intensity gradient across a rim **reverses sign**.

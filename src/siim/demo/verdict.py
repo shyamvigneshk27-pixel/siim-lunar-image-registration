@@ -61,6 +61,29 @@ declare they applied unchanged, and would retroactively alter what those stages
 were evaluated under. The correct place for a new check is a new diagnostic
 reported beside the verdict, not inside it.
 
+A per-image gauge error reaches VERIFIED / high
+-----------------------------------------------
+This is the consequence, at the level of this engine, of the null space recorded
+in ADR-0011 note N1: loop closure is *exactly* invariant to any error belonging
+to an **image** rather than to an **edge**, because the per-image terms cancel
+around the composition. Measured, end to end through :func:`assess`: 400
+well-spread inliers and a transform **64 px wrong**, with loop closure returning
+**0.0** because the error cancels, come back **VERIFIED / high** at a coverage
+gap of 0.082, and **VERIFIED / moderate** at 0.541. Every signal this engine
+consults is satisfied, and the answer is still wrong.
+
+The realistic instances are ordinary photogrammetry and ordinary software:
+per-frame interior orientation, line-scan jitter, and an uncorrected per-image
+resampling convention -- E-001's shape, and the class of defect behind E-025 and
+E-030, both of which this project actually committed. Detecting it **requires
+evidence from outside the loop**, and ``scripts/check_transform_against_geometry.py``
+is such evidence precisely because it is **per-image by construction**: it
+predicts pixel-to-pixel correspondence from each frame's own archive corners, so
+a gauge attached to one image moves its prediction rather than cancelling.
+
+This is recorded as a **limitation, not a defect to be patched** -- the paragraph
+above applies unchanged.
+
 Confidence is therefore an ordinal band backed by named evidence, not a
 probability. A number like 0.97 would imply a calibration this project has not
 earned, and §12 forbids inventing one.
