@@ -250,3 +250,56 @@ def test_the_paths_named_are_the_ones_the_steps_actually_cite():
                   d["corroboration"]["source"]):
         assert cited in advertised, (
             f"step cites {cited!r} but the provenance panel does not list it")
+
+
+# ---------------------------------------------------------------------------
+# Anti-hardcoding: every judge-visible number must MOVE when its artefact moves
+# ---------------------------------------------------------------------------
+#
+# Found by audit, not by a crash. The demo's contract is that every scientific
+# number it displays is read from a recorded artefact. ``verdict_note`` quoted
+# the triplet's loop residual as a typed literal, so editing the artefact left
+# the displayed sentence unchanged -- the one place in this module where the
+# "how do I know you didn't hard-code it?" test would have failed. The residual
+# is now formatted from the artefact, and these tests pin that.
+
+
+def _loop_artefact_path(scenario: str):
+    return ev.EXPERIMENTS / ev.REAL_SCENARIOS[scenario]["loop_artefact"]
+
+
+@pytest.mark.parametrize("scenario",
+                         ["real_da_success", "real_bd_failure", "real_ab_control"])
+def test_verdict_note_loop_residual_is_read_from_the_artefact(scenario):
+    """The residual quoted in prose is the one recorded on disk."""
+    recorded = json.loads(
+        _loop_artefact_path(scenario).read_text(encoding="utf-8"))
+    d = ev.build_real_scenario(scenario)
+    assert f"{recorded['loop_closure_residual_px']:.2f} px" in d["verdict_note"]
+    assert recorded["stage"] in d["verdict_note"]
+
+
+def test_a_changed_loop_residual_changes_the_displayed_sentence():
+    """Mutating the artefact must move the prose, not only the metrics.
+
+    This is the hostile-judge test stated directly: edit the recorded file,
+    and the page must say something different. A literal in a format string
+    survives this; a value read from the artefact cannot. Patched at the
+    cached loader so no file on disk is touched.
+    """
+    scenario = "real_da_success"
+    rel = ev.REAL_SCENARIOS[scenario]["loop_artefact"]
+    real = ev._loop(rel)
+    before = ev.build_real_scenario(scenario)["verdict_note"]
+    assert f"{real['loop_closure_residual_px']:.2f} px" in before
+
+    mutated = dict(real, loop_closure_residual_px=12.34)
+    with mock.patch.object(ev, "_loop",
+                           side_effect=lambda r: mutated if r == rel
+                           else ev._loop(r)):
+        after = ev.build_real_scenario(scenario)["verdict_note"]
+
+    assert after != before, (
+        "the displayed sentence did not change when the recorded loop "
+        "residual changed -- the number is hard-coded")
+    assert "12.34 px" in after

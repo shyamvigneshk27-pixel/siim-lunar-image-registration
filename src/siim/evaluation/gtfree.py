@@ -204,6 +204,38 @@ def loop_closure(
     ANALYSIS §B6: a shift of one crater period on each edge accumulates to
     three periods around the loop, instead of cancelling as it does under a
     simple forward/backward cycle.
+
+    **The exact null space, stated because it is an identity and not a risk.**
+    Loop closure is *exactly* invariant to any error that belongs to an
+    **image** rather than to an **edge**. Give every image ``i`` an arbitrary
+    coordinate gauge ``G_i`` and estimate every edge in those gauged frames:
+
+    .. code-block:: text
+
+        T̂_AB = G_B ∘ T_AB ∘ G_A⁻¹      T̂_BC = G_C ∘ T_BC ∘ G_B⁻¹
+        T̂_CA = G_A ∘ T_CA ∘ G_C⁻¹
+
+        T̂_CA ∘ T̂_BC ∘ T̂_AB  =  T_CA ∘ T_BC ∘ T_AB  =  I
+
+    Every adjacent ``G⁻¹ ∘ G`` cancels, so the residual is zero **however
+    wrong each individual edge is**. Loop closure therefore verifies a
+    transform set only up to per-image gauge -- it constrains the *quotient*,
+    not the transforms themselves.
+
+    What lives in that null space is not exotic. It is per-frame interior
+    orientation, line-scan jitter, attitude drift within a frame, an
+    uncorrected per-image resampling convention (E-001's shape), and any
+    geometric distortion that is a property of one image and is therefore
+    absorbed identically into every edge that image appears in.
+
+    This does **not** weaken any recorded result: EXP-002's 1.000 / 0.000
+    measurement injected *independent per-edge* shifts, which is the detectable
+    subspace, and REAL-DATA-03 / -04 both ran loops with broken legs and
+    correctly returned large residuals. It bounds the *claim*: the defensible
+    statement is **"loop closure detects per-edge errors, and cannot see
+    per-image ones"**, not "loop closure detects a coherent wrong solution".
+    ``test_loop_closure_is_blind_to_a_per_image_gauge`` pins it, in the same
+    shape as :func:`cycle_consistency`'s blind-spot test (E-012).
     """
     if any(t is None for t in transforms):
         return float("inf")

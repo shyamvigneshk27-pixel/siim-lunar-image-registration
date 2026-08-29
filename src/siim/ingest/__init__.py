@@ -29,6 +29,12 @@ from .footprint import (
     overlap_metrics,
     polygon_area_km2,
 )
+from .solar_geometry import (
+    SolarGeometry,
+    angular_difference_deg,
+    incidence_agreement,
+    solar_geometry_at,
+)
 from .index_table import (
     IndexRowNotFound,
     IndexTableSpec,
@@ -87,4 +93,11 @@ __all__ = [
     "IndexRowNotFound",
     "parse_index_label",
     "find_row_by_product_id",
+    # Pre-freeze audit (2026-08-29): illumination geometry at a ground point,
+    # for the Dazimuth confound check on D-040. Not pre-registered; applied
+    # after the decision, and may not change one.
+    "SolarGeometry",
+    "solar_geometry_at",
+    "angular_difference_deg",
+    "incidence_agreement",
 ]

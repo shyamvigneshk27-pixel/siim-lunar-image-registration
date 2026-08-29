@@ -201,8 +201,14 @@ Everything below re-derives results that are already recorded under `experiments
 
 ```bash
 python -m pip install -e ".[dev,viz,experiments]"
-python -m pytest tests/ -q            # 497 passed, 2 skipped
+python -m pytest tests/ -q            # 559 passed, 2 skipped
 ```
+
+Every real-data number is a function of the OpenCV SIFT build, so the exact
+environment that produced the recorded artefacts is written down in
+[`requirements-frozen.txt`](requirements-frozen.txt) — a record, not a
+lockfile. `pip install -e` above remains the documented install; use the frozen
+file only to reproduce the artefacts bit-for-bit.
 
 **Offline** — synthetic experiments, no network:
 

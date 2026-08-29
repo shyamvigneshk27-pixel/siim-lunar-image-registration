@@ -23,11 +23,15 @@ The per-edge verdict is produced by the **unmodified** :func:`siim.demo.verdict.
 on the recorded evidence. Two consequences are deliberate and are surfaced
 rather than smoothed:
 
-* ``loop_error_px`` is passed as ``None`` for a real edge. The REAL-DATA-04
-  loop residual (943.75 px) belongs to the **triplet**, not to any one edge,
-  and two of that triplet's three legs failed -- so attributing it to the
-  succeeding edge would be false. The verdict therefore says the decisive check
-  was not run.
+* ``loop_error_px`` is passed as ``None`` for a real edge. The recorded loop
+  residual belongs to the **triplet**, not to any one edge, and two of that
+  triplet's three legs failed -- so attributing it to the succeeding edge would
+  be false. The verdict therefore says the decisive check was not run. The
+  residual and the stage name quoted in ``verdict_note`` are **read from the
+  loop-closure artefact**, not typed: an audit found them to be the only
+  judge-visible numbers in this module that a change to the artefact would not
+  have moved, and ``test_verdict_note_loop_residual_is_read_from_the_artefact``
+  now pins that.
 * Because of that, the succeeding real edge comes back **INCONCLUSIVE**, not
   VERIFIED. That is the correct answer and it is REAL-DATA-04 §15 Q3's
   ("corroborated, not verified... Class B"). It is not softened here, and the
@@ -510,11 +514,12 @@ def build_real_scenario(scenario: str) -> dict[str, Any]:
         "verdict": v.as_dict(),
         "verdict_note": (
             "Produced by the unmodified verdict engine on the recorded "
-            "evidence. loop_error_px is passed as None: the REAL-DATA-04 loop "
-            "residual (943.75 px) belongs to the three-image triplet, two of "
-            "whose legs failed, so attributing it to this single edge would be "
-            "false. The strongest available check therefore did not run, and "
-            "the verdict says so instead of assuming a pass."),
+            f"evidence. loop_error_px is passed as None: the {loop_doc['stage']} "
+            f"loop residual ({loop_doc['loop_closure_residual_px']:.2f} px) "
+            "belongs to the three-image triplet, two of whose legs failed, so "
+            "attributing it to this single edge would be false. The strongest "
+            "available check therefore did not run, and the verdict says so "
+            "instead of assuming a pass."),
         # Always None here, and that is a statement rather than a default: for a
         # recorded edge the loop residual is deliberately withheld (see
         # verdict_note above), never failed. The key exists so the response

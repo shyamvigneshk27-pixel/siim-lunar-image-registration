@@ -1,0 +1,34 @@
+# Environment that produced the recorded results under experiments/.
+#
+# WHY THIS FILE EXISTS. Every real-data number in this repository is a function
+# of the OpenCV SIFT implementation, and scripts/build_demo_assets.py refuses to
+# write unless a re-run reproduces the recorded statistics exactly. Before the
+# 2026-08-29 pre-freeze audit nothing anywhere recorded which library versions
+# produced them, so "reproducible" could not be checked -- only asserted.
+#
+# This is a RECORD, not a lockfile. `pip install -e ".[dev]"` remains the
+# documented install and resolves compatible versions; use this file only to
+# reproduce the recorded artefacts bit-for-bit.
+#
+#   python -m pip install -r requirements-frozen.txt
+#
+# Captured CPython 3.13.7 on Windows 11.
+# cv2.__version__ == 5.0.0
+#
+# NOTE: the producing environment has opencv-contrib-python installed while
+# pyproject.toml declares opencv-python. SIFT lives in the main module for
+# OpenCV >= 4.4, both are built from the same upstream 5.0.0 source, and a
+# clean `pip install -e ".[dev]"` into an empty venv was verified during the
+# audit to resolve opencv-python of the same version and pass all tests.
+fastapi==0.128.4
+httpx==0.28.1
+matplotlib==3.10.8
+numpy==2.3.3
+opencv-contrib-python==5.0.0.93
+pillow==12.0.0
+pydantic==2.11.10
+pytest==9.0.2
+requests==2.32.5
+scikit-learn==1.8.0
+scipy==1.16.2
+uvicorn==0.40.0

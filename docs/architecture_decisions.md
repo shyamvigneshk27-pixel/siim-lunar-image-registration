@@ -260,6 +260,16 @@ A prior artefact was also caught: in objective 3 these estimators appeared to sc
 
 **Status:** `ACCEPTED` (2026-08-24, EXP-002) for the mathematics. Real-data frequency remains open.
 
+> **Scope note N1 (2026-08-29, pre-freeze audit) — a bound on the claim, not a change to any measurement.** Every number above stands. What is corrected is the *breadth* of the sentence "loop closure detects a coherent wrong solution".
+>
+> Loop closure is **exactly invariant to any per-image coordinate gauge**. For arbitrary `G_i` attached to each image, `T̂_ij = G_j ∘ T_ij ∘ G_i⁻¹` composes around the loop as `T̂_CA ∘ T̂_BC ∘ T̂_AB = T_CA ∘ T_BC ∘ T_AB`: every adjacent `G⁻¹ ∘ G` cancels, so the residual is **zero however wrong each edge is**. This is an algebraic identity, not an empirical possibility, and it was previously recorded only obliquely, as this ADR's reversal condition (*"per-edge errors correlated in a way that cancels around a loop"*).
+>
+> **What that null space contains:** per-frame interior orientation, line-scan jitter, attitude drift within a frame, an uncorrected per-image resampling convention (E-001's shape) — i.e. any distortion owned by an *image* and therefore absorbed identically into every edge that image appears in. These are ordinary photogrammetric error sources, not contrived ones.
+>
+> **Why no recorded result moves.** EXP-002 objective 4 injected *independent per-edge* shifts, which is precisely the detectable subspace, so 1.000 / 0.000 is a correct measurement of what was tested. REAL-DATA-03 (1201.04 px) and REAL-DATA-04 (943.75 px) both ran loops with broken legs and correctly returned large residuals; neither is a false closure. **The reversal condition is not triggered** — a gauge error has never been observed in this project's real data, only shown to be invisible if present.
+>
+> **The defensible statement** is therefore: *loop closure detects **per-edge** error and cannot see **per-image** error; it constrains the transform set only up to per-image gauge.* Pinned by `test_loop_closure_is_blind_to_a_per_image_gauge`, in the same shape as E-012's blind-spot test for cycle consistency. Detecting a gauge error requires evidence outside the loop — the archive-geometry check in `scripts/check_transform_against_geometry.py` is such evidence, and it is per-image by construction.
+
 ---
 
 ## ADR-0012 — Terrain realism is controlled by an explicit slope target anchored to LOLA statistics

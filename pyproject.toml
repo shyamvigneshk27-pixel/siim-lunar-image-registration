@@ -15,7 +15,14 @@ dependencies = [
     "numpy>=2.0",
     "scipy>=1.13",
     "pillow>=10.0",          # siim.demo.api, scripts/build_demo_assets.py
-    "opencv-python>=4.9",    # siim.matching.rootsift -- SIFT/RootSIFT backend
+    # SIFT/RootSIFT backend for siim.matching.rootsift. UPPER-BOUNDED, and the
+    # bound is scientific rather than hygienic: every real-data number in this
+    # repository is a function of this library's SIFT implementation, and
+    # scripts/build_demo_assets.py refuses to write unless a re-run reproduces
+    # the recorded statistics EXACTLY. An unbounded pin therefore lets a future
+    # release silently break the repository's own certification step. The
+    # producing environment is recorded in requirements-frozen.txt.
+    "opencv-python>=4.9,<6",
     "requests>=2.31",        # siim.ingest.lro_nac -- PDS archive byte-range fetch
     # siim.demo is part of the installed package, so its server stack is a
     # runtime dependency rather than an extra. Mirrored in [demo] below.

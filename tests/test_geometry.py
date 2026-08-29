@@ -14,6 +14,7 @@ import numpy as np
 import pytest
 from scipy import ndimage
 
+from siim.geometry.estimate import COLLINEARITY_THRESHOLD
 from siim.geometry import (
     MODEL_ORDER,
     as_points,
@@ -256,6 +257,61 @@ class TestEstimation:
         assert collinearity(line) < 1e-12
         blob = rng.uniform(0, 100, size=(200, 2))
         assert collinearity(blob) > 0.5
+
+    def test_the_collinearity_guard_fires_at_its_declared_threshold(self, rng):
+        """The constant must actually be the boundary it is documented to be.
+
+        Added by the 2026-08-29 audit: a mutation that changed
+        ``COLLINEARITY_THRESHOLD`` from 1e-3 to 1e-12 -- effectively deleting
+        the guard -- was **not caught by any test**. The threshold is a
+        scientific constant (it decides which fits are reported at all), so it
+        gets the same treatment as the other pre-registered constants.
+        """
+        t = np.linspace(0.0, 400.0, 40)
+        for spread, expect_degenerate in ((0.2 * COLLINEARITY_THRESHOLD, True),
+                                          (50.0 * COLLINEARITY_THRESHOLD, False)):
+            src = np.column_stack([t, 200.0 + spread * 400.0 * np.sin(t)])
+            dst = src + np.array([5.0, -2.0])
+            res = estimate(src, dst, "affine")
+            assert res.degenerate is expect_degenerate, (
+                f"collinearity {collinearity(src):.3e} against a threshold of "
+                f"{COLLINEARITY_THRESHOLD:.0e}: degenerate={res.degenerate}, "
+                f"expected {expect_degenerate}")
+
+    def test_a_near_collinear_fit_reports_a_tiny_rmse_while_being_very_wrong(self, rng):
+        """MEASURED: the E-008 trap arising from GEOMETRY, not from texture.
+
+        The project's fit-RMSE result is usually shown on repetitive terrain.
+        It has a second, purely geometric source, and this pins it: a point set
+        whose collinearity sits just ABOVE ``COLLINEARITY_THRESHOLD`` passes the
+        degeneracy guard, fits its own points to a fraction of a pixel, and is
+        badly wrong at any point off the line it was fitted along.
+
+        This makes two things explicit that the docstring in
+        ``siim.geometry.estimate`` only asserts: that 1e-3 is far more
+        permissive than "fires only on real degeneracy" implies, and that the
+        residual is silent about it. The defence is one layer up and is
+        measured in ``test_coverage_rejects_the_near_collinear_fit_the_guard_admits``.
+        """
+        truth = np.array([[1.0, 0.0, 40.0], [0.0, 1.0, 25.0], [0.0, 0.0, 1.0]])
+        t = rng.uniform(40.0, 470.0, 60)
+        src = np.column_stack([t, 256.0 + rng.normal(0.0, 1.0, 60)])
+        dst = (truth @ np.column_stack([src, np.ones(60)]).T).T[:, :2]
+        dst = dst + rng.normal(0.0, 0.3, dst.shape)
+
+        res = estimate(src, dst, "affine")
+        assert res.ok, "the guard admits this configuration -- that is the point"
+        assert collinearity(src) > COLLINEARITY_THRESHOLD
+
+        far = np.array([[250.0, 60.0]])          # off the line the fit saw
+        got = res.transform.apply(far)[0]
+        want = (truth @ np.array([250.0, 60.0, 1.0]))[:2]
+        error_far = float(np.linalg.norm(got - want))
+
+        assert res.rmse < 1.0, "fit residual should look excellent"
+        assert error_far > 3.0, (
+            "the whole point is that a sub-pixel fit residual coexists with a "
+            f"large true error off the fitted line; got {error_far:.2f} px")
 
     def test_noise_degrades_fit_gracefully_without_blowing_up(self, rng):
         truth = random_transform(rng, "affine", (256, 256))

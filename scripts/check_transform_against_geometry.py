@@ -64,11 +64,40 @@ GRID = 9
 #: excess "INCONSISTENT" would be E-024 all over again.
 INCONSISTENT_MARGIN = 3.0
 
-#: Residual of the bilinear ground map, as a fraction of frame extent. Measured
-#: in REAL-DATA-02: corner-implied pixel scale agrees with the archive's
-#: SPICE-derived SCALED_PIXEL_HEIGHT/WIDTH to within 1.2% over 8 comparisons.
-#: Added to the discrimination floor so the floor is not purely a quantisation
-#: figure while the prediction has a second error source.
+#: Residual of the bilinear ground map, as a fraction of the tile diagonal.
+#: The VALUE IS UNCHANGED; only its justification is, and the correction runs
+#: against this constant's own interest -- it says the number is conservative
+#: rather than defending it as tight.
+#:
+#: As originally recorded (REAL-DATA-02 section 6.6a): "corner-implied pixel
+#: scale agrees with SPICE-derived SCALED_PIXEL_HEIGHT/WIDTH to within 1.2%".
+#: The 2026-08-29 pre-freeze audit measured what that 1.2% actually is, and it
+#: is NOT a model residual -- it is the uncertainty of the COMPARISON, and it
+#: is dominated by the corner quantisation that the Monte Carlo already
+#: propagates separately. Quoting it here as a second, independent error source
+#: therefore double-counts quantisation. Measured, over frames A/B/C/D:
+#:
+#:   * corner-implied m/line vs SCALED_PIXEL_HEIGHT: 0.46-1.17% disagreement,
+#:     against a corner-quantisation budget on the same span of 1.38-1.68%.
+#:     The disagreement is entirely inside the quantisation: there is no
+#:     evidence of any along-track model residual at all.
+#:   * the true GEOMETRIC departure of a bilinear map from the curved ground
+#:     track -- the great-circle sagitta over a ~50 km frame -- is 8.4-10.7 m,
+#:     i.e. 9-12 full-resolution px, about 5 px at the 2x decimation used here.
+#:   * an independent corroboration of the along-track corner span, from the
+#:     spacecraft clock rather than from SPICE geometry: (START_TIME,
+#:     STOP_TIME) over the corner-implied ground distance gives 1.535-1.574
+#:     km/s for all four frames -- a correct LRO ground-track speed, consistent
+#:     to 1.3% across acquisitions years apart.
+#:
+#: So the term this constant produces (0.012 x half the tile diagonal =
+#: 13.7 px at 2048x1024) is roughly 3x LARGER than the measured geometric
+#: departure, not smaller. It is retained at its recorded value because every
+#: published verdict was computed with it and a conservative floor can only
+#: make an INCONSISTENT verdict harder to reach, never easier -- lowering it
+#: now would strengthen this project's own claims after the fact, which is
+#: exactly what may not be done. Pinned by
+#: test_bilinear_departure_is_within_the_recorded_model_term.
 BILINEAR_MODEL_RESIDUAL = 0.012
 
 
@@ -197,6 +226,10 @@ def main() -> None:
     ap.add_argument("--model", default="affine")
     ap.add_argument("--downsample", type=int, default=2)
     ap.add_argument("--outdir", default="REAL-DATA-03")
+    ap.add_argument("--stage", default=None,
+                    help="stage id recorded in the report; defaults to "
+                         "--outdir so an artefact cannot record a stage other "
+                         "than the one that wrote it (see E-033)")
     ap.add_argument("--out", default="transform_vs_geometry.json")
     args = ap.parse_args()
 
@@ -359,7 +392,7 @@ def main() -> None:
         print(f"   -> {row['verdict']}\n")
 
     report = {
-        "stage": "REAL-DATA-03",
+        "stage": args.stage or args.outdir,
         "check": "estimated transform vs archive corner geometry",
         "generated_utc": datetime.now(timezone.utc).strftime(
             "%Y-%m-%dT%H:%M:%SZ"),

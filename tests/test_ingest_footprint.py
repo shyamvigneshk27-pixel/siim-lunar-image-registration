@@ -836,3 +836,146 @@ def test_frames_that_overlap_but_cannot_both_hold_a_tile_are_refused():
 def test_shared_tile_target_needs_at_least_one_frame():
     with pytest.raises(ValueError, match="no frames"):
         shared_tile_target([], n_lines=11, n_samples=11)
+
+
+# ---------------------------------------------------------------------------
+# The bilinear ground map's error budget, measured rather than asserted
+# ---------------------------------------------------------------------------
+#
+# Added by the 2026-08-29 pre-freeze audit. REAL-DATA-02 section 11 lists
+# "bilinear model vs true sensor geometry" as a residual bounded at "<= 1.2% of
+# frame extent" and explicitly NOT separately propagated. A reviewer is
+# entitled to ask what that residual actually is, because
+# scripts/check_transform_against_geometry.py turns it into a term of the
+# discrimination floor that decides whether an edge is called INCONSISTENT.
+#
+# These tests measure it from the committed archive corners, on the real
+# frames, so the answer is evidence in the repository rather than a number in
+# a comment. They read no image data and no registration artefact.
+
+import json as _json
+from pathlib import Path as _Path
+
+_MANIFESTS = _Path(__file__).resolve().parents[1] / "data" / "manifests"
+_GEOMETRY_FILES = [
+    "real_pair_index_geometry.json",
+    "real_pair_index_geometry_C.json",
+    "real_frame_d_candidates_index_geometry.json",
+    "real_frame_d_selected_index_geometry.json",
+]
+#: The four frames every real-data conclusion rests on.
+_REAL_FRAMES = ["nac.m1271742202lc", "nac.m1335207975rc",
+                "nac.m1452560468lc", "nac.m1299958135lc"]
+_MOON_R_KM = MOON_RADIUS_KM
+
+
+def _real_fields():
+    out = {}
+    for name in _GEOMETRY_FILES:
+        p = _MANIFESTS / name
+        if p.exists():
+            out.update(_json.loads(p.read_text(encoding="utf-8"))["products"])
+    return {k: v["fields"] for k, v in out.items() if k in _REAL_FRAMES}
+
+
+def _great_circle_km(a, b):
+    (lo1, la1), (lo2, la2) = np.deg2rad(a), np.deg2rad(b)
+    return float(_MOON_R_KM * 2 * np.arcsin(np.sqrt(
+        np.sin((la2 - la1) / 2) ** 2
+        + np.cos(la1) * np.cos(la2) * np.sin((lo2 - lo1) / 2) ** 2)))
+
+
+def test_bilinear_departure_is_within_the_recorded_model_term():
+    """The geometric error of a bilinear map, measured on the real frames.
+
+    A bilinear map is a straight line in (lon, lat) between two named corners;
+    the true ground track is a great circle. The gap between them peaks at
+    mid-frame and is the ONLY genuine shape error the model has, because the
+    map is pinned exactly at both ends. Measured here as the sagitta.
+
+    ``check_transform_against_geometry.BILINEAR_MODEL_RESIDUAL`` produces
+    0.012 x half a 2048x1024 tile diagonal = 13.7 px. This asserts the measured
+    departure is BELOW that, i.e. the recorded floor is conservative. If a
+    future frame breaks this, the floor is no longer conservative and the
+    INCONSISTENT verdicts computed with it must be re-examined -- which is why
+    the assertion is stated in that direction.
+    """
+    fields = _real_fields()
+    assert len(fields) == 4, "the four real frames' corner geometry must be on disk"
+    for pdsid, f in fields.items():
+        ul = (float(f["UPPER_LEFT_LONGITUDE"]), float(f["UPPER_LEFT_LATITUDE"]))
+        ll = (float(f["LOWER_LEFT_LONGITUDE"]), float(f["LOWER_LEFT_LATITUDE"]))
+        # midpoint of the great circle vs the midpoint of the straight line
+        la1, lo1 = np.deg2rad(ul[1]), np.deg2rad(ul[0])
+        la2, lo2 = np.deg2rad(ll[1]), np.deg2rad(ll[0])
+        bx = np.cos(la2) * np.cos(lo2 - lo1)
+        by = np.cos(la2) * np.sin(lo2 - lo1)
+        gc_mid = (np.rad2deg(lo1 + np.arctan2(by, np.cos(la1) + bx)),
+                  np.rad2deg(np.arctan2(np.sin(la1) + np.sin(la2),
+                                        np.hypot(np.cos(la1) + bx, by))))
+        lin_mid = ((ul[0] + ll[0]) / 2, (ul[1] + ll[1]) / 2)
+        sagitta_m = _great_circle_km(gc_mid, lin_mid) * 1000.0
+
+        scale_m_per_line = (_great_circle_km(ul, ll) * 1000.0
+                            / (int(f["IMAGE_LINES"]) - 1))
+        sagitta_px_decimated = sagitta_m / scale_m_per_line / 2.0
+        assert sagitta_px_decimated < 13.7, (
+            f"{pdsid}: bilinear departure is {sagitta_px_decimated:.1f} "
+            "decimated px, at or above the 13.7 px model term the "
+            "discrimination floor uses; the floor is no longer conservative")
+        assert sagitta_m < 15.0, f"{pdsid}: sagitta {sagitta_m:.1f} m"
+
+
+def test_corner_implied_scale_agrees_with_spice_inside_corner_quantisation():
+    """The 1.2% of REAL-DATA-02 section 6.6a is quantisation, not model error.
+
+    Corner-implied metres-per-line is compared against the archive's
+    SPICE-derived SCALED_PIXEL_HEIGHT. The disagreement must sit inside the
+    budget that the +-0.005 deg corner quantisation alone allows on the same
+    span -- which is what makes it evidence of agreement rather than evidence
+    of a residual.
+    """
+    for pdsid, f in _real_fields().items():
+        ul = (float(f["UPPER_LEFT_LONGITUDE"]), float(f["UPPER_LEFT_LATITUDE"]))
+        ll = (float(f["LOWER_LEFT_LONGITUDE"]), float(f["LOWER_LEFT_LATITUDE"]))
+        ur = (float(f["UPPER_RIGHT_LONGITUDE"]), float(f["UPPER_RIGHT_LATITUDE"]))
+        lr = (float(f["LOWER_RIGHT_LONGITUDE"]), float(f["LOWER_RIGHT_LATITUDE"]))
+        span_km = 0.5 * (_great_circle_km(ul, ll) + _great_circle_km(ur, lr))
+        implied = span_km * 1000.0 / (int(f["IMAGE_LINES"]) - 1)
+        spice = float(f["SCALED_PIXEL_HEIGHT"])
+        disagreement = abs(implied / spice - 1.0)
+        # two corners, each quantised at +-0.005 deg, on this span
+        quant_budget = (0.005 * 111.7 * np.sqrt(2)) / span_km
+        assert disagreement <= quant_budget, (
+            f"{pdsid}: corner-implied {implied:.4f} m/line vs SPICE {spice:.2f} "
+            f"is {disagreement*100:.2f}% apart, OUTSIDE the {quant_budget*100:.2f}% "
+            "the corner quantisation allows -- that would be a real model "
+            "residual and REAL-DATA-02 section 11 would need revisiting")
+
+
+def test_ground_speed_from_the_spacecraft_clock_corroborates_the_corner_span():
+    """An independent check on the corners, from timing rather than geometry.
+
+    START_TIME/STOP_TIME come from the spacecraft clock, not from the SPICE
+    pointing solution that produced the corners. Dividing the corner-implied
+    along-track ground distance by the frame duration must give a physically
+    correct LRO ground-track speed. It does, consistently, for frames acquired
+    years apart -- which no plausible corner-reading error would survive.
+    """
+    from datetime import datetime
+    speeds = {}
+    for pdsid, f in _real_fields().items():
+        ul = (float(f["UPPER_LEFT_LONGITUDE"]), float(f["UPPER_LEFT_LATITUDE"]))
+        ll = (float(f["LOWER_LEFT_LONGITUDE"]), float(f["LOWER_LEFT_LATITUDE"]))
+        t0 = datetime.strptime(f["START_TIME"], "%Y-%m-%d %H:%M:%S.%f")
+        t1 = datetime.strptime(f["STOP_TIME"], "%Y-%m-%d %H:%M:%S.%f")
+        speeds[pdsid] = _great_circle_km(ul, ll) / (t1 - t0).total_seconds()
+    for pdsid, v in speeds.items():
+        assert 1.4 < v < 1.8, (
+            f"{pdsid}: corner span over frame duration gives {v:.3f} km/s, "
+            "which is not an LRO ground-track speed -- the corners or the "
+            "line count are being misread")
+    spread = max(speeds.values()) / min(speeds.values()) - 1.0
+    assert spread < 0.05, (
+        f"ground speed varies by {spread*100:.1f}% across frames; the corner "
+        "reading is not consistent between acquisitions")

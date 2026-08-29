@@ -245,6 +245,53 @@ class TestCycleAndLoop:
         wrong = translation(LATTICE, 0.0) @ t_ab
         assert cycle_consistency(wrong, wrong.inverse(), (512, 512)) < 1e-6
 
+    def test_loop_closure_is_blind_to_a_per_image_gauge(self):
+        """MEASURED NULL SPACE: an error owned by an IMAGE, not by an EDGE.
+
+        Loop closure is exactly invariant under ``T_ij -> G_j o T_ij o G_i^-1``
+        for arbitrary per-image gauges ``G_i``: every adjacent ``G^-1 o G``
+        cancels in the composition. So a triplet in which *every* edge is
+        badly wrong still closes to zero, provided the wrongness is a property
+        of the images rather than of the edges.
+
+        This is the counterpart of E-012 for the estimator the project treats
+        as decisive, and it bounds ADR-0011's claim: loop closure detects
+        per-EDGE error (which is what EXP-002 objective 4 injected and
+        measured at 1.000 / 0.000), and cannot see per-IMAGE error -- per-frame
+        interior orientation, line-scan jitter, attitude drift, or E-001's
+        resampling-convention shape.
+
+        Nothing here changes a recorded result. It pins the limitation so it
+        is stated by the repository rather than discovered by a reviewer.
+        """
+        shape = (512, 512)
+        t_ab = similarity(1.02, np.deg2rad(3.0), 9.0, -6.0)
+        t_bc = similarity(0.99, np.deg2rad(-2.0), -5.0, 7.0)
+        t_ca = (t_bc @ t_ab).inverse()
+        assert loop_closure([t_ab, t_bc, t_ca], shape) < 1e-9  # control
+
+        # One image's frame displaced by a full lattice period. Two of the
+        # three edges are now wrong by LATTICE px, and the loop cannot tell.
+        g_b = translation(LATTICE, 0.0)
+        gauged = [g_b @ t_ab, t_bc @ g_b.inverse(), t_ca]
+        assert loop_closure(gauged, shape) < 1e-9
+        moved = np.linalg.norm(
+            (gauged[0].matrix - t_ab.matrix)[:2, 2])
+        assert moved == pytest.approx(LATTICE), (
+            "the gauge must genuinely move the A->B edge, or the test is void")
+
+        # The general case: an independent affine gauge on all three images.
+        rng = np.random.default_rng(20260829)
+        def gauge():
+            m = np.eye(3)
+            m[:2, :2] += rng.normal(0.0, 0.01, (2, 2))
+            m[:2, 2] = rng.normal(0.0, 25.0, 2)
+            return affine(m[:2, :])
+        g_a, g_b, g_c = gauge(), gauge(), gauge()
+        assert loop_closure([g_b @ t_ab @ g_a.inverse(),
+                             g_c @ t_bc @ g_b.inverse(),
+                             g_a @ t_ca @ g_c.inverse()], shape) < 1e-6
+
     def test_missing_transform_is_maximally_bad(self):
         assert not np.isfinite(cycle_consistency(None, identity(), (64, 64)))
         assert not np.isfinite(loop_closure([identity(), None], (64, 64)))

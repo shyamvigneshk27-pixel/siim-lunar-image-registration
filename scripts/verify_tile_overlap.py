@@ -553,6 +553,15 @@ def main() -> None:
     ap.add_argument("--outdir", default=None,
                     help="output directory under experiments/ (default "
                          "REAL-DATA-02, where this analysis originated)")
+    ap.add_argument("--stage", default=None,
+                    help="stage id recorded in the report. Defaults to the "
+                         "output directory, so an artefact written into "
+                         "experiments/REAL-DATA-04/ records REAL-DATA-04. The "
+                         "2026-08-29 audit found four artefacts carrying the "
+                         "stage of this script's DEFAULT rather than of the "
+                         "run that produced them; the recorded files are left "
+                         "as written (integrity rule 3, E-033) and this is the "
+                         "fix that stops it recurring")
     ap.add_argument("--require-confirmed", action="store_true",
                     help="exit non-zero unless every case is OVERLAP_CONFIRMED. "
                          "This is the gate REAL-DATA-03 runs BEFORE it is "
@@ -723,7 +732,7 @@ def main() -> None:
     figure(shown, frames, OUT / args.figure)
 
     report = {
-        "stage": "REAL-DATA-02",
+        "stage": args.stage or (args.outdir or "REAL-DATA-02"),
         "generated_utc": datetime.now(timezone.utc).strftime(
             "%Y-%m-%dT%H:%M:%SZ"),
         "question": ("Do the tile pairs given to the matcher in REAL-DATA-01 "

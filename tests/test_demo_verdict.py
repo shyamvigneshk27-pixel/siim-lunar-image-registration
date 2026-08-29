@@ -18,12 +18,19 @@ import numpy as np
 import pytest
 
 from siim.demo.verdict import (
+    COVERAGE_GAP_WARN,
     EXCLUDED_FROM_VERDICT,
     INLIER_CUTOFF,
     assess,
 )
 from siim.evaluation.gtfree import loop_closure
-from siim.geometry import affine, anchor_at, image_centre, translation
+from siim.geometry import (
+    affine,
+    anchor_at,
+    estimate,
+    image_centre,
+    translation,
+)
 
 SHAPE = (384, 384)
 
@@ -195,3 +202,74 @@ def test_every_scenario_declares_its_data_source():
 # edges that replaced it -- no ground-truth claim, no synthetic substitution for
 # a missing artefact, and a triplet loop residual never attributed to one edge --
 # and additionally asserts that the retired scenario is no longer offered.
+
+
+# ---------------------------------------------------------------------------
+# The geometric form of the E-008 trap, and the layer that actually stops it
+# ---------------------------------------------------------------------------
+#
+# Added by the 2026-08-29 pre-freeze audit. ``siim.geometry.estimate`` documents
+# COLLINEARITY_THRESHOLD as firing "only on real degeneracy", and
+# tests/test_geometry.py now measures that a configuration just above it is
+# admitted while being badly wrong off the fitted line, at a sub-pixel fit
+# residual. That is the E-008 trap arising from GEOMETRY rather than from
+# repetitive texture, and the estimator does not catch it.
+#
+# The system does. This is where, and it is measured rather than argued, because
+# "coverage bounds worst-case local error" (ADR-0006) had been justified by
+# argument and never by a case it demonstrably rejects. NOTHING here changes a
+# verdict criterion -- COVERAGE_GAP_WARN is pre-registered and untouched.
+
+
+def _near_collinear_case(n=60, jitter=1.0, seed=20260829):
+    """Correspondences strung along one line, with a CORRECT transform fitted."""
+    rng = np.random.default_rng(seed)
+    truth = np.array([[1.0, 0.0, 40.0], [0.0, 1.0, 25.0], [0.0, 0.0, 1.0]])
+    x = rng.uniform(40.0, 470.0, n)
+    src = np.column_stack([x, 256.0 + rng.normal(0.0, jitter, n)])
+    dst = (truth @ np.column_stack([src, np.ones(n)]).T).T[:, :2]
+    dst = dst + rng.normal(0.0, 0.3, dst.shape)
+    return src, dst
+
+
+def test_coverage_rejects_the_near_collinear_fit_the_guard_admits():
+    """A clustered-on-a-line correspondence set must never come back VERIFIED.
+
+    The inlier count is healthy (60, far above the rule of 8) and the fit
+    residual is sub-pixel, so ``n_inliers`` and ``fit_rmse`` both say "fine".
+    Only ``coverage_max_gap`` sees the problem, which is exactly the role
+    ADR-0006 assigns it.
+    """
+    src, dst = _near_collinear_case()
+    res = estimate(src, dst, "affine")
+    assert res.ok and res.rmse < 1.0
+
+    v = assess(transform=res.transform, src_points=src, dst_points=dst,
+               inlier_mask=np.ones(len(src), bool), shape=(512, 512),
+               fit_rmse=res.rmse, loop_error_px=None)
+
+    assert v.metrics["n_inliers"] > INLIER_CUTOFF, "the inlier rule is satisfied"
+    assert v.metrics["coverage_max_gap"] > COVERAGE_GAP_WARN, (
+        "coverage must see the empty half of the image")
+    assert v.status != "VERIFIED", (
+        "a transform constrained only along one line was reported as VERIFIED")
+    gap_evidence = next(e for e in v.evidence if e.name == "coverage_max_gap")
+    assert gap_evidence.verdict == "against"
+
+
+def test_the_same_case_is_still_rejected_when_the_transform_is_badly_wrong():
+    """And when it IS wrong, nothing in the evidence stack calls it good.
+
+    The transform is displaced by 64 px -- E-008's coherent wrong answer --
+    while still fitting its own near-collinear points. fit_rmse stays small and
+    is excluded; coverage still refuses.
+    """
+    src, dst = _near_collinear_case()
+    res = estimate(src, dst, "affine")
+    wrong = translation(64.0, 0.0) @ res.transform
+
+    v = assess(transform=wrong, src_points=src, dst_points=dst,
+               inlier_mask=np.ones(len(src), bool), shape=(512, 512),
+               fit_rmse=res.rmse, loop_error_px=None)
+    assert v.status != "VERIFIED"
+    assert any(e.name == "fit_rmse" and e.weight == "excluded" for e in v.evidence)
