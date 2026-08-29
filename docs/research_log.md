@@ -722,6 +722,29 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 
 ### RL-035 — Illumination, not frame identity: the confound broken, and a rule broken with it
 
+> ## ⚠ SUPERSEDED IN PART — 2026-08-26, by D-040-N1
+>
+> **This entry states below that "frame identity is refuted", and argues for it under a
+> heading. That phrase was withdrawn as too strong.** The current position is:
+>
+> > **frame identity is substantially weakened, NOT conclusively refuted.**
+>
+> Two structural limits, neither a matter of emphasis. **(1)** The refutation is a
+> **cross-stage join, not a within-experiment result** — inside REAL-DATA-04's own triplet
+> {A, B, D}, frame **B** sits in both failing edges and no succeeding one, the same partition
+> that blocked REAL-DATA-03, mirrored from A onto B; only REAL-DATA-03's B→C success breaks
+> it, at a **different ground window**. **(2) n = 1** — frames A and D each have exactly one
+> observation in the successful regime, and it is the **same** observation, the single D→A
+> edge. **REAL-DATA-05 was the pre-registered replication and returned UNRESOLVED, BY DATA
+> AVAILABILITY**, so the replication debt stands and **EXP-004 is the measured blocker on it**.
+>
+> **Every measurement in this entry stands unchanged**, and Δ*incidence* remains the
+> attributed cause in the scope D-040 states. The body below is **preserved exactly as
+> written** under the working rule that a record is never rewritten to make a result look
+> better — the same discipline E-032 applied. See **D-040-N1** in `stages/DECISION_LEDGER.md`,
+> RL-033b and RL-036 in the open-threads table below, and the matching banner on
+> `stages/REAL-DATA-04_illumination_vs_frame_identity.md`.
+
 **Question.** RL-033b: REAL-DATA-03 left illumination as the only surviving candidate cause of real-data registration failure and refused to attribute it, because across three frames *large Δincidence* and *the pairing involves frame A* were **the same partition**. Can they be separated?
 
 **The prediction, written down before the data existed.** *If D↔A succeeds and D↔B fails, illumination is the driver; if the reverse, frame identity is.* Recorded in REAL-DATA-03 §20, D-036 and RL-033b, and restated in REAL-DATA-04 §2 before frame D was screened.
