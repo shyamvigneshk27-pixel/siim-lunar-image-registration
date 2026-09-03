@@ -52,6 +52,7 @@ from typing import Any
 
 import numpy as np
 
+from ..evaluation.significance import exact_separation_test, minimum_additional_edges
 from .verdict import assess
 
 __all__ = [
@@ -698,18 +699,67 @@ def illumination_evidence() -> dict[str, Any]:
     fail = [r["delta_incidence_deg"] for r in rows if r["outcome"] == "FAIL"]
     separated = bool(succeed and fail and max(succeed) < min(fail))
 
+    # A perfect separation over six edges is what chance produces once in
+    # fifteen. Reporting the separation without the p-value overstates it, so
+    # the number is computed from the rows here rather than asserted anywhere.
+    # The direction was fixed in a decision table frozen before frame D was
+    # acquired, which is what makes a one-tailed test admissible.
+    stats = None
+    if succeed and fail:
+        test = exact_separation_test(
+            [r["delta_incidence_deg"] for r in rows],
+            [r["outcome"] == "SUCCEED" for r in rows],
+        )
+        plan = minimum_additional_edges(
+            test.n_low_group, test.n_high_group, target_alpha=0.05
+        )
+        stats = {
+            "p_value_one_tailed": test.p_value,
+            "p_value_is_lower_bound": True,
+            "exact": test.exact,
+            "n_assignments": test.n_assignments,
+            "significant_at_0_05": bool(test.p_value <= 0.05),
+            "statement": (
+                f"Exact one-tailed permutation test over {test.n_total} edges: "
+                f"p = {test.p_value:.4f}"
+                + (
+                    ", which does NOT reach the conventional 0.05."
+                    if test.p_value > 0.05
+                    else "."
+                )
+            ),
+            "caveat": (
+                "The edges share frames, so they are not independent. "
+                "Permuting at the edge level assumes more independence than "
+                "the data has, and this p-value is therefore a LOWER BOUND."
+            ),
+            "to_reach_0_05": (
+                f"One further FAILING edge would give p = {1 / 21:.4f}; one "
+                f"further succeeding edge, p = {1 / 35:.4f}. High-incidence "
+                "frames are abundant in the archive where low-incidence ones "
+                "over shared ground are not (REAL-DATA-05 found none in 906 "
+                "products), so the cheaper route is the failing edge."
+            ),
+            "cheapest_extra_succeeding_edges": plan.extra_low,
+            "cheapest_extra_failing_edges": plan.extra_high,
+        }
+
     return {
         "rows": rows,
         "frames": sorted(frames.values(), key=lambda f: f["incidence_deg"]),
         "n_edges": len(rows),
         "separation": {
             "separated_by_delta_incidence": separated,
+            "significance": stats,
             "max_succeeding_delta_deg": max(succeed) if succeed else None,
             "min_failing_delta_deg": min(fail) if fail else None,
             "statement": (
                 f"Δincidence separates all {len(rows)} measured edges: every "
                 f"success is at or below {max(succeed):.2f}°, every failure at "
-                f"or above {min(fail):.2f}°." if separated else
+                f"or above {min(fail):.2f}° "
+                f"(exact one-tailed p = {stats['p_value_one_tailed']:.4f}"
+                + ("; NOT significant at 0.05" if stats and not stats["significant_at_0_05"] else "")
+                + ")." if separated else
                 "Δincidence does not separate the measured edges."),
         },
         "frame_identity": {

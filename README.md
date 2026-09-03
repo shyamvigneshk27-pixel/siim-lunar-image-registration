@@ -104,7 +104,7 @@ exactly is still a wrong answer — which is the entire point of this project.
 | | |
 |---|---|
 | **Real LRO NAC, end to end** | Byte-range fetched from the public PDS archive, SHA-256 recorded, PDS4-decoded, sanity-gated, registered by an unmodified baseline |
-| **Δincidence predicts registration outcome** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54° |
+| **Δincidence predicts registration outcome — separation is perfect, and NOT YET SIGNIFICANT** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54°. **Exact one-tailed permutation test: p = 0.0667** (`siim.evaluation.exact_separation_test`, computed from the rows, not asserted). Two successes among six edges: chance produces this separation once in fifteen, so the result **does not reach the conventional 0.05**. One-tailed is admissible only because the direction was frozen in a decision table before frame D was acquired. The edges share frames and are therefore not independent, so **0.0667 is a lower bound**. **One further failing edge would give p = 0.0476** — and high-incidence frames are abundant where the low-incidence frames REAL-DATA-05 hunted are not |
 | **The RMSE trap, on real data** | A real edge reports a fit RMSE of `1.885e-13 px` for a transform independently measured **797 px wrong** |
 | **NOT proven: illumination as *the* cause** | Frame identity is **substantially weakened, not conclusively refuted** — see D-040-N1. The replication (REAL-DATA-05) returned **UNRESOLVED** |
 | **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication. **No multi-modal claim is supported anywhere in this repository** |

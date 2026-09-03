@@ -9,6 +9,20 @@ from .gtfree import (
     loop_closure,
     spatial_split_consistency,
 )
+from .error_budget import (
+    BudgetTerm,
+    BudgetTotal,
+    ErrorBudget,
+    TermKind,
+    TermStatus,
+    nac_reference_budget,
+)
+from .significance import (
+    AdditionalEvidence,
+    SeparationTest,
+    exact_separation_test,
+    minimum_additional_edges,
+)
 from .metrics import (
     CorrespondenceMetrics,
     FailureMode,
@@ -29,4 +43,14 @@ __all__ = [
     "loop_closure",
     "spatial_split_consistency",
     "compose_cycle",
+    "SeparationTest",
+    "AdditionalEvidence",
+    "exact_separation_test",
+    "minimum_additional_edges",
+    "BudgetTerm",
+    "BudgetTotal",
+    "ErrorBudget",
+    "TermKind",
+    "TermStatus",
+    "nac_reference_budget",
 ]
