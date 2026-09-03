@@ -158,6 +158,7 @@ def match_descriptors(
     *,
     ratio: float = 0.8,
     mutual: bool = True,
+    norm: int = cv2.NORM_L2,
 ) -> MatchSet:
     """Match descriptors with Lowe's ratio test and mutual-nearest consistency.
 
@@ -174,13 +175,21 @@ def match_descriptors(
         pass and removes many-to-one matches. It is a cheap, independent
         consistency check, and unlike the ratio test it constrains the
         *reverse* direction, so the two catch different errors.
+    norm
+        Descriptor distance. ``cv2.NORM_L2`` for float descriptors (SIFT,
+        RootSIFT); ``cv2.NORM_HAMMING`` for the binary descriptors used by
+        baselines B2 and B3 (ANALYSIS §E.1). Defaulted to L2 so existing
+        callers are unaffected -- the parameter exists so the binary engines
+        reuse this exact ratio-test and mutual-consistency logic rather than
+        re-implementing it, which is what §E.2's identical-harness rule
+        requires.
     """
     if len(src) == 0 or len(dst) == 0:
         empty_i = np.zeros(0, dtype=np.int64)
         empty_f = np.zeros(0, dtype=np.float64)
         return MatchSet(empty_i, empty_i, np.zeros((0, 2)), np.zeros((0, 2)), empty_f, empty_f)
 
-    matcher = cv2.BFMatcher(cv2.NORM_L2)
+    matcher = cv2.BFMatcher(norm)
     k = 2 if len(dst) >= 2 else 1
     knn = matcher.knnMatch(src.descriptors, dst.descriptors, k=k)
 
