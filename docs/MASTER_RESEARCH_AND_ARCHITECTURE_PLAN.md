@@ -835,3 +835,46 @@ A pre-registered experiment whose control reproduces recorded numbers exactly, w
 ---
 
 *Sources consulted (representative; full list in §8–9): arXiv 2509.04775, 2604.25208, 2604.01032, 2602.14993, 2604.17436, 2410.11118, 2412.19412, 2604.10217, 2601.10449, 2510.18172, 2606.29821, 2604.22296, 2606.14776, 2303.00319; Remote Sensing 14(20):5156, 14(24):6339, 17(13):2302; ISPRS JPRS 2019 (Liu & Wu), 2023 (HOWP), 2025 (Jiang; SFA-Net); IEEE TIP 2020 (RIFT); IEEE 10374089 (WSSF), 10781320 (EPCFT), 11105476; P&SS 2018 (Wu); ISPRS Archives 2020 (Ye), XLVIII-G-2025 (DEM registration); Appl. Sci. 2026 16(3):1238; AIAA 2025-2073, 2026-2244; NTRS 20210024816; USGS ISIS lronacpho docs; LROC NAC processing guide and RDR releases 62A–65C; Astropedia SLDEM2015/LOLA pages; ISSDC/PRADAN pages; LPSC 2021/2022/2023 abstracts on PRADAN and C2 PDS4; Current Science 118(3)/(4) instrument papers (OHRC, TMC-2, IIRS); JISRS 2023 (TMC-2 DEM quality), 2024 (IIRS seleno-referencing); Adv. Space Res. 2024 (IIRS photometric correction); Icarus 2022 (IIRS thermal); MAPS 2025 (IIRS L2); JGR 2012 (Hapke wavelength), 2014 (Sato Hapke maps); GitHub licence pages for LightGlue, DISK, ALIKED, RoMa, MASt3R, DUSt3R, SFA-Net, RIFT/RIFT2.*
+
+
+---
+
+# ADDENDUM — measured status, 2026-09-04 (evening)
+
+Written after the reset above was executed for one day. Every number below is
+from a committed artefact; stages still running are marked as such.
+
+## A1. What changed in the evidence
+
+| Item | Morning (plan as written) | Evening (measured) |
+|---|---|---|
+| Any method above 12° Δincidence on real data | none | **B4L (DISK + LightGlue, Apache-2.0)** registers C → A at 38.85° with 56 inliers, CONSISTENT with archive geometry (EXP-007 tier 1); at the 15 m rung on the long windows it registers A → B at 39.81° with **2042** geometry-consistent inliers (EXP-007 tier 2, running) |
+| DEM-render conditioning (H0/H1) | hypothesis | legs return 0–3 inliers at 1.8, 3.6, 7 and 15 m on this mare window: the 59 m SLDEM carries no matchable shading here at any rung tested so far. **H2 MET (bound confirmed), H1 heading to NOT MET.** Final at 30 m pending |
+| Photometric normalisation (RD-06) | pre-registered | per-frame Lommel-Seeliger and Hapke change **no** outcome (S5 MET); a per-frame scalar is invisible after a per-image stretch — a design finding about RD-06 |
+| Sub-pixel accuracy | never measured | **0.003 px** median on real self-warps (ECC; upper bound); < 0.25 px under synthetic Sun-azimuth change to 30°; gate 7e-15 px (EXP-010) |
+| Model selection | absent | E-034 found (affine default 0.19–0.94 px on frames A, D with zero residual); refine-then-reselect reaches **0.0018 px**, 48/48 correct models (EXP-011) |
+| Sample size | 6 edges | 14 census frames located; 20 tiles acquired; **42 geometry-confirmed pairs** (23 + 19) across both windows; registration running (REAL-DATA-07) |
+| Orientation obstacle (REAL-DATA-05) | blocking | removed: exact quarter-turn from corner columns (`siim.ingest.orientation`), no estimation |
+| Multimodal data | none | Mini-RF S-band radar strip (14.8 m) and WAC 100 m mosaic blocks over the windows on disk, stage pre-registered (REAL-DATA-08, queued) |
+| Chandrayaan-2 | none | none — PRADAN registration is the user's action (instructions given) |
+| NAC DTM over the window | unknown | none exists (ODE SDNDTM/ASPDTM query); nearest is SERENRIDGE1 at 22.9–24.6 N, 24.4–24.9 E, 5 m posts |
+
+## A2. Consequences for the architecture (§40)
+
+1. **The illumination engine at the fine and mid rungs is B4L, not the DEM
+   render**, on mare terrain with a 59 m DEM. H0 is kept only for sites with a
+   fine DEM (SERENRIDGE1) and is demoted from "central" to "conditional".
+2. **Pipeline order is estimate → refine → re-estimate with selection → verify**
+   (EXP-010, EXP-011). The verdict gains `model_selected_by`.
+3. **Physics keeps three jobs**: overlap and prior transform (unchanged), the
+   scale ladder (unchanged), and verification by geometry (unchanged). Its
+   fourth job, illumination conditioning, is now evidence-limited to fine-DEM
+   sites and is stated as such.
+4. The learned engine's licence and determinism are recorded; SuperGlue remains
+   excluded.
+
+## A3. Honest scoring after one day
+
+Plan 6.5 / 10, demonstrated 6 / 10 (from 5 / 4 in the morning). The remaining
+ceiling is the absence of Chandrayaan-2 data (user action) and the pending
+replication and radar results (running).
