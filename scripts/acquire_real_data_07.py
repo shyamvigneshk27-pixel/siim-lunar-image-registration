@@ -113,6 +113,7 @@ def main() -> None:
 
     entries = [dict(t, role="incumbent (recorded tile, copied unchanged)",
                     decimation=2) for t in inc_man["tiles"]]
+    excluded: list[dict] = []
     for pdsid in wanted:
         if pdsid not in geometry:
             raise SystemExit(f"{pdsid}: no corner geometry in {NEW_GEOMETRY}")
@@ -129,8 +130,18 @@ def main() -> None:
             raise SystemExit(f"{pdsid}: index shape {corners.lines}x{corners.samples} != "
                              f"label {struct.lines}x{struct.samples}")
         win = FINE_FRAMES.get(pdsid, DEFAULT)
-        line0, sample0, detail = _acq.window_centred_on(corners, lon, lat,
-                                                        win["n_lines"], win["n_samples"])
+        try:
+            line0, sample0, detail = _acq.window_centred_on(corners, lon, lat,
+                                                            win["n_lines"], win["n_samples"])
+        except ValueError as exc:
+            # The target ground point is outside this frame's swath (the census
+            # box was +/-0.02 deg, wider than some frames' margin over the target).
+            # A tile cannot be centred on the target, so the frame is EXCLUDED and
+            # listed -- the same treatment Part 1 section 3 gives an edge whose
+            # overlap is not CONFIRMED. No clamping, no re-centring.
+            print(f"   !! {pdsid}: EXCLUDED -- {exc}", flush=True)
+            excluded.append({"pdsid": pdsid, "reason": str(exc)})
+            continue
         if not detail["fully_inside_frame"]:
             print(f"   !! {pdsid}: window CLAMPED {detail['clamped_lines']:+d} lines, "
                   f"{detail['clamped_samples']:+d} samples")
@@ -198,9 +209,10 @@ def main() -> None:
         "incidence_deg": [e["incidence_deg"] for e in entries],
         "chandrayaan2_status": "NOT OBTAINED. No Chandrayaan-2 data is present.",
         "licence": "NASA PDS public domain; credit NASA/GSFC/Arizona State University.",
+        "excluded_frames": excluded,
         "tiles": entries,
     }, indent=2), encoding="utf-8")
-    print(f"manifest: {out_path.relative_to(ROOT)}")
+    print(f"manifest: {out_path.relative_to(ROOT)}  ({len(entries)} tiles, {len(excluded)} excluded)")
 
 
 if __name__ == "__main__":
