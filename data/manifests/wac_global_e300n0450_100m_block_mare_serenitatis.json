@@ -1,0 +1,36 @@
+{
+  "stage": "REAL-DATA-08",
+  "product": "WAC_GLOBAL_E300N0450_100M",
+  "modality": "643 nm mono reflectance mosaic, photometrically normalised, 100 m",
+  "source_url": "https://pds.mcp.nasa.gov/data/store/img/lunar_reconnaissance_orbiter/pds4/lroc/lro-l-lroc-5-rdr/LROLRC_2001/DATA/BDR/WAC_GLOBAL/WAC_GLOBAL_E300N0450_100M.IMG",
+  "label_url": "https://pds.mcp.nasa.gov/data/store/img/lunar_reconnaissance_orbiter/pds4/lroc/lro-l-lroc-5-rdr/LROLRC_2001/DATA/BDR/WAC_GLOBAL/WAC_GLOBAL_E300N0450_100M.xml",
+  "credit": "NASA/GSFC/Arizona State University (LROC WAC global morphology mosaic)",
+  "block_npy": "data\\raw\\proxies\\WAC_GLOBAL_E300N0450_100M.rows12037_12312.npy",
+  "window_lat": [
+    19.4,
+    20.3
+  ],
+  "window_lon": [
+    21.55,
+    22.45
+  ],
+  "retrieved_utc": "2026-09-04T15:17:34Z",
+  "row0": 12037,
+  "row1_exclusive": 12312,
+  "col0": 6534,
+  "col1_exclusive": 6809,
+  "byte_start": 1314116232,
+  "byte_count": 30020100,
+  "bytes_sha256": "ce24939cdca59710d9b2bf7de67eab4cd1886d79d6ac72e9ebe7a4cfc70636cf",
+  "grid": {
+    "ppd_lat": 303.23350424149,
+    "ppd_lon": 303.23350424149,
+    "lat_top_deg": 60.0,
+    "lon_left_deg": -0.0016488943108404293,
+    "projection": "equirectangular, equator standard parallel, pixel-registered"
+  },
+  "label_path": "data/metadata/wac/WAC_GLOBAL_E300N0450_100M.xml",
+  "missing_constant_hex": "FF7FFFFB",
+  "missing_fraction": 0.0,
+  "unit": "normalised reflectance (mosaic)"
+}

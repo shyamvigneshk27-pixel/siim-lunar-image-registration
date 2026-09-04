@@ -1,0 +1,46 @@
+{
+  "stage": "REAL-DATA-08",
+  "product": "LSZ_02951_2S1_EKU_16N022_V1",
+  "modality": "S-band (12.6 cm) radar, Stokes S1 total backscattered power, level 2 map-projected",
+  "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-mrflro-4-cdr-v1/lromrf_0002/data/sar/02900_02999/level2/lsz_02951_2s1_eku_16n022_v1.img",
+  "label_url": "https://pds-geosciences.wustl.edu/lro/lro-l-mrflro-4-cdr-v1/lromrf_0002/data/sar/02900_02999/level2/lsz_02951_2s1_eku_16n022_v1.lbl",
+  "credit": "NASA LRO Mini-RF (JHU/APL); PDS Geosciences Node",
+  "block_npy": "data\\raw\\proxies\\LSZ_02951_2S1_EKU_16N022_V1.rows7614_9459.npy",
+  "window_lat": [
+    19.4,
+    20.3
+  ],
+  "window_lon": [
+    21.55,
+    22.45
+  ],
+  "retrieved_utc": "2026-09-04T15:17:13Z",
+  "row0": 7614,
+  "row1_exclusive": 9459,
+  "col0": 94,
+  "col1_exclusive": 1816,
+  "byte_start": 55308096,
+  "byte_count": 13402080,
+  "bytes_sha256": "d0b348343dc352af0afd54c991bc898981adf5f180e7094ae2b693c95e9a462c",
+  "grid": {
+    "ppd_lat": 2048.0,
+    "ppd_lon": 2048.0,
+    "lat_top_deg": 24.018066406249513,
+    "lon_left_deg": 21.50341796875489,
+    "projection": "equirectangular, equator standard parallel, pixel-registered"
+  },
+  "label_path": "data/metadata/minirf/LSZ_02951_2S1_EKU_16N022_V1.lbl",
+  "grid_source": "LINE/SAMPLE_PROJECTION_OFFSET (authoritative); summaries recorded",
+  "label_summary_vs_offsets": {
+    "MAXIMUM_LATITUDE": 24.017439,
+    "WESTERNMOST_LONGITUDE": 21.503989,
+    "top_edge_from_LPO": 24.018066406249513,
+    "left_edge_from_SPO": 21.50341796875489,
+    "disagreement_px": [
+      1.2849279990041396,
+      1.1694719899896882
+    ]
+  },
+  "radar_incidence_deg": 51.82167046,
+  "unit": "backscatter power (linear); log-compress before matching"
+}

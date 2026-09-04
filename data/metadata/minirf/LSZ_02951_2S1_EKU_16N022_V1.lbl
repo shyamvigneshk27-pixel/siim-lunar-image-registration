@@ -1,0 +1,97 @@
+PDS_VERSION_ID                =  PDS3
+LABEL_REVISION_NOTE           =  "2010-JHU/APL Mini-RF LRO Ver. 1"
+NOTE                          =  "Mini-RF LRO Stokes Parameter product."
+^IMAGE                        =  "LSZ_02951_2S1_EKU_16N022_V1.IMG"
+RECORD_TYPE                   =  FIXED_LENGTH
+RECORD_BYTES                  =  7264
+FILE_RECORDS                  =  33192
+DATA_SET_ID                   =  "LRO-L-MRFLRO-5-CDR-MAP-V1.0"
+DATA_SET_NAME                 =  "LRO MOON MINI-RF 5 MAP-PROJECTED CALIBRATED
+DATA REC V1.0"
+PRODUCER_ID                   =  "JHUAPL"
+PRODUCER_FULL_NAME            =  "MINI-RF POC TEAM"
+PRODUCER_INSTITUTION_NAME     =  "JOHNS HOPKINS UNIVERSITY APPLIED PHYSICS
+LABORATORY"
+PRODUCT_ID                    =  "LSZ_02951_2S1_EKU_16N022_V1"
+PRODUCT_VERSION_ID            =  "1.0"
+ORIGINAL_PRODUCT_ID           =  "
+PacketsFrom2010046_20100215_200900_20100317_024712.001.ortho_OC"
+MISSION_PHASE_NAME            =  "NOMINAL MISSION"
+PRODUCT_CREATION_TIME         =  2010-05-12T23:51:28
+RELEASE_ID                    =  "0001"
+MISSION_NAME                  =  "LUNAR RECONNAISSANCE ORBITER"
+INSTRUMENT_HOST_NAME          =  "LUNAR RECONNAISSANCE ORBITER"
+INSTRUMENT_HOST_ID            =  LRO
+INSTRUMENT_NAME               =  "MINI-RF LRO"
+INSTRUMENT_ID                 =  MRFLRO
+TARGET_NAME                   =  MOON
+SOURCE_PRODUCT_ID             =  {"LRO_SCLK_20100413_00.TSC","naif0009.tls"}
+START_TIME                    =  2010-02-15T20:14:04.254873
+STOP_TIME                     =  2010-02-15T20:19:11.4226
+SPACECRAFT_CLOCK_START_COUNT  =  "UNK"
+SPACECRAFT_CLOCK_STOP_COUNT   =  "UNK"
+ORBIT_NUMBER                  =  2951
+CENTER_FREQUENCY              =  2380000667.04314661<Hz>
+INCIDENCE_ANGLE               =  51.82167046<deg>
+INSTRUMENT_MODE_ID            =  "ZOOM_S"
+INSTRUMENT_MODE_DESC          =  "SAR"
+SOFTWARE_NAME                 =  "ISIS"
+SOFTWARE_VERSION_ID           =  "3.2.0 | 2010-03-18"
+LRO:LOOK_AZIMUTH_ANGLE        =     91.157833 <deg>
+LOOK_DIRECTION                =  LEFT
+DESCRIPTION                   =  "The first Stokes parameter, defined as S1 =
+|ERH| + |ERV|, represents the total power or total intensity of the received
+field. The second Stokes parameter, defined as S2 = |ERH| - |ERV|, represents
+the difference between the horizontally polarized intensity and the
+vertically polarized intensity. The third and fourth Stokes parameters are
+defined as S3  = 2 Re ERH ERV* and S4 = -2 Im  ERH ERV*, respectively. They
+jointly represent the real and imaginary phase difference between the
+horizontally and vertically polarized components of the recieved field."
+
+/* Data Object Description. */
+OBJECT = IMAGE
+LINES                      = 33192
+LINE_SAMPLES               = 1816
+BANDS                      = 1
+BAND_STORAGE_TYPE          = BAND_SEQUENTIAL
+OFFSET                     = 0.0
+SCALING_FACTOR             = 1.0
+SAMPLE_BITS                = 32
+SAMPLE_BIT_MASK            = 2#11111111111111111111111111111111#
+SAMPLE_TYPE                = PC_REAL
+CORE_NULL                  = 16#FF7FFFFB#
+CORE_LOW_REPR_SATURATION   = 16#FF7FFFFC#
+CORE_LOW_INSTR_SATURATION  = 16#FF7FFFFD#
+CORE_HIGH_REPR_SATURATION  = 16#FF7FFFFF#
+CORE_HIGH_INSTR_SATURATION = 16#FF7FFFFE#
+END_OBJECT = IMAGE
+
+OBJECT = IMAGE_MAP_PROJECTION
+^DATA_SET_MAP_PROJECTION     = "DSMAP.CAT"
+COORDINATE_SYSTEM_TYPE       = "BODY-FIXED ROTATING"
+MAP_PROJECTION_TYPE          = "EQUIRECTANGULAR"
+A_AXIS_RADIUS                = 1737.4 <km>
+B_AXIS_RADIUS                = 1737.4 <km>
+C_AXIS_RADIUS                = 1737.4 <km>
+FIRST_STANDARD_PARALLEL      = "N/A"
+SECOND_STANDARD_PARALLEL     = "N/A"
+COORDINATE_SYSTEM_NAME       = PLANETOCENTRIC
+POSITIVE_LONGITUDE_DIRECTION = EAST
+KEYWORD_LATITUDE_TYPE        = PLANETOCENTRIC
+CENTER_LATITUDE              = 0.0 <deg>
+CENTER_LONGITUDE             = 180.0 <deg>
+LINE_FIRST_PIXEL             = 1
+LINE_LAST_PIXEL              = 33192
+SAMPLE_FIRST_PIXEL           = 1
+SAMPLE_LAST_PIXEL            = 1816
+MAP_PROJECTION_ROTATION      = 0.0 <deg>
+MAP_RESOLUTION               = 2048.0 <pix/deg>
+MAP_SCALE                    = 0.014806323449292 <KM/PIXEL>
+MAXIMUM_LATITUDE             = 24.017439 <deg>
+MINIMUM_LATITUDE             = 7.810563 <deg>
+EASTERNMOST_LONGITUDE        = 22.390437 <deg>
+WESTERNMOST_LONGITUDE        = 21.503989 <deg>
+LINE_PROJECTION_OFFSET       = 49188.499999999 <pixel>
+SAMPLE_PROJECTION_OFFSET     = 324600.49999999 <pixel>
+END_OBJECT = IMAGE_MAP_PROJECTION
+END
