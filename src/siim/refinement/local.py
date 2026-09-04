@@ -97,6 +97,10 @@ def refine_correspondences(source: ArrayLike, reference: ArrayLike, transform: T
     ok = np.zeros(n, dtype=bool)
     h, w = ref.shape
     half = window // 2
+    inv = transform.inverse()
+    # Enough source context for the patch under scale <= 1.5x and any rotation,
+    # plus the cubic kernel's support.
+    margin = int(np.ceil(window * 1.5 / 2)) + 4
     hann = cv2.createHanningWindow((window, window), cv2.CV_32F) if method == "phase" else None
     criteria = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, max_iterations, epsilon)
 
@@ -113,8 +117,24 @@ def refine_correspondences(source: ArrayLike, reference: ArrayLike, transform: T
         # reference (ox + u, oy + v) <-> source T^-1(...). The geometry layer's
         # warp takes the FORWARD map source -> patch, which is T then the shift
         # of the patch origin.
-        to_patch = translation(-float(ox), -float(oy)) @ transform
-        src_patch, valid = warp(src, to_patch, out_shape=(window, window), order=3, cval=np.nan)
+        #
+        # The source is CROPPED around the inverse-mapped centre first. ``warp``
+        # spline-prefilters its whole input on every call (order 3), which on a
+        # 2-megapixel tile cost ~0.1 s per point (measured 2026-09-04); on a
+        # crop of a few hundred pixels it is negligible. The crop offset is
+        # composed into the transform exactly, so no coordinate changes.
+        cx, cy = inv.apply(np.array([[qx, qy]]))[0]
+        if not (np.isfinite(cx) and np.isfinite(cy)):
+            continue
+        cx0 = int(np.floor(cx)) - margin
+        cy0 = int(np.floor(cy)) - margin
+        cx1 = int(np.ceil(cx)) + margin + 1
+        cy1 = int(np.ceil(cy)) + margin + 1
+        if cx0 < 0 or cy0 < 0 or cx1 > src.shape[1] or cy1 > src.shape[0]:
+            continue
+        crop = src[cy0:cy1, cx0:cx1]
+        to_patch = translation(-float(ox), -float(oy)) @ transform @ translation(float(cx0), float(cy0))
+        src_patch, valid = warp(crop, to_patch, out_shape=(window, window), order=3, cval=np.nan)
         if valid.mean() < 0.98 or not np.isfinite(ref_patch).mean() > 0.98:
             continue
         a = _prep(src_patch)
