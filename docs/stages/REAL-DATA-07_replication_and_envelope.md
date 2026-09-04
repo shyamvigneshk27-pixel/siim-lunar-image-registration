@@ -130,7 +130,7 @@ number the verdict engine's false-acceptance estimate will be built from.
 
 | Result | Claim |
 |---|---|
-| S1 MET | D-040-N1's replication debt is discharged; frame identity is refuted for A within the tested set. |
+| S1 MET | D-040-N1's replication debt is discharged; frame identity ceases to explain A's edges within the tested set. *(Wording corrected 2026-09-04 after commit f8a961c: the original sentence used the phrasing D-040-N1 withdrew; the criterion S1 is unchanged.)* |
 | S1 NOT MET | The low-incidence success does not replicate; D-040 is downgraded to "one succeeding pair". |
 | S2, S5 MET | The illumination cliff of the uncorrected baseline is located to a 5° bin at p ≤ 0.01. |
 | S3 MET | A licensable zero-shot learned engine is the fine-rung engine of the architecture; the physics layer is justified by scale, viewpoint and verification. |
