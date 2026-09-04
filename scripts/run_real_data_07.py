@@ -101,7 +101,8 @@ def run_edge(fs, fr, engine: str, rotate: bool) -> dict:
     return rec
 
 
-def run_window(window: str, overlap_name: str, engines: list[str]) -> list[dict]:
+def run_window(window: str, overlap_name: str, engines: list[str],
+               reproduction_only: bool = False) -> list[dict]:
     man = json.loads((DATA / "manifests" / WINDOWS[window]).read_text(encoding="utf-8"))
     target = tuple(man["target_ground_point_lon_lat"])
     products = load_products()
@@ -126,9 +127,21 @@ def run_window(window: str, overlap_name: str, engines: list[str]) -> list[dict]
                 rec_key = edge if edge in recorded else f"{d} -> {s}"
                 if not rotate and rec_key not in recorded:
                     continue          # raw B1 only on the six recorded edges (S4, S6)
+                if reproduction_only and rotate:
+                    continue
                 t0 = time.perf_counter()
-                rec = run_edge(fs, fr, engine, rotate)
-                rec.update({"window": window, "edge": edge, "engine": engine,
+                if not rotate:
+                    # The raw reproduction arm runs in the RECORDED direction, which
+                    # for two of the six edges is the opposite of the lower-to-higher
+                    # incidence order used for everything else. Found on the first
+                    # RD-03 run (A -> C compared against recorded C -> A).
+                    src_r, dst_r = rec_key.split(" -> ")
+                    rec = run_edge(ctx[src_r], ctx[dst_r], engine, False)
+                    rec["edge_run"] = rec_key
+                    rec["recorded_direction"] = True
+                else:
+                    rec = run_edge(fs, fr, engine, rotate)
+                rec.update({"window": window, "edge": edge, "pair": sorted((s, d)), "engine": engine,
                             "north_up": bool(rotate), "delta_incidence_deg": d_inc,
                             "same_orbit_pair": same_orbit,
                             "src_incidence_deg": fs.incidence_published,
@@ -136,8 +149,7 @@ def run_window(window: str, overlap_name: str, engines: list[str]) -> list[dict]
                             "wall_s": time.perf_counter() - t0})
                 if rec_key in recorded and not rotate:
                     rec["recorded_n_inliers"] = recorded[rec_key]["n_inliers"]
-                    rec["reproduces_recorded"] = (rec_key == edge and
-                                                  recorded[rec_key]["n_inliers"] == rec["n_inliers"])
+                    rec["reproduces_recorded"] = bool(recorded[rec_key]["n_inliers"] == rec["n_inliers"])
                 rows.append(rec)
                 print(f"  [{window}] {edge[4:16]}->{edge[-13:]} dInc={d_inc:5.2f} {engine:3s} "
                       f"{'NU' if rotate else 'raw'}  inl={rec['n_inliers']:5d} "
@@ -176,13 +188,13 @@ def significance(rows: list[dict]) -> dict:
 
 def evaluate(all_rows: list[dict]) -> dict:
     rows = [r for r in all_rows if "engine" in r]
-    b1_raw = [r for r in rows if r["engine"] == "b1" and not r["north_up"]]
-    s4 = all(r.get("reproduces_recorded", True) for r in b1_raw) and len(b1_raw) >= 6
-    # S6: north-up must not change the six recorded outcomes
+    b1_raw = [r for r in rows if r["engine"] == "b1" and not r["north_up"] and r.get("recorded_direction")]
+    s4 = all(r.get("reproduces_recorded", False) for r in b1_raw) and len(b1_raw) >= 6
+    # S6: north-up must not change the six recorded outcomes (compared per unordered pair)
     changed = []
     for r in b1_raw:
         nu = next((x for x in rows if x["engine"] == "b1" and x["north_up"]
-                   and x["window"] == r["window"] and x["edge"] == r["edge"]), None)
+                   and x["window"] == r["window"] and x.get("pair") == r.get("pair")), None)
         if nu is not None and nu["pass"] != r["pass"]:
             changed.append(r["edge"])
     # S1: replication
@@ -229,17 +241,17 @@ def main() -> None:
     ap.add_argument("--window", choices=sorted(WINDOWS))
     ap.add_argument("--overlap", default=None, help="overlap artefact name under experiments/REAL-DATA-07/")
     ap.add_argument("--engines", default="b1,lg")
-    ap.add_argument("--evaluate", action="store_true", help="pool rd03/rd04 row artefacts and apply criteria")
+    ap.add_argument("--evaluate", action="store_true", help="pool every rows_*.json artefact and apply criteria")
+    ap.add_argument("--reproduction-only", action="store_true",
+                    help="run only the raw B1 arm in the recorded direction on the recorded edges (S4/S6)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
 
     if args.evaluate:
         rows = []
-        for w in WINDOWS:
-            p = OUT / f"rows_{w.lower()}.json"
-            if p.exists():
-                rows += json.loads(p.read_text(encoding="utf-8"))["rows"]
+        for p in sorted(OUT.glob("rows_*.json")):
+            rows += json.loads(p.read_text(encoding="utf-8"))["rows"]
         verdict = evaluate(rows)
         out = OUT / (args.out or "real_data_07_results.json")
         if out.exists():
@@ -258,11 +270,12 @@ def main() -> None:
     engines = [e for e in args.engines.split(",") if e]
     if "lg" in engines and not learned_available():
         raise SystemExit("B4L unavailable: install kornia/torch")
-    out = OUT / (args.out or f"rows_{args.window.lower()}.json")
+    out = OUT / (args.out or (f"rows_{args.window.lower()}_repro.json" if args.reproduction_only
+                             else f"rows_{args.window.lower()}.json"))
     if out.exists():
         raise SystemExit(f"{out.relative_to(ROOT)} exists (integrity rule 4)")
     t0 = time.perf_counter()
-    rows = run_window(args.window, args.overlap, engines)
+    rows = run_window(args.window, args.overlap, engines, reproduction_only=args.reproduction_only)
     out.write_text(json.dumps({
         "stage": STAGE, "window": args.window, "engines": engines,
         "environment": {"python": platform.python_version(), "numpy": np.__version__,
