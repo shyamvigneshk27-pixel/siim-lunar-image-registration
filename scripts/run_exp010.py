@@ -134,16 +134,43 @@ def d1_self_warps() -> list[dict]:
             ctx = _e7.FrameContext(t["pdsid"], t, products, target)
             img = ctx.img(k)
             c = image_centre(img.shape)
-            transforms = [(f"t{tx}_{ty}", translation(7.0 + tx, -5.0 + ty)) for tx, ty in frac]
+            transforms = [("identity", None)]          # the Part-1 gate: zero transform
+            transforms += [(f"t{tx}_{ty}", translation(7.0 + tx, -5.0 + ty)) for tx, ty in frac]
             transforms += [(f"s{s}_r{a}", anchor_at(similarity(s, np.deg2rad(a), 3.25, -2.5), c))
                            for s in (0.9, 1.1) for a in (3.0, -3.0)]
             for name, tf in transforms:
+                t0 = time.perf_counter()
+                if tf is None:
+                    # GATE (Part 1 section 5): identity pair, refined against the EXACT
+                    # identity transform, so the shift measures the refiner's own bias
+                    # and not the baseline's estimation error. v1 of this script used
+                    # an integer translation estimated by B1 here, which on tile D
+                    # carried a 1 px estimation error (recorded in exp010_results.json).
+                    from siim.geometry import identity as _identity
+                    rng = np.random.default_rng(20260904)
+                    p = rng.uniform(64, np.array(img.shape[::-1], float) - 64, size=(MAX_POINTS_PER_PAIR, 2))
+                    for method in METHODS:
+                        for w in WINDOWS:
+                            r = refine_correspondences(img, img, _identity(), p, window=w, method=method)
+                            out.append({"dataset": "D1", "pdsid": t["pdsid"], "letter": ctx.letter,
+                                        "warp": "identity", "is_identity_gate": True, "b1_pass": True,
+                                        "true_transform_used": True, "method": method, "window": w,
+                                        "n_points": int(len(p)), "n_ok": int(r.ok.sum()),
+                                        "shift_median_px": [float(np.nanmedian(r.shift[r.ok, 0])),
+                                                            float(np.nanmedian(r.shift[r.ok, 1]))],
+                                        "shift_median_abs_px": float(np.nanmedian(np.hypot(*r.shift[r.ok].T))),
+                                        "err_transform": [0.0] * int(len(p)), "err_refined": np.hypot(*r.shift.T).tolist(),
+                                        "err_keypoint": [0.0] * int(len(p)), "ok": r.ok.tolist(),
+                                        "confidence": np.where(np.isfinite(r.confidence), r.confidence, np.nan).tolist(),
+                                        "made_worse": (np.hypot(*r.shift.T) > 0.5).tolist(),
+                                        "wall_s": time.perf_counter() - t0})
+                    print(f"  D1 {ctx.letter} identity-gate rows={len(out)}", flush=True)
+                    continue
                 ref, valid = warp(img, tf, cval=np.nan)
                 ref = np.where(valid, ref, np.nanmedian(ref))
-                t0 = time.perf_counter()
                 for row in refine_pair(img, ref, tf, seed=hash(name) % 10_000):
                     row.update({"dataset": "D1", "pdsid": t["pdsid"], "letter": ctx.letter,
-                                "warp": name, "is_identity_gate": name == "t0.0_0.0",
+                                "warp": name, "is_identity_gate": False,
                                 "wall_s": time.perf_counter() - t0})
                     out.append(row)
                 print(f"  D1 {ctx.letter} {name:12s} rows={len(out)}", flush=True)
@@ -221,10 +248,13 @@ def evaluate(rows: list[dict]) -> dict:
     d2 = [r for r in rows if r["dataset"] == "D2"]
     out: dict = {}
     # gate: identity warp
-    gate = [r for r in d1 if r.get("is_identity_gate") and r.get("b1_pass")]
-    gate_shift = [abs(x) for r in gate for x in r["shift_median_px"] if x is not None]
+    gate = [r for r in d1 if r.get("is_identity_gate") and r.get("true_transform_used")]
+    gate_shift = [r["shift_median_abs_px"] for r in gate if r.get("shift_median_abs_px") is not None]
     out["gate_identity_unbiased"] = {"met": bool(gate_shift) and max(gate_shift) < 0.05,
-                                     "max_median_abs_shift_px": max(gate_shift) if gate_shift else None}
+                                     "max_median_abs_shift_px": max(gate_shift) if gate_shift else None,
+                                     "per_tile_method_window": {f"{r['letter']}_{r['method']}_w{r['window']}": r["shift_median_abs_px"] for r in gate}}
+    # S1 pools the twelve KNOWN warps only (the identity gate rows are excluded)
+    d1 = [r for r in d1 if not r.get("is_identity_gate")]
     # S1
     s1 = {}
     for m in METHODS:

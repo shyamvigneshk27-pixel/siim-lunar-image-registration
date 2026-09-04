@@ -25,6 +25,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from siim.baselines import learned_available, run_baseline  # noqa: E402
 from siim.evaluation.coverage import coverage_metrics  # noqa: E402
 from siim.geometry import Transform, endpoint_error, estimate  # noqa: E402
+from siim.ingest.lola_dem import _lonlat_grid  # noqa: E402
 from siim.ingest.mapgrid import load_map_block  # noqa: E402
 from siim.ingest.orientation import north_up  # noqa: E402
 
@@ -64,7 +65,7 @@ def predicted_map(ctx, k: int, block, margin_px: int):
     pts = np.column_stack([gx.ravel(), gy.ravel()]).astype(float)
     lines = np.array([w.to_frame(y, x)[0] for x, y in pts])
     samples = np.array([w.to_frame(y, x)[1] for x, y in pts])
-    lon, lat = _e7.dem_on_tile_grid.__globals__["_lonlat_grid"](ctx.corners, lines, samples)
+    lon, lat = _lonlat_grid(ctx.corners, lines, samples)
     xy = block.block_xy_of_lonlat(lon, lat)
     x0 = int(np.floor(xy[:, 0].min())) - margin_px
     y0 = int(np.floor(xy[:, 1].min())) - margin_px
