@@ -3,6 +3,7 @@
 from .lro_nac import (
     NacProduct,
     fetch_byte_range,
+    fetch_byte_range_chunked,
     fetch_image_tile,
     fetch_image_window,
     fetch_label,
@@ -61,6 +62,7 @@ __all__ = [
     "observational_label_url",
     "fetch_label",
     "fetch_byte_range",
+    "fetch_byte_range_chunked",
     "fetch_image_tile",
     "fetch_image_window",
     "write_manifest",

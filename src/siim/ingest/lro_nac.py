@@ -590,6 +590,49 @@ def fetch_byte_range(url: str, byte_start: int, byte_count: int) -> bytes:
     return r.content
 
 
+def fetch_byte_range_chunked(url: str, byte_start: int, byte_count: int, *,
+                             chunk_bytes: int = 8 << 20, retries: int = 6,
+                             backoff_s: float = 5.0, progress=None) -> bytes:
+    """``byte_count`` bytes from ``byte_start`` as a sequence of strict chunks.
+
+    Exists because the LROC PDS server dropped two single-request 124 MB range
+    fetches (a read timeout and a connection reset, EXP-007 acquisition log,
+    2026-09-04). Each chunk goes through :func:`fetch_byte_range`, so every
+    chunk keeps the same three-way strictness (status, Content-Range, length);
+    a chunk that fails is retried with linear back-off and the whole call
+    raises after ``retries`` failures rather than returning a short body.
+    The assembled length is checked once more at the end.
+    """
+    if byte_start < 0 or byte_count <= 0:
+        raise ValueError(f"invalid range: start={byte_start} count={byte_count}")
+    if chunk_bytes <= 0:
+        raise ValueError("chunk_bytes must be positive")
+    parts: list[bytes] = []
+    got = 0
+    while got < byte_count:
+        n = min(chunk_bytes, byte_count - got)
+        last_err: Exception | None = None
+        for attempt in range(1, retries + 1):
+            try:
+                parts.append(fetch_byte_range(url, byte_start + got, n))
+                last_err = None
+                break
+            except (requests.RequestException, RuntimeError) as exc:  # noqa: PERF203
+                last_err = exc
+                time.sleep(backoff_s * attempt)
+        if last_err is not None:
+            raise RuntimeError(
+                f"chunk at offset {byte_start + got} ({n} bytes) failed "
+                f"{retries} times; last error: {last_err}") from last_err
+        got += n
+        if progress is not None:
+            progress(got, byte_count)
+    body = b"".join(parts)
+    if len(body) != byte_count:
+        raise RuntimeError(f"assembled {len(body)} bytes, expected {byte_count}")
+    return body
+
+
 def fetch_image_tile(
     product: NacProduct,
     structure: Pds4ImageStructure,

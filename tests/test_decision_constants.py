@@ -5,12 +5,13 @@ The project's central integrity claim is that one rule -- ``n_inliers <= 8``
 applied unchanged through REAL-DATA-03, REAL-DATA-04 and REAL-DATA-05. That
 claim is what licenses every real-data conclusion in the repository.
 
-The number is currently declared **four** times, independently:
+The number is currently declared **five** times, independently:
 
     src/siim/demo/verdict.py       INLIER_CUTOFF
     src/siim/demo/evidence.py      INLIER_FAILURE_RULE
     scripts/register_real_pair.py  N_INLIERS_FAILURE_RULE
     scripts/register_real_triplet.py
+    scripts/run_exp007.py          N_INLIERS_FAILURE_RULE
 
 ``register_real_triplet.py`` already carries a comment saying it restates the
 constant "so a future edit to one script cannot silently make the two
@@ -49,6 +50,7 @@ INLIER_RULE_SITES = {
     "src/siim/demo/evidence.py": "INLIER_FAILURE_RULE",
     "scripts/register_real_pair.py": "N_INLIERS_FAILURE_RULE",
     "scripts/register_real_triplet.py": "N_INLIERS_FAILURE_RULE",
+    "scripts/run_exp007.py": "N_INLIERS_FAILURE_RULE",
 }
 
 #: The value D-023 fixed. Written here as a literal on purpose: this file is
@@ -162,3 +164,18 @@ def test_fit_rmse_is_excluded_wherever_the_verdict_engine_names_its_inputs():
     from siim.demo.verdict import EXCLUDED_FROM_VERDICT
 
     assert "fit_rmse" in EXCLUDED_FROM_VERDICT
+
+
+# ---------------------------------------------------------------------------
+# EXP-007 restates the archive-geometry discrimination floor; it must not drift
+# ---------------------------------------------------------------------------
+
+
+def test_exp007_restates_the_geometry_floor_constants_unchanged():
+    """The composed transforms of EXP-007 are judged against the SAME bound the
+    recorded edges were (Part 1 section 5). A drift in any constant would make
+    the two stages' CONSISTENT/INCONSISTENT verdicts incomparable."""
+    for name in ("CORNER_QUANTISATION_DEG", "N_MONTE_CARLO", "MC_SEED", "GRID",
+                 "INCONSISTENT_MARGIN", "BILINEAR_MODEL_RESIDUAL"):
+        assert module_constant("scripts/run_exp007.py", name) == module_constant(
+            "scripts/check_transform_against_geometry.py", name), name

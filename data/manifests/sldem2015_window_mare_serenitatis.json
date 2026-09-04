@@ -1,0 +1,21 @@
+{
+  "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+  "label_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.LBL",
+  "row0": 4400,
+  "row1_exclusive": 5700,
+  "record_bytes": 92160,
+  "line_samples": 23040,
+  "dtype": "<f4",
+  "unit": "km relative to 1737.4 km",
+  "byte_start": 405504000,
+  "byte_count": 119808000,
+  "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+  "map": {
+    "ppd": 512,
+    "lat_of_line": "30 - (line+0.5)/512",
+    "lon_of_sample": "(sample+0.5)/512",
+    "projection": "SIMPLE CYLINDRICAL, pixel-registered"
+  },
+  "retrieved_utc": "2026-09-04T14:29:45Z",
+  "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+}

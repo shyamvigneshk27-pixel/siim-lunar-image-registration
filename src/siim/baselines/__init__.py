@@ -13,6 +13,7 @@ from .engines import (
     run_orb_baseline,
     run_phase_congruency_baseline,
 )
+from .learned import learned_available, run_disk_lightglue_baseline
 from .rootsift_pipeline import BaselineResult, run_rootsift_baseline
 
 __all__ = [
@@ -29,4 +30,6 @@ __all__ = [
     "run_orb_baseline",
     "run_phase_congruency_baseline",
     "run_rootsift_baseline",
+    "learned_available",
+    "run_disk_lightglue_baseline",
 ]

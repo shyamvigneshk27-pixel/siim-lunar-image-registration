@@ -1,5 +1,6 @@
 """Preprocessing: radiometric and photometric normalisation (ANALYSIS §J)."""
 
+from .dem_render import DemRender, render_tile_under_sun
 from .photometry import (
     PhotometricCorrection,
     PhotometricModel,
@@ -12,6 +13,8 @@ from .photometry import (
 )
 
 __all__ = [
+    "DemRender",
+    "render_tile_under_sun",
     "PhotometricCorrection",
     "PhotometricModel",
     "ReflectanceDomainError",

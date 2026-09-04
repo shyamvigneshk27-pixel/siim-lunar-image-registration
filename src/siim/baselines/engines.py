@@ -98,7 +98,7 @@ __all__ = [
 #: B2K is present but unavailable on OpenCV core builds -- see the module
 #: docstring. It is listed so the gap is legible, not hidden.
 BASELINE_IDS = ("B0", "B1", "B2", "B3", "B5", "B7")
-OPTIONAL_BASELINE_IDS = ("B2K",)
+OPTIONAL_BASELINE_IDS = ("B2K", "B4L")
 
 BASELINE_ROLES = {
     "B0": "identity -- absolute error floor",
@@ -579,6 +579,13 @@ def run_phase_congruency_baseline(
 # registry
 # --------------------------------------------------------------------------
 
+def _run_learned(source, reference, **kwargs) -> BaselineResult:
+    """B4L: DISK + LightGlue (Apache-2.0), imported lazily so the package
+    never requires torch. B4/B6 (SuperGlue-family) stay refused."""
+    from .learned import run_disk_lightglue_baseline
+    return run_disk_lightglue_baseline(source, reference, **kwargs)
+
+
 _ENGINES: dict[str, Callable[..., BaselineResult]] = {
     "B0": run_identity_baseline,
     "B1": run_rootsift_baseline,
@@ -587,6 +594,7 @@ _ENGINES: dict[str, Callable[..., BaselineResult]] = {
     "B3": run_orb_baseline,
     "B5": run_direct_baseline,
     "B7": run_phase_congruency_baseline,
+    "B4L": _run_learned,
 }
 
 
