@@ -1,0 +1,141 @@
+  A identity     seed 0  A->translation 0.000  B->affine      0.000  C 0.000  affine-default 0.000
+  A translation  seed 0  A->translation 0.002  B->translation 0.002  C 0.002  affine-default 0.440
+  A translation  seed 1  A->translation 0.002  B->translation 0.002  C 0.009  affine-default 0.939
+  A translation  seed 2  A->translation 0.002  B->similarity  0.001  C 0.001  affine-default 0.342
+  A similarity   seed 0  A->similarity  0.024  B->affine      0.006  C 0.006  affine-default 0.169
+  A similarity   seed 1  A->similarity  0.024  B->affine      0.007  C 0.004  affine-default 0.480
+  A similarity   seed 2  A->similarity  0.024  B->similarity  0.002  C 0.002  affine-default 0.539
+  A affine       seed 0  A->affine      0.009  B->affine      0.001  C 12.774  affine-default 0.009
+  A affine       seed 1  A->affine      0.009  B->affine      0.001  C 12.774  affine-default 0.009
+  A affine       seed 2  A->affine      0.009  B->affine      0.001  C 12.774  affine-default 0.009
+  A projective   seed 0  A->projective  0.050  B->projective  0.020  C 2.780  affine-default 2.759
+  A projective   seed 1  A->projective  0.008  B->projective  0.028  C 3.070  affine-default 2.971
+  A projective   seed 2  A->projective  0.006  B->projective  0.028  C 2.939  affine-default 2.953
+  B identity     seed 0  A->translation 0.000  B->affine      0.000  C 0.000  affine-default 0.000
+  B translation  seed 0  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.002
+  B translation  seed 1  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.002
+  B translation  seed 2  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.002
+  B similarity   seed 0  A->similarity  0.026  B->similarity  0.002  C 0.002  affine-default 0.026
+  B similarity   seed 1  A->similarity  0.026  B->similarity  0.002  C 0.002  affine-default 0.026
+  B similarity   seed 2  A->similarity  0.026  B->similarity  0.002  C 0.002  affine-default 0.026
+  B affine       seed 0  A->affine      0.008  B->affine      0.005  C 12.738  affine-default 0.338
+  B affine       seed 1  A->affine      0.008  B->affine      0.010  C 12.739  affine-default 0.413
+  B affine       seed 2  A->affine      0.008  B->affine      0.011  C 12.741  affine-default 0.235
+  B projective   seed 0  A->projective  0.005  B->projective  0.033  C 2.818  affine-default 2.825
+  B projective   seed 1  A->projective  0.005  B->projective  0.028  C 2.849  affine-default 2.852
+  B projective   seed 2  A->projective  0.005  B->projective  0.021  C 2.919  affine-default 2.940
+  C identity     seed 0  A->translation 0.000  B->affine      0.000  C 0.000  affine-default 0.000
+  C translation  seed 0  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.003
+  C translation  seed 1  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.003
+  C translation  seed 2  A->translation 0.001  B->affine      0.000  C 0.000  affine-default 0.003
+  C similarity   seed 0  A->similarity  0.022  B->similarity  0.002  C 0.002  affine-default 0.022
+  C similarity   seed 1  A->similarity  0.022  B->similarity  0.002  C 0.002  affine-default 0.022
+  C similarity   seed 2  A->similarity  0.022  B->similarity  0.002  C 0.002  affine-default 0.022
+  C affine       seed 0  A->affine      0.008  B->affine      0.001  C 12.770  affine-default 0.008
+  C affine       seed 1  A->affine      0.008  B->affine      0.001  C 12.770  affine-default 0.008
+  C affine       seed 2  A->affine      0.008  B->affine      0.001  C 12.770  affine-default 0.008
+  C projective   seed 0  A->projective  0.012  B->projective  0.029  C 2.857  affine-default 3.056
+  C projective   seed 1  A->projective  0.013  B->projective  0.017  C 2.834  affine-default 2.905
+  C projective   seed 2  A->projective  0.014  B->projective  0.018  C 2.835  affine-default 2.884
+  D identity     seed 0  A->translation 0.000  B->affine      0.000  C 0.000  affine-default 0.000
+  D translation  seed 0  A->translation 0.002  B->translation 0.003  C 0.003  affine-default 0.188
+  D translation  seed 1  A->translation 0.002  B->translation 0.000  C 0.002  affine-default 0.372
+  D translation  seed 2  A->translation 0.003  B->similarity  0.002  C 0.002  affine-default 0.313
+  D similarity   seed 0  A->similarity  0.022  B->similarity  0.001  C 0.001  affine-default 0.022
+  D similarity   seed 1  A->similarity  0.022  B->similarity  0.001  C 0.001  affine-default 0.022
+  D similarity   seed 2  A->similarity  0.022  B->similarity  0.001  C 0.001  affine-default 0.022
+  D affine       seed 0  A->affine      0.006  B->affine      0.004  C 12.797  affine-default 0.277
+  D affine       seed 1  A->affine      0.006  B->affine      0.000  C 12.798  affine-default 0.006
+  D affine       seed 2  A->affine      0.006  B->affine      0.003  C 12.797  affine-default 0.367
+  D projective   seed 0  A->projective  0.008  B->projective  0.026  C 2.910  affine-default 2.926
+  D projective   seed 1  A->projective  0.008  B->projective  0.026  C 2.835  affine-default 2.871
+  D projective   seed 2  A->projective  0.008  B->projective  0.027  C 2.808  affine-default 2.940
+{
+ "gate_identity_rule_B": {
+  "met": false,
+  "n": 4
+ },
+ "S1_fit_based_selection_refuted_on_D": {
+  "met": false,
+  "n_hits": 0,
+  "detail": [
+   {
+    "seed": 0,
+    "selected": "translation",
+    "error": 0.002107315105765213,
+    "truth_model_error": 0.002107315105765213
+   },
+   {
+    "seed": 1,
+    "selected": "translation",
+    "error": 0.002074821078489285,
+    "truth_model_error": 0.002074821078489285
+   },
+   {
+    "seed": 2,
+    "selected": "translation",
+    "error": 0.0026488053909286898,
+    "truth_model_error": 0.0026488053909286898
+   }
+  ]
+ },
+ "S2_refined_reestimation": {
+  "met": false,
+  "all_ts_below_0_05": true,
+  "selection_accuracy": 0.7916666666666666,
+  "n_cases": 48
+ },
+ "S3_prior_rule": {
+  "met": true
+ },
+ "dense_median_error_by_rule": {
+  "rule_A": {
+   "median": 0.007541999133520199,
+   "ci95": [
+    0.005499550413540853,
+    0.008424811971799465
+   ],
+   "n": 52
+  },
+  "rule_B": {
+   "median": 0.001965011848672745,
+   "ci95": [
+    0.0013975599876327235,
+    0.0033385360922218465
+   ],
+   "n": 52
+  },
+  "rule_C": {
+   "median": 0.0050621427405119004,
+   "ci95": [
+    0.002083940168094335,
+    2.8352473184178257
+   ],
+   "n": 52
+  },
+  "recorded_affine": {
+   "median": 0.09747468176077319,
+   "ci95": [
+    0.02165231454849978,
+    0.35489543272672186
+   ],
+   "n": 52
+  }
+ },
+ "selection_confusion_rule_A": {
+  "translation -> translation": 12,
+  "similarity -> similarity": 12,
+  "affine -> affine": 12,
+  "projective -> projective": 12
+ },
+ "selection_confusion_rule_B": {
+  "translation -> translation": 4,
+  "translation -> similarity": 2,
+  "similarity -> affine": 2,
+  "similarity -> similarity": 10,
+  "affine -> affine": 12,
+  "projective -> projective": 12,
+  "translation -> affine": 6
+ }
+}
+written: experiments\EXP-011\exp011_results.json (26.0 min)

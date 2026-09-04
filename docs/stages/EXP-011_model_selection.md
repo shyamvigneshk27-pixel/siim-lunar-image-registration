@@ -100,4 +100,62 @@ share texture with their originals, so absolute errors are upper bounds.
 
 ## Part 2 — Results
 
-*Empty until Part 1 is committed and the run has completed.*
+**Run:** 2026-09-04, `scripts/run_exp011.py` (commit 37244d4), 26.0 min, 52
+cases (4 tiles × 4 truths × 3 seeds + 4 identity gates), B1 passed on all.
+Artefact: `experiments/EXP-011/exp011_results.json`.
+
+**Implementation clarification, recorded:** the selection rule "simplest model
+within 10 % of the best held-out median" (Part 1 §4.3) carries an absolute tie
+floor of 0.005 px, because on an exact self-warp every model's held-out
+residual is ~1e-9 and a purely relative tolerance chose by rounding noise. The
+floor cannot change a selection where models genuinely differ.
+
+### Gate — MET
+Identity self-warp, rule B: translation selected on all four tiles, error
+< 0.01 px.
+
+### S1 (fit-based selection refuted on D) — NOT MET. H1's mechanism half right.
+Rule A selected **translation** on all three D cases, with error 0.002 px. The
+prediction that it would select affine was **wrong**. What the artefact shows
+is why: the held-out residuals of the translation and affine models on D are
+**0.0338 versus 0.0336 px**, i.e. indistinguishable, exactly as the mechanism
+in Part 1 §1 says (the correlated localisation error is invisible from inside
+the correspondence set). The rule chose correctly only because of its
+**simplicity preference**, not because the evidence separated the models.
+That is a weaker guarantee than "selected by evidence" and is stated as such:
+rule A works on these cases by construction of the tie-break, and would fail
+on any case where the wrong model's held-out residual is more than 10 % better,
+which none of these 48 cases produced.
+
+### S2 (refined re-estimation) — MET
+Rule B (refine with ECC 48, then select on refined points) selected the truth
+model in **48 of 48** cases and reached a pooled dense median error of
+**0.0018 px** (95 % CI 0.0013–0.0033) against **0.0975 px** (CI 0.022–0.355)
+for the recorded affine default. On frame D's translation cases: affine
+default 0.19 / 0.37 / 0.31 px → rule B 0.0034 / 0.0003 / 0.0012 px. On frame A:
+0.44 / 0.94 / 0.34 → 0.0016 / 0.0024 / 0.0013.
+
+### S3 (geometry prior) — MET
+Rule C (similarity, re-estimated from refined points) reached < 0.05 px on
+every translation and similarity case (pooled 0.0051 px). Its CI upper bound
+of 2.8 px comes from the affine and projective truths, where a similarity prior
+is wrong by construction; the rule is only proposed for near-nadir same-sensor
+pairs, and this is the measured cost of applying it elsewhere.
+
+### E-034 in numbers
+The affine default's error on pure-translation self-warps is 0.19–0.94 px on
+frames A and D and 0.002–0.003 px on B and C. Frames A and D are the two
+low-incidence (18°, 30°) tiles: high Sun, low contrast, texture dominated by
+stretched noise. Correlated localisation error is a property of the *tile*,
+not of the model, and the affine model is what exposes it.
+
+### Consequences
+- Pipeline order becomes **estimate → refine → re-estimate with selection**;
+  rule B is the deployed rule, rule A is the fallback when refinement fails.
+- The verdict gains a `model_selected_by` field.
+- The recorded D → A and B → C transforms are not edited; REAL-DATA-07 reports
+  rule-B re-estimates beside them for every pass.
+- H1's mechanism is confirmed (held-out cannot see the bias); H1's predicted
+  *consequence* (wrong selection) did not occur under the simplicity tie-break.
+  Recorded as a partial refutation, not reframed.
+
