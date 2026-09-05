@@ -87,8 +87,8 @@ above applies unchanged.
 Engine agreement (added 2026-09-05) is the one signal added since the stages
 above were frozen, and it is added as a CAP, not a criterion: when two
 independent engines' final transforms disagree by more than the measured
-floor (``siim.pipeline.agreement``, 2 px; agreeing pairs on REAL-DATA-07 stay
-under 1.17 px, failing ones start at 49 px) the verdict cannot exceed
+floor (``siim.pipeline.agreement``, 3 px; agreeing pairs on REAL-DATA-07 stay
+under 2.2 px across three engines, failing ones start at 49 px) the verdict cannot exceed
 INCONCLUSIVE. It never rejects and never raises a verdict, and it is only
 consulted when a caller supplies it, so every recorded verdict is unchanged.
 The paragraph above -- do not add a rejection path -- still holds.
@@ -99,8 +99,8 @@ Measured false-acceptance bound (2026-09-05)
 had a transform INCONSISTENT with archive geometry on real data. It is a
 bound at the geometry check's own floor (~100 px at native NAC scale, ~2 px
 at 100 m), on mare, and it is what a judge should be shown when asked how
-often VERIFIED is wrong: zero of twenty for RootSIFT and one of twenty-three
-for DISK + LightGlue, with the floor stated.
+often VERIFIED is wrong: zero of forty-six for RootSIFT, one of forty-seven
+for DISK + LightGlue, zero of twenty-seven for XFeat, with the floor stated.
 
 Confidence is therefore an ordinal band backed by named evidence, not a
 probability. A number like 0.97 would imply a calibration this project has not
@@ -146,11 +146,14 @@ EXCLUDED_FROM_VERDICT: dict[str, str] = {
 #: 0 / 20 B1, 0 / 17 B4L) and REAL-DATA-08 (100 m rung, 0 / 1 B1, 1 / 6 B4L).
 #: A bound at the geometry check's floor, on one mare region; not a probability.
 MEASURED_WRONG_PASS: dict[str, dict[str, object]] = {
-    "B1": {"n_pass": 21, "n_wrong_pass": 0,
-           "source": "REAL-DATA-07 (20 passes) + REAL-DATA-08 (1 pass), 2026-09-05"},
-    "B4L": {"n_pass": 23, "n_wrong_pass": 1,
-            "source": "REAL-DATA-07 (17 passes) + REAL-DATA-08 (6 passes; the wrong pass is "
-                      "frame B at 59 m, 9 inliers, 28 px off), 2026-09-05"},
+    "B1": {"n_pass": 46, "n_wrong_pass": 0,
+           "source": "REAL-DATA-07 original (20) + amended (25) at ~2 m + REAL-DATA-08 (1) at 100 m, "
+                     "2026-09-05/06"},
+    "B4L": {"n_pass": 47, "n_wrong_pass": 1,
+            "source": "REAL-DATA-07 original (17) + amended (24) at ~2 m + REAL-DATA-08 box run (6; the "
+                      "wrong pass is frame B at 59 m, 9 inliers, 28 px off), 2026-09-05/06"},
+    "B4X": {"n_pass": 27, "n_wrong_pass": 0,
+            "source": "REAL-DATA-07 amended run at ~2 m, 2026-09-06"},
 }
 
 #: The deployable failure rule (D-023). Form matters: '<= 8', not '< 8'.
@@ -213,7 +216,7 @@ def assess(
     loop_error_px: float | None = None,
     roi: np.ndarray | None = None,
     engine_agreement_px: float | None = None,
-    engine_agreement_floor_px: float = 2.0,
+    engine_agreement_floor_px: float = 3.0,
     annotations: dict[str, Any] | None = None,
 ) -> Verdict:
     """Decide whether an estimated registration should be trusted, and say why.

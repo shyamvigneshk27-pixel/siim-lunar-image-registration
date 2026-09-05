@@ -199,3 +199,18 @@ def test_live_register_rejects_unrelated_images_without_a_product(pair, rng):
     assert d["verdict"]["status"] == "REJECTED"
     assert d["registered_png"] is None
     assert d["summary"]["model_selected_by"] == "none"
+
+
+@pytest.mark.skipif(not ev.RD07_AMENDED_ARTEFACT.exists(), reason="amended RD-07 artefact not on disk")
+def test_the_amended_run_is_shown_beside_the_original_not_in_place_of_it(eng):
+    am = eng["rd07_amended"]
+    assert am is not None
+    assert eng["rd07"]["replication"]["s1_met"] is False          # original, preserved
+    assert am["replication"]["s1_met"] is True                    # amended (E-037)
+    assert am["significance"]["b1_pooled_p"] == pytest.approx(0.00119, abs=1e-4)
+    assert am["significance"]["s5_met"] is True
+    assert am["wrong_pass"]["b1"] == {"n_pass": 25, "n_wrong_pass": 0}
+    assert am["wrong_pass"]["b4l"] == {"n_pass": 24, "n_wrong_pass": 0}
+    assert am["envelope"]["b1_largest_bin_ge_0_8"] == 20
+    assert "north_up_east_right" in am["orientation"]
+    assert am["source"] in eng["sources"]

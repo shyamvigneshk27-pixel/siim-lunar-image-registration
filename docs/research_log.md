@@ -861,6 +861,16 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 
 **Status:** closed for the census. **Open:** RL-042b — why E2 fails (placement, orientation signature, saturation; a data defect would restore D-040's scope); RL-042c — the 60–75° incidence sweep the census already has frames for; RL-036 remains open (no replication held).
 
+### RL-044 — With the mirror removed, the replication holds and the cliff is located (REAL-DATA-07 amended run)
+
+**Question.** Re-run REAL-DATA-07 with the reflection-aware orientation (E-037), same 42 pairs, same frozen criteria, plus XFeat as a third engine.
+
+**Result.** `[MEASURED]` `experiments/REAL-DATA-07/real_data_07_results_nue.json`, `real_data_07_amendment_analysis.json`. **S1 replication MET**: E2 → A 2138 inliers CONSISTENT, E2 → B 4 INCONSISTENT; **S5 MET**: pooled p = 0.0012, RD-03 0.0043, RD-04 0.029; S2 MET with the last ≥ 0.8 bin at 20–25°; S3 and S6 NOT MET as before. Successes 25 / 24 / 27 of 42 for B1 / B4L / B4X, **0 wrong passes in 76**. Five B1 outcomes flipped fail → success, all on mirrored frames. Ceiling (post hoc, Δinc ≤ 25°): ≤ 55° 0.87, 65–70° 0.75, 70–75° 0.33. Three-engine agreement: all-success max 2.16 px, any-inconsistent min 247 px.
+
+**Interpretation.** `[INFERENCE, HIGH]` The "four frames" of RL-042 were two mirrored frames and two dark ones. With the mirror removed, Δincidence separates the outcomes as D-040 said, now with n = 2 low-incidence frames on A and a per-window p under 0.05; the remaining frame-level failures sit at 72–75° incidence and are the ceiling question, not frame identity. D-040-N1 discharged (D-040-N2); D-049 withdrawn (D-049-N2); agreement floor 3 px (D-051).
+
+**Status:** closed. **Open:** RL-042c (the ceiling sweep, n = 3 in the decisive bin); RL-038b unchanged.
+
 ### RL-043 — Radar registers under nothing; the 100 m rung registers under the learned engine and starves the classical one (REAL-DATA-08)
 
 **Question.** Does any engine register a NAC tile, degraded to the radar's sampling, to the Mini-RF S-band strip (a genuine modality change)? Does the pipeline register a NAC tile degraded to 100 m against the WAC mosaic (the IIRS rung)? Criteria frozen 2026-09-04 before any radar or WAC byte was matched.
@@ -889,9 +899,9 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 | **RL-039b** | **H0 at a fine-DEM site.** The SLDEM render carries nothing on this mare at 1.8–30 m; whether a 5 m NAC DTM restores it is untested | **SERENRIDGE1** (23.75 N, 24.65 E; NAC DTM) — EXP-007's render arm re-run there | **yes — the only remaining test of the physics-conditioning claim** |
 | ~~RL-040b~~ | ~~The learned engine's envelope and wrong-pass rate on 42 pairs~~ | **CLOSED by REAL-DATA-07 (RL-042): same envelope as B1 at native scale, 5–25× yield inside it, 0 wrong passes in 17.** D-047 amended to D-047-N1 | — |
 | ~~RL-042b~~ | ~~Why does frame E2 fail against everything?~~ | **CLOSED 2026-09-05 (E-037): E2's tile is a mirror image** — the corner-map determinant is positive for E2 and four other census frames; flipped, E2 → D gives 2691 inliers and E2 → A 2138. The stage was re-run with a reflection-aware orientation (RL-044) | — |
-| **RL-042c** | **Where between 60° and 75° does absolute incidence stop being usable?** Three frames at 66.9–74.7° fail 1 / 16 including at Δinc 5–8° | a sweep with the census frames already tiled (RD-07) — discharges RL-028b | **yes — sets the scope of every illumination claim** |
+| **RL-042c** | **Where between 65° and 75° does absolute incidence stop being usable?** After the mirror correction: 65–70° 0.75, 70–75° 0.33 (n = 3) at Δinc ≤ 25°; the two darkest frames (72.3°, 74.7°) still fail nearly everything | a sweep with more frames in the 70–75° bin — discharges RL-028b and D-029 | **yes — sets the top of the incidence scope** |
 | RL-040c | Is 51.54° a limit of the engine or of the B → D pair? | a second ≥ 50° pair (REAL-DATA-07 census has frames to 74.65°) | no |
-| **RL-036 (cont.)** | **Replication of the low-incidence success — NOT ACHIEVED by REAL-DATA-07.** E1 could not be tiled on the shared ground; E2 failed both decisive edges (RL-042) | a third candidate after RL-042b is answered | **yes — D-040-N1's debt stands** |
+| ~~RL-036~~ | ~~Replication of the low-incidence success~~ | **CLOSED — ACHIEVED by the amended REAL-DATA-07 run (RL-044):** E2 → A 2138 inliers consistent, E2 → B fails. D-040-N1 discharged (D-040-N2) | — |
 | **RL-034b** | **Loop closure's discriminating power on real data.** Exercised twice now — 1201.04 px and **943.75 px**, neither a false closure — but both loops had two broken legs | a later stage | **no — deferred behind the September 2 demo.** Needs three mutually low-Δincidence real frames |
 | **RL-032b** | **What frame is `SUB_SOLAR_AZIMUTH` measured in?** It exists in the archive index table but carries the same "relative to the RDR products" caveat that made `NORTH_AZIMUTH` useless (E-027) | **REAL-DATA-03** | yes — it would be this project's first real Sun-azimuth information (E-020) |
 | ~~RL-030b~~ | ~~Are overlapping real NAC triplets available at all?~~ | **CLOSED by REAL-DATA-03 (RL-034): 8 of 60 screened frames contain the target ground point with a full tile inside.** They are not scarce. One was acquired and a real loop was closed | — |

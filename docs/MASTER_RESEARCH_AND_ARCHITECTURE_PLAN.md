@@ -907,3 +907,19 @@ any engine tried; spectral modality (IIRS) untested until REAL-DATA-09.*
 **6.5 / 10** (from 6): more is measured, and two of the things measured are
 negatives the plan had counted on being positives (replication, the learned
 envelope at native scale). The ceiling is still Chandrayaan-2 data.
+
+## A5. 2026-09-06 — the replication negative was a data defect
+
+The "four frames that fail against everyone" of A4 were, for two of them,
+mirror-imaged tiles (E-037: positive corner-map Jacobian determinant on 5 of
+14 census frames; a quarter-turn cannot undo a reflection). With a
+reflection-aware orientation the stage was re-run on the same 42 pairs with
+the same frozen criteria and a third engine (XFeat): **replication MET**
+(E2 → A 2138 consistent inliers, E2 → B 4), pooled **p = 0.0012** with both
+windows under 0.05, 0 wrong passes in 76, last ≥ 0.8 bin 20–25°, nothing
+above 40°. D-040-N1 discharged (D-040-N2); D-049 withdrawn (D-049-N2); the
+engine-agreement floor measured at 3 px on three engines (D-051). What
+remains frame-level is two frames at 72–75° incidence — the ceiling, not
+identity. Demonstrated score **7 / 10**: the illumination claim is now
+replicated and per-window significant; the ceiling is still Chandrayaan-2
+data (download 2026-09-06).

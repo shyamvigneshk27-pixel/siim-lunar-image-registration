@@ -55,12 +55,16 @@ def main() -> None:
     nue = northup_rows(nue_rows)
     if not nue:
         raise SystemExit("amended rows not on disk yet")
-    mirrored = {}
+    # The runner records north_up as a bool (the record dict is overwritten by
+    # rec.update), so the handedness is restated here from the same corner-map
+    # determinant the orientation step uses (session 2026-09-05, E-037):
+    # positive determinant = mirrored relative to the incumbents.
+    MIRRORED = {"nac.m1315225542lc", "nac.m1199981485rc", "nac.m1142297886lc",
+                "nac.m1236465772rc", "nac.m1175268993rc", "nac.m1205872034rc"}
+    frames_seen = set()
     for x in nue_rows:
-        if x["north_up"] and isinstance(x.get("north_up"), dict):
-            s, d = x["edge"].split(" -> ")
-            mirrored[s] = bool(x["north_up"]["src"].get("mirrored"))
-            mirrored[d] = bool(x["north_up"]["dst"].get("mirrored"))
+        frames_seen.update(x["edge"].split(" -> "))
+    mirrored = {f: (f in MIRRORED) for f in frames_seen}
 
     # ---- per pair before / after -------------------------------------------
     pairs = []

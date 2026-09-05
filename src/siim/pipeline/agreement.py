@@ -39,10 +39,23 @@ had no fit):
   geometry-inconsistent: **min 49 px**, median 584 px.
 
 A floor anywhere between 1.2 and 49 px separates the two sets completely on
-this data; 2 px is kept because it is the loop-closure threshold's scale and
-sits well inside the gap. This is a measurement on one mare region at one
-GSD with n = 17 + 4, not a universal constant; ``tests/test_agreement_floor.py``
+this data. This is a measurement on one mare region at one GSD with
+n = 17 + 4, not a universal constant; ``tests/test_agreement_floor.py``
 recomputes it from the artefact so a change in the rows changes the test.
+
+Three engines, mirror-corrected run (2026-09-06, ``rows_*_nue.json``)
+--------------------------------------------------------------------
+On the 24 pairs where B1, B4L and B4X all succeed, the largest pairwise
+disagreement is **2.16 px** (B1 vs XFeat; B1 vs B4L max 1.17, B4L vs XFeat
+max 1.99): XFeat localises about a pixel worse than the other two before
+refinement. Where at least one engine's transform is geometry-INCONSISTENT
+the smallest pairwise disagreement is **247 px**. The floor is therefore set
+at **3 px**: above every agreeing triple, two orders of magnitude below every
+disagreeing one, and still the scale of loop closure's 2 px threshold.
+(A B1/XFeat pair where one engine merely failed the inlier RULE while both
+transforms were right disagrees by as little as 1.4 px; that is agreement
+doing its job, not a counter-example -- the rule and the geometry are
+separate signals.)
 """
 
 from __future__ import annotations
@@ -53,9 +66,9 @@ from ..geometry import Transform, endpoint_error
 
 __all__ = ["AGREEMENT_FLOOR_PX", "EngineAgreement", "engine_agreement"]
 
-#: Measured on the REAL-DATA-07 rows (module docstring): agreeing pairs max 1.17 px,
-#: disagreeing pairs min 49 px. Same scale as LOOP_ERROR_REJECT_PX.
-AGREEMENT_FLOOR_PX = 2.0
+#: Measured on the REAL-DATA-07 rows (module docstring): agreeing pairs max 1.17 px
+#: (B1/B4L) and 2.16 px (three engines); disagreeing pairs min 49 px / 247 px.
+AGREEMENT_FLOOR_PX = 3.0
 
 
 @dataclass(frozen=True)
@@ -88,7 +101,7 @@ def engine_agreement(engine_a: str, transform_a: Transform | None,
         st = (f"{engine_a} and {engine_b} agree: median disagreement {e.median:.3f} px "
               f"(p90 {e.p90:.3f}) within the {floor_px:.1f} px floor. Independent "
               "detectors, descriptors and assignment; a per-engine gauge error would "
-              "not survive this. Floor measured on REAL-DATA-07 (agree <= 1.17 px, disagree >= 49 px).")
+              "not survive this. Floor measured on REAL-DATA-07 (agree <= 2.2 px, disagree >= 49 px).")
     else:
         st = (f"{engine_a} and {engine_b} DISAGREE: median {e.median:.2f} px "
               f"(max {e.max:.2f}) against a {floor_px:.1f} px floor. At least one "

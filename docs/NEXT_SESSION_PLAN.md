@@ -22,6 +22,11 @@ REAL-DATA-06, -07, -08) and the pre-registration of REAL-DATA-09.
    (D-049 — the frame-identity question is back with n = 4); the learned
    engine's native-scale envelope equals RootSIFT's, its yield inside it is
    5–25× (D-047-N1); north-up moved one recorded edge 7 → 9 across the rule.
+   **Amended 2026-09-06 (E-037):** two of the four frames were mirror images;
+   with the corrected orientation the replication is **MET** (E2 → A 2138,
+   E2 → B 4), pooled p = **0.0012** with both windows < 0.05, 0 wrong passes
+   in 76 across three engines; D-049 withdrawn (D-049-N2), D-040-N1
+   discharged (D-040-N2). The two dark frames at 72–75° remain (item B).
 4. **REAL-DATA-08 Part 2:** radar registers under no engine (0 / 48); at
    100 m B1 passes one frame and B4L three of four with 34–99 consistent
    inliers from 111 × 46 px strips, plus one wrong pass (D-050). Box average
@@ -57,22 +62,22 @@ REAL-DATA-06, -07, -08) and the pre-registration of REAL-DATA-09.
 
 | # | Item | Why | Cost | Depends on |
 |---|---|---|---|---|
-| A | **E2 diagnostic** (RL-042b): why `nac.m1315225542lc` fails against everything including D at Δinc 2.9° — placement, orientation signature, saturation? | Decides whether D-040's scope is the data's or the Moon's | 0.5 day | none |
-| B | **Incidence-ceiling sweep 60–75°** (RL-042c) with the census frames already tiled | Three dark frames fail 1 / 16; D-029's 75° was never swept | 0.5 day | none |
-| C | **Calibrate the engine-agreement floor** on the REAL-DATA-07 rows (B1 vs B4L transforms are all recorded) | The 2 px floor is provisional | 0.5 day | none |
+| ~~A~~ | ~~E2 diagnostic~~ — **DONE 2026-09-05/06 (E-037):** E2 and four other frames are mirror images by their corner metadata; corrected orientation; amended run: replication MET, p = 0.0012, 0 wrong passes / 76 | — | — | — |
+| B | **Incidence-ceiling sweep 70–75°** (RL-042c): after the correction 65–70° is 0.75 and 70–75° is 0.33 on n = 3; more frames in that bin | Sets the top of the incidence scope; D-029's 75° looks 5–10° too high here | 0.5 day | ODE census |
+| ~~C~~ | ~~Calibrate the engine-agreement floor~~ — **DONE:** 3 px, measured on three engines (agree ≤ 2.16 px, inconsistent ≥ 247 px; D-051) | — | — | — |
 | D | **Second region (highlands)** for REAL-DATA-07 | Is the envelope a mare result? | 1.5 days | none |
 | E | **SERENRIDGE1** NAC DTM: EXP-007's render arm at a fine DEM (RL-039b) | The only remaining test of H0 | 1.5 days | PDS access |
 | F | **Manual check points** on 3 cross-illumination pairs (R7) | The only route to a real sub-pixel claim | 1 day human + 0.5 tooling | annotators |
 | G | **MatchAnything-ELoFTR** on the REAL-DATA-08 radar rows (RL-043b) | The only route to a multimodal claim before C2 | 1 day | weight licence |
-| H | **Re-run the WAC rows with the PSF-aware operator** (RL-043c), labelled | Closes RD-08's recorded deviation | 0.5 day | none |
-| I | **B4X on the REAL-DATA-07 pairs** as a third engine column, and the three-way agreement statistic | Turns R2 from a design into a measurement | 0.5 day | none |
-| J | Verdict false-acceptance bound in the docs from the measured wrong-pass rates (0 / 20 B1, 1 / 23 B4L) | Judges will ask | 0.25 day | none |
+| ~~H~~ | ~~Re-run the WAC rows with the PSF-aware operator~~ — **DONE** (`real_data_08_psf_fwhm1.json`): criteria unchanged; B4L 68 / 41 / 101 consistent; three wrong passes on frame B | — | — | — |
+| ~~I~~ | ~~B4X on the REAL-DATA-07 pairs~~ — **DONE** in the amended run: 27 / 42 successes, 0 wrong passes; three-way agreement measured | — | — | — |
+| ~~J~~ | ~~Verdict false-acceptance bound in the docs~~ — **DONE:** `MEASURED_WRONG_PASS` in `siim.demo.verdict` (update to 0 / 46 B1, 1 / 30 B4L incl. RD-08 box run, 0 / 27 B4X after the amended run) | — | — | — |
 
 ## 4. What to stop doing
 
 - No more SLDEM render arms on mare (measured twice: EXP-007, EXP-010 D3).
 - No per-frame photometric arms (E-035).
-- No further replication attempt until A is answered.
+- No further replication attempt is needed: the amended run met S1.
 - Do not report a coarse-rung pass without its geometry verdict (D-050).
 
 ## 5. Known loose ends

@@ -390,7 +390,66 @@ writing `rows_rd03_nue.json`, `rows_rd04_nue.json` and
 `real_data_07_results_nue.json`; the criteria are Part 1's, unchanged. The
 results follow.
 
-### Amended results
+### Amended results (run 2026-09-05/06, `real_data_07_results_nue.json`, 188 + 46 rows, three engines)
 
-*Written when the amended run completes; see below.*
+Same 42 geometry-confirmed pairs, same criteria, orientation step corrected.
+Engines B1, B4L and the new B4X (XFeat, Apache-2.0, pinned commit).
+
+| criterion | original run | amended run |
+|---|---|---|
+| S4 reproduction | MET | MET (5365, 4, 4, 1656, 3, 7 in the recorded direction) |
+| **S1 replication** | NOT MET | **MET** — E2 → A **2138** inliers, CONSISTENT (B4L 2193, B4X 992); E2 → B **4**, INCONSISTENT (B4L 0, B4X 5). E2 → D at 2.91°: 2726 / 1754 / 593 |
+| S6 north-up control | NOT MET (A → B RD-04, 7 → 9) | NOT MET, same edge, same two inliers |
+| S2 B1 envelope | MET (largest ≥ 0.8 bin 10–15°) | MET (largest ≥ 0.8 bin **20–25°**, 0.89 on n = 9; 0 above 40°) |
+| S3 B4L envelope ≥ B1 + 15° | NOT MET | NOT MET (both 20–25°) |
+| **S5 significance** | NOT MET (RD-04 0.121) | **MET** — pooled **p = 0.0012**, RD-03 0.0043, RD-04 0.029 |
+| wrong passes | 0 / 20 B1, 0 / 17 B4L | **0 / 25 B1, 0 / 24 B4L, 0 / 27 B4X** |
+| successes | 20 / 42 B1, 17 / 42 B4L | **25 / 42 B1, 24 / 42 B4L, 27 / 42 B4X** |
+
+Five B1 outcomes changed, all fails → successes, all on mirrored frames:
+`m1182331886lc → m1199981485rc` 5 → 190, `m1212932972lc → m1199981485rc`
+5 → 293, E2 → `m1212932972lc` 5 → 284, E2 → A 6 → 2138, E2 →
+`m1341069775rc` 6 → 108 (all CONSISTENT). No success became a failure.
+
+**Per-frame success under B1, before → after:** E2 1/5 → **4/5**;
+`m1199981485rc` 0/5 → 2/5; `m1212932972lc` 9/15 → 11/15; `m1182331886lc`
+3/6 → 4/6; `m1341069775rc` 2/5 → 3/5; A 6/10 → 7/10; unchanged: D 5/7, B 5/10,
+C 2/3, `m1363396554rc` 3/3, `m1236465772rc` 1/2, `m1175268993rc` 1/2,
+`m1096350825rc` **1/5**, `m1142297886lc` **1/6**.
+
+**The incidence ceiling (post hoc, RL-042c), B1 success by the HIGHER
+incidence of the pair, restricted to Δinc ≤ 25° so the envelope is not
+confounded:** ≤ 55° — 13 / 15 (0.87); 65–70° — 6 / 8 (0.75); **70–75° — 1 / 3
+(0.33)**, and 1 / 10 over all Δ. The two frames that still fail against
+nearly everyone, `m1096350825rc` (72.3°, proper handedness) and
+`m1142297886lc` (74.7°, mirrored and now corrected), are the two darkest
+tiles (DN median 385–391 and 342). With the mirror removed, what remains at
+the top of the incidence range is consistent with D-029's provisional 75°
+ceiling being **too high for this window by 5–10°**; a dedicated sweep is
+still owed (n = 3 in the decisive bin).
+
+**Three-engine agreement (R2, measured):** on the 24 pairs where all three
+engines succeed, the largest pairwise dense disagreement is **2.16 px** (B1 vs
+B4X; B1 vs B4L 1.17; B4L vs B4X 1.99); where any engine's transform is
+INCONSISTENT with geometry the smallest disagreement is **247 px**. The
+agreement floor is set at 3 px on this evidence (`siim.pipeline.agreement`).
+
+**What the amendment licenses (Part 1 §6, applied to the amended run):**
+
+- **S1 MET → D-040-N1's replication debt is discharged.** A second,
+  independently acquired low-incidence frame (E2, 21.13°, June 2019, 0.81 m)
+  succeeds against A and fails against B, exactly as D did; frame identity
+  ceases to explain A's edges within the tested set. D-040's scope statement
+  stands and D-049's re-scoping is withdrawn (D-049-N2).
+- **S2, S5 MET → the illumination cliff of the uncorrected baseline is located
+  to a 5° bin at p ≤ 0.01:** the last bin with ≥ 0.8 success is 20–25°; the
+  25–30° bin is 0.29; nothing passes above 40°.
+- **S3 NOT MET stands:** the learned engine's native-scale envelope equals the
+  classical one; its advantage is yield (and, from EXP-007, reach at 7–30 m).
+- **S6 NOT MET stands** with the same two-inlier caveat.
+- The original Part 2 is not rewritten. The finding it reported — "four
+  frames fail against every partner irrespective of Δincidence" — was **a
+  defect of the orientation step (E-037), not a property of the Moon**, for
+  E2 and `m1199981485rc`; for the two darkest frames it survives as an
+  incidence-ceiling effect, reduced to the question RL-042c already asks.
 

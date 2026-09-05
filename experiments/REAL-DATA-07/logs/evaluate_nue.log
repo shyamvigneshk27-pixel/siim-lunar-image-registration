@@ -1,0 +1,251 @@
+{
+ "S4_reproduction_gate": {
+  "met": true
+ },
+ "S1_replication": {
+  "met": true,
+  "detail": [
+   {
+    "frame": "nac.m1315225542lc",
+    "vs_A_success": true,
+    "vs_A_geometry": "CONSISTENT WITH ARCHIVE GEOMETRY",
+    "vs_B_pass": false,
+    "replicates": true
+   }
+  ]
+ },
+ "S6_north_up_changes_no_recorded_outcome": {
+  "met": false,
+  "changed": [
+   "nac.m1271742202lc -> nac.m1335207975rc"
+  ]
+ },
+ "envelope_b1": {
+  "pooled": {
+   "bins_5deg": {
+    "0": {
+     "n": 7,
+     "success_rate": 0.7142857142857143
+    },
+    "5": {
+     "n": 4,
+     "success_rate": 0.75
+    },
+    "10": {
+     "n": 3,
+     "success_rate": 1.0
+    },
+    "15": {
+     "n": 3,
+     "success_rate": 0.6666666666666666
+    },
+    "20": {
+     "n": 9,
+     "success_rate": 0.8888888888888888
+    },
+    "25": {
+     "n": 7,
+     "success_rate": 0.2857142857142857
+    },
+    "30": {
+     "n": 2,
+     "success_rate": 0.5
+    },
+    "35": {
+     "n": 3,
+     "success_rate": 0.3333333333333333
+    },
+    "40": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "45": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "50": {
+     "n": 2,
+     "success_rate": 0.0
+    }
+   },
+   "largest_bin_with_success_rate_ge_0_8": 20
+  },
+  "RD03": {
+   "bins_5deg": {
+    "0": {
+     "n": 5,
+     "success_rate": 0.8
+    },
+    "5": {
+     "n": 2,
+     "success_rate": 0.5
+    },
+    "10": {
+     "n": 1,
+     "success_rate": 1.0
+    },
+    "15": {
+     "n": 2,
+     "success_rate": 0.5
+    },
+    "20": {
+     "n": 5,
+     "success_rate": 0.8
+    },
+    "25": {
+     "n": 4,
+     "success_rate": 0.25
+    },
+    "30": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "35": {
+     "n": 2,
+     "success_rate": 0.0
+    },
+    "40": {
+     "n": 1,
+     "success_rate": 0.0
+    }
+   },
+   "largest_bin_with_success_rate_ge_0_8": 20
+  },
+  "RD04": {
+   "bins_5deg": {
+    "0": {
+     "n": 2,
+     "success_rate": 0.5
+    },
+    "5": {
+     "n": 2,
+     "success_rate": 1.0
+    },
+    "10": {
+     "n": 2,
+     "success_rate": 1.0
+    },
+    "15": {
+     "n": 1,
+     "success_rate": 1.0
+    },
+    "20": {
+     "n": 4,
+     "success_rate": 1.0
+    },
+    "25": {
+     "n": 3,
+     "success_rate": 0.3333333333333333
+    },
+    "30": {
+     "n": 1,
+     "success_rate": 1.0
+    },
+    "35": {
+     "n": 1,
+     "success_rate": 1.0
+    },
+    "45": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "50": {
+     "n": 2,
+     "success_rate": 0.0
+    }
+   },
+   "largest_bin_with_success_rate_ge_0_8": 35
+  }
+ },
+ "significance_b1": {
+  "pooled": {
+   "n_edges": 42,
+   "n_success": 25,
+   "statistic": 328.5,
+   "p_value": 0.0011899940500297499,
+   "exact": false,
+   "perfectly_separated": false
+  },
+  "RD03": {
+   "n_edges": 23,
+   "n_success": 12,
+   "statistic": 108.0,
+   "p_value": 0.004312621017426509,
+   "exact": true,
+   "perfectly_separated": false
+  },
+  "RD04": {
+   "n_edges": 19,
+   "n_success": 13,
+   "statistic": 61.0,
+   "p_value": 0.02885891198584697,
+   "exact": true,
+   "perfectly_separated": false
+  }
+ },
+ "wrong_pass_rate_b1": {
+  "n_pass": 25,
+  "n_wrong_pass": 0
+ },
+ "envelope_lg": {
+  "pooled": {
+   "bins_5deg": {
+    "0": {
+     "n": 7,
+     "success_rate": 0.7142857142857143
+    },
+    "5": {
+     "n": 4,
+     "success_rate": 0.75
+    },
+    "10": {
+     "n": 3,
+     "success_rate": 1.0
+    },
+    "15": {
+     "n": 3,
+     "success_rate": 0.6666666666666666
+    },
+    "20": {
+     "n": 9,
+     "success_rate": 0.8888888888888888
+    },
+    "25": {
+     "n": 7,
+     "success_rate": 0.2857142857142857
+    },
+    "30": {
+     "n": 2,
+     "success_rate": 0.5
+    },
+    "35": {
+     "n": 3,
+     "success_rate": 0.0
+    },
+    "40": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "45": {
+     "n": 1,
+     "success_rate": 0.0
+    },
+    "50": {
+     "n": 2,
+     "success_rate": 0.0
+    }
+   },
+   "largest_bin_with_success_rate_ge_0_8": 20
+  },
+  "RD03": {
+   "bins_5deg": {
+    "0": {
+     "n": 5,
+     "success_rate": 0.8
+    },
+    "5": {
+     "n": 2,
+     "success_rate": 0.5
+    
+written: experiments\REAL-DATA-07\real_data_07_results_nue.json
+EXIT 0
