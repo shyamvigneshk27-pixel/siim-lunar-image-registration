@@ -114,6 +114,14 @@ def main() -> None:
             print(f"   missing: {m}")
         print("   fix: re-run REAL-DATA-04, then "
               "python scripts/build_demo_assets.py")
+    from siim.demo.evidence import engines_status
+    es = engines_status()
+    if es["available"]:
+        print("ENGINES PANEL: available - EXP-007 and REAL-DATA-07 artefacts on disk")
+    else:
+        print("ENGINES PANEL: UNAVAILABLE - missing " + ", ".join(es["missing"]))
+    print("LIVE REGISTER: available - POST /api/register (computed in the request, "
+          "labelled live; needs the `learned` extra for B4L/B4X)")
     print("SYNTHETIC    : available - generated live in each request")
     print("CHANDRAYAAN-2: NOT AVAILABLE. No multi-modal claim is supported.")
     print("NETWORK      : not used. Every real number is read from "

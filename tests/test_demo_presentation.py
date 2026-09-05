@@ -143,6 +143,8 @@ def test_the_allow_list_is_exactly_what_the_page_advertises():
         advertised.update(a["path"] for a in
                           ev.build_real_scenario(sid)["provenance"]["artefacts"])
     advertised.update(ev.illumination_evidence()["sources"])
+    if ev.engines_status()["available"]:
+        advertised.update(ev.engines_evidence()["sources"])
     assert set(api.advertised_artefacts()) == advertised
 
 

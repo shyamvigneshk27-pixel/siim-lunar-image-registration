@@ -59,6 +59,12 @@ experiments = ["scikit-learn>=1.4", "matplotlib>=3.8"]
 #   pip install torch --index-url https://download.pytorch.org/whl/cpu
 learned = ["torch>=2.4", "kornia>=0.8,<0.9"]
 
+# Chandrayaan-2 ingestion (REAL-DATA-09): TMC-2 Level-2 orthoimages and DEMs
+# are GeoTIFF. tifffile (BSD-3, pure Python) reads the strips/tiles and the four
+# GeoTIFF geometry tags; rasterio/GDAL are deliberately NOT used (binary wheels,
+# a second projection engine, and nothing this stage needs beyond the tags).
+chandrayaan2 = ["tifffile>=2024.1"]
+
 # httpx is not optional in practice: tests/test_demo_real_data.py and
 # tests/test_demo_verdict.py drive the API through fastapi.testclient.TestClient,
 # which raises at import time without it. matplotlib comes in because the

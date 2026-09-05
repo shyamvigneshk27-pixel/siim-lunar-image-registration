@@ -288,6 +288,23 @@ Source (primary): LightGlue repository README, https://github.com/cvg/LightGlue,
 
 ---
 
+## S15 — Chandrayaan-2 data acknowledgement and marking requirements ★ goes into the deliverable's licence section
+
+**Source (primary):** ISSDC PRADAN, Chandrayaan-2 acknowledgement page — https://pradan.issdc.gov.in/ch2/ack.xhtml
+**Retrieved:** 2026-09-05 (public page, no login required for this text; the user re-reads it on the download day and records any difference)
+
+**Facts extracted (verbatim where quoted):**
+- For direct data use: *"We acknowledge the use of data from the Chandrayaan-II, second lunar mission of the Indian Space Research Organisation (ISRO), archived at the Indian Space Science Data Centre (ISSDC)."*
+- For work based on published Chandrayaan-2 results: *"The research is based partially / to a significant extent (whichever is applicable) on the results obtained from the Chandrayaan-II, second lunar mission of the Indian Space Research Organisation (ISRO), archived at the Indian Space Science Data Centre (ISSDC)."*
+- "Chandrayaan-II" must be mentioned in the paper's abstract; results are to be made available to the scientific community through publication; any printed data product carries **"© reserved ISRO"**.
+- The portal's own front page (https://pradan.issdc.gov.in/ch2/) offers Table View / Map View and a Login/Signup; it does not state processing levels, file formats or download terms on the public page (recorded as unknown, not invented — REAL-DATA-09 Part 1 §3).
+
+**Influence on design:**
+- Fixes the licence-section wording of the deliverable and the marking of every figure that shows Chandrayaan-2 pixels (REAL-DATA-09 Part 1 §3).
+- Confirms that no Chandrayaan-2 pixels are redistributed by this repository beyond marked figures; the manifests carry hashes, not bytes (same rule as the NAC tiles).
+
+---
+
 ## Unresolved / blocked
 
 *(Updated 2026-09-03. Two entries below are **discharged** by S13 and S14 and are kept with

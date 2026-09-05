@@ -61,6 +61,8 @@ __all__ = [
     "DemoDataMissing",
     "build_real_scenario",
     "illumination_evidence",
+    "engines_evidence",
+    "engines_status",
     "real_data_status",
 ]
 
@@ -806,4 +808,154 @@ def real_data_status() -> dict[str, Any]:
         "note": ("The real-data demo reads recorded artefacts only. It needs no "
                  "network access, and it will not substitute synthetic data if "
                  "a file is missing."),
+    }
+
+
+# ---------------------------------------------------------------------------
+# the two-engines panel: EXP-007 and REAL-DATA-07, read from their artefacts
+# ---------------------------------------------------------------------------
+
+EXP007_ARTEFACT = EXPERIMENTS / "EXP-007" / "exp007_results.json"
+RD07_ARTEFACT = EXPERIMENTS / "REAL-DATA-07" / "real_data_07_results.json"
+
+#: The four recorded edges the classical baseline fails, keyed as EXP-007 keys them.
+EXP007_FAILING = (("REAL-DATA-03", "C -> A"), ("REAL-DATA-03", "A -> B"),
+                  ("REAL-DATA-04", "A -> B"), ("REAL-DATA-04", "B -> D"))
+EXP007_TIER2 = (("RD03-target", "C -> A"), ("RD03-target", "A -> B"),
+                ("RD04-target", "A -> B"), ("RD04-target", "B -> D"))
+ENGINE_LABELS = {"none": "RootSIFT (B1)", "learned_lg": "DISK + LightGlue (B4L)"}
+
+ENGINES_SCOPE = ("LRO NAC · Mare Serenitatis · two ground windows · the four "
+                 "recorded edges RootSIFT fails at 39–52° (EXP-007, native 1.8 m "
+                 "and 7–30 m) and 42 geometry-confirmed pairs over 14 frames at "
+                 "≈ 2 m (REAL-DATA-07) · incidence only · no ground truth")
+ENGINES_SUMMARY = ("A licensable learned engine (DISK + LightGlue, Apache-2.0, CPU) "
+                   "registers the C → A edge at 38.85° with 56 geometry-consistent "
+                   "inliers where RootSIFT gives 4, and three of the four ~40° pairs "
+                   "at 7–30 m; on 42 pairs at native scale its envelope equals "
+                   "RootSIFT's and its yield inside it is 5–25× larger.")
+
+
+def engines_status() -> dict[str, Any]:
+    needed = [EXP007_ARTEFACT, RD07_ARTEFACT]
+    missing = [str(p.relative_to(ROOT)).replace("\\", "/") for p in needed if not p.exists()]
+    return {"available": not missing,
+            "required_files": [str(p.relative_to(ROOT)).replace("\\", "/") for p in needed],
+            "missing": missing}
+
+
+def _geo_word(row: dict) -> str:
+    g = row.get("geometry") or {}
+    v = g.get("verdict") or g.get("status") or "n/a"
+    return ("CONSISTENT" if v.startswith("CONSISTENT") else
+            "INCONSISTENT" if v.startswith("INCONSISTENT") else
+            "INCONCLUSIVE" if v.startswith("INCONCLUSIVE") else v)
+
+
+def engines_evidence() -> dict[str, Any]:
+    """Two engines on the edges RootSIFT fails, and on 42 real pairs.
+
+    Every number is read from ``experiments/EXP-007/exp007_results.json`` and
+    ``experiments/REAL-DATA-07/real_data_07_results.json``; the wording that
+    frames them is fixed here so the page cannot widen it.
+    """
+    st = engines_status()
+    if not st["available"]:
+        raise DemoDataMissing("engines panel: missing " + ", ".join(st["missing"]))
+    e7 = _read(EXP007_ARTEFACT, "EXP-007 results", require=("rows", "criteria"))
+    r7 = _read(RD07_ARTEFACT, "REAL-DATA-07 results", require=("criteria",))
+
+    def pick(tier: str, target: str, label: str, arm: str, k: int | None = None) -> dict | None:
+        for x in e7["rows"]:
+            if (x.get("tier") == tier and x.get("target") == target and x.get("label") == label
+                    and x.get("arm") == arm and (k is None or x.get("decimation") == k)):
+                return x
+        return None
+
+    tier1 = []
+    for target, label in EXP007_FAILING:
+        base = pick("tier1", target, label, "none")
+        lg = pick("tier1", target, label, "learned_lg")
+        if base is None or lg is None:
+            raise DemoDataMissing(f"EXP-007 tier-1 rows for {label} ({target}) are absent")
+        tier1.append({
+            "edge": label, "stage": target, "delta_incidence_deg": base["delta_incidence_deg"],
+            "gsd_m": base["gsd_m"],
+            "b1_inliers": base["n_inliers"], "b1_geometry": _geo_word(base),
+            "b4l_inliers": lg["n_inliers"], "b4l_pass": bool(lg["pass"]),
+            "b4l_geometry": _geo_word(lg),
+            "counts_for_s3": bool(lg["pass"] and _geo_word(lg) == "CONSISTENT"),
+        })
+    tier2 = []
+    for target, label in EXP007_TIER2:
+        for k in (8, 16, 32):
+            base = pick("tier2", target, label, "none", k)
+            lg = pick("tier2", target, label, "learned_lg", k)
+            if base is None or lg is None:
+                raise DemoDataMissing(f"EXP-007 tier-2 rows for {label} ({target}, k={k}) are absent")
+            tier2.append({
+                "edge": label, "window": target, "k": k, "gsd_m": base["gsd_m"],
+                "delta_incidence_deg": base["delta_incidence_deg"],
+                "b1_inliers": base["n_inliers"], "b1_pass": bool(base["pass"]),
+                "b1_geometry": _geo_word(base),
+                "b4l_inliers": lg["n_inliers"], "b4l_pass": bool(lg["pass"]),
+                "b4l_geometry": _geo_word(lg),
+                "b4l_success": bool(lg["pass"] and _geo_word(lg) == "CONSISTENT"),
+            })
+
+    c = r7["criteria"]
+    bins = []
+    b1 = c["envelope_b1"]["pooled"]["bins_5deg"]
+    lg = c["envelope_lg"]["pooled"]["bins_5deg"]
+    for b in sorted(set(b1) | set(lg), key=int):
+        bins.append({"bin_deg": int(b),
+                     "n": b1.get(b, {}).get("n", 0),
+                     "b1_success_rate": b1.get(b, {}).get("success_rate"),
+                     "b4l_success_rate": lg.get(b, {}).get("success_rate")})
+    sig_b1 = c["significance_b1"]
+    return {
+        "exp007": {
+            "tier1": tier1, "tier2": tier2,
+            "s3_met": bool(c and e7["criteria"]["S3_learned_converts_a_tier1_failing_edge"]["met"]),
+            "s1_met": bool(e7["criteria"]["S1_dem_render_b1_at_k16_or_k32_on_failing_pairs"]["met"]),
+            "runtime_min": float(e7["total_runtime_s"]) / 60.0,
+            "engine": e7.get("learned_engine"),
+            "source": "experiments/EXP-007/exp007_results.json",
+        },
+        "rd07": {
+            "bins": bins,
+            "n_pairs": int(sig_b1["pooled"]["n_edges"]),
+            "b1_successes": int(sig_b1["pooled"]["n_success"]),
+            "b4l_successes": int(c["significance_lg"]["pooled"]["n_success"]),
+            "wrong_pass": {"b1": c["wrong_pass_rate_b1"], "b4l": c["wrong_pass_rate_lg"]},
+            "significance": {
+                "b1_pooled_p": sig_b1["pooled"]["p_value"],
+                "b1_rd03_p": sig_b1["RD03"]["p_value"],
+                "b1_rd04_p": sig_b1["RD04"]["p_value"],
+                "b4l_pooled_p": c["significance_lg"]["pooled"]["p_value"],
+                "s5_met": bool(c["S5_significance_b1"]["met"]),
+            },
+            "envelope": {"b1_largest_bin_ge_0_8": c["envelope_b1"]["pooled"]["largest_bin_with_success_rate_ge_0_8"],
+                         "b4l_largest_bin_ge_0_8": c["envelope_lg"]["pooled"]["largest_bin_with_success_rate_ge_0_8"],
+                         "s3_met": bool(c["S3_lg_envelope_exceeds_b1_by_15deg"]["met"])},
+            "replication": {"s1_met": bool(c["S1_replication"]["met"]),
+                            "detail": c["S1_replication"]["detail"]},
+            "north_up_changed": c["S6_north_up_changes_no_recorded_outcome"]["changed"],
+            "source": "experiments/REAL-DATA-07/real_data_07_results.json",
+        },
+        "summary": ENGINES_SUMMARY,
+        "scope": ENGINES_SCOPE,
+        "not_claimed": [
+            "NOT an accuracy: every pass is corroborated against archive geometry at "
+            "its ~100 px (native) to ~8 px (30 m) floor, never verified; no ground "
+            "truth exists.",
+            "NOT an envelope extension at native scale: on 42 pairs both engines' "
+            "largest ≥ 0.8 bin is 10–15°, and nothing passes above 40°.",
+            "NOT a replication of the low-incidence success: candidate E2 failed "
+            "both decisive edges, and four frames fail against every partner.",
+            "NO Chandrayaan-2, NO multi-modal registration, NO azimuth result; no "
+            "learned matcher claim beyond the two artefacts named below.",
+        ],
+        "sources": ["experiments/EXP-007/exp007_results.json",
+                    "experiments/REAL-DATA-07/real_data_07_results.json"],
     }

@@ -223,13 +223,17 @@ existed to remove. A test asserts it is not offered.
 | Synthetic adversarial case preserved and labelled | **done** |
 | REAL / SYNTHETIC badges everywhere | **done** |
 | One-command launch, no network | **done** |
-| Tests | **441 passed, 2 skipped** (was 398) |
-| Chandrayaan-2 / multi-modal | **blocked** on ISSDC registration — and claimed nowhere |
+| Tests | see `python -m pytest tests -q` (the count is printed by the suite; 605 at the September 2 freeze) |
+| **Two-engines panel** (2026-09-05, R12 beat 1) | **done** — EXP-007's four failing edges at native scale and at 7–30 m, RootSIFT beside DISK + LightGlue, with each pass's archive-geometry verdict; REAL-DATA-07's success rate per 5° bin for both engines on 42 pairs, wrong-pass counts, pooled p, replication NOT MET. Read from the two artefacts, which the panel links |
+| **Live registration** (2026-09-05, R12 beat 4) | **done** — `Your own pair · live`: two uploaded images through estimate → refine → re-estimate → verify (B1, B4L, B4X, or B1 + B4L with engine agreement), labelled `live` / `user_supplied`, long side capped at 1024 px, no product for a REJECTED pair |
+| The 320:1 localisation beat (R12 beat 3) | **not built — no artefact exists.** REAL-DATA-08 reached the 100 m rung by proxy only; the OHRC-in-IIRS beat waits on REAL-DATA-09 |
+| Chandrayaan-2 / multi-modal | **blocked** on the PRADAN download (2026-09-06) — and claimed nowhere. REAL-DATA-08's radar proxy is a measured negative and is not in the demo |
 
 ## Deliberately not claimed
 
 Multi-modal capability · Chandrayaan-2 anything · ground-truth-verified real registration ·
 Sun-**azimuth** invariance · illumination as a universal cause of registration failure ·
-a located illumination threshold (bracketed only to 11.73°–38.85°) · any learned matcher ·
-any EXP-004 result. A test scans every real-data response for these terms and requires each
+a located illumination threshold (bracketed only to 11.73°–38.85° on the six edges; on 42 pairs
+nothing passes above 40° and four frames fail regardless) · any learned-engine claim beyond the
+two artefacts the engines panel links · any EXP-004 result · any number from the live card. A test scans every real-data response for these terms and requires each
 occurrence to sit next to a negation.

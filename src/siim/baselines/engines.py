@@ -98,7 +98,7 @@ __all__ = [
 #: B2K is present but unavailable on OpenCV core builds -- see the module
 #: docstring. It is listed so the gap is legible, not hidden.
 BASELINE_IDS = ("B0", "B1", "B2", "B3", "B5", "B7")
-OPTIONAL_BASELINE_IDS = ("B2K", "B4L")
+OPTIONAL_BASELINE_IDS = ("B2K", "B4L", "B4X")
 
 BASELINE_ROLES = {
     "B0": "identity -- absolute error floor",
@@ -586,6 +586,12 @@ def _run_learned(source, reference, **kwargs) -> BaselineResult:
     return run_disk_lightglue_baseline(source, reference, **kwargs)
 
 
+def _run_xfeat(source, reference, **kwargs) -> BaselineResult:
+    """B4X: XFeat (Apache-2.0, pinned commit), imported lazily like B4L."""
+    from .xfeat import run_xfeat_baseline
+    return run_xfeat_baseline(source, reference, **kwargs)
+
+
 _ENGINES: dict[str, Callable[..., BaselineResult]] = {
     "B0": run_identity_baseline,
     "B1": run_rootsift_baseline,
@@ -595,6 +601,7 @@ _ENGINES: dict[str, Callable[..., BaselineResult]] = {
     "B5": run_direct_baseline,
     "B7": run_phase_congruency_baseline,
     "B4L": _run_learned,
+    "B4X": _run_xfeat,
 }
 
 

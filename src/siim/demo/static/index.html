@@ -286,6 +286,12 @@ ul.caveats li{margin-bottom:5px;line-height:1.5}
   <div class="grp">Controlled synthetic</div>
   <div id="cases-synth"></div>
   <button class="runbtn" id="run">Run case</button>
+  <div class="grp">Your own pair · live</div>
+  <button class="case" id="live-open" data-id="__live__">
+    <div class="t">Register two images now</div>
+    <div class="s">Upload any two overlapping lunar images. Computed in the request,
+      labelled live, never a recorded number.</div>
+  </button>
   <div class="sidenote" id="datastatus"></div>
 </aside>
 
@@ -315,7 +321,8 @@ let SCEN = [], current = null, revealTimers = [];
 Promise.all([
   fetch("/api/scenarios").then(r => r.json()),
   fetch("/api/evidence/illumination").then(r => r.ok ? r.json() : null).catch(() => null),
-]).then(([d, ill]) => {
+  fetch("/api/evidence/engines").then(r => r.ok ? r.json() : null).catch(() => null),
+]).then(([d, ill, eng]) => {
   SCEN = d.scenarios;
   const card = s => `
     <button class="case" data-id="${esc(s.id)}">
@@ -339,6 +346,7 @@ Promise.all([
     `<b style="color:var(--ink-2)">Real data:</b> ${esc(d.data_status.real_lro_nac)}<br><br>
      <b style="color:var(--ink-2)">Chandrayaan-2:</b> ${esc(d.data_status.chandrayaan2_ohrc_tmc2_iirs)}`;
   window.__ILL = ill;
+window.__ENG = eng;
   $("#scope").innerHTML = ill
     ? `<b>Evidence scope</b><br>${esc(ill.scope)}`
     : `<b>Evidence scope</b><br>LRO NAC · Mare Serenitatis`;
@@ -348,6 +356,16 @@ Promise.all([
 });
 
 $("#run").onclick = () => run();
+// The live card is not a scenario: it replaces the stage with an upload form
+// and never touches /api/run. Assigned after the scenario buttons are wired so
+// it overrides the generic handler the shared class would otherwise attach.
+$("#live-open").onclick = () => {
+  document.querySelectorAll("button.case").forEach(x => x.classList.remove("active"));
+  $("#live-open").classList.add("active");
+  $("#stage").innerHTML = liveCard();
+  window.scrollTo(0, 0);
+  $("#live-run").onclick = runLive;
+};
 
 async function run() {
   if (!current) return;
@@ -484,6 +502,7 @@ function render(d) {
     ${stepEvidence(vm, v, isFailStory)}
     ${stepVerdict(vm, v, d)}
     ${illuminationPanel(vm)}
+    ${enginesPanel(vm)}
     ${provenance(d)}
   `;
 
@@ -495,6 +514,7 @@ function render(d) {
   drawCorrespondences(vm);
   if (vm.overlap) drawGeometry(vm.overlap);
   drawStrip();
+  drawEngineBins();
   if (isFailStory) startReveal();
 }
 
@@ -814,6 +834,172 @@ function illuminationPanel(vm) {
       `<span>${esc(n)}</span>`).join("")}</div>
     <div class="srcline"><b>sources:</b> ${ill.sources.map(esc).join(" · ")}</div>
   </div>`;
+}
+
+function enginesPanel(vm) {
+  const eng = window.__ENG;
+  if (!eng || !vm.real) return "";
+  const geoCol = g => g === "CONSISTENT" ? "var(--succeed)" : g === "INCONSISTENT" ? "#f07a7a" : "#fab219";
+  const t1 = eng.exp007.tier1, t2 = eng.exp007.tier2, r7 = eng.rd07;
+  return `<div class="card">
+    <div class="stephead">
+      <div class="stepnum">★</div>
+      <div><div class="stepq">Does a licensable learned engine cross the threshold?</div>
+      <div class="stepsub">Two engines on the edges RootSIFT fails · EXP-007 and REAL-DATA-07 · read from artefacts</div></div>
+    </div>
+    <table>
+      <tr><th>Edge (native 1.8 m)</th><th>Δ incidence</th><th>RootSIFT inliers</th>
+          <th>DISK + LightGlue inliers</th><th>vs archive geometry</th><th>counts for S3</th></tr>
+      ${t1.map(r => `<tr>
+        <td><b>${esc(r.edge)}</b> <span class="note">${esc(r.stage)}</span></td>
+        <td class="n">${fx(r.delta_incidence_deg)}°</td>
+        <td class="n" style="color:#f07a7a;font-weight:700">${r.b1_inliers}</td>
+        <td class="n" style="font-weight:700;color:${r.b4l_pass ? "var(--succeed)" : "#f07a7a"}">${r.b4l_inliers}</td>
+        <td style="color:${geoCol(r.b4l_geometry)};font-weight:700">${esc(r.b4l_geometry)}</td>
+        <td>${r.counts_for_s3 ? "✓" : "—"}</td>
+      </tr>`).join("")}
+    </table>
+    <div class="stepsub" style="margin:14px 0 6px">The same four pairs at 7, 15 and 30 m (long windows)</div>
+    <table>
+      <tr><th>Edge</th><th>Δ inc</th><th>k</th><th>GSD</th><th>RootSIFT</th><th>DISK + LightGlue</th><th>geometry</th></tr>
+      ${t2.map(r => `<tr>
+        <td><b>${esc(r.edge)}</b> <span class="note">${esc(r.window)}</span></td>
+        <td class="n">${fx(r.delta_incidence_deg)}°</td>
+        <td class="n">${r.k}</td><td class="n">${(+r.gsd_m).toFixed(1)} m</td>
+        <td class="n" style="color:${r.b1_pass ? "var(--succeed)" : "#f07a7a"}">${r.b1_inliers}</td>
+        <td class="n" style="font-weight:700;color:${r.b4l_success ? "var(--succeed)" : "#f07a7a"}">${r.b4l_inliers}</td>
+        <td style="color:${geoCol(r.b4l_geometry)}">${esc(r.b4l_geometry)}</td>
+      </tr>`).join("")}
+    </table>
+    <div class="stepsub" style="margin:16px 0 6px">Success rate by Δ incidence on ${r7.n_pairs} geometry-confirmed pairs, 14 frames (REAL-DATA-07)</div>
+    <svg class="strip" id="engbins" viewBox="0 0 900 220" role="img"
+      aria-label="Success rate per 5-degree bin of incidence difference for two engines"></svg>
+    <div class="note" style="margin-top:8px">
+      RootSIFT ${r7.b1_successes} / ${r7.n_pairs} successes, DISK + LightGlue ${r7.b4l_successes} / ${r7.n_pairs};
+      wrong passes (rule passed, geometry INCONSISTENT): RootSIFT ${r7.wrong_pass.b1.n_wrong_pass} of ${r7.wrong_pass.b1.n_pass},
+      DISK + LightGlue ${r7.wrong_pass.b4l.n_wrong_pass} of ${r7.wrong_pass.b4l.n_pass}.
+      Largest bin with success ≥ 0.8: RootSIFT ${r7.envelope.b1_largest_bin_ge_0_8}°, DISK + LightGlue ${r7.envelope.b4l_largest_bin_ge_0_8}°
+      — the native-scale envelope is <b>not</b> extended (S3 NOT MET).
+      Δ incidence separation, RootSIFT: pooled p = ${(+r7.significance.b1_pooled_p).toFixed(4)}
+      (RD-03 ${(+r7.significance.b1_rd03_p).toFixed(4)}, RD-04 ${(+r7.significance.b1_rd04_p).toFixed(3)}).
+      Replication of the low-incidence success: <b>${r7.replication.s1_met ? "MET" : "NOT MET"}</b>.</div>
+    <div class="note" style="margin-top:10px;font-size:13.5px;color:var(--ink)"><b>${esc(eng.summary)}</b></div>
+    <div class="note" style="margin-top:8px;color:var(--ink-2)"><b>Scope of this evidence:</b> ${esc(eng.scope)}</div>
+    <div class="notclaimed">${eng.not_claimed.map(n => `<span>${esc(n)}</span>`).join("")}</div>
+    <div class="srcline"><b>sources:</b> ${eng.sources.map(s =>
+      `<a class="filelink" href="/artefact/${esc(s)}" target="_blank" rel="noopener">${esc(s)}</a>`).join(" · ")}</div>
+  </div>`;
+}
+
+function drawEngineBins() {
+  const svg = document.getElementById("engbins");
+  const eng = window.__ENG;
+  if (!svg || !eng) return;
+  const bins = eng.rd07.bins;
+  const W = 900, H = 220, L = 56, R = 16, T = 22, B = 44;
+  const bw = (W - L - R) / bins.length;
+  const y = v => (H - B) - v * (H - T - B);
+  const p = [];
+  [0, 0.5, 0.8, 1].forEach(v => {
+    p.push(`<line class="gr" x1="${L}" y1="${y(v).toFixed(1)}" x2="${W - R}" y2="${y(v).toFixed(1)}"/>`);
+    p.push(`<text class="axt" x="${L - 8}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v}</text>`);
+  });
+  bins.forEach((b, i) => {
+    const x0 = L + i * bw;
+    const b1 = b.b1_success_rate == null ? 0 : b.b1_success_rate;
+    const lg = b.b4l_success_rate == null ? 0 : b.b4l_success_rate;
+    p.push(`<rect x="${(x0 + bw * 0.12).toFixed(1)}" y="${y(b1).toFixed(1)}" width="${(bw * 0.34).toFixed(1)}"
+      height="${(y(0) - y(b1)).toFixed(1)}" fill="#a7b6c8"/>`);
+    p.push(`<rect x="${(x0 + bw * 0.52).toFixed(1)}" y="${y(lg).toFixed(1)}" width="${(bw * 0.34).toFixed(1)}"
+      height="${(y(0) - y(lg)).toFixed(1)}" fill="#3987e5"/>`);
+    p.push(`<text class="axt" x="${(x0 + bw / 2).toFixed(1)}" y="${H - B + 16}" text-anchor="middle">${b.bin_deg}–${b.bin_deg + 5}°</text>`);
+    p.push(`<text class="axt" x="${(x0 + bw / 2).toFixed(1)}" y="${H - B + 30}" text-anchor="middle">n=${b.n}</text>`);
+  });
+  p.push(`<line class="ax" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"/>`);
+  p.push(`<rect x="${L}" y="${T - 16}" width="12" height="12" fill="#a7b6c8"/>`);
+  p.push(`<text class="lbl" x="${L + 16}" y="${T - 6}">RootSIFT (B1)</text>`);
+  p.push(`<rect x="${L + 130}" y="${T - 16}" width="12" height="12" fill="#3987e5"/>`);
+  p.push(`<text class="lbl" x="${L + 146}" y="${T - 6}">DISK + LightGlue (B4L)</text>`);
+  p.push(`<text class="axt" x="${W - R}" y="${T - 6}" text-anchor="end">success = rule passed AND transform consistent with archive geometry</text>`);
+  svg.innerHTML = p.join("");
+}
+
+/* ---------------------------------------------------- live registration */
+function liveCard() {
+  return `<div class="card">
+    <div class="stephead">
+      <div class="stepnum">▶</div>
+      <div><div class="stepq">Register two images of your own — now</div>
+      <div class="stepsub">estimate → refine → re-estimate → verify · computed in this request · labelled live</div></div>
+    </div>
+    <div class="note">Two overlapping images (PNG/JPEG/TIFF, any size; the long side is
+      down-sampled to 1024 px for the live run). The unmodified rule, the same verdict engine and the
+      same pipeline order as every recorded stage; nothing here is a recorded number.</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin:12px 0;align-items:end">
+      <label>source<br><input type="file" id="live-src" accept="image/*"></label>
+      <label>reference<br><input type="file" id="live-ref" accept="image/*"></label>
+      <label>engine<br><select id="live-eng">
+        <option value="B1">RootSIFT (B1)</option>
+        <option value="B4L">DISK + LightGlue (B4L)</option>
+        <option value="B4X">XFeat (B4X)</option>
+        <option value="both">B1 + B4L with agreement</option></select></label>
+      <button class="runbtn" id="live-run" style="width:auto;padding:8px 18px">Register</button>
+    </div>
+    <div id="live-out" class="note"></div>
+  </div>`;
+}
+
+function fileB64(input) {
+  return new Promise((res, rej) => {
+    const f = input.files && input.files[0];
+    if (!f) return rej(new Error("choose a file"));
+    const r = new FileReader();
+    r.onload = () => res(String(r.result).split(",")[1]);
+    r.onerror = rej;
+    r.readAsDataURL(f);
+  });
+}
+
+async function runLive() {
+  const out = $("#live-out");
+  try {
+    out.textContent = "Reading files…";
+    const [s, r] = await Promise.all([fileB64($("#live-src")), fileB64($("#live-ref"))]);
+    out.textContent = "Registering… (seconds to a minute on CPU)";
+    const resp = await fetch("/api/register", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({source_png: s, reference_png: r, engine: $("#live-eng").value})});
+    const d = await resp.json();
+    if (!resp.ok) { out.textContent = "Refused: " + (d.detail || resp.status); return; }
+    out.innerHTML = renderLive(d);
+  } catch (e) { out.textContent = "Error: " + e.message; }
+}
+
+function renderLive(d) {
+  const v = d.verdict, s = d.summary;
+  const col = v.status === "VERIFIED" ? "var(--succeed)" : v.status === "REJECTED" ? "#f07a7a" : "#fab219";
+  const agr = d.engine_agreement;
+  return `<div style="font-size:20px;font-weight:800;color:${col};margin:6px 0">${esc(v.status)}
+      <span style="font-size:13px;color:var(--ink-2);font-weight:500">confidence ${esc(v.confidence)} · LIVE · user-supplied images</span></div>
+    <ul>${v.reasons.map(r => `<li>${esc(r)}</li>`).join("")}</ul>
+    <table>
+      <tr><th>engine</th><th>putative</th><th>inliers</th><th>refined</th><th>model</th><th>selected by</th><th>wall</th></tr>
+      <tr><td>${esc(s.engine)}</td><td class="n">${s.n_putative}</td><td class="n">${s.n_inliers}</td>
+          <td class="n">${s.n_refined}</td><td>${esc(s.model)}</td><td>${esc(s.model_selected_by)}</td>
+          <td class="n">${(+d.timing.wall_s).toFixed(1)} s</td></tr>
+    </table>
+    ${agr ? `<div class="note" style="margin-top:8px"><b>engine agreement (B1 vs B4L):</b> ${esc(agr.statement)}</div>` : ""}
+    <table style="margin-top:8px">
+      <tr><th>evidence</th><th>value</th><th>says</th><th>weight</th></tr>
+      ${v.evidence.map(e => `<tr><td>${esc(e.name)}</td><td class="n">${e.value == null ? "—" : (+e.value).toFixed(3)}</td>
+        <td>${esc(e.verdict)}</td><td>${esc(e.weight)}</td></tr>`).join("")}
+    </table>
+    <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
+      <figure style="margin:0"><img src="data:image/png;base64,${d.source_png}" style="max-width:280px"><figcaption class="note">source</figcaption></figure>
+      <figure style="margin:0"><img src="data:image/png;base64,${d.reference_png}" style="max-width:280px"><figcaption class="note">reference</figcaption></figure>
+      ${d.registered_png ? `<figure style="margin:0"><img src="data:image/png;base64,${d.registered_png}" style="max-width:280px"><figcaption class="note">source warped into the reference grid</figcaption></figure>` : ""}
+    </div>
+    <div class="notclaimed">${d.caveats.map(c => `<span>${esc(c)}</span>`).join("")}</div>`;
 }
 
 function provenance(d) {

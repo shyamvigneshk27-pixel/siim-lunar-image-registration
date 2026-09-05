@@ -1,5 +1,6 @@
 """Preprocessing: radiometric and photometric normalisation (ANALYSIS §J)."""
 
+from .degrade import block_mean, degrade_to_gsd, psf_sigma_fine_px
 from .dem_render import DemRender, render_tile_under_sun
 from .photometry import (
     PhotometricCorrection,
@@ -13,6 +14,9 @@ from .photometry import (
 )
 
 __all__ = [
+    "block_mean",
+    "degrade_to_gsd",
+    "psf_sigma_fine_px",
     "DemRender",
     "render_tile_under_sun",
     "PhotometricCorrection",

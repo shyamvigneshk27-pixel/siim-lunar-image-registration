@@ -254,7 +254,7 @@ Everything below re-derives results that are already recorded under `experiments
 
 ```bash
 python -m pip install -e ".[dev,viz,experiments,learned]"   # learned = torch (CPU) + kornia
-python -m pytest tests/ -q            # see tests/ -- the count is printed by the suite
+python -m pytest tests/ -o addopts="" -q   # 768 passed, 2 skipped (2026-09-05)
                                       # (4 skipped on a fresh clone: the two
                                       #  re-derivation tests report CANNOT CHECK
                                       #  until the gitignored tiles are fetched)

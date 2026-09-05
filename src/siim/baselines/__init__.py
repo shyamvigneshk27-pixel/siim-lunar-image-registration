@@ -14,6 +14,7 @@ from .engines import (
     run_phase_congruency_baseline,
 )
 from .learned import learned_available, run_disk_lightglue_baseline
+from .xfeat import run_xfeat_baseline, xfeat_available
 from .rootsift_pipeline import BaselineResult, run_rootsift_baseline
 
 __all__ = [
@@ -32,4 +33,6 @@ __all__ = [
     "run_rootsift_baseline",
     "learned_available",
     "run_disk_lightglue_baseline",
+    "xfeat_available",
+    "run_xfeat_baseline",
 ]

@@ -61,6 +61,8 @@ from siim.demo.evidence import (  # noqa: E402
     REAL_SCENARIOS,
     DemoDataMissing,
     build_real_scenario,
+    engines_evidence,
+    engines_status,
     illumination_evidence,
     real_data_status,
 )
@@ -246,6 +248,13 @@ def scenarios() -> dict:
             "chandrayaan2_ohrc_tmc2_iirs": (
                 "NOT AVAILABLE — requires an authenticated ISSDC account. "
                 "No multi-modal claim is supported anywhere in this demo."),
+            "engines_panel": (
+                "AVAILABLE — read from the EXP-007 and REAL-DATA-07 artefacts"
+                if engines_status()["available"] else
+                "UNAVAILABLE — missing " + ", ".join(engines_status()["missing"])),
+            "live_register": (
+                "AVAILABLE — POST /api/register with two images; computed in the "
+                "request, labelled live, never a recorded number"),
         },
         "real_data_files": real,
         "excluded_from_verdict": EXCLUDED_FROM_VERDICT,
@@ -259,6 +268,114 @@ def evidence_illumination() -> dict:
         return illumination_evidence()
     except DemoDataMissing as exc:
         raise HTTPException(503, str(exc)) from exc
+
+
+@app.get("/api/evidence/engines")
+def evidence_engines() -> dict:
+    """Two engines on the edges RootSIFT fails and on 42 real pairs, read from
+    the EXP-007 and REAL-DATA-07 artefacts. Never recomputed."""
+    try:
+        return engines_evidence()
+    except DemoDataMissing as exc:
+        raise HTTPException(503, str(exc)) from exc
+
+
+# ---------------------------------------------------------------------------
+# live registration of a judge-supplied pair
+# ---------------------------------------------------------------------------
+
+#: Long side after down-sampling. Bounds the live run to seconds on a laptop;
+#: the CLI (`siim register`) has no such cap and is the tool for full tiles.
+LIVE_MAX_SIDE = 1024
+LIVE_ENGINES = ("B1", "B4L", "B4X", "both")
+
+
+class RegisterRequest(BaseModel):
+    source_png: str      # base64 of any Pillow-readable image
+    reference_png: str
+    engine: str = "B1"   # B1, B4L, B4X, or "both" (B1 + B4L with agreement)
+    seed: int = 0
+
+
+def _decode_upload(b64: str, what: str) -> np.ndarray:
+    from PIL import Image
+
+    from siim.cli import preprocess
+    try:
+        raw = base64.b64decode(b64, validate=True)
+        with Image.open(io.BytesIO(raw)) as im:
+            if im.mode not in ("F", "I", "I;16", "L"):
+                im = im.convert("L")
+            a = np.asarray(im, dtype=np.float64)
+    except Exception as exc:  # noqa: BLE001 -- a bad upload is a 400, not a crash
+        raise HTTPException(400, f"{what}: not a readable image ({type(exc).__name__})") from exc
+    if a.ndim == 3:
+        a = a.mean(axis=2)
+    if a.ndim != 2 or min(a.shape) < 64:
+        raise HTTPException(400, f"{what}: need a 2-D image at least 64 px on each side")
+    k = int(np.ceil(max(a.shape) / LIVE_MAX_SIDE))
+    return preprocess(a, k), k
+
+
+@app.post("/api/register")
+def register_live(req: RegisterRequest) -> dict:
+    """Run the deliverable pipeline on a pair the viewer supplies.
+
+    ``computation`` is ``"live"`` and ``data_source`` is ``"user_supplied"``:
+    nothing here is a recorded number, and nothing here is presented as one.
+    The verdict engine, the rule and the pipeline order are the ones the
+    stages measured; only the images are new.
+    """
+    from siim.pipeline import register_pair, register_pair_two_engines
+    engine = req.engine if req.engine in LIVE_ENGINES else req.engine.upper()
+    if engine not in LIVE_ENGINES:
+        raise HTTPException(400, f"engine must be one of {LIVE_ENGINES}")
+    src, k_s = _decode_upload(req.source_png, "source")
+    ref, k_r = _decode_upload(req.reference_png, "reference")
+    t0 = time.perf_counter()
+    agreement = None
+    secondary = None
+    try:
+        if engine == "both":
+            res, secondary, agreement = register_pair_two_engines(
+                src, ref, engines=("B1", "B4L"), seed=req.seed)
+        else:
+            res = register_pair(src, ref, engine=engine, seed=req.seed)
+    except ImportError as exc:
+        raise HTTPException(503, f"{engine} needs the `learned` extra: {exc}") from exc
+    wall = time.perf_counter() - t0
+    inl = res.inlier_mask
+    reg_png = None
+    if res.transform is not None and res.verdict.status != "REJECTED":
+        from siim.geometry import warp
+        reg, valid = warp(src, res.transform, out_shape=ref.shape, order=1, cval=np.nan)
+        reg_png = _png_b64(np.where(valid, reg, np.nan))
+    return {
+        "computation": "live",
+        "data_source": "user_supplied",
+        "engine": engine,
+        "preprocessing": {"decimation_source": k_s, "decimation_reference": k_r,
+                          "stretch": "per-image 1-99 percentile", "max_side": LIVE_MAX_SIDE},
+        "pipeline_order": list(res.summary()["pipeline_order"]),
+        "summary": res.summary(),
+        "secondary": None if secondary is None else secondary.summary(),
+        "engine_agreement": None if agreement is None else agreement.__dict__,
+        "verdict": res.verdict.as_dict(),
+        "correspondences": {"src": res.src_points.tolist(),
+                            "dst": res.dst_points_refined.tolist(),
+                            "inlier": np.asarray(inl, bool).tolist(),
+                            "refined": np.asarray(res.refined_mask, bool).tolist()},
+        "source_png": _png_b64(src), "reference_png": _png_b64(ref),
+        "registered_png": reg_png,
+        "shape": list(src.shape),
+        "timing": {"wall_s": wall, **res.runtime_s},
+        "caveats": [
+            "Live run on images you supplied; no recorded artefact backs these numbers.",
+            "No ground truth: VERIFIED means corroborated by the named evidence, never correct.",
+            "Loop closure is not evaluated (one pair), so the verdict cannot exceed INCONCLUSIVE "
+            "unless a second engine agrees -- and agreement is evidence, not accuracy.",
+        ],
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -295,6 +412,10 @@ def advertised_artefacts() -> frozenset[str]:
         paths.update(a["path"] for a in built["provenance"]["artefacts"])
     try:
         paths.update(illumination_evidence()["sources"])
+    except DemoDataMissing:
+        pass
+    try:
+        paths.update(engines_evidence()["sources"])
     except DemoDataMissing:
         pass
     return frozenset(paths)

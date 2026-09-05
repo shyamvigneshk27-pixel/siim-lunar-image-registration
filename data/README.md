@@ -98,6 +98,21 @@ NASA PDS data are in the public domain. LROC products should be credited
 governed by ISRO/ISSDC terms accepted at registration — **check them before
 redistributing anything**, including in the demo.
 
+## Chandrayaan-2 — where the products go, and what they carry
+
+Downloaded products go **unrenamed**, with every label and geometry file that
+came with them, under `raw/chandrayaan2/<instrument>/` (`ohrc/`, `tmc2/`,
+`iirs/`, `dfsar/`). Nothing is converted. `manifests/chandrayaan2_manifest.json`
+records path, size, SHA-256 and the label fields the ingestion contract reads
+(REAL-DATA-09 Part 1 §4). Bytes stay gitignored; hashes are tracked.
+
+**Acknowledgement (ISSDC PRADAN, https://pradan.issdc.gov.in/ch2/ack.xhtml,
+retrieved 2026-09-05):** *"We acknowledge the use of data from the Chandrayaan-II,
+second lunar mission of the Indian Space Research Organisation (ISRO), archived
+at the Indian Space Science Data Centre (ISSDC)."* Any printed data product
+carries **"© reserved ISRO"**; every figure showing Chandrayaan-2 pixels in this
+repository carries that marking.
+
 ## To unblock Chandrayaan-2
 
 Register at `https://pradan.issdc.gov.in` (Login/Signup). Browse and download

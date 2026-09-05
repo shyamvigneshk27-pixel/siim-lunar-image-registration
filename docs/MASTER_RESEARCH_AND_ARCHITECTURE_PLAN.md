@@ -652,7 +652,7 @@ Seeds, frozen environments (exists), artefact re-derivation from bytes (exists),
 
 ## 47. Licensing
 
-Ship: own code (choose Apache-2.0), OpenCV (Apache-2.0), LightGlue (Apache-2.0), DISK (Apache-2.0), ALIKED (BSD-3), RoMa (MIT; DINOv2 Apache-2.0), ISIS-derived photometric constants (public domain), SLDEM/LOLA/NAC (NASA, credit required), Chandrayaan-2 (ISRO terms per PRADAN acknowledgement page). Do not ship: SuperPoint, SuperGlue, MASt3R/DUSt3R, any Kaguya-derived model beyond data use terms.
+Ship: own code (choose Apache-2.0), OpenCV (Apache-2.0), LightGlue (Apache-2.0), DISK (Apache-2.0), ALIKED (BSD-3), RoMa (MIT; DINOv2 Apache-2.0), ISIS-derived photometric constants (public domain), SLDEM/LOLA/NAC (NASA, credit required), Chandrayaan-2 (ISRO terms per PRADAN acknowledgement page — wording recorded verbatim in `sources.md` S15 on 2026-09-05: the ISSDC acknowledgement sentence, "Chandrayaan-II" in the abstract, "© reserved ISRO" on any printed product), tifffile (BSD-3, GeoTIFF reader for TMC-2 L2). Do not ship: SuperPoint, SuperGlue, MASt3R/DUSt3R, any Kaguya-derived model beyond data use terms.
 
 ## 48. Testing strategy
 
@@ -878,3 +878,32 @@ from a committed artefact; stages still running are marked as such.
 Plan 6.5 / 10, demonstrated 6 / 10 (from 5 / 4 in the morning). The remaining
 ceiling is the absence of Chandrayaan-2 data (user action) and the pending
 replication and radar results (running).
+
+## A4. Evening of 2026-09-05 — what the overnight results changed
+
+| Item | A1 (evening of 09-04) | Measured on 09-05 |
+|---|---|---|
+| Learned engine's envelope | one converted edge, "running" | Native scale on 42 pairs: **same envelope as RootSIFT** (largest ≥ 0.8 bin 10–15° for both; 17 / 42 vs 20 / 42), yield inside it 5–25×; at 7–30 m three of four ~40° pairs converted (EXP-007). D-047 amended to D-047-N1 |
+| Replication of the low-incidence success | "running" | **NOT MET.** E1 could not be tiled on the shared ground; E2 fails vs A (6, INCONSISTENT) and vs B (3), and against every partner. D-040-N1's debt stands |
+| Δincidence as the variable | six edges, p = 0.0667 | 42 pairs: pooled **p = 0.0042** (RD-03 0.0040, RD-04 0.121); no success above 40°; **four frames fail against every partner irrespective of Δincidence** (E2 at 21°, three dark frames at 66.9–74.7°). Necessary, not sufficient (D-049) |
+| Wrong passes | none measured | **0 / 37** at ≈ 2 m (RD-07); **1 / 6** for B4L at the 100 m rung (RD-08). The verdict's first measured false-acceptance bound, at a ~100 px floor |
+| Multimodal | proxies on disk | **Radar registers under no engine** (0 / 48). The problem statement's multimodal claim is a measured negative on the best available proxy (D-050) |
+| 100 m rung | queued | B1 1 / 4 frames; **B4L 3 / 4** with 34–99 consistent inliers from 111 × 46 px strips (D-050) |
+| Photometric normalisation | "no outcome change" | **No-op by construction** (E-035): the per-frame scalar is removed by the stretch. Per-pixel from a 59 m DEM converts nothing |
+| Pipeline | order decided | Built and tested: `siim.pipeline`, `siim register`, engine agreement (caps at INCONCLUSIVE), PSF-aware degradation, XFeat as B4X (pinned commit) |
+| Chandrayaan-2 | none | none; REAL-DATA-09 pre-registered, acknowledgement wording recorded (S15); download is 2026-09-06 |
+
+**Consequences for §40.** (1) The illumination engine at native scale on mare is
+*neither* engine: the learned engine raises yield where RootSIFT already works
+and converts nothing RootSIFT fails at ≈ 2 m; its conversion power is a
+coarse-rung result. The tier policy therefore keys on **GSD**, not on the
+engine. (2) Frame-level failures that Δincidence does not explain are the
+open scientific question, ahead of illumination; A (E2 diagnostic) and B
+(the 60–75° sweep) in `NEXT_SESSION_PLAN.md` come before any new arm.
+(3) The multimodal line of the deliverable reads: *radar not registered by
+any engine tried; spectral modality (IIRS) untested until REAL-DATA-09.*
+
+**Honest scoring after two days.** Plan 6.5 / 10 unchanged; demonstrated
+**6.5 / 10** (from 6): more is measured, and two of the things measured are
+negatives the plan had counted on being positives (replication, the learned
+envelope at native scale). The ceiling is still Chandrayaan-2 data.
