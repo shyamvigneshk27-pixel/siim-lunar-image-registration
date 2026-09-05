@@ -1,0 +1,108 @@
+== REAL-DATA-03: geometry-driven acquisition ==
+
+index geometry: data\manifests\real_pair_index_geometry.json, data\manifests\real_pair_index_geometry_C.json, data\manifests\real_frame_d_selected_index_geometry.json
+
+nac.m1271742202lc
+   observational label : https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1034/DATA/ESM3/2018028/NAC/M1271742202LC.xml
+      + file_size identity: 5064 + 52224x5064x2 = 528929736 B
+      + axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+      + data_type SignedLSB2 -> numpy <i2
+      + axis_index_order 'Last Index Fastest' (row-major)
+      + index shape agrees with the label: 52224 x 5064
+      + line 0 at MIN latitude (LRO_FLIGHT_DIRECTION -X, ORBIT_NODE A)
+
+nac.m1335207975rc
+   observational label : https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1042B/DATA/ESM4/2020032/NAC/M1335207975RC.xml
+      + file_size identity: 5064 + 52224x5064x2 = 528929736 B
+      + axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+      + data_type SignedLSB2 -> numpy <i2
+      + axis_index_order 'Last Index Fastest' (row-major)
+      + index shape agrees with the label: 52224 x 5064
+      + line 0 at MIN latitude (LRO_FLIGHT_DIRECTION -X, ORBIT_NODE A)
+
+nac.m1452560468lc
+   observational label : https://pds.lroc.im-ldi.com/data/LRO-L-LROC-3-CDR-V1.0/LROLRC_1057B/DATA/ESM5/2023294/NAC/M1452560468LC.xml
+Traceback (most recent call last):
+  File "D:\softwares\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "D:\softwares\Lib\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "D:\softwares\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "D:\softwares\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "D:\softwares\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "D:\softwares\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\softwares\Lib\ssl.py", line 1304, in recv_into
+    return self.read(nbytes, buffer)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\softwares\Lib\ssl.py", line 1138, in read
+    return self._sslobj.read(len, buffer)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+TimeoutError: The read operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\softwares\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "D:\softwares\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "D:\softwares\Lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\softwares\Lib\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+  File "D:\softwares\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "D:\softwares\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\softwares\Lib\site-packages\urllib3\connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+        self, url, f"Read timed out. (read timeout={timeout_value})"
+    ) from err
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='pds.lroc.im-ldi.com', port=443): Read timed out. (read timeout=90)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_pair.py", line 603, in <module>
+    main()
+    ~~~~^^
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_pair.py", line 478, in main
+    acquire_from_geometry(args)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_pair.py", line 277, in acquire_from_geometry
+    lbl = fetch_label(prod, DATA / "metadata" / REGION)
+  File "D:\MyData\downloads\SIH\src\siim\ingest\lro_nac.py", line 484, in fetch_label
+    r = requests.get(url, timeout=_TIMEOUT, headers=_UA, allow_redirects=True)
+  File "D:\softwares\Lib\site-packages\requests\api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "D:\softwares\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\softwares\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "D:\softwares\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "D:\softwares\Lib\site-packages\requests\adapters.py", line 690, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='pds.lroc.im-ldi.com', port=443): Read timed out. (read timeout=90)
+EXIT 1

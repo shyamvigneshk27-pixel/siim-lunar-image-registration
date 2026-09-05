@@ -1,0 +1,24 @@
+== REAL-DATA-07 acquisition: RD04 target (22.010350, 19.666255); 7 new frames + 3 incumbents ==
+
+   + nac.m124423514lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m124423514lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m124423514lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m124423514lc: axis_index_order 'Last Index Fastest' (row-major)
+Traceback (most recent call last):
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_data_07.py", line 207, in <module>
+    main()
+    ~~~~^^
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_data_07.py", line 132, in main
+    line0, sample0, detail = _acq.window_centred_on(corners, lon, lat,
+                             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+                                                    win["n_lines"], win["n_samples"])
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\MyData\downloads\SIH\scripts\acquire_real_pair.py", line 217, in window_centred_on
+    line, sample = corners.pixel_at(lon, lat)
+                   ~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "D:\MyData\downloads\SIH\src\siim\ingest\footprint.py", line 216, in pixel_at
+    raise ValueError(
+    ...<2 lines>...
+        "is applied")
+ValueError: (lon 22.010350422685136, lat 19.66625467769675) is outside the frame: it solves to normalised (line 0.6699, sample -0.0422), and no clamping is applied
+EXIT 1

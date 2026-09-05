@@ -1,0 +1,109 @@
+== REAL-DATA-07 acquisition: RD03 target (22.033852, 20.035253); 11 new frames + 3 incumbents ==
+
+   + nac.m1356349796lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1356349796lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1356349796lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1356349796lc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1356349796lc: EXCLUDED -- (lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line 0.6480, sample -0.1247), and no clamping is applied
+   + nac.m1182331886lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1182331886lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1182331886lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1182331886lc: axis_index_order 'Last Index Fastest' (row-major)
+nac.m1182331886lc: inc 43.74 res 1.197 lines [2441, 6537) samples [517, 2565)  41.5 MB
+        16.8/41.5 MB (13s)
+        33.6/41.5 MB (26s)
+        41.5/41.5 MB (32s)
+   (4096, 2048) sha256=75401b4d104040a8... DN median 1022.0 (33s)
+
+   + nac.m1236465772rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1236465772rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1236465772rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1236465772rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1236465772rc: window CLAMPED +0 lines, -884 samples
+nac.m1236465772rc: inc 44.44 res 1.128 lines [2282, 6378) samples [3016, 5064)  41.5 MB
+        16.8/41.5 MB (13s)
+        33.6/41.5 MB (24s)
+        41.5/41.5 MB (31s)
+   (4096, 2048) sha256=4e1591fa7a5d0b41... DN median 1061.0 (32s)
+
+   + nac.m1212932972lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1212932972lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1212932972lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1212932972lc: axis_index_order 'Last Index Fastest' (row-major)
+nac.m1212932972lc: inc 45.48 res 1.082 lines [18112, 22208) samples [2997, 5045)  41.5 MB
+        16.8/41.5 MB (13s)
+        33.6/41.5 MB (27s)
+        41.5/41.5 MB (33s)
+   (4096, 2048) sha256=4e297f37d6aceb62... DN median 984.0 (34s)
+
+   + nac.m1205872034rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1205872034rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1205872034rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1205872034rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1205872034rc: window CLAMPED +1904 lines, +0 samples
+nac.m1205872034rc: inc 47.11 res 1.075 lines [0, 4096) samples [2171, 4219)  41.5 MB
+        16.8/41.5 MB (14s)
+        33.6/41.5 MB (26s)
+        41.5/41.5 MB (32s)
+   (4096, 2048) sha256=7b5d229923bcaf73... DN median 977.0 (33s)
+
+   + nac.m1175268993rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1175268993rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1175268993rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1175268993rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1175268993rc: window CLAMPED +0 lines, -938 samples
+nac.m1175268993rc: inc 48.47 res 1.209 lines [2249, 6345) samples [3016, 5064)  41.5 MB
+        16.8/41.5 MB (14s)
+        33.6/41.5 MB (27s)
+        41.5/41.5 MB (34s)
+   (4096, 2048) sha256=3802fa70cff5a80c... DN median 956.0 (35s)
+
+   + nac.m1363396554rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1363396554rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1363396554rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1363396554rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1363396554rc: window CLAMPED +0 lines, -782 samples
+nac.m1363396554rc: inc 52.4 res 1.03 lines [32267, 36363) samples [3016, 5064)  41.5 MB
+        16.8/41.5 MB (15s)
+        33.6/41.5 MB (28s)
+        41.5/41.5 MB (34s)
+   (4096, 2048) sha256=0e31261c525d5b0f... DN median 865.0 (36s)
+
+   + nac.m1199981485lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1199981485lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1199981485lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1199981485lc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1199981485lc: EXCLUDED -- (lon 22.033852048576282, lat 20.03525252164036) is outside the frame: it solves to normalised (line 0.9393, sample 1.0592), and no clamping is applied
+   + nac.m1199981485rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1199981485rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1199981485rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1199981485rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1199981485rc: window CLAMPED +0 lines, +717 samples
+nac.m1199981485rc: inc 66.88 res 1.073 lines [46768, 50864) samples [0, 2048)  41.5 MB
+        16.8/41.5 MB (13s)
+        33.6/41.5 MB (27s)
+        41.5/41.5 MB (33s)
+   (4096, 2048) sha256=21ac2d1d2ceaa998... DN median 529.0 (34s)
+
+   + nac.m1096350825rc: file_size identity: 5064 + 47104x5064x2 = 477074376 B
+   + nac.m1096350825rc: axis order Line(1) x Sample(2) = (47104, 5064) rows x cols
+   + nac.m1096350825rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1096350825rc: axis_index_order 'Last Index Fastest' (row-major)
+nac.m1096350825rc: inc 72.29 res 1.302 lines [1356, 5452) samples [690, 2738)  41.5 MB
+        16.8/41.5 MB (12s)
+        33.6/41.5 MB (23s)
+        41.5/41.5 MB (29s)
+   (4096, 2048) sha256=d7129316bcff4882... DN median 391.0 (30s)
+
+   + nac.m1142297886lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1142297886lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1142297886lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1142297886lc: axis_index_order 'Last Index Fastest' (row-major)
+nac.m1142297886lc: inc 74.65 res 1.226 lines [2403, 6499) samples [2157, 4205)  41.5 MB
+        16.8/41.5 MB (12s)
+        33.6/41.5 MB (23s)
+        41.5/41.5 MB (29s)
+   (4096, 2048) sha256=0b8acd1d2c59ad0c... DN median 342.0 (30s)
+
+manifest: data\manifests\real_data_07_rd03_manifest.json  (12 tiles, 2 excluded)
+EXIT 0

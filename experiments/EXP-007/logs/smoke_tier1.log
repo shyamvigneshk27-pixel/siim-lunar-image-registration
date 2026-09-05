@@ -1,0 +1,31 @@
+DEM window (1300, 23040) lat (18.8681640625, 21.4052734375)  (d6a424f33e4e)
+
+=== tier 1 / REAL-DATA-03: 3 recorded edges, k=2 ===
+  [tier1 REAL-DATA-03 k= 2] A -> B   dInc=39.81  none                 inliers=     4  fail  geom=INCONSISTENT  (12s)
+  [tier1 REAL-DATA-03 k= 2] A -> B   dInc=39.81  dem_render_b1        inliers=     0  fail  geom=no transform  (12s)
+  [tier1 REAL-DATA-03 k= 2] B -> C   dInc= 0.96  none                 inliers=  5365  PASS  geom=INCONCLUSIVE  (12s)
+  [tier1 REAL-DATA-03 k= 2] B -> C   dInc= 0.96  dem_render_b1        inliers=     3  fail  geom=no transform  (9s)
+  [tier1 REAL-DATA-03 k= 2] C -> A   dInc=38.85  none                 inliers=     4  fail  geom=INCONSISTENT  (14s)
+  [tier1 REAL-DATA-03 k= 2] C -> A   dInc=38.85  dem_render_b1        inliers=     0  fail  geom=no transform  (1s)
+
+=== tier 1 / REAL-DATA-04: 3 recorded edges, k=2 ===
+  [tier1 REAL-DATA-04 k= 2] A -> B   dInc=39.81  none                 inliers=     7  fail  geom=CONSISTENT W  (11s)
+  [tier1 REAL-DATA-04 k= 2] A -> B   dInc=39.81  dem_render_b1        inliers=     0  fail  geom=no transform  (9s)
+  [tier1 REAL-DATA-04 k= 2] B -> D   dInc=51.54  none                 inliers=     3  fail  geom=INCONSISTENT  (13s)
+  [tier1 REAL-DATA-04 k= 2] B -> D   dInc=51.54  dem_render_b1        inliers=     0  fail  geom=no transform  (3s)
+  [tier1 REAL-DATA-04 k= 2] D -> A   dInc=11.73  none                 inliers=  1656  PASS  geom=CONSISTENT W  (11s)
+  [tier1 REAL-DATA-04 k= 2] D -> A   dInc=11.73  dem_render_b1        inliers=     0  fail  geom=no transform  (1s)
+
+=== criteria (Part 1, frozen) ===
+  S4_reproduction_gate: {"met": true}
+  S1_dem_render_b1_at_k16_or_k32_on_failing_pairs: {"n_pass": 0, "of": 4, "met": false, "pairs": []}
+  S2_no_tier1_conversion_by_dem_render_b1: {"conversions": 0, "met": true}
+  S3_learned_converts_a_tier1_failing_edge: {"n_hits": 0, "met": false, "edges": []}
+  S5_photometric_arms_change_no_tier1_outcome: {"met": true}
+  S6_no_arm_breaks_a_succeeding_pair: {"met": false, "broken": [["dem_render_b1", "REAL-DATA-03", "nac.m1335207975rc -> nac.m1452560468lc", 2], ["dem_render_b1", "REAL-DATA-04", "nac.m1299958135lc -
+  rung_transition_smallest_passing_k: {}
+  tier1_failing_edges: [["REAL-DATA-03", "nac.m1271742202lc -> nac.m1335207975rc"], ["REAL-DATA-03", "nac.m1452560468lc -> nac.m1271742202lc"], ["REAL-DATA-04", "nac.m1271742202lc -> 
+  tier1_succeeding_edges: [["REAL-DATA-03", "nac.m1335207975rc -> nac.m1452560468lc"], ["REAL-DATA-04", "nac.m1299958135lc -> nac.m1271742202lc"]]
+
+written: experiments\EXP-007\logs\smoke_tier1.json   (1.8 min)
+EXIT 0

@@ -1,0 +1,102 @@
+== REAL-DATA-02: archive index geometry for 14 products ==
+
+nac.m1096350825rc  (volume LROLRC_1012, product M1096350825RC)
+   row 19545 of 76119 in 17 range requests
+   UL (20.18, 21.95)   UR (20.19, 22.19)
+   LL (18.13, 21.99)   LR (18.14, 22.22)
+   north_azimuth 89.60  sub_solar_azimuth 186.32  node A  flight_dir -X
+   lines x samples 47104 x 5064   scaled px 1.29 x 1.31 m   resolution 1.302 m
+
+nac.m1142297886lc  (volume LROLRC_1018, product M1142297886LC)
+   row 4574 of 69569 in 18 range requests
+   UL (19.86, 21.89)   UR (19.85, 22.11)
+   LL (21.99, 21.95)   LR (21.98, 22.18)
+   north_azimuth 90.89  sub_solar_azimuth 186.84  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.22 x 1.23 m   resolution 1.226 m
+
+nac.m1175268993rc  (volume LROLRC_1022, product M1175268993RC)
+   row 17367 of 67952 in 14 range requests
+   UL (19.86, 21.82)   UR (19.86, 22.03)
+   LL (22.00, 21.91)   LR (21.99, 22.12)
+   north_azimuth 93.05  sub_solar_azimuth 199.52  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.18 x 1.24 m   resolution 1.209 m
+
+nac.m1182331886lc  (volume LROLRC_1023, product M1182331886LC)
+   row 12058 of 68596 in 17 range requests
+   UL (19.85, 22.09)   UR (19.86, 21.88)
+   LL (21.97, 22.18)   LR (21.98, 21.97)
+   north_azimuth 273.93  sub_solar_azimuth 158.98  node A  flight_dir -X
+   lines x samples 52224 x 5064   scaled px 1.17 x 1.22 m   resolution 1.197 m
+
+nac.m1199981485lc  (volume LROLRC_1025, product M1199981485LC)
+   row 23954 of 63370 in 15 range requests
+   UL (21.84, 22.15)   UR (21.83, 21.96)
+   LL (19.93, 22.23)   LR (19.92, 22.05)
+   north_azimuth 268.82  sub_solar_azimuth 168.73  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.04 x 1.11 m   resolution 1.075 m
+
+nac.m1199981485rc  (volume LROLRC_1025, product M1199981485RC)
+   row 23955 of 63370 in 18 range requests
+   UL (21.83, 21.97)   UR (21.82, 21.78)
+   LL (19.91, 22.05)   LR (19.91, 21.87)
+   north_azimuth 266.39  sub_solar_azimuth 168.81  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.04 x 1.11 m   resolution 1.073 m
+
+nac.m1205872034rc  (volume LROLRC_1026, product M1205872034RC)
+   row 7090 of 64336 in 18 range requests
+   UL (20.03, 21.92)   UR (20.03, 22.10)
+   LL (21.95, 22.01)   LR (21.94, 22.20)
+   north_azimuth 93.40  sub_solar_azimuth 200.95  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.04 x 1.11 m   resolution 1.075 m
+
+nac.m1212932972lc  (volume LROLRC_1027, product M1212932972LC)
+   row 1574 of 62638 in 17 range requests
+   UL (19.29, 22.15)   UR (19.30, 21.96)
+   LL (21.20, 22.24)   LR (21.21, 22.05)
+   north_azimuth 274.28  sub_solar_azimuth 161.22  node A  flight_dir -X
+   lines x samples 52224 x 5064   scaled px 1.06 x 1.11 m   resolution 1.082 m
+
+nac.m1236465772rc  (volume LROLRC_1029, product M1236465772RC)
+   row 59632 of 59746 in 16 range requests
+   UL (19.88, 21.84)   UR (19.87, 22.03)
+   LL (21.87, 21.94)   LR (21.86, 22.14)
+   north_azimuth 93.68  sub_solar_azimuth 203.21  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 1.11 x 1.15 m   resolution 1.128 m
+
+nac.m124423514lc  (volume LROLRC_1003, product M124423514LC)
+   row 10732 of 68458 in 16 range requests
+   UL (19.03, 22.02)   UR (19.04, 22.09)
+   LL (19.98, 22.01)   LR (19.98, 22.08)
+   north_azimuth 88.55  sub_solar_azimuth 269.22  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 0.43 x 0.55 m   resolution 0.491 m
+
+nac.m1315225542lc  (volume LROLRC_1039C, product M1315225542LC)
+   row 20917 of 21240 in 17 range requests
+   UL (19.96, 22.05)   UR (19.95, 21.91)
+   LL (18.50, 22.14)   LR (18.49, 22.01)
+   north_azimuth 267.81  sub_solar_azimuth 107.09  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 0.76 x 0.85 m   resolution 0.806 m
+
+nac.m1341069775rc  (volume LROLRC_1043A, product M1341069775RC)
+   row 15724 of 19712 in 16 range requests
+   UL (19.93, 21.86)   UR (19.94, 22.02)
+   LL (18.20, 21.98)   LR (18.21, 22.14)
+   north_azimuth 86.79  sub_solar_azimuth 200.54  node A  flight_dir -X
+   lines x samples 52224 x 5064   scaled px 0.93 x 1.00 m   resolution 0.965 m
+
+nac.m1356349796lc  (volume LROLRC_1045A, product M1356349796LC)
+   row 9917 of 19982 in 15 range requests
+   UL (18.90, 21.97)   UR (18.89, 22.14)
+   LL (20.65, 22.10)   LR (20.64, 22.26)
+   north_azimuth 93.13  sub_solar_azimuth 206.32  node A  flight_dir +X
+   lines x samples 52224 x 5064   scaled px 0.95 x 1.01 m   resolution 0.983 m
+
+nac.m1363396554rc  (volume LROLRC_1046A, product M1363396554RC)
+   row 4012 of 19710 in 16 range requests
+   UL (18.82, 22.11)   UR (18.84, 21.94)
+   LL (20.65, 22.25)   LR (20.66, 22.07)
+   north_azimuth 273.24  sub_solar_azimuth 167.69  node A  flight_dir -X
+   lines x samples 52224 x 5064   scaled px 1.00 x 1.06 m   resolution 1.030 m
+
+written: data\manifests\real_data_07_index_geometry.json
+EXIT 0

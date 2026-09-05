@@ -1,0 +1,4035 @@
+{
+  "stage": "REAL-DATA-07",
+  "window": "RD03",
+  "engines": [
+    "b1",
+    "lg"
+  ],
+  "environment": {
+    "python": "3.13.7",
+    "numpy": "2.3.3",
+    "opencv": "5.0.0",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "total_runtime_s": 2216.4849293999723,
+  "rows": [
+    {
+      "n_keypoints_src": 9506,
+      "n_keypoints_dst": 10894,
+      "n_putative": 1731,
+      "n_inliers": 1656,
+      "inlier_ratio": 0.9566724436741768,
+      "fit_rmse_px": 1.1974906122115836,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.783490697005343,
+          -0.012373582681616367,
+          145.60702870658906
+        ],
+        [
+          0.011424265180385447,
+          0.7865856113054362,
+          250.51641942651895
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 28.37534880003659,
+      "coverage_max_uncovered_disc_ratio": 0.03805337149361736,
+      "coverage_occupancy": 1.0,
+      "transform_matrix_original_pixels": [
+        [
+          0.783490697005343,
+          -0.012373582681616367,
+          101.21071200621373
+        ],
+        [
+          0.011424265180385447,
+          0.7865856113054362,
+          174.65581095171865
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.751266724469731,
+            -0.012857621607134873,
+            140.05324444340124
+          ],
+          [
+            0.012101854229187492,
+            0.7883614230257043,
+            210.30764645228396
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 43.84134544484543,
+          "p90": 51.54092766675594,
+          "max": 54.54054664516144
+        },
+        "disagreement_px_p5_p95": [
+          19.51913891718613,
+          98.553814838867
+        ],
+        "discrimination_floor_px": 84.30350018351396,
+        "excess_over_floor": 0.5200418173552759,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1182331886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 13.790000000000003,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 43.74
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1768,
+      "n_inliers": 1724,
+      "inlier_ratio": 0.9751131221719457,
+      "fit_rmse_px": 0.8551164056720568,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.7841005524034489,
+          -0.01137170741269242,
+          143.36130609682323
+        ],
+        [
+          0.01129377466785512,
+          0.7865145270616665,
+          250.76365415214673
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 85.46423879999202,
+      "coverage_max_uncovered_disc_ratio": 0.19493567163723563,
+      "coverage_occupancy": 0.828125,
+      "transform_matrix_original_pixels": [
+        [
+          0.7841005524034489,
+          -0.01137170741269242,
+          100.78171386822987
+        ],
+        [
+          0.01129377466785512,
+          0.7865145270616665,
+          174.6875774674063
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.751266724469731,
+            -0.012857621607134873,
+            140.05324444340124
+          ],
+          [
+            0.012101854229187492,
+            0.7883614230257043,
+            210.30764645228396
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 43.49649170505113,
+          "p90": 51.15637568093166,
+          "max": 53.52054461689806
+        },
+        "disagreement_px_p5_p95": [
+          18.55217101628469,
+          98.51189227780691
+        ],
+        "discrimination_floor_px": 84.30350018351396,
+        "excess_over_floor": 0.515951195506318,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1182331886lc",
+      "engine": "lg",
+      "delta_incidence_deg": 13.790000000000003,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 43.74
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1236465772rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 9506,
+      "n_keypoints_dst": 10310,
+      "n_putative": 1482,
+      "n_inliers": 1406,
+      "inlier_ratio": 0.9487179487179487,
+      "fit_rmse_px": 1.0620296191785843,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.863145078245481,
+          -0.010128539043758013,
+          91.08663652176892
+        ],
+        [
+          0.007465392824865668,
+          0.8715310193699449,
+          192.01526066783072
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 22.547715199994855,
+      "coverage_max_uncovered_disc_ratio": 0.0470374788234074,
+      "coverage_occupancy": 1.0,
+      "transform_matrix_original_pixels": [
+        [
+          0.863145078245481,
+          -0.010128539043758013,
+          69.64906785567655
+        ],
+        [
+          0.007465392824865668,
+          0.8715310193699449,
+          63.32364582205446
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8302127488812648,
+            -0.01023697513549344,
+            97.2879318840462
+          ],
+          [
+            0.009169076562198729,
+            0.8748983804611516,
+            123.22215460404959
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 65.85476706490348,
+          "p90": 68.80143294300267,
+          "max": 72.15354893699552
+        },
+        "disagreement_px_p5_p95": [
+          24.457969100348368,
+          118.71458765560571
+        ],
+        "discrimination_floor_px": 83.48098417592972,
+        "excess_over_floor": 0.7888594955483473,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1212932972lc",
+      "engine": "b1",
+      "delta_incidence_deg": 15.529999999999998,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 45.48
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2224,
+      "n_inliers": 2174,
+      "inlier_ratio": 0.9775179856115108,
+      "fit_rmse_px": 0.876142133404137,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.8631086848602635,
+          -0.009674103053773425,
+          90.52170515626932
+        ],
+        [
+          0.007942029731568032,
+          0.872440461651167,
+          190.6015591934513
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 64.69898450002074,
+      "coverage_max_uncovered_disc_ratio": 0.16347667917409217,
+      "coverage_occupancy": 0.859375,
+      "transform_matrix_original_pixels": [
+        [
+          0.8631086848602635,
+          -0.009674103053773425,
+          69.32099918275537
+        ],
+        [
+          0.007942029731568032,
+          0.872440461651167,
+          62.38811939121592
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8302127488812648,
+            -0.01023697513549344,
+            97.2879318840462
+          ],
+          [
+            0.009169076562198729,
+            0.8748983804611516,
+            123.22215460404959
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 65.55648099141317,
+          "p90": 68.22827506062791,
+          "max": 71.0835963554605
+        },
+        "disagreement_px_p5_p95": [
+          24.257982628243997,
+          118.47170396356597
+        ],
+        "discrimination_floor_px": 83.48098417592972,
+        "excess_over_floor": 0.7852863935247572,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1212932972lc",
+      "engine": "lg",
+      "delta_incidence_deg": 15.529999999999998,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 45.48
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1205872034rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1175268993rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1363396554rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1199981485rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 9538,
+      "n_keypoints_dst": 11477,
+      "n_putative": 49,
+      "n_inliers": 8,
+      "inlier_ratio": 0.16326530612244897,
+      "fit_rmse_px": 1.1013726105450985,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          1.1037022456733911,
+          0.04027528173114196,
+          -45.76170726803571
+        ],
+        [
+          -0.03768443594132153,
+          1.0786584274097664,
+          -75.86078340775589
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 33.62895949999802,
+      "coverage_max_uncovered_disc_ratio": 0.29903262253202223,
+      "coverage_occupancy": 0.09375,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.1175528062592968,
+            0.04361546747788435,
+            -104.95508279651841
+          ],
+          [
+            -0.0827250929233996,
+            1.0785730174910313,
+            -38.180993408030304
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 51.15232647880816,
+          "p90": 63.935489363144555,
+          "max": 70.16852770921872
+        },
+        "disagreement_px_p5_p95": [
+          19.430341489715182,
+          124.73197283339549
+        ],
+        "discrimination_floor_px": 106.65908985339361,
+        "excess_over_floor": 0.47958712707110757,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1452560468lc",
+      "engine": "b1",
+      "north_up": false,
+      "delta_incidence_deg": 38.849999999999994,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 68.8,
+      "recorded_n_inliers": 4,
+      "reproduces_recorded": false
+    },
+    {
+      "n_keypoints_src": 9506,
+      "n_keypoints_dst": 11433,
+      "n_putative": 57,
+      "n_inliers": 6,
+      "inlier_ratio": 0.10526315789473684,
+      "fit_rmse_px": 0.4102872550296255,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          1.1015931954523175,
+          0.0399643855967727,
+          -141.88048445581632
+        ],
+        [
+          -0.03583865556590158,
+          1.0790588151853837,
+          -47.55872872839359
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 34.99204979999922,
+      "coverage_max_uncovered_disc_ratio": 0.31070775117564253,
+      "coverage_occupancy": 0.078125,
+      "transform_matrix_original_pixels": [
+        [
+          1.1015931954523175,
+          0.0399643855967727,
+          -43.85645180849815
+        ],
+        [
+          -0.03583865556590158,
+          1.0790588151853837,
+          -77.61172131216972
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.1175528062592968,
+            0.04361546747788435,
+            -104.95508279651841
+          ],
+          [
+            -0.0827250929233996,
+            1.0785730174910313,
+            -38.180993408030304
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 51.7722546812183,
+          "p90": 65.73336600779072,
+          "max": 72.7174326531166
+        },
+        "disagreement_px_p5_p95": [
+          19.611856572849035,
+          125.25722654901311
+        ],
+        "discrimination_floor_px": 106.65908985339361,
+        "excess_over_floor": 0.48539936682734636,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1452560468lc",
+      "engine": "b1",
+      "delta_incidence_deg": 38.849999999999994,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 68.8
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 115.6193229999626,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.1175528062592968,
+            0.04361546747788435,
+            -104.95508279651841
+          ],
+          [
+            -0.0827250929233996,
+            1.0785730174910313,
+            -38.180993408030304
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1452560468lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 38.849999999999994,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 68.8
+    },
+    {
+      "n_keypoints_src": 9538,
+      "n_keypoints_dst": 12420,
+      "n_putative": 32,
+      "n_inliers": 4,
+      "inlier_ratio": 0.125,
+      "fit_rmse_px": 4.1382633578908315e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -0.5230380279446685,
+          0.5406641190361868,
+          314.7983810036714
+        ],
+        [
+          0.12455946615814595,
+          -1.972779351468188,
+          2316.1132128995796
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 28.78857049997896,
+      "coverage_max_uncovered_disc_ratio": 0.4767323675870726,
+      "coverage_occupancy": 0.046875,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.009933068245097,
+            0.011665282725371663,
+            -17.43670264976845
+          ],
+          [
+            -0.0006247315807926491,
+            1.0175590052415464,
+            -18.018433984886883
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1614.1055228627038,
+          "p90": 3166.160178825829,
+          "max": 3998.053373226324
+        },
+        "disagreement_px_p5_p95": [
+          1610.4810367573198,
+          1625.2377714490556
+        ],
+        "discrimination_floor_px": 91.17615921905849,
+        "excess_over_floor": 17.703153287962895,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "north_up": false,
+      "delta_incidence_deg": 39.81,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 69.76,
+      "recorded_n_inliers": 4,
+      "reproduces_recorded": true
+    },
+    {
+      "n_keypoints_src": 9506,
+      "n_keypoints_dst": 12471,
+      "n_putative": 25,
+      "n_inliers": 3,
+      "inlier_ratio": 0.12,
+      "fit_rmse_px": 2.366580246719119e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.6841342996349402,
+          0.25286984448200844,
+          -152.8516856732847
+        ],
+        [
+          0.5388166693460448,
+          -0.7450678618945712,
+          2300.7382599962484
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 27.623317699995823,
+      "coverage_max_uncovered_disc_ratio": 0.4765084658147891,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          0.6841342996349402,
+          0.25286984448200844,
+          -41.642274507930324
+        ],
+        [
+          0.5388166693460448,
+          -0.7450678618945712,
+          720.206200560935
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.009933068245097,
+            0.011665282725371663,
+            -17.43670264976845
+          ],
+          [
+            -0.0006247315807926491,
+            1.0175590052415464,
+            -18.018433984886883
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 928.8300642958695,
+          "p90": 2239.7448215251356,
+          "max": 2881.3530733774787
+        },
+        "disagreement_px_p5_p95": [
+          918.4525702605961,
+          939.9285718782891
+        ],
+        "discrimination_floor_px": 91.17615921905849,
+        "excess_over_floor": 10.18720323658596,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "delta_incidence_deg": 39.81,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 47.30644509999547,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.009933068245097,
+            0.011665282725371663,
+            -17.43670264976845
+          ],
+          [
+            -0.0006247315807926491,
+            1.0175590052415464,
+            -18.018433984886883
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 39.81,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 9506,
+      "n_keypoints_dst": 13923,
+      "n_putative": 33,
+      "n_inliers": 4,
+      "inlier_ratio": 0.12121212121212122,
+      "fit_rmse_px": 9.165725883006586e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.0046956158759923206,
+          -1.3229642598549216,
+          1713.0591015439668
+        ],
+        [
+          -1.51672379717947,
+          -4.928617829278166,
+          7252.885219590302
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 26.29606620001141,
+      "coverage_max_uncovered_disc_ratio": 0.48534782914811625,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          0.0046956158759923206,
+          -1.3229642598549216,
+          2013.2451233379174
+        ],
+        [
+          -1.51672379717947,
+          -4.928617829278166,
+          6434.603921456703
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7142739785727671,
+            0.020530700562153583,
+            856.0260970321391
+          ],
+          [
+            0.01383643093918091,
+            0.7850317685198789,
+            213.0046553012378
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 3029.5770129053453,
+          "p90": 5450.52868452825,
+          "max": 6983.027148492808
+        },
+        "disagreement_px_p5_p95": [
+          3023.616265991236,
+          3036.6914339353966
+        ],
+        "discrimination_floor_px": 82.94498898743176,
+        "excess_over_floor": 36.525136115991316,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 44.7,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 63.75978419999592,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7142739785727671,
+            0.020530700562153583,
+            856.0260970321391
+          ],
+          [
+            0.01383643093918091,
+            0.7850317685198789,
+            213.0046553012378
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1271742202lc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 44.7,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 29.95,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1236465772rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 10894,
+      "n_keypoints_dst": 10310,
+      "n_putative": 5465,
+      "n_inliers": 5437,
+      "inlier_ratio": 0.9948764867337603,
+      "fit_rmse_px": 1.0343906151321065,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.1014756929436118,
+          0.0038477929838623324,
+          -69.3767932190134
+        ],
+        [
+          -0.005805636055139529,
+          1.109136080462505,
+          -86.61307904145565
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 23.670143100025598,
+      "coverage_max_uncovered_disc_ratio": 0.0675961861702687,
+      "coverage_occupancy": 1.0,
+      "transform_matrix_original_pixels": [
+        [
+          1.1014756929436118,
+          0.0038477929838623324,
+          -42.30927290026739
+        ],
+        [
+          -0.005805636055139529,
+          1.109136080462505,
+          -130.84931198088452
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 72,
+        "predicted_transform_matrix": [
+          [
+            1.1050027487630507,
+            0.00503668998376522,
+            -58.53054261544554
+          ],
+          [
+            -0.005670497851343388,
+            1.1096756459593142,
+            -109.35694720136496
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 25.77495785184513,
+          "p90": 26.49846726455823,
+          "max": 26.926777285603432
+        },
+        "disagreement_px_p5_p95": [
+          15.297587526537663,
+          94.6277326795484
+        ],
+        "discrimination_floor_px": 103.11302284749387,
+        "excess_over_floor": 0.24996801703667232,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1212932972lc",
+      "engine": "b1",
+      "delta_incidence_deg": 1.7399999999999949,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 45.48
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2482,
+      "n_inliers": 2472,
+      "inlier_ratio": 0.9959709911361805,
+      "fit_rmse_px": 1.4436268570040338,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.1019362461114086,
+          0.003557094794167669,
+          -69.14944108228985
+        ],
+        [
+          -0.005471283368363384,
+          1.1091708647822263,
+          -87.85734731493847
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 58.57632809999632,
+      "coverage_max_uncovered_disc_ratio": 0.13548339764560696,
+      "coverage_occupancy": 0.859375,
+      "transform_matrix_original_pixels": [
+        [
+          1.1019362461114086,
+          0.003557094794167669,
+          -42.412711733342576
+        ],
+        [
+          -0.005471283368363384,
+          1.1091708647822263,
+          -130.01829000844282
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 72,
+        "predicted_transform_matrix": [
+          [
+            1.1050027487630507,
+            0.00503668998376522,
+            -58.53054261544554
+          ],
+          [
+            -0.005670497851343388,
+            1.1096756459593142,
+            -109.35694720136496
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 24.804628286926057,
+          "p90": 25.59923498910132,
+          "max": 26.204495013941024
+        },
+        "disagreement_px_p5_p95": [
+          14.940691554832396,
+          93.85454501388811
+        ],
+        "discrimination_floor_px": 103.11302284749387,
+        "excess_over_floor": 0.240557667711988,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1212932972lc",
+      "engine": "lg",
+      "delta_incidence_deg": 1.7399999999999949,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 45.48
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1205872034rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1175268993rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1363396554rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 10894,
+      "n_keypoints_dst": 11869,
+      "n_putative": 54,
+      "n_inliers": 5,
+      "inlier_ratio": 0.09259259259259259,
+      "fit_rmse_px": 0.3451682109661878,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.5501630325064716,
+          0.27488048721164887,
+          134.5646022251508
+        ],
+        [
+          0.5723295210040455,
+          0.17388612262369915,
+          197.47008708346948
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 39.06335349997971,
+      "coverage_max_uncovered_disc_ratio": 0.3362113368839849,
+      "coverage_occupancy": 0.0625,
+      "transform_matrix_original_pixels": [
+        [
+          -0.5501630325064716,
+          -0.27488048721164887,
+          1260.0617418015165
+        ],
+        [
+          -0.5723295210040455,
+          -0.17388612262369915,
+          1138.9080800813203
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 50,
+        "predicted_transform_matrix": [
+          [
+            1.1603199871210974,
+            -0.09671592480163375,
+            -341.5053923111257
+          ],
+          [
+            -0.057464909763299404,
+            -1.1047830568205368,
+            2183.3901830949962
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 956.3592121822135,
+          "p90": 1450.8230971190733,
+          "max": 1912.056523376245
+        },
+        "disagreement_px_p5_p95": [
+          917.2013088194617,
+          1024.2481888718207
+        ],
+        "discrimination_floor_px": 116.25777096997406,
+        "excess_over_floor": 8.226196014279447,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1199981485rc",
+      "engine": "b1",
+      "delta_incidence_deg": 23.139999999999993,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 0,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 52.984207100002095,
+      "geometry": {
+        "n_predicted_correspondences": 50,
+        "predicted_transform_matrix": [
+          [
+            1.1603199871210974,
+            -0.09671592480163375,
+            -341.5053923111257
+          ],
+          [
+            -0.057464909763299404,
+            -1.1047830568205368,
+            2183.3901830949962
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1199981485rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 23.139999999999993,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 10894,
+      "n_keypoints_dst": 12471,
+      "n_putative": 120,
+      "n_inliers": 68,
+      "inlier_ratio": 0.5666666666666667,
+      "fit_rmse_px": 0.9140007728774865,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.3041673292226725,
+          0.03175368495130944,
+          -114.61303978846354
+        ],
+        [
+          -0.021471877822623643,
+          1.285769005609365,
+          -291.3877406409133
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 21.329251300019678,
+      "coverage_max_uncovered_disc_ratio": 0.18923402682059662,
+      "coverage_occupancy": 0.4375,
+      "transform_matrix_original_pixels": [
+        [
+          1.3041673292226725,
+          0.03175368495130944,
+          -261.54993110166083
+        ],
+        [
+          -0.021471877822623643,
+          1.285769005609365,
+          -271.61568282891267
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.343724353945313,
+            0.03671056260776167,
+            -213.3826027091157
+          ],
+          [
+            -0.021618240578569568,
+            1.2903740483191402,
+            -286.36421857608843
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 73.8975798179275,
+          "p90": 89.97120872994566,
+          "max": 98.269391748527
+        },
+        "disagreement_px_p5_p95": [
+          29.259696988941347,
+          149.98234379054452
+        ],
+        "discrimination_floor_px": 108.31562601253577,
+        "excess_over_floor": 0.6822430201287398,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "delta_incidence_deg": 26.020000000000003,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1148,
+      "n_inliers": 849,
+      "inlier_ratio": 0.7395470383275261,
+      "fit_rmse_px": 1.164521775331621,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.3038182283728597,
+          0.0312031962349076,
+          -113.9308707220182
+        ],
+        [
+          -0.0216788073142352,
+          1.2860199241510004,
+          -291.8615408993919
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 61.99785059998976,
+      "coverage_max_uncovered_disc_ratio": 0.23340334069117516,
+      "coverage_occupancy": 0.578125,
+      "transform_matrix_original_pixels": [
+        [
+          1.3038182283728597,
+          0.0312031962349076,
+          -260.748119596273
+        ],
+        [
+          -0.0216788073142352,
+          1.2860199241510004,
+          -271.44382395524326
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.343724353945313,
+            0.03671056260776167,
+            -213.3826027091157
+          ],
+          [
+            -0.021618240578569568,
+            1.2903740483191402,
+            -286.36421857608843
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 73.86023879680987,
+          "p90": 90.10165988176861,
+          "max": 98.96462573493383
+        },
+        "disagreement_px_p5_p95": [
+          29.555931776111333,
+          149.83184158343903
+        ],
+        "discrimination_floor_px": 108.31562601253577,
+        "excess_over_floor": 0.6818982774310121,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1335207975rc",
+      "engine": "lg",
+      "delta_incidence_deg": 26.020000000000003,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 10894,
+      "n_keypoints_dst": 12825,
+      "n_putative": 41,
+      "n_inliers": 3,
+      "inlier_ratio": 0.07317073170731707,
+      "fit_rmse_px": 7.3090410607263e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -2.137322961352343,
+          -0.05733437727324748,
+          2060.7144780477383
+        ],
+        [
+          4.109219896916796,
+          0.6620328194250253,
+          -2398.6365152854096
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 30.607793000002857,
+      "coverage_max_uncovered_disc_ratio": 0.33692991357639596,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          2.137322961352343,
+          0.05733437727324748,
+          -243.1303816940458
+        ],
+        [
+          -4.109219896916796,
+          -0.6620328194250253,
+          3160.276620623499
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8762427923449645,
+            0.05177023342336213,
+            906.3618554586784
+          ],
+          [
+            -0.08514826767876604,
+            -0.9304080500537948,
+            2019.3617337555236
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1292.9973306146103,
+          "p90": 2778.553128891829,
+          "max": 3473.3979122360665
+        },
+        "disagreement_px_p5_p95": [
+          1283.2260966880551,
+          1303.7233766359138
+        ],
+        "discrimination_floor_px": 90.73820058983577,
+        "excess_over_floor": 14.24975723796145,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1096350825rc",
+      "engine": "b1",
+      "delta_incidence_deg": 28.550000000000004,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 72.29
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 48.92392579995794,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8762427923449645,
+            0.05177023342336213,
+            906.3618554586784
+          ],
+          [
+            -0.08514826767876604,
+            -0.9304080500537948,
+            2019.3617337555236
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1096350825rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 28.550000000000004,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 72.29
+    },
+    {
+      "n_keypoints_src": 10894,
+      "n_keypoints_dst": 13923,
+      "n_putative": 38,
+      "n_inliers": 4,
+      "inlier_ratio": 0.10526315789473684,
+      "fit_rmse_px": 1.2710574864626038e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -0.4570875380628856,
+          -0.10235585481077021,
+          899.3572637382749
+        ],
+        [
+          0.9664236016276554,
+          0.4618441498112659,
+          -325.4625890517466
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 28.160800800018478,
+      "coverage_max_uncovered_disc_ratio": 0.40435749281375866,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          -0.4570875380628856,
+          -0.10235585481077021,
+          800.7657224977037
+        ],
+        [
+          0.9664236016276554,
+          0.4618441498112659,
+          438.4162699229935
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.950932195541235,
+            0.01053378248411153,
+            986.9954071788287
+          ],
+          [
+            0.0023761339073729965,
+            0.995815268205279,
+            3.2444744566745385
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 445.9648685322793,
+          "p90": 966.5260254740392,
+          "max": 1441.0169506355878
+        },
+        "disagreement_px_p5_p95": [
+          416.2107204075423,
+          480.9164268820736
+        ],
+        "discrimination_floor_px": 96.97241520338018,
+        "excess_over_floor": 4.598883791818091,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 30.910000000000004,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 0,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 50.51808179996442,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.950932195541235,
+            0.01053378248411153,
+            986.9954071788287
+          ],
+          [
+            0.0023761339073729965,
+            0.995815268205279,
+            3.2444744566745385
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1182331886lc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 30.910000000000004,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 43.74,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1212932972lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1205872034rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 14722,
+      "n_keypoints_dst": 18699,
+      "n_putative": 8240,
+      "n_inliers": 8188,
+      "inlier_ratio": 0.9936893203883496,
+      "fit_rmse_px": 0.6185002553661478,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.9393586092780488,
+          0.010358069391996235,
+          -65.83141254772136
+        ],
+        [
+          -0.00966227850791863,
+          0.9307021605129139,
+          19.179542933657785
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 34.563254399981815,
+      "coverage_max_uncovered_disc_ratio": 0.05346178005144919,
+      "coverage_occupancy": 1.0,
+      "transform_matrix_original_pixels": [
+        [
+          0.9393586092780488,
+          0.010358069391996235,
+          106.66458721086121
+        ],
+        [
+          -0.00966227850791863,
+          0.9307021605129139,
+          132.55764541000826
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 72,
+        "predicted_transform_matrix": [
+          [
+            0.9105676777413131,
+            0.010948770259352843,
+            101.10706994635376
+          ],
+          [
+            -0.04471640723257303,
+            0.9334451420030471,
+            110.79046563351392
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 41.50903138287357,
+          "p90": 59.8216289476689,
+          "max": 66.75552900740992
+        },
+        "disagreement_px_p5_p95": [
+          21.729906699841127,
+          117.51596357894216
+        ],
+        "discrimination_floor_px": 105.52548944181034,
+        "excess_over_floor": 0.39335549735367775,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1175268993rc",
+      "engine": "b1",
+      "delta_incidence_deg": 4.030000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 44.44,
+      "dst_incidence_deg": 48.47
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2575,
+      "n_inliers": 2570,
+      "inlier_ratio": 0.9980582524271845,
+      "fit_rmse_px": 0.5958005046939062,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.9404327866692146,
+          0.010301210590542672,
+          -66.69899986618509
+        ],
+        [
+          -0.009952613708293671,
+          0.9309723791500895,
+          18.919568621049848
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 63.82798639999237,
+      "coverage_max_uncovered_disc_ratio": 0.13403049042393766,
+      "coverage_occupancy": 0.90625,
+      "transform_matrix_original_pixels": [
+        [
+          0.9404327866692146,
+          0.010301210590542672,
+          106.54968102473788
+        ],
+        [
+          -0.009952613708293671,
+          0.9309723791500895,
+          132.56149508230146
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 72,
+        "predicted_transform_matrix": [
+          [
+            0.9105676777413131,
+            0.010948770259352843,
+            101.10706994635376
+          ],
+          [
+            -0.04471640723257303,
+            0.9334451420030471,
+            110.79046563351392
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 41.79783725960806,
+          "p90": 60.263374642340516,
+          "max": 67.01696106400873
+        },
+        "disagreement_px_p5_p95": [
+          21.645805953826546,
+          117.8314423795286
+        ],
+        "discrimination_floor_px": 105.52548944181034,
+        "excess_over_floor": 0.3960923325795758,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1175268993rc",
+      "engine": "lg",
+      "delta_incidence_deg": 4.030000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 44.44,
+      "dst_incidence_deg": 48.47
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1363396554rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 14722,
+      "n_keypoints_dst": 11869,
+      "n_putative": 77,
+      "n_inliers": 4,
+      "inlier_ratio": 0.05194805194805195,
+      "fit_rmse_px": 0.7783430574976292,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -1.4538168937511344,
+          -0.1683087804578549,
+          1676.8333441380846
+        ],
+        [
+          0.7146909635389522,
+          -0.555349761680178,
+          1235.187879192548
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 28.511017200013157,
+      "coverage_max_uncovered_disc_ratio": 0.4618190804829793,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          1.4538168937511344,
+          0.1683087804578549,
+          -154.94941176655493
+        ],
+        [
+          -0.7146909635389522,
+          0.555349761680178,
+          829.5157727335718
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 80,
+        "predicted_transform_matrix": [
+          [
+            -1.0537465481952344,
+            -0.10385197380632384,
+            1263.8865926884791
+          ],
+          [
+            0.05746362083502066,
+            -1.0374505809221317,
+            2030.376391838739
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1183.5442885016796,
+          "p90": 1711.2503076506173,
+          "max": 2268.614868636864
+        },
+        "disagreement_px_p5_p95": [
+          1171.9731199801686,
+          1197.6679729400257
+        ],
+        "discrimination_floor_px": 106.95462454600198,
+        "excess_over_floor": 11.065854267878136,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1199981485rc",
+      "engine": "b1",
+      "delta_incidence_deg": 22.439999999999998,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 44.44,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 5,
+      "n_inliers": 3,
+      "inlier_ratio": 0.6,
+      "fit_rmse_px": 3.2029639867188973e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          1.3325426886060237,
+          -0.12563800062092534,
+          144.0238559453586
+        ],
+        [
+          -3.564743868363861,
+          1.0861719962744503,
+          234.2231356721495
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 68.70809450000525,
+      "coverage_max_uncovered_disc_ratio": 0.5470523219774841,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          -1.3325426886060237,
+          0.12563800062092534,
+          1250.0340391182867
+        ],
+        [
+          3.564743868363861,
+          -1.0861719962744503,
+          -1189.1157652902803
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 80,
+        "predicted_transform_matrix": [
+          [
+            -1.0537465481952344,
+            -0.10385197380632384,
+            1263.8865926884791
+          ],
+          [
+            0.05746362083502066,
+            -1.0374505809221317,
+            2030.376391838739
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1506.991534133383,
+          "p90": 2947.372092379747,
+          "max": 3349.1988574275024
+        },
+        "disagreement_px_p5_p95": [
+          1476.17975871545,
+          1625.1287650185802
+        ],
+        "discrimination_floor_px": 106.95462454600198,
+        "excess_over_floor": 14.09000817430961,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1199981485rc",
+      "engine": "lg",
+      "delta_incidence_deg": 22.439999999999998,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 44.44,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1335207975rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1236465772rc -> nac.m1142297886lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1205872034rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1175268993rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 10363,
+      "n_putative": 3541,
+      "n_inliers": 3486,
+      "inlier_ratio": 0.9844676645015532,
+      "fit_rmse_px": 0.6638992622601747,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.059477166394192,
+          0.025593586453703732,
+          -395.07114614413985
+        ],
+        [
+          -0.01800209131325741,
+          1.0429143479848506,
+          -85.67892400435676
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 19.550394799967762,
+      "coverage_max_uncovered_disc_ratio": 0.182348042807759,
+      "coverage_occupancy": 0.6875,
+      "transform_matrix_original_pixels": [
+        [
+          1.059477166394192,
+          0.025593586453703732,
+          281.8359334521499
+        ],
+        [
+          -0.01800209131325741,
+          1.0429143479848506,
+          16.249393092829905
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 47,
+        "predicted_transform_matrix": [
+          [
+            1.0745309111516477,
+            0.02613074780768406,
+            325.90535331247656
+          ],
+          [
+            -0.02539520116162598,
+            1.046620984106232,
+            -34.58453141857467
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 72.86822907775043,
+          "p90": 79.4546115158888,
+          "max": 83.10885746114126
+        },
+        "disagreement_px_p5_p95": [
+          30.049177615548015,
+          154.37862448710825
+        ],
+        "discrimination_floor_px": 102.27665969635339,
+        "excess_over_floor": 0.7124619565606375,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1363396554rc",
+      "engine": "b1",
+      "delta_incidence_deg": 6.920000000000002,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 52.4
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2014,
+      "n_inliers": 1992,
+      "inlier_ratio": 0.9890764647467726,
+      "fit_rmse_px": 1.1674991498692266,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.057837020294641,
+          0.026097460293829075,
+          -394.6656882515751
+        ],
+        [
+          -0.021884918083817855,
+          1.0424840803123707,
+          -82.48429686072541
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 68.05010620004032,
+      "coverage_max_uncovered_disc_ratio": 0.2089501468757429,
+      "coverage_occupancy": 0.5625,
+      "transform_matrix_original_pixels": [
+        [
+          1.057837020294641,
+          0.026097460293829075,
+          282.07691526868916
+        ],
+        [
+          -0.021884918083817855,
+          1.0424840803123707,
+          17.90765566104801
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 47,
+        "predicted_transform_matrix": [
+          [
+            1.0745309111516477,
+            0.02613074780768406,
+            325.90535331247656
+          ],
+          [
+            -0.02539520116162598,
+            1.046620984106232,
+            -34.58453141857467
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 72.4300878481759,
+          "p90": 78.61548544228161,
+          "max": 82.57456379932721
+        },
+        "disagreement_px_p5_p95": [
+          29.58532371680091,
+          153.9812406805262
+        ],
+        "discrimination_floor_px": 102.27665969635339,
+        "excess_over_floor": 0.7081780736994322,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1363396554rc",
+      "engine": "lg",
+      "delta_incidence_deg": 6.920000000000002,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 52.4
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 11869,
+      "n_putative": 65,
+      "n_inliers": 5,
+      "inlier_ratio": 0.07692307692307693,
+      "fit_rmse_px": 7.190186943645084e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          3.09838378785261,
+          -1.1947241556648847,
+          -1212.9614191918304
+        ],
+        [
+          -3.7573836482818193,
+          1.5728186590331383,
+          3350.4827668423854
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 41.59758890001103,
+      "coverage_max_uncovered_disc_ratio": 0.6360104980561998,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          -3.09838378785261,
+          1.1947241556648847,
+          -488.91515086462925
+        ],
+        [
+          3.7573836482818193,
+          -1.5728186590331383,
+          2726.2390896909187
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 50,
+        "predicted_transform_matrix": [
+          [
+            1.049553683155459,
+            -0.09186219490645502,
+            -290.15426581929916
+          ],
+          [
+            -0.05714481935838733,
+            -0.9952772558589592,
+            2071.173373464461
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 2250.5030908569106,
+          "p90": 4596.441209505443,
+          "max": 6279.678239178729
+        },
+        "disagreement_px_p5_p95": [
+          2168.2358972642355,
+          2284.107805108643
+        ],
+        "discrimination_floor_px": 105.79598859805749,
+        "excess_over_floor": 21.272102285532515,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1199981485rc",
+      "engine": "b1",
+      "delta_incidence_deg": 21.4,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 60.87628470000345,
+      "geometry": {
+        "n_predicted_correspondences": 50,
+        "predicted_transform_matrix": [
+          [
+            1.049553683155459,
+            -0.09186219490645502,
+            -290.15426581929916
+          ],
+          [
+            -0.05714481935838733,
+            -0.9952772558589592,
+            2071.173373464461
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1199981485rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 21.4,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 11433,
+      "n_putative": 194,
+      "n_inliers": 143,
+      "inlier_ratio": 0.7371134020618557,
+      "fit_rmse_px": 1.0869668232242586,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.2764403967486135,
+          0.0580126677252504,
+          -266.61152750978465
+        ],
+        [
+          -0.054553118103767506,
+          1.2367504773847555,
+          -278.30544920626244
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 19.12283980002394,
+      "coverage_max_uncovered_disc_ratio": 0.18724755140672067,
+      "coverage_occupancy": 0.59375,
+      "transform_matrix_original_pixels": [
+        [
+          1.2764403967486135,
+          0.0580126677252504,
+          -134.9389291976347
+        ],
+        [
+          -0.054553118103767506,
+          1.2367504773847555,
+          -150.51493818017798
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.3453796889295226,
+            0.0655940017525165,
+            -243.9269245563392
+          ],
+          [
+            -0.11324394062080605,
+            1.2314730100640463,
+            -178.9084822634644
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 94.27947609307412,
+          "p90": 102.64213663280165,
+          "max": 112.62582509317534
+        },
+        "disagreement_px_p5_p95": [
+          46.59884546819824,
+          170.39370811148962
+        ],
+        "discrimination_floor_px": 111.51420660347979,
+        "excess_over_floor": 0.8454481179094193,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1452560468lc",
+      "engine": "b1",
+      "delta_incidence_deg": 23.32,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 68.8
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1435,
+      "n_inliers": 1144,
+      "inlier_ratio": 0.797212543554007,
+      "fit_rmse_px": 1.1844021356223542,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.2767466027969239,
+          0.05903303535662601,
+          -268.38819286322354
+        ],
+        [
+          -0.053397050704131074,
+          1.236474781061637,
+          -278.86802563463334
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 69.42899510002462,
+      "coverage_max_uncovered_disc_ratio": 0.1505154970624521,
+      "coverage_occupancy": 0.625,
+      "transform_matrix_original_pixels": [
+        [
+          1.2767466027969239,
+          0.05903303535662601,
+          -135.56420517304286
+        ],
+        [
+          -0.053397050704131074,
+          1.236474781061637,
+          -150.57066832821147
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.3453796889295226,
+            0.0655940017525165,
+            -243.9269245563392
+          ],
+          [
+            -0.11324394062080605,
+            1.2314730100640463,
+            -178.9084822634644
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 94.94232904638136,
+          "p90": 102.92016896018437,
+          "max": 112.00674377363197
+        },
+        "disagreement_px_p5_p95": [
+          46.92227656475636,
+          170.81174476315934
+        ],
+        "discrimination_floor_px": 111.51420660347979,
+        "excess_over_floor": 0.8513922300857646,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1452560468lc",
+      "engine": "lg",
+      "delta_incidence_deg": 23.32,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 68.8
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 12471,
+      "n_putative": 191,
+      "n_inliers": 144,
+      "inlier_ratio": 0.7539267015706806,
+      "fit_rmse_px": 1.018517991570187,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.1819940184410787,
+          0.024554150707497783,
+          -29.929342495911158
+        ],
+        [
+          -0.013867068746284735,
+          1.1593109595466902,
+          -191.65045389327884
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 20.07521410001209,
+      "coverage_max_uncovered_disc_ratio": 0.14225200824627277,
+      "coverage_occupancy": 0.796875,
+      "transform_matrix_original_pixels": [
+        [
+          1.1819940184410787,
+          0.024554150707497783,
+          -206.51288486756016
+        ],
+        [
+          -0.013867068746284735,
+          1.1593109595466902,
+          -120.27306897134667
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.2161775288764691,
+            0.027563278534850535,
+            -139.17253013893634
+          ],
+          [
+            -0.01359629532582714,
+            1.162900578208565,
+            -159.98953395578383
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 94.73947846135232,
+          "p90": 107.77083237895563,
+          "max": 112.59910870941525
+        },
+        "disagreement_px_p5_p95": [
+          47.453131669355635,
+          165.56793329805453
+        ],
+        "discrimination_floor_px": 99.52794373823073,
+        "excess_over_floor": 0.9518882326206538,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "delta_incidence_deg": 24.28000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1450,
+      "n_inliers": 1183,
+      "inlier_ratio": 0.8158620689655173,
+      "fit_rmse_px": 1.163973013283116,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.1814560399800775,
+          0.024770022079272706,
+          -30.146630120107034
+        ],
+        [
+          -0.01368171304666964,
+          1.1594062083910865,
+          -192.05524417570268
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 67.0321998000145,
+      "coverage_max_uncovered_disc_ratio": 0.16553584164211707,
+      "coverage_occupancy": 0.75,
+      "transform_matrix_original_pixels": [
+        [
+          1.1814560399800775,
+          0.024770022079272706,
+          -206.18713397578335
+        ],
+        [
+          -0.01368171304666964,
+          1.1594062083910865,
+          -120.25287195410829
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.2161775288764691,
+            0.027563278534850535,
+            -139.17253013893634
+          ],
+          [
+            -0.01359629532582714,
+            1.162900578208565,
+            -159.98953395578383
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 94.5624224059626,
+          "p90": 107.8250919112346,
+          "max": 112.50149947481174
+        },
+        "disagreement_px_p5_p95": [
+          47.216007627238135,
+          165.3813641228986
+        ],
+        "discrimination_floor_px": 99.52794373823073,
+        "excess_over_floor": 0.9501092743830014,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1335207975rc",
+      "engine": "lg",
+      "delta_incidence_deg": 24.28000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 12825,
+      "n_putative": 52,
+      "n_inliers": 5,
+      "inlier_ratio": 0.09615384615384616,
+      "fit_rmse_px": 0.5628896964396288,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          3.242190022937574,
+          0.6165713406248019,
+          -2384.2422413548775
+        ],
+        [
+          3.889064681838241,
+          1.789804545462221,
+          -4158.686302052405
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 45.003638299996965,
+      "coverage_max_uncovered_disc_ratio": 0.44119554740201455,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          -3.242190022937574,
+          -0.6165713406248019,
+          2194.6396863692307
+        ],
+        [
+          -3.889064681838241,
+          -1.789804545462221,
+          3483.556772029281
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7927199504520197,
+            0.05025114768837152,
+            865.4619604164809
+          ],
+          [
+            -0.08135780658933361,
+            -0.8380811992297406,
+            1922.9499574050378
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1518.2142092031017,
+          "p90": 3457.5008556365806,
+          "max": 4894.977895339544
+        },
+        "disagreement_px_p5_p95": [
+          1464.592309035585,
+          1524.1502730397976
+        ],
+        "discrimination_floor_px": 80.19416238045122,
+        "excess_over_floor": 18.931729743625255,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1096350825rc",
+      "engine": "b1",
+      "delta_incidence_deg": 26.81000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 72.29
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 119.71031799999764,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7927199504520197,
+            0.05025114768837152,
+            865.4619604164809
+          ],
+          [
+            -0.08135780658933361,
+            -0.8380811992297406,
+            1922.9499574050378
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1096350825rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 26.81000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 72.29
+    },
+    {
+      "n_keypoints_src": 10310,
+      "n_keypoints_dst": 13923,
+      "n_putative": 56,
+      "n_inliers": 4,
+      "inlier_ratio": 0.07142857142857142,
+      "fit_rmse_px": 0.767382792295822,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          3.623542122166563,
+          -1.7852693337176848,
+          128.85159182873963
+        ],
+        [
+          -0.1913496419166911,
+          0.9256865680869822,
+          -219.41582083609364
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 35.681716899969615,
+      "coverage_max_uncovered_disc_ratio": 0.43013559731795986,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          3.623542122166563,
+          -1.7852693337176848,
+          841.7111433149673
+        ],
+        [
+          -0.1913496419166911,
+          0.9256865680869822,
+          567.286099642816
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8605010169810396,
+            0.013397931728931467,
+            938.0948774936179
+          ],
+          [
+            0.0067553106818632825,
+            0.8973624168237764,
+            101.77267628568995
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1311.9405004643138,
+          "p90": 2904.5962662828606,
+          "max": 4431.5116322600325
+        },
+        "disagreement_px_p5_p95": [
+          1293.0834947659894,
+          1332.4003329470845
+        ],
+        "discrimination_floor_px": 87.49831917568729,
+        "excess_over_floor": 14.99389374360526,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 29.17000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 0,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 47.455028800002765,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8605010169810396,
+            0.013397931728931467,
+            938.0948774936179
+          ],
+          [
+            0.0067553106818632825,
+            0.8973624168237764,
+            101.77267628568995
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1212932972lc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 29.17000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 45.48,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1175268993rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1363396554rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1199981485rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1335207975rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1205872034rc -> nac.m1142297886lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1363396554rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 18699,
+      "n_keypoints_dst": 11869,
+      "n_putative": 83,
+      "n_inliers": 4,
+      "inlier_ratio": 0.04819277108433735,
+      "fit_rmse_px": 4.215620769568695e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -1.005420044615651,
+          0.2933419798049532,
+          640.3978109070996
+        ],
+        [
+          4.340519220973343,
+          -1.2271200005273428,
+          -506.1301610667026
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 44.92094159999397,
+      "coverage_max_uncovered_disc_ratio": 0.4276375996401352,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          1.005420044615651,
+          -0.2933419798049532,
+          212.3241379260279
+        ],
+        [
+          -4.340519220973343,
+          1.2271200005273428,
+          1422.306360909557
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -1.1620681545668532,
+            -0.09767367266460046,
+            1392.2730126231218
+          ],
+          [
+            0.00851191561622329,
+            -1.1116829150070486,
+            2152.856056254113
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1560.2523641406756,
+          "p90": 3383.1950827892792,
+          "max": 5212.158312923339
+        },
+        "disagreement_px_p5_p95": [
+          1537.928777651258,
+          1592.2318243136217
+        ],
+        "discrimination_floor_px": 105.7063539701952,
+        "excess_over_floor": 14.760251446952772,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1199981485rc",
+      "engine": "b1",
+      "delta_incidence_deg": 18.409999999999997,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 48.47,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 85.07325850002235,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -1.1620681545668532,
+            -0.09767367266460046,
+            1392.2730126231218
+          ],
+          [
+            0.00851191561622329,
+            -1.1116829150070486,
+            2152.856056254113
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1199981485rc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 18.409999999999997,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 48.47,
+      "dst_incidence_deg": 66.88
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1335207975rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1175268993rc -> nac.m1142297886lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1363396554rc -> nac.m1199981485rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1363396554rc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1363396554rc -> nac.m1335207975rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1363396554rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1363396554rc -> nac.m1142297886lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1199981485rc -> nac.m1452560468lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1199981485rc -> nac.m1335207975rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1199981485rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 11869,
+      "n_keypoints_dst": 13923,
+      "n_putative": 60,
+      "n_inliers": 4,
+      "inlier_ratio": 0.06666666666666667,
+      "fit_rmse_px": 1.0055777257590122,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.6132509258996756,
+          -0.05258919583326332,
+          500.0411864615852
+        ],
+        [
+          -1.5569656702233166,
+          0.03119235322568145,
+          1669.2008604772798
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 31.71191099996213,
+      "coverage_max_uncovered_disc_ratio": 0.41909916682487064,
+      "coverage_occupancy": 0.0625,
+      "transform_matrix_original_pixels": [
+        [
+          -0.6132509258996756,
+          0.05258919583326332,
+          522.9588135384148
+        ],
+        [
+          1.5569656702233166,
+          -0.03119235322568145,
+          377.7991395227202
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8167794974871658,
+            0.06166525032085227,
+            573.3340877931613
+          ],
+          [
+            -0.04271268931396157,
+            -0.8974732044154388,
+            1948.593068595612
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 510.7589474932855,
+          "p90": 1182.600448599515,
+          "max": 1807.114978862967
+        },
+        "disagreement_px_p5_p95": [
+          503.8423536967053,
+          519.4111833432889
+        ],
+        "discrimination_floor_px": 96.6057542924982,
+        "excess_over_floor": 5.2870447649198455,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1199981485rc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 7.77000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 66.88,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 73.37593810004182,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.8167794974871658,
+            0.06166525032085227,
+            573.3340877931613
+          ],
+          [
+            -0.04271268931396157,
+            -0.8974732044154388,
+            1948.593068595612
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1199981485rc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 7.77000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 66.88,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 11477,
+      "n_keypoints_dst": 12420,
+      "n_putative": 5404,
+      "n_inliers": 5381,
+      "inlier_ratio": 0.9957438934122872,
+      "fit_rmse_px": 0.7090349777960571,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.9253254462840952,
+          -0.024298242021692864,
+          -84.96364928469575
+        ],
+        [
+          0.027396086377353964,
+          0.9365915650164112,
+          24.58686734217372
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 11.992810900032055,
+      "coverage_max_uncovered_disc_ratio": 0.07127166953920926,
+      "coverage_occupancy": 0.9375,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.901805864198191,
+            -0.025652307425177243,
+            76.25269488191446
+          ],
+          [
+            0.06906995316812498,
+            0.9406377695315323,
+            25.14405293926393
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 150.20607054351058,
+          "p90": 157.85980597183587,
+          "max": 161.21730701831152
+        },
+        "disagreement_px_p5_p95": [
+          94.64654781426763,
+          215.17073704967711
+        ],
+        "discrimination_floor_px": 100.36095834727261,
+        "excess_over_floor": 1.4966583920388854,
+        "verdict": "INCONCLUSIVE",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1452560468lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "north_up": false,
+      "delta_incidence_deg": 0.960000000000008,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 68.8,
+      "dst_incidence_deg": 69.76,
+      "recorded_n_inliers": 5365,
+      "reproduces_recorded": false
+    },
+    {
+      "n_keypoints_src": 11433,
+      "n_keypoints_dst": 12471,
+      "n_putative": 5413,
+      "n_inliers": 5392,
+      "inlier_ratio": 0.9961204507666728,
+      "fit_rmse_px": 0.7497060816187999,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.9249263657614955,
+          -0.024354078220287612,
+          211.3355636293686
+        ],
+        [
+          0.027062976877154338,
+          0.936041054737808,
+          77.81418271814448
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 10.66042509995168,
+      "coverage_max_uncovered_disc_ratio": 0.071128350525899,
+      "coverage_occupancy": 0.9375,
+      "transform_matrix_original_pixels": [
+        [
+          0.9249263657614955,
+          -0.024354078220287612,
+          -84.6824376864497
+        ],
+        [
+          0.027062976877154338,
+          0.936041054737808,
+          25.424352888233898
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.901805864198191,
+            -0.025652307425177243,
+            76.25269488191446
+          ],
+          [
+            0.06906995316812498,
+            0.9406377695315323,
+            25.14405293926393
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 150.1670049613385,
+          "p90": 157.6613301761079,
+          "max": 160.93537666671781
+        },
+        "disagreement_px_p5_p95": [
+          94.57419079941234,
+          215.15147127088488
+        ],
+        "discrimination_floor_px": 100.36095834727261,
+        "excess_over_floor": 1.4962691412503775,
+        "verdict": "INCONCLUSIVE",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1452560468lc -> nac.m1335207975rc",
+      "engine": "b1",
+      "delta_incidence_deg": 0.960000000000008,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 68.8,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 2374,
+      "n_inliers": 2359,
+      "inlier_ratio": 0.993681550126369,
+      "fit_rmse_px": 0.9987711524167417,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          0.9273980497572717,
+          -0.024781880747452734,
+          210.1449788401186
+        ],
+        [
+          0.027972689871021438,
+          0.9372649486357558,
+          76.33111007344962
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 52.94264819996897,
+      "coverage_max_uncovered_disc_ratio": 0.1305003236496226,
+      "coverage_occupancy": 0.890625,
+      "transform_matrix_original_pixels": [
+        [
+          0.9273980497572717,
+          -0.024781880747452734,
+          -85.14467385177181
+        ],
+        [
+          0.027972689871021438,
+          0.9372649486357558,
+          23.4714783311033
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.901805864198191,
+            -0.025652307425177243,
+            76.25269488191446
+          ],
+          [
+            0.06906995316812498,
+            0.9406377695315323,
+            25.14405293926393
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 149.86136199712377,
+          "p90": 158.36316832476356,
+          "max": 161.40603501721165
+        },
+        "disagreement_px_p5_p95": [
+          94.4008823543141,
+          214.81249325530305
+        ],
+        "discrimination_floor_px": 100.36095834727261,
+        "excess_over_floor": 1.4932237043668721,
+        "verdict": "INCONCLUSIVE",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1452560468lc -> nac.m1335207975rc",
+      "engine": "lg",
+      "delta_incidence_deg": 0.960000000000008,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 68.8,
+      "dst_incidence_deg": 69.76
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1452560468lc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1452560468lc -> nac.m1142297886lc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "window": "RD03",
+      "edge": "nac.m1335207975rc -> nac.m1096350825rc",
+      "excluded": "overlap not CONFIRMED"
+    },
+    {
+      "n_keypoints_src": 12471,
+      "n_keypoints_dst": 13923,
+      "n_putative": 64,
+      "n_inliers": 4,
+      "inlier_ratio": 0.0625,
+      "fit_rmse_px": 0.6180277615914055,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.27576316064016343,
+          0.6485026048118269,
+          -398.7704986913177
+        ],
+        [
+          -0.13776037665149504,
+          1.158849936226274,
+          144.0410746441546
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 18.95186420000391,
+      "coverage_max_uncovered_disc_ratio": 0.44501257717918064,
+      "coverage_occupancy": 0.046875,
+      "transform_matrix_original_pixels": [
+        [
+          0.27576316064016343,
+          0.6485026048118269,
+          -187.82004669337903
+        ],
+        [
+          -0.13776037665149504,
+          1.158849936226274,
+          -328.2780287848584
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7072308047006381,
+            0.02828371323930158,
+            844.2086624010828
+          ],
+          [
+            0.014177500290818115,
+            0.7713227051419614,
+            227.1501195051029
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 524.0625766726353,
+          "p90": 863.2177737434297,
+          "max": 1221.6628059907096
+        },
+        "disagreement_px_p5_p95": [
+          493.2116511979245,
+          546.1640657352596
+        ],
+        "discrimination_floor_px": 80.0543698268073,
+        "excess_over_floor": 6.546333170898882,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1335207975rc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 4.890000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 69.76,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 1,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 33.15477920003468,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            -0.7072308047006381,
+            0.02828371323930158,
+            844.2086624010828
+          ],
+          [
+            0.014177500290818115,
+            0.7713227051419614,
+            227.1501195051029
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1335207975rc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 4.890000000000001,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 69.76,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 12825,
+      "n_keypoints_dst": 13923,
+      "n_putative": 94,
+      "n_inliers": 19,
+      "inlier_ratio": 0.20212765957446807,
+      "fit_rmse_px": 0.5956320944775809,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          -1.0702757577990527,
+          -0.0485019887428625,
+          1065.4735930263519
+        ],
+        [
+          -0.06358131625387874,
+          1.0627623518745968,
+          -1.84337135877513
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 12.973398400004953,
+      "coverage_max_uncovered_disc_ratio": 0.2960205631845953,
+      "coverage_occupancy": 0.25,
+      "transform_matrix_original_pixels": [
+        [
+          1.0702757577990527,
+          0.0485019887428625,
+          -42.473593026351864
+        ],
+        [
+          0.06358131625387874,
+          -1.0627623518745968,
+          2048.843371358775
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "north_up": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.0804959528529317,
+            0.04879990783074483,
+            -90.86810812764821
+          ],
+          [
+            0.1007490967294218,
+            -1.064693560989794,
+            2061.930842527914
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 52.320792809774744,
+          "p90": 59.456834242890295,
+          "max": 63.297770584268434
+        },
+        "disagreement_px_p5_p95": [
+          23.87840004341509,
+          112.39671418259267
+        ],
+        "discrimination_floor_px": 98.02052917807718,
+        "excess_over_floor": 0.5337738252231,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "wrong_pass": false,
+      "success": true,
+      "window": "RD03",
+      "edge": "nac.m1096350825rc -> nac.m1142297886lc",
+      "engine": "b1",
+      "delta_incidence_deg": 2.3599999999999994,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 72.29,
+      "dst_incidence_deg": 74.65
+    },
+    {
+      "n_keypoints_src": 4096,
+      "n_keypoints_dst": 4096,
+      "n_putative": 0,
+      "n_inliers": 0,
+      "inlier_ratio": 0.0,
+      "fit_rmse_px": NaN,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": null,
+      "wall_s": 35.05811259994516,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.0804959528529317,
+            0.04879990783074483,
+            -90.86810812764821
+          ],
+          [
+            0.1007490967294218,
+            -1.064693560989794,
+            2061.930842527914
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "wrong_pass": false,
+      "success": false,
+      "window": "RD03",
+      "edge": "nac.m1096350825rc -> nac.m1142297886lc",
+      "engine": "lg",
+      "north_up": true,
+      "delta_incidence_deg": 2.3599999999999994,
+      "same_orbit_pair": false,
+      "src_incidence_deg": 72.29,
+      "dst_incidence_deg": 74.65
+    }
+  ]
+}

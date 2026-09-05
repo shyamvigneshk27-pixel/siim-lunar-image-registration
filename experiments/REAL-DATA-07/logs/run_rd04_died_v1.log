@@ -1,0 +1,13 @@
+  [RD04] m1299958135l->m1315225542lc dInc= 2.91 b1  NU  inl=   10 SUCCESS  (13s)
+Loaded LightGlue model
+D:\softwares\Lib\site-packages\kornia\feature\integrated.py:550: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.detach().clone() or sourceTensor.detach().clone().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  hw1_ = torch.tensor(hw1, device=dev)
+D:\softwares\Lib\site-packages\kornia\feature\integrated.py:554: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.detach().clone() or sourceTensor.detach().clone().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  hw2_ = torch.tensor(hw2, device=dev)
+  [RD04] m1299958135l->m1315225542lc dInc= 2.91 lg  NU  inl=    3 fail  (39s)
+  [RD04] m1299958135l->m1271742202lc dInc=11.73 b1  raw  inl= 1656 SUCCESS  (12s)
+  [RD04] m1299958135l->m1271742202lc dInc=11.73 b1  NU  inl= 1608 SUCCESS  (10s)
+  [RD04] m1299958135l->m1271742202lc dInc=11.73 lg  NU  inl= 1971 SUCCESS  (33s)
+D:\MyData\downloads\SIH\scripts\run_exp007.py:117: RuntimeWarning: Mean of empty slice
+  return np.nanmean(a.reshape(a.shape[0] // k, k, a.shape[1] // k, k), axis=(1, 3))
+  [RD04] m1299958135l->m1341069775rc dInc=24.21 b1  NU  inl=  265 SUCCESS  (13s)

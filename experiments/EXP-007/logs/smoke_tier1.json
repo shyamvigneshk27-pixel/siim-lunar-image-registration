@@ -1,0 +1,1704 @@
+{
+  "stage": "EXP-007",
+  "preregistration": "docs/stages/EXP-007_dem_conditioned_correspondence.md Part 1 (commit 75fb001)",
+  "failure_rule": "n_inliers <= 8 (D-023), applied unchanged",
+  "fit_rmse_policy": "recorded; never a criterion",
+  "arms_run": [
+    "none",
+    "dem_render_b1"
+  ],
+  "tier2_rungs": [
+    4,
+    8,
+    16,
+    32
+  ],
+  "exploratory_arms": [
+    "photometric_ls_pixel",
+    "learned_lg_repeat"
+  ],
+  "dem": {
+    "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+    "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+    "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+    "unit": "km relative to 1737.4 km",
+    "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+  },
+  "learned_engine": "B4L DISK(depth)+LightGlue(disk) via kornia, CPU, Apache-2.0",
+  "environment": {
+    "python": "3.13.7",
+    "numpy": "2.3.3",
+    "opencv": "5.0.0",
+    "torch": "2.10.0+cpu",
+    "kornia": "0.8.3",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "total_runtime_s": 109.98651710001286,
+  "criteria": {
+    "S4_reproduction_gate": {
+      "met": true
+    },
+    "S1_dem_render_b1_at_k16_or_k32_on_failing_pairs": {
+      "n_pass": 0,
+      "of": 4,
+      "met": false,
+      "pairs": []
+    },
+    "S2_no_tier1_conversion_by_dem_render_b1": {
+      "conversions": 0,
+      "met": true
+    },
+    "S3_learned_converts_a_tier1_failing_edge": {
+      "n_hits": 0,
+      "met": false,
+      "edges": []
+    },
+    "S5_photometric_arms_change_no_tier1_outcome": {
+      "met": true
+    },
+    "S6_no_arm_breaks_a_succeeding_pair": {
+      "met": false,
+      "broken": [
+        [
+          "dem_render_b1",
+          "REAL-DATA-03",
+          "nac.m1335207975rc -> nac.m1452560468lc",
+          2
+        ],
+        [
+          "dem_render_b1",
+          "REAL-DATA-04",
+          "nac.m1299958135lc -> nac.m1271742202lc",
+          2
+        ]
+      ]
+    },
+    "rung_transition_smallest_passing_k": {},
+    "tier1_failing_edges": [
+      [
+        "REAL-DATA-03",
+        "nac.m1271742202lc -> nac.m1335207975rc"
+      ],
+      [
+        "REAL-DATA-03",
+        "nac.m1452560468lc -> nac.m1271742202lc"
+      ],
+      [
+        "REAL-DATA-04",
+        "nac.m1271742202lc -> nac.m1335207975rc"
+      ],
+      [
+        "REAL-DATA-04",
+        "nac.m1335207975rc -> nac.m1299958135lc"
+      ]
+    ],
+    "tier1_succeeding_edges": [
+      [
+        "REAL-DATA-03",
+        "nac.m1335207975rc -> nac.m1452560468lc"
+      ],
+      [
+        "REAL-DATA-04",
+        "nac.m1299958135lc -> nac.m1271742202lc"
+      ]
+    ]
+  },
+  "rows": [
+    {
+      "n_keypoints_src": 9538,
+      "n_keypoints_dst": 12420,
+      "n_putative": 32,
+      "n_inliers": 4,
+      "inlier_ratio": 0.125,
+      "fit_rmse_px": 4.1382633578908315e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -0.5230380279446685,
+          0.5406641190361868,
+          314.7983810036714
+        ],
+        [
+          0.12455946615814595,
+          -1.972779351468188,
+          2316.1132128995796
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 4.440797099960037,
+      "coverage_max_uncovered_disc_ratio": 0.4767323675870726,
+      "coverage_occupancy": 0.046875,
+      "recorded_n_inliers": 4,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.009933068245097,
+            0.011665282725371663,
+            -17.43670264976845
+          ],
+          [
+            -0.0006247315807926491,
+            1.0175590052415464,
+            -18.018433984886883
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 1614.1055228627038,
+          "p90": 3166.160178825829,
+          "max": 3998.053373226324
+        },
+        "disagreement_px_p5_p95": [
+          1610.4810367573198,
+          1625.2377714490556
+        ],
+        "discrimination_floor_px": 91.17615921905849,
+        "excess_over_floor": 17.703153287962895,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 11.986340100003872,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "label": "A -> B",
+      "decimation": 2,
+      "gsd_m": 1.845,
+      "delta_incidence_deg": 39.81,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "A": {
+          "n_keypoints_src": 9538,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.6019006000133231,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 17955,
+              "sample0": 1811,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.8599999999999999,
+            "sun": {
+              "incidence_deg": 29.8407417160218,
+              "elevation_deg": 60.159258283978204,
+              "azimuth_ground_deg_cw_from_north": 128.89208380328782,
+              "azimuth_image_deg_cw_from_up": 302.91083102330913,
+              "north_direction_in_pixels_xy": [
+                0.06242167336794948,
+                1.0274045411741257
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8887491068838044,
+                0.9715379389709126
+              ],
+              "lon_lat_at_pixel": [
+                22.033866753032388,
+                20.035243347679035
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.0446555308104,
+              "max": -2743.787208836067,
+              "ptp": 57.25744669474352
+            },
+            "lon_lat_extent": [
+              [
+                21.998296402936695,
+                22.069753902070907
+              ],
+              [
+                19.967763334617715,
+                20.10272336074036
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "B": {
+          "n_keypoints_src": 12420,
+          "n_keypoints_dst": 17,
+          "n_putative": 6,
+          "n_inliers": 3,
+          "inlier_ratio": 0.5,
+          "fit_rmse_px": 5.31214852377623e-13,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": [
+            [
+              0.1203866656976844,
+              0.41879449035665123,
+              -94.80559989673651
+            ],
+            [
+              -3.763027066283147,
+              -2.1372579363108253,
+              5288.51298482752
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "wall_s": 0.6764494000235572,
+          "coverage_max_uncovered_disc_ratio": 0.42049039458236753,
+          "coverage_occupancy": 0.046875,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 29822,
+              "sample0": 1227,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.83,
+            "sun": {
+              "incidence_deg": 69.76135429563602,
+              "elevation_deg": 20.238645704363975,
+              "azimuth_ground_deg_cw_from_north": 98.73555356965717,
+              "azimuth_image_deg_cw_from_up": 274.4624004997818,
+              "north_direction_in_pixels_xy": [
+                0.0750256401226036,
+                1.0454058112911149
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8803782732800068,
+                0.9543628701990438
+              ],
+              "lon_lat_at_pixel": [
+                22.03384346328235,
+                20.035268002106115
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2799.185167120015,
+              "max": -2743.780856241972,
+              "ptp": 55.40431087804336
+            },
+            "lon_lat_extent": [
+              [
+                21.997852051068435,
+                22.06999327496768
+              ],
+              [
+                19.968963907701326,
+                20.10157209651091
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 0,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.009933068245097,
+            0.011665282725371663,
+            -17.43670264976845
+          ],
+          [
+            -0.0006247315807926491,
+            1.0175590052415464,
+            -18.018433984886883
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 12.292842699971516,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "label": "A -> B",
+      "decimation": 2,
+      "gsd_m": 1.845,
+      "delta_incidence_deg": 39.81,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "n_keypoints_src": 12420,
+      "n_keypoints_dst": 11477,
+      "n_putative": 5392,
+      "n_inliers": 5365,
+      "inlier_ratio": 0.9949925816023739,
+      "fit_rmse_px": 0.5829079860626339,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.0776524901752906,
+          0.028178504727742575,
+          91.84091279038614
+        ],
+        [
+          -0.03251886872330661,
+          1.0669851710310696,
+          -28.737402683378832
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 3.057217800116632,
+      "coverage_max_uncovered_disc_ratio": 0.10758155745250321,
+      "coverage_occupancy": 0.875,
+      "recorded_n_inliers": 5365,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.1065780977029311,
+            0.03017824766157505,
+            -85.13034910686991
+          ],
+          [
+            -0.08125496150157654,
+            1.0608924983451806,
+            -20.480301201177895
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 161.9439735287041,
+          "p90": 172.23056881457703,
+          "max": 177.16378654339763
+        },
+        "disagreement_px_p5_p95": [
+          98.0703906601572,
+          229.51497609142282
+        ],
+        "discrimination_floor_px": 104.6082130153669,
+        "excess_over_floor": 1.5480999900544579,
+        "verdict": "INCONCLUSIVE",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 11.647458599996753,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1335207975rc -> nac.m1452560468lc",
+      "label": "B -> C",
+      "decimation": 2,
+      "gsd_m": 1.77,
+      "delta_incidence_deg": 0.960000000000008,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "B": {
+          "n_keypoints_src": 12420,
+          "n_keypoints_dst": 17,
+          "n_putative": 6,
+          "n_inliers": 3,
+          "inlier_ratio": 0.5,
+          "fit_rmse_px": 5.31214852377623e-13,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": [
+            [
+              0.1203866656976844,
+              0.41879449035665123,
+              -94.80559989673651
+            ],
+            [
+              -3.763027066283147,
+              -2.1372579363108253,
+              5288.51298482752
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "wall_s": 0.683766599977389,
+          "coverage_max_uncovered_disc_ratio": 0.42049039458236753,
+          "coverage_occupancy": 0.046875,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 29822,
+              "sample0": 1227,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.83,
+            "sun": {
+              "incidence_deg": 69.76135429563602,
+              "elevation_deg": 20.238645704363975,
+              "azimuth_ground_deg_cw_from_north": 98.73555356965717,
+              "azimuth_image_deg_cw_from_up": 274.4624004997818,
+              "north_direction_in_pixels_xy": [
+                0.0750256401226036,
+                1.0454058112911149
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8803782732800068,
+                0.9543628701990438
+              ],
+              "lon_lat_at_pixel": [
+                22.03384346328235,
+                20.035268002106115
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2799.185167120015,
+              "max": -2743.780856241972,
+              "ptp": 55.40431087804336
+            },
+            "lon_lat_extent": [
+              [
+                21.997852051068435,
+                22.06999327496768
+              ],
+              [
+                19.968963907701326,
+                20.10157209651091
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "C": {
+          "n_keypoints_src": 11477,
+          "n_keypoints_dst": 12,
+          "n_putative": 6,
+          "n_inliers": 3,
+          "inlier_ratio": 0.5,
+          "fit_rmse_px": 6.01574199905506e-13,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": [
+            [
+              1.951534590437405,
+              -0.20077335548427597,
+              -1118.6525743969646
+            ],
+            [
+              -6.300108317812245,
+              1.1597738483312674,
+              5109.864018367978
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "wall_s": 0.6529164000530727,
+          "coverage_max_uncovered_disc_ratio": 0.53704225432881,
+          "coverage_occupancy": 0.03125,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 9088,
+              "sample0": 717,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.71,
+            "sun": {
+              "incidence_deg": 68.76516764770557,
+              "elevation_deg": 21.234832352294433,
+              "azimuth_ground_deg_cw_from_north": 98.22699850497476,
+              "azimuth_image_deg_cw_from_up": 269.62757288057907,
+              "north_direction_in_pixels_xy": [
+                0.11457024559482804,
+                1.1029669774205546
+              ],
+              "corner_map_pixel_scale_m": [
+                0.7904830779907275,
+                0.9035052527589563
+              ],
+              "lon_lat_at_pixel": [
+                22.033856878107496,
+                20.035249266892784
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2789.9757671222073,
+              "max": -2743.7771108657457,
+              "ptp": 46.19865625646162
+            },
+            "lon_lat_extent": [
+              [
+                21.999689708289193,
+                22.068024047925803
+              ],
+              [
+                19.97084436016197,
+                20.099654173623588
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 3,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.1065780977029311,
+            0.03017824766157505,
+            -85.13034910686991
+          ],
+          [
+            -0.08125496150157654,
+            1.0608924983451806,
+            -20.480301201177895
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 8.821307999955025,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1335207975rc -> nac.m1452560468lc",
+      "label": "B -> C",
+      "decimation": 2,
+      "gsd_m": 1.77,
+      "delta_incidence_deg": 0.960000000000008,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "n_keypoints_src": 11477,
+      "n_keypoints_dst": 9538,
+      "n_putative": 49,
+      "n_inliers": 4,
+      "inlier_ratio": 0.08163265306122448,
+      "fit_rmse_px": 0.8850864772888422,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.4088674456982205,
+          0.012902418586296713,
+          415.9235385041801
+        ],
+        [
+          -0.24131731504099557,
+          0.4942445774792452,
+          1180.3737485599622
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 6.671931200078689,
+      "coverage_max_uncovered_disc_ratio": 0.44060894010238205,
+      "coverage_occupancy": 0.046875,
+      "recorded_n_inliers": 4,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8921491727463977,
+            -0.036077643125240526,
+            92.29297775029909
+          ],
+          [
+            0.06842561420905954,
+            0.9243839984541087,
+            42.473361776892375
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 583.4517950867007,
+          "p90": 929.0803141077752,
+          "max": 1183.0274849279417
+        },
+        "disagreement_px_p5_p95": [
+          541.027974963157,
+          644.8615519696592
+        ],
+        "discrimination_floor_px": 104.06564549165401,
+        "excess_over_floor": 5.606574507179635,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 13.836989299976267,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1452560468lc -> nac.m1271742202lc",
+      "label": "C -> A",
+      "decimation": 2,
+      "gsd_m": 1.785,
+      "delta_incidence_deg": 38.849999999999994,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "C": {
+          "n_keypoints_src": 11477,
+          "n_keypoints_dst": 12,
+          "n_putative": 6,
+          "n_inliers": 3,
+          "inlier_ratio": 0.5,
+          "fit_rmse_px": 6.01574199905506e-13,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": [
+            [
+              1.951534590437405,
+              -0.20077335548427597,
+              -1118.6525743969646
+            ],
+            [
+              -6.300108317812245,
+              1.1597738483312674,
+              5109.864018367978
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "wall_s": 0.65772229997674,
+          "coverage_max_uncovered_disc_ratio": 0.53704225432881,
+          "coverage_occupancy": 0.03125,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 9088,
+              "sample0": 717,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.71,
+            "sun": {
+              "incidence_deg": 68.76516764770557,
+              "elevation_deg": 21.234832352294433,
+              "azimuth_ground_deg_cw_from_north": 98.22699850497476,
+              "azimuth_image_deg_cw_from_up": 269.62757288057907,
+              "north_direction_in_pixels_xy": [
+                0.11457024559482804,
+                1.1029669774205546
+              ],
+              "corner_map_pixel_scale_m": [
+                0.7904830779907275,
+                0.9035052527589563
+              ],
+              "lon_lat_at_pixel": [
+                22.033856878107496,
+                20.035249266892784
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2789.9757671222073,
+              "max": -2743.7771108657457,
+              "ptp": 46.19865625646162
+            },
+            "lon_lat_extent": [
+              [
+                21.999689708289193,
+                22.068024047925803
+              ],
+              [
+                19.97084436016197,
+                20.099654173623588
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "A": {
+          "n_keypoints_src": 9538,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.5994316000142135,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 17955,
+              "sample0": 1811,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.8599999999999999,
+            "sun": {
+              "incidence_deg": 29.8407417160218,
+              "elevation_deg": 60.159258283978204,
+              "azimuth_ground_deg_cw_from_north": 128.89208380328782,
+              "azimuth_image_deg_cw_from_up": 302.91083102330913,
+              "north_direction_in_pixels_xy": [
+                0.06242167336794948,
+                1.0274045411741257
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8887491068838044,
+                0.9715379389709126
+              ],
+              "lon_lat_at_pixel": [
+                22.033866753032388,
+                20.035243347679035
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.0446555308104,
+              "max": -2743.787208836067,
+              "ptp": 57.25744669474352
+            },
+            "lon_lat_extent": [
+              [
+                21.998296402936695,
+                22.069753902070907
+              ],
+              [
+                19.967763334617715,
+                20.10272336074036
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 0,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8921491727463977,
+            -0.036077643125240526,
+            92.29297775029909
+          ],
+          [
+            0.06842561420905954,
+            0.9243839984541087,
+            42.473361776892375
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 1.4470977000310086,
+      "tier": "tier1",
+      "target": "REAL-DATA-03",
+      "edge": "nac.m1452560468lc -> nac.m1271742202lc",
+      "label": "C -> A",
+      "decimation": 2,
+      "gsd_m": 1.785,
+      "delta_incidence_deg": 38.849999999999994,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "n_keypoints_src": 10794,
+      "n_keypoints_dst": 11633,
+      "n_putative": 50,
+      "n_inliers": 7,
+      "inlier_ratio": 0.14,
+      "fit_rmse_px": 1.1053335547230574,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          0.9900904078028925,
+          0.030710965086484604,
+          -116.15188348936448
+        ],
+        [
+          0.046631296394481464,
+          0.9803332832426361,
+          -13.889340041035325
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 3.7551624000188895,
+      "coverage_max_uncovered_disc_ratio": 0.46042617626927473,
+      "coverage_occupancy": 0.0625,
+      "recorded_n_inliers": 7,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.9960287533989105,
+            0.01207444825402191,
+            -10.652771388591702
+          ],
+          [
+            0.0002497680581318918,
+            1.0175332711359182,
+            -18.203929355703963
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 92.23868384853996,
+          "p90": 107.19022723489626,
+          "max": 122.62443940876494
+        },
+        "disagreement_px_p5_p95": [
+          41.136660062186316,
+          164.65249468777327
+        ],
+        "discrimination_floor_px": 102.86202715440547,
+        "excess_over_floor": 0.8967223999006079,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 11.174176000000443,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "label": "A -> B",
+      "decimation": 2,
+      "gsd_m": 1.845,
+      "delta_incidence_deg": 39.81,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "A": {
+          "n_keypoints_src": 10794,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.6114015000057407,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 6413,
+              "sample0": 1866,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.8599999999999999,
+            "sun": {
+              "incidence_deg": 29.627687982053885,
+              "elevation_deg": 60.372312017946115,
+              "azimuth_ground_deg_cw_from_north": 128.35524557064227,
+              "azimuth_image_deg_cw_from_up": 301.64959889723775,
+              "north_direction_in_pixels_xy": [
+                0.0640746630011233,
+                1.027302445443782
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8659299475536644,
+                0.9715361156977718
+              ],
+              "lon_lat_at_pixel": [
+                22.010365248792965,
+                19.666259050522143
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.6660482780317,
+              "max": -2763.268971794144,
+              "ptp": 38.39707648388776
+            },
+            "lon_lat_extent": [
+              [
+                21.975696549482304,
+                22.045350747046438
+              ],
+              [
+                19.59877903746082,
+                19.733739063583464
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "B": {
+          "n_keypoints_src": 11633,
+          "n_keypoints_dst": 7,
+          "n_putative": 2,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.6335122000309639,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 18077,
+              "sample0": 1145,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.83,
+            "sun": {
+              "incidence_deg": 69.7276188021485,
+              "elevation_deg": 20.2723811978515,
+              "azimuth_ground_deg_cw_from_north": 98.59172805481404,
+              "azimuth_image_deg_cw_from_up": 274.2341576017415,
+              "north_direction_in_pixels_xy": [
+                0.07622355159448241,
+                1.0453304697044428
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8697584503644518,
+                0.954383161821475
+              ],
+              "lon_lat_at_pixel": [
+                22.010346839414932,
+                19.666268557394304
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.634786571989,
+              "max": -2763.252525859413,
+              "ptp": 38.382260712576226
+            },
+            "lon_lat_extent": [
+              [
+                21.974803500376805,
+                22.04604857792447
+              ],
+              [
+                19.59996446298951,
+                19.732572651799096
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 0,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.9960287533989105,
+            0.01207444825402191,
+            -10.652771388591702
+          ],
+          [
+            0.0002497680581318918,
+            1.0175332711359182,
+            -18.203929355703963
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 8.915288900025189,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1271742202lc -> nac.m1335207975rc",
+      "label": "A -> B",
+      "decimation": 2,
+      "gsd_m": 1.845,
+      "delta_incidence_deg": 39.81,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "n_keypoints_src": 11633,
+      "n_keypoints_dst": 12593,
+      "n_putative": 29,
+      "n_inliers": 3,
+      "inlier_ratio": 0.10344827586206896,
+      "fit_rmse_px": 1.8852829216231156e-13,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": true,
+      "pass": false,
+      "transform_matrix": [
+        [
+          -0.47123990252010983,
+          0.12483564895114681,
+          830.1419671689252
+        ],
+        [
+          -1.7306010943700876,
+          -0.2488054446044741,
+          2229.71922947356
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 5.786670100002084,
+      "coverage_max_uncovered_disc_ratio": 0.42682484813887006,
+      "coverage_occupancy": 0.046875,
+      "recorded_n_inliers": 3,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8103892528523385,
+            -0.005894221034384454,
+            102.88852427680422
+          ],
+          [
+            0.010347966989763648,
+            0.8680465436088123,
+            130.12583181721084
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 797.5011875408463,
+          "p90": 1471.939761670786,
+          "max": 2221.978849062379
+        },
+        "disagreement_px_p5_p95": [
+          776.9734906375076,
+          822.6257189135175
+        ],
+        "discrimination_floor_px": 82.74067058672594,
+        "excess_over_floor": 9.638563258983172,
+        "verdict": "INCONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 13.356502000009641,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1335207975rc -> nac.m1299958135lc",
+      "label": "B -> D",
+      "decimation": 2,
+      "gsd_m": 1.985,
+      "delta_incidence_deg": 51.540000000000006,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "B": {
+          "n_keypoints_src": 11633,
+          "n_keypoints_dst": 7,
+          "n_putative": 2,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.7880820999271236,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 18077,
+              "sample0": 1145,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.83,
+            "sun": {
+              "incidence_deg": 69.7276188021485,
+              "elevation_deg": 20.2723811978515,
+              "azimuth_ground_deg_cw_from_north": 98.59172805481404,
+              "azimuth_image_deg_cw_from_up": 274.2341576017415,
+              "north_direction_in_pixels_xy": [
+                0.07622355159448241,
+                1.0453304697044428
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8697584503644518,
+                0.954383161821475
+              ],
+              "lon_lat_at_pixel": [
+                22.010346839414932,
+                19.666268557394304
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.634786571989,
+              "max": -2763.252525859413,
+              "ptp": 38.382260712576226
+            },
+            "lon_lat_extent": [
+              [
+                21.974803500376805,
+                22.04604857792447
+              ],
+              [
+                19.59996446298951,
+                19.732572651799096
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "D": {
+          "n_keypoints_src": 12593,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.8096229999791831,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 42463,
+              "sample0": 1693,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 2.14,
+            "sun": {
+              "incidence_deg": 18.881151576187612,
+              "elevation_deg": 71.11884842381238,
+              "azimuth_ground_deg_cw_from_north": 178.64137418795264,
+              "azimuth_image_deg_cw_from_up": 355.1054663049772,
+              "north_direction_in_pixels_xy": [
+                0.05560933819052146,
+                0.908184259955393
+              ],
+              "corner_map_pixel_scale_m": [
+                1.0730727479814501,
+                1.0995576158752698
+              ],
+              "lon_lat_at_pixel": [
+                22.01033539932515,
+                19.666242691454805
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.6516099784444,
+              "max": -2761.21417929112,
+              "ptp": 40.437430687324195
+            },
+            "lon_lat_extent": [
+              [
+                21.967241442257784,
+                22.053429356392506
+              ],
+              [
+                19.590139274912254,
+                19.742346107997356
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 0,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            0.8103892528523385,
+            -0.005894221034384454,
+            102.88852427680422
+          ],
+          [
+            0.010347966989763648,
+            0.8680465436088123,
+            130.12583181721084
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 3.2932575999875553,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1335207975rc -> nac.m1299958135lc",
+      "label": "B -> D",
+      "decimation": 2,
+      "gsd_m": 1.985,
+      "delta_incidence_deg": 51.540000000000006,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "n_keypoints_src": 12593,
+      "n_keypoints_dst": 10794,
+      "n_putative": 1759,
+      "n_inliers": 1656,
+      "inlier_ratio": 0.9414440022740194,
+      "fit_rmse_px": 0.8779232510137617,
+      "fit_rmse_is_not_accuracy": true,
+      "n_inliers_failure_flag": false,
+      "pass": true,
+      "transform_matrix": [
+        [
+          1.167121643875759,
+          -0.0034206471098307124,
+          -100.80160643030308
+        ],
+        [
+          0.005653445577317761,
+          1.133999091002151,
+          -189.7140895489572
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 3.418178599968087,
+      "coverage_max_uncovered_disc_ratio": 0.10334689225690416,
+      "coverage_occupancy": 1.0,
+      "recorded_n_inliers": 1656,
+      "reproduces_recorded": true,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.2389824149887523,
+            -0.005314115999730556,
+            -116.30218191652637
+          ],
+          [
+            -0.014760577984421755,
+            1.1320647495211364,
+            -127.90479852513363
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "disagreement_px": {
+          "median": 56.31845044140236,
+          "p90": 63.520183310614556,
+          "max": 70.29706732690492
+        },
+        "disagreement_px_p5_p95": [
+          25.167358723533475,
+          123.66676412341167
+        ],
+        "discrimination_floor_px": 105.62166507901651,
+        "excess_over_floor": 0.5332092653459878,
+        "verdict": "CONSISTENT WITH ARCHIVE GEOMETRY",
+        "status": "ok"
+      },
+      "arm": "none",
+      "exploratory": false,
+      "arm_wall_s": 11.2060811999836,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1299958135lc -> nac.m1271742202lc",
+      "label": "D -> A",
+      "decimation": 2,
+      "gsd_m": 2.0,
+      "delta_incidence_deg": 11.73,
+      "shape": [
+        2048,
+        1024
+      ]
+    },
+    {
+      "legs": {
+        "D": {
+          "n_keypoints_src": 12593,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.6384589999797754,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 42463,
+              "sample0": 1693,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 2.14,
+            "sun": {
+              "incidence_deg": 18.881151576187612,
+              "elevation_deg": 71.11884842381238,
+              "azimuth_ground_deg_cw_from_north": 178.64137418795264,
+              "azimuth_image_deg_cw_from_up": 355.1054663049772,
+              "north_direction_in_pixels_xy": [
+                0.05560933819052146,
+                0.908184259955393
+              ],
+              "corner_map_pixel_scale_m": [
+                1.0730727479814501,
+                1.0995576158752698
+              ],
+              "lon_lat_at_pixel": [
+                22.01033539932515,
+                19.666242691454805
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.6516099784444,
+              "max": -2761.21417929112,
+              "ptp": 40.437430687324195
+            },
+            "lon_lat_extent": [
+              [
+                21.967241442257784,
+                22.053429356392506
+              ],
+              [
+                19.590139274912254,
+                19.742346107997356
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        },
+        "A": {
+          "n_keypoints_src": 10794,
+          "n_keypoints_dst": 0,
+          "n_putative": 0,
+          "n_inliers": 0,
+          "inlier_ratio": 0.0,
+          "fit_rmse_px": NaN,
+          "fit_rmse_is_not_accuracy": true,
+          "n_inliers_failure_flag": true,
+          "pass": false,
+          "transform_matrix": null,
+          "wall_s": 0.636200699955225,
+          "render": {
+            "dem": {
+              "manifest": "data\\manifests\\sldem2015_window_mare_serenitatis.json",
+              "source_url": "https://imbrium.mit.edu/DATA/SLDEM2015/TILES/FLOAT_IMG/SLDEM2015_512_00N_30N_000_045_FLOAT.IMG",
+              "bytes_sha256": "d6a424f33e4ec3a1a5e12d07bb4e751b82f0886db2ba367a96cb0b63df002d25",
+              "unit": "km relative to 1737.4 km",
+              "credit": "NASA LRO LOLA / JAXA SELENE Kaguya TC teams (Barker et al. 2016)"
+            },
+            "window": {
+              "line0": 6413,
+              "sample0": 1866,
+              "n_lines": 4096,
+              "n_samples": 2048,
+              "decimation": 2
+            },
+            "pixel_scale_m": 1.8599999999999999,
+            "sun": {
+              "incidence_deg": 29.627687982053885,
+              "elevation_deg": 60.372312017946115,
+              "azimuth_ground_deg_cw_from_north": 128.35524557064227,
+              "azimuth_image_deg_cw_from_up": 301.64959889723775,
+              "north_direction_in_pixels_xy": [
+                0.0640746630011233,
+                1.027302445443782
+              ],
+              "corner_map_pixel_scale_m": [
+                0.8659299475536644,
+                0.9715361156977718
+              ],
+              "lon_lat_at_pixel": [
+                22.010365248792965,
+                19.666259050522143
+              ]
+            },
+            "shading": "Lambertian n.l with cast shadows, unit albedo, ambient 0.06, no noise",
+            "height_stats_m": {
+              "min": -2801.6660482780317,
+              "max": -2763.268971794144,
+              "ptp": 38.39707648388776
+            },
+            "lon_lat_extent": [
+              [
+                21.975696549482304,
+                22.045350747046438
+              ],
+              [
+                19.59877903746082,
+                19.733739063583464
+              ]
+            ],
+            "shadow_fraction": 0.0
+          }
+        }
+      },
+      "pass": false,
+      "n_inliers": 0,
+      "n_inliers_failure_flag": true,
+      "transform_matrix": null,
+      "geometry": {
+        "n_predicted_correspondences": 81,
+        "predicted_transform_matrix": [
+          [
+            1.2389824149887523,
+            -0.005314115999730556,
+            -116.30218191652637
+          ],
+          [
+            -0.014760577984421755,
+            1.1320647495211364,
+            -127.90479852513363
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "status": "no transform"
+      },
+      "arm": "dem_render_b1",
+      "exploratory": false,
+      "arm_wall_s": 1.292360599967651,
+      "tier": "tier1",
+      "target": "REAL-DATA-04",
+      "edge": "nac.m1299958135lc -> nac.m1271742202lc",
+      "label": "D -> A",
+      "decimation": 2,
+      "gsd_m": 2.0,
+      "delta_incidence_deg": 11.73,
+      "shape": [
+        2048,
+        1024
+      ]
+    }
+  ],
+  "claims_not_supported": [
+    "No ground truth: PASS is the pre-registered rule, not correctness.",
+    "No Chandrayaan-2 data. No multimodal claim.",
+    "No azimuth claim: the real edges vary in incidence, not in controlled azimuth.",
+    "No sub-pixel claim."
+  ]
+}

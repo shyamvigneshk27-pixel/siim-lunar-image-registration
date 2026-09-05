@@ -16,3 +16,6 @@ data/processed/**
 # Everything else under experiments/REAL-DATA/ -- metrics JSON, diagnostic figures,
 # the hypothesis grid -- IS tracked.
 experiments/**/*.raw
+
+# setuptools editable-install metadata (pip install -e .)
+src/*.egg-info/

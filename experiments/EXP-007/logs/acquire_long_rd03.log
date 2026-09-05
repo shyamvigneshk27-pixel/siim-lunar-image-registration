@@ -1,0 +1,40 @@
+== EXP-007 tier-2 acquisition: RD03 target (22.033852, 20.035253), 12288 x 5064 ==
+
+   + nac.m1271742202lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1271742202lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1271742202lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1271742202lc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1271742202lc: window CLAMPED by +0 lines
+nac.m1271742202lc: lines [13859, 26147) samples [0, 5064)  124.5 MB
+         33.6 / 124.5 MB  (341s)
+         67.1 / 124.5 MB  (887s)
+        100.7 / 124.5 MB  (1182s)
+        124.5 / 124.5 MB  (1506s)
+   (12288, 5064) float32  sha256=a602d97ce1d27f45...  DN median 1396.0  finite 0.9874  (1509s)
+
+   + nac.m1335207975rc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1335207975rc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1335207975rc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1335207975rc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1335207975rc: window CLAMPED by +0 lines
+nac.m1335207975rc: lines [25726, 38014) samples [0, 5064)  124.5 MB
+         33.6 / 124.5 MB  (277s)
+         67.1 / 124.5 MB  (446s)
+        100.7 / 124.5 MB  (667s)
+        124.5 / 124.5 MB  (909s)
+   (12288, 5064) float32  sha256=93b048c502ff32b6...  DN median 477.0  finite 0.9874  (913s)
+
+   + nac.m1452560468lc: file_size identity: 5064 + 52224x5064x2 = 528929736 B
+   + nac.m1452560468lc: axis order Line(1) x Sample(2) = (52224, 5064) rows x cols
+   + nac.m1452560468lc: data_type SignedLSB2 -> numpy <i2
+   + nac.m1452560468lc: axis_index_order 'Last Index Fastest' (row-major)
+   !! nac.m1452560468lc: window CLAMPED by +0 lines
+nac.m1452560468lc: lines [4992, 17280) samples [0, 5064)  124.5 MB
+         33.6 / 124.5 MB  (28s)
+         67.1 / 124.5 MB  (58s)
+        100.7 / 124.5 MB  (87s)
+        124.5 / 124.5 MB  (118s)
+   (12288, 5064) float32  sha256=623700ce6b8da8a0...  DN median 503.0  finite 0.9874  (121s)
+
+manifest: data\manifests\exp007_long_triplet_abc_manifest.json
+EXIT 0
