@@ -37,7 +37,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from siim.baselines import learned_available  # noqa: E402
 from siim.evaluation.significance import exact_separation_test  # noqa: E402
 from siim.geometry import Transform  # noqa: E402
-from siim.ingest.orientation import north_up  # noqa: E402
+from siim.ingest.orientation import north_up, north_up_east_right  # noqa: E402
 
 _spec = importlib.util.spec_from_file_location("_exp007", ROOT / "scripts" / "run_exp007.py")
 _e7 = importlib.util.module_from_spec(_spec)
@@ -74,16 +74,25 @@ def confirmed_pairs(overlap_path: Path) -> set[frozenset]:
             if c["classification"] == "OVERLAP_CONFIRMED"}
 
 
+#: Orientation step. "quarter_turn" is the Part 1 method (north_up) that produced
+#: every artefact recorded on 2026-09-04/05; "north_up_east_right" adds the
+#: left-right flip the corner map's Jacobian determinant calls for (E-037) and
+#: is the AMENDED run, written to rows_<window>_nue.json.
+ORIENTATION = {"quarter_turn": north_up, "north_up_east_right": north_up_east_right}
+ORIENT_FN = north_up
+ORIENT_SUFFIX = ""
+
+
 def run_edge(fs, fr, engine: str, rotate: bool) -> dict:
     ks, kr = fs.tile.get("decimation", 2), fr.tile.get("decimation", 2)
     a, b = fs.img(ks), fr.img(kr)
     ra = rb = None
     if rotate:
         ta, tb = fs.tile, fr.tile
-        ra = north_up(a, fs.corners, line=ta["line0"] + (ta["n_lines"] - 1) / 2,
-                      sample=ta["sample0"] + (ta["n_samples"] - 1) / 2)
-        rb = north_up(b, fr.corners, line=tb["line0"] + (tb["n_lines"] - 1) / 2,
-                      sample=tb["sample0"] + (tb["n_samples"] - 1) / 2)
+        ra = ORIENT_FN(a, fs.corners, line=ta["line0"] + (ta["n_lines"] - 1) / 2,
+                       sample=ta["sample0"] + (ta["n_samples"] - 1) / 2)
+        rb = ORIENT_FN(b, fr.corners, line=tb["line0"] + (tb["n_lines"] - 1) / 2,
+                       sample=tb["sample0"] + (tb["n_samples"] - 1) / 2)
         a, b = ra.image, rb.image
     res = _e7.run_engine(engine, a, b, BASE)
     rec = _e7.summarise_result(res, a.shape)
@@ -245,14 +254,24 @@ def main() -> None:
     ap.add_argument("--reproduction-only", action="store_true",
                     help="run only the raw B1 arm in the recorded direction on the recorded edges (S4/S6)")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--orientation", choices=sorted(ORIENTATION), default="quarter_turn",
+                    help="north_up_east_right = the E-037 amendment (flip mirrored tiles); "
+                         "rows are written with a _nue suffix")
+    ap.add_argument("--rows-glob", default="rows_*.json",
+                    help="which row artefacts --evaluate pools (e.g. rows_*_nue.json)")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
+    global ORIENT_FN, ORIENT_SUFFIX
+    ORIENT_FN = ORIENTATION[args.orientation]
+    ORIENT_SUFFIX = "" if args.orientation == "quarter_turn" else "_nue"
 
     if args.evaluate:
         rows = []
-        for p in sorted(OUT.glob("rows_*.json")):
+        for p in sorted(OUT.glob(args.rows_glob)):
             rows += json.loads(p.read_text(encoding="utf-8"))["rows"]
         verdict = evaluate(rows)
+        verdict["rows_glob"] = args.rows_glob
+        verdict["n_row_files"] = len(sorted(OUT.glob(args.rows_glob)))
         out = OUT / (args.out or "real_data_07_results.json")
         if out.exists():
             raise SystemExit(f"{out.relative_to(ROOT)} exists (integrity rule 4)")
@@ -270,14 +289,16 @@ def main() -> None:
     engines = [e for e in args.engines.split(",") if e]
     if "lg" in engines and not learned_available():
         raise SystemExit("B4L unavailable: install kornia/torch")
-    out = OUT / (args.out or (f"rows_{args.window.lower()}_repro.json" if args.reproduction_only
-                             else f"rows_{args.window.lower()}.json"))
+    out = OUT / (args.out or (f"rows_{args.window.lower()}_repro{ORIENT_SUFFIX}.json"
+                             if args.reproduction_only
+                             else f"rows_{args.window.lower()}{ORIENT_SUFFIX}.json"))
     if out.exists():
         raise SystemExit(f"{out.relative_to(ROOT)} exists (integrity rule 4)")
     t0 = time.perf_counter()
     rows = run_window(args.window, args.overlap, engines, reproduction_only=args.reproduction_only)
     out.write_text(json.dumps({
         "stage": STAGE, "window": args.window, "engines": engines,
+        "orientation": args.orientation,
         "environment": {"python": platform.python_version(), "numpy": np.__version__,
                         "opencv": __import__("cv2").__version__, "platform": platform.platform()},
         "total_runtime_s": time.perf_counter() - t0, "rows": rows}, indent=2, default=float),

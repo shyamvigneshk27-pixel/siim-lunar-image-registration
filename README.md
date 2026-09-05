@@ -104,7 +104,7 @@ exactly is still a wrong answer — which is the entire point of this project.
 | | |
 |---|---|
 | **Real LRO NAC, end to end** | Byte-range fetched from the public PDS archive, SHA-256 recorded, PDS4-decoded, sanity-gated, registered by an unmodified baseline |
-| **Δincidence predicts registration outcome on six edges — and on 42 pairs it is significant, necessary, and NOT sufficient** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54°. **Exact one-tailed permutation test: p = 0.0667** (`siim.evaluation.exact_separation_test`, computed from the rows, not asserted). Two successes among six edges: chance produces this separation once in fifteen, so the result **does not reach the conventional 0.05**. One-tailed is admissible only because the direction was frozen in a decision table before frame D was acquired. The edges share frames and are therefore not independent, so **0.0667 is a lower bound**. **One further failing edge would give p = 0.0476** — and high-incidence frames are abundant where the low-incidence frames REAL-DATA-05 hunted are not |
+| **Δincidence predicts registration outcome on six edges — and on 42 pairs it is significant, necessary, and NOT sufficient** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54° — the separation is perfect and the exact one-tailed permutation test gives **p = 0.0667** (`siim.evaluation.exact_separation_test`; the direction was frozen before frame D was acquired; the edges share frames, so this is a lower bound). `[MEASURED]` REAL-DATA-07 (2026-09-05) then registered **42 geometry-confirmed pairs over 14 frames**: the pooled separation reaches **p = 0.0042** (RD-03 window 0.0040, RD-04 window 0.121), **no pair above 40° passes** under either engine, and there were **0 wrong passes in 37** (a pass whose transform is inconsistent with archive geometry). But the success rate is already 0.71 at 0–5° and 0.50 at 5–10°: **four frames failed against every partner irrespective of Δincidence**, and on 2026-09-05 the cause for at least two of them was found to be a **mirror image in the tile orientation** (E-037: the archive corner map's Jacobian has the opposite sign for 5 of the 14 census frames, and a quarter-turn cannot undo a reflection). Flipping frame E2 turns 5 inliers into **2691** against D. A corrected run is recorded beside the original (REAL-DATA-07 Part 2 amendment); nothing above is rewritten |
 | **The RMSE trap, on real data** | A real edge reports a fit RMSE of `1.885e-13 px` for a transform independently measured **797 px wrong** |
 | **NOT proven: illumination as *the* cause** | Frame identity is **substantially weakened, not conclusively refuted** — see D-040-N1. The replication (REAL-DATA-05) returned **UNRESOLVED** |
 | **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication (PRADAN registration and download are a human step, scheduled). **No multi-modal claim is supported anywhere in this repository** |
@@ -254,6 +254,10 @@ Everything below re-derives results that are already recorded under `experiments
 
 ```bash
 python -m pip install -e ".[dev,viz,experiments,learned]"   # learned = torch (CPU) + kornia
+# The learned engines fetch their weights once into ~/.cache/torch/hub (DISK, LightGlue via
+# kornia; XFeat via torch.hub from a PINNED commit of verlab/accelerated_features -- that one
+# is executable code downloaded at first use, stated here rather than hidden). Offline after that.
+python -m siim register SRC REF --out DIR    # two images in, four deliverables out (see src/siim/cli.py)
 python -m pytest tests/ -o addopts="" -q   # 768 passed, 2 skipped (2026-09-05)
                                       # (4 skipped on a fresh clone: the two
                                       #  re-derivation tests report CANNOT CHECK

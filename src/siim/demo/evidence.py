@@ -630,7 +630,10 @@ def build_real_scenario(scenario: str) -> dict[str, Any]:
             f"n_inliers <= {INLIER_FAILURE_RULE} is the EXP-002 operating "
             "point, APPLIED here and NOT validated on real data.",
             "No Chandrayaan-2 data, no multi-modal registration, and no "
-            "learned matcher is involved anywhere in this demo.",
+            "learned matcher is involved in THIS case's numbers (unmodified "
+            "RootSIFT only). The two-engines panel below reads a learned "
+            "engine's RECORDED artefacts; the live card can run one on your "
+            "own images, labelled live.",
         ],
         "scope": SCOPE_STATEMENT,
     }

@@ -297,7 +297,7 @@ class RegisterRequest(BaseModel):
     seed: int = 0
 
 
-def _decode_upload(b64: str, what: str) -> np.ndarray:
+def _decode_upload(b64: str, what: str) -> tuple[np.ndarray, int]:
     from PIL import Image
 
     from siim.cli import preprocess

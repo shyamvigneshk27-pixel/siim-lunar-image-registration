@@ -358,3 +358,39 @@ What this licenses, stated carefully:
   sensitivity at the rule's edge, not the orientation-assignment programme.
 - The 0 / 37 wrong-pass rate enters the verdict engine's documentation as its
   first measured false-acceptance bound on real data, with its floor stated.
+
+## Part 2 — Addendum (2026-09-05, same day): the four frames were mirrored, and the stage was re-run
+
+**Everything above is preserved as written.** After Part 2 was committed the
+E2 diagnostic (D-049's first action) found the cause in the data: the corner
+map's Jacobian determinant is **positive** for five of the fourteen census
+frames — E2 `nac.m1315225542lc`, `nac.m1199981485rc`, `nac.m1142297886lc`,
+`nac.m1236465772rc`, `nac.m1175268993rc` — and negative for the other nine,
+including A, B, C and D. A positive determinant means the tile is a **mirror
+image** of the incumbents' view; the quarter-turn Part 1 §4 prescribed cannot
+undo a reflection, and RootSIFT is not mirror-invariant (**E-037**).
+
+**The test that decided it.** E2's north-up tile flipped left-right and
+matched exactly as before:
+
+| edge | Δinc | as run (Part 2) | E2 flipped, B1 | E2 flipped, B4L |
+|---|---|---|---|---|
+| E2 → D | 2.91° | 10 (B1), 3 (B4L) | **2691** / 2739 | 1766 |
+| E2 → A | 8.82° | 6, INCONSISTENT | **2138** / 2206 | 2193 |
+
+An up-down flip gives the same counts (2693, 2166): a reflection about
+either axis composed with the quarter-turn is the same correction.
+
+**What was done.** `siim.ingest.orientation.north_up_east_right` flips a
+tile whose determinant is positive and then applies the quarter-turn; both
+are exact index permutations and the composed map back to original pixels is
+returned. `north_up` is unchanged. The stage was **re-run in full** with
+`--orientation north_up_east_right` and a third engine column (B4X, XFeat),
+writing `rows_rd03_nue.json`, `rows_rd04_nue.json` and
+`real_data_07_results_nue.json`; the criteria are Part 1's, unchanged. The
+results follow.
+
+### Amended results
+
+*Written when the amended run completes; see below.*
+

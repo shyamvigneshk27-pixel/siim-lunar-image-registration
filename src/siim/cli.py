@@ -61,6 +61,7 @@ from .pipeline import (
     RegistrationResult,
     engine_agreement,
     register_pair,
+    with_agreement,
 )
 from .pipeline.select import reestimate
 
@@ -199,13 +200,14 @@ def _write_points(path: Path, res: RegistrationResult, cov: np.ndarray | None) -
                  f"{res.model_selected_by}" + nl)
         fh.write("# residual_px: ||T(src) - dst_refined|| under the FINAL transform. "
                  "A fit statistic, NOT an accuracy (D-003)" + nl)
-        fh.write(f"# pred_cov_*: covariance of the final transform's prediction at this point over "
+        fh.write(f"# model_pred_cov_*_px2: covariance (px^2) of the GLOBAL MODEL's prediction at this point over "
                  f"{BOOTSTRAP_N} bootstrap re-estimates of the refined correspondences; excludes the "
-                 "refiner's own error; not an accuracy" + nl)
+                 "refiner's own error (0.003 px on self-warps, EXP-010) and every error the geometry check "
+                 "cannot see; NOT an accuracy and NOT a per-point uncertainty" + nl)
         w.writerow(["index", "is_inlier", "is_refined", "src_x", "src_y",
                     "dst_x_engine", "dst_y_engine", "dst_x_refined", "dst_y_refined",
                     "refine_shift_x", "refine_shift_y", "refine_confidence",
-                    "residual_px", "pred_cov_xx", "pred_cov_xy", "pred_cov_yy"])
+                    "residual_px", "model_pred_cov_xx_px2", "model_pred_cov_xy_px2", "model_pred_cov_yy_px2"])
         for i in range(p.shape[0]):
             c = cov[i] if cov is not None else None
             w.writerow([i, int(res.inlier_mask[i]), int(res.refined_mask[i]),
@@ -276,9 +278,7 @@ def register_command(args: argparse.Namespace) -> int:
         agreement = engine_agreement("B1", res.transform, "B4L", secondary.transform, src.shape,
                                      floor_px=AGREEMENT_FLOOR_PX)
         if agreement.agree is not None:
-            res = register_pair(src, ref, engine="B1", model=args.model, seed=args.seed,
-                                refine=not args.no_refine,
-                                engine_agreement_px=agreement.median_px)
+            res = with_agreement(res, src.shape, agreement.median_px, AGREEMENT_FLOOR_PX)
     else:
         res = register_pair(src, ref, engine=engine, model=args.model, seed=args.seed,
                             refine=not args.no_refine)

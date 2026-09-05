@@ -118,6 +118,25 @@ def test_the_page_renders_the_panel_and_offers_the_live_card(page):
     assert "never a recorded number" in page
 
 
+def test_the_live_card_is_not_wired_as_a_scenario_and_survives_the_boot_race(page):
+    """Two defects found in the 2026-09-05 browser check, pinned to the template.
+
+    1. The generic scenario handler is attached to every `button.case` after
+       the fetches resolve, so it overrode the live card's handler and posted
+       the scenario "__live__" to /api/run. It must skip the live button.
+    2. Boot auto-selects the first real case when its fetches complete; on a
+       loaded CPU that is seconds after the page is usable, and it clobbered a
+       live card the reader had already opened. It must yield to a choice.
+    """
+    assert 'button.case:not(#live-open)' in page
+    assert 'current = "__live__"' in page
+    assert 'if (current === "__live__")' in page
+    assert 'current === null && !document.getElementById("live-src")' in page
+    # the preview images take the API's data URLs verbatim
+    assert 'src="${esc(d.source_png)}"' in page and 'src="${esc(d.registered_png)}"' in page
+    assert 'src="data:image/png;base64,${d.' not in page
+
+
 # ---------------------------------------------------------------------------
 # the live endpoint: labelled live, never a recorded number
 # ---------------------------------------------------------------------------
@@ -154,7 +173,9 @@ def test_live_register_labels_itself_and_runs_the_full_pipeline(pair):
     assert d["summary"]["model_selected_by"] == "held_out_on_refined_points"
     assert d["verdict"]["metrics"]["model_selected_by"] == "held_out_on_refined_points"
     assert "fit_rmse" in d["verdict"]["excluded"]
-    assert d["registered_png"]
+    # the page uses these fields verbatim as <img src>, so they must be full data URLs
+    for k in ("source_png", "reference_png", "registered_png"):
+        assert str(d[k]).startswith("data:image/png;base64,"), k
     assert any("no recorded artefact" in c.lower() for c in d["caveats"])
 
 

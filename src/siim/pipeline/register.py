@@ -46,7 +46,7 @@ from .agreement import AGREEMENT_FLOOR_PX, EngineAgreement, engine_agreement
 from .select import MIN_POINTS, ModelSelection, reestimate, select_model
 
 __all__ = ["RegistrationResult", "register_pair", "register_pair_two_engines",
-           "PIPELINE_ORDER"]
+           "with_agreement", "PIPELINE_ORDER"]
 
 PIPELINE_ORDER = ("estimate", "refine", "reestimate", "verify")
 
@@ -219,9 +219,27 @@ def register_pair_two_engines(source: ArrayLike, reference: ArrayLike, *,
     agr = engine_agreement(a, ra.transform, b, rb.transform, src_shape, floor_px=floor_px)
     prim, sec = (ra, rb) if primary == a else (rb, ra)
     if agr.agree is not None:
-        # Re-run only the verdict of the primary with the agreement term; every
-        # other stage is unchanged.
-        prim = register_pair(source, reference, engine=prim.engine,
-                             engine_agreement_px=agr.median_px,
-                             engine_agreement_floor_px=floor_px, **kwargs)
+        prim = with_agreement(prim, src_shape, agr.median_px, floor_px,
+                              loop_error_px=kwargs.get("loop_error_px"))
     return prim, sec, agr
+
+
+def with_agreement(res: RegistrationResult, shape: tuple[int, int], agreement_px: float,
+                   floor_px: float = AGREEMENT_FLOOR_PX, *,
+                   loop_error_px: float | None = None) -> RegistrationResult:
+    """Re-run ONLY the verdict (stage 4) with the agreement term. The estimate,
+    refinement and re-estimation are the recorded ones; nothing is recomputed,
+    so the live two-engine path costs one extra assess(), not a third engine run."""
+    from dataclasses import replace
+    t0 = time.perf_counter()
+    verdict = assess(
+        transform=res.transform, src_points=res.src_points, dst_points=res.dst_points_refined,
+        inlier_mask=res.inlier_mask, shape=shape,
+        fit_rmse=float(res.baseline.ransac.inlier_rmse) if res.baseline.ransac is not None else None,
+        loop_error_px=loop_error_px, engine_agreement_px=agreement_px,
+        engine_agreement_floor_px=floor_px,
+        annotations={k: v for k, v in res.verdict.metrics.items()
+                     if k in ("engine", "pipeline_order", "model_selected_by", "initial_model",
+                              "n_refined", "heldout_px", "decided_by_tie_break")})
+    rt = dict(res.runtime_s); rt["verify_with_agreement"] = time.perf_counter() - t0
+    return replace(res, verdict=verdict, runtime_s=rt)

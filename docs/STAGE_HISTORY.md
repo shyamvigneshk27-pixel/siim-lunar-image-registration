@@ -307,6 +307,24 @@ The master plan (`MASTER_RESEARCH_AND_ARCHITECTURE_PLAN.md`) was written in the 
 
 ---
 
+## 2026-09-05 — The envelope on 42 pairs, the proxies, and a mirror in the data
+
+**Status: REAL-DATA-07 COMPLETE (amended the same day) · REAL-DATA-08 COMPLETE · REAL-DATA-09 PRE-REGISTERED.**
+
+The two jobs left running on the evening of the 4th died with the machine at 22:16 and were re-run from scratch. What they returned was harder to read than the plan expected.
+
+**REAL-DATA-07 (42 geometry-confirmed pairs, 14 frames, two engines).** The Δincidence separation reaches **p = 0.0042** pooled — the first sub-0.01 significance the project has held — with **0 wrong passes in 37** and nothing passing above 40°. And the replication did not happen: candidate E1 could not be tiled on the shared ground, and E2 failed both decisive edges and every other partner. Four frames failed against everyone regardless of Δincidence, which is the frame-identity question of D-040-N1 returning with n = 4 (D-049). The learned engine's native-scale envelope equalled RootSIFT's, with 5–25× the yield inside it (D-047-N1). North-up rotation moved one recorded edge from 7 to 9 inliers, across the rule (S6). The raw reproduction arm's first run compared two edges in the wrong direction and was caught by its own gate (E-036).
+
+**Then the cause of the four frames was found in the data, not the Moon.** The corner map's Jacobian determinant has the opposite sign for **5 of the 14 census frames** — including E2 — meaning those tiles are **mirror images** of the incumbents' view, and a quarter-turn cannot undo a reflection (E-037). Flipping E2's tile turned 5 inliers into **2691** against D and 6 into **2138** against A. A reflection-aware orientation (`north_up_east_right`) was written, and the whole stage re-run with it as a labelled amendment (`rows_*_nue.json`, `real_data_07_results_nue.json`); the original artefacts and Part 2 stand unchanged beside it. The amendment's results are in REAL-DATA-07 Part 2's addendum.
+
+**REAL-DATA-08 (126 rows).** NAC ↔ Mini-RF radar registers under **no** engine (0 / 48). At the 100 m rung RootSIFT passes one frame and DISK + LightGlue three of four, with 34–99 geometry-consistent inliers from 111 × 46 px strips — and one wrong pass, the engine's first (D-050). The runner used a box average where Part 1 named a PSF-aware operator; the deviation is recorded, the operator built (R9), and the rows re-run with it as a labelled artefact.
+
+**Built the same day.** The deliverable pipeline (estimate → refine → re-estimate → verify), engine agreement as a verifier with its floor measured on the REAL-DATA-07 transforms (agreeing pairs ≤ 1.17 px, failing ones ≥ 49 px), `siim register`, XFeat as engine B4X pinned to a commit, the demo's two-engines panel and live registration card, and REAL-DATA-09 pre-registered before any Chandrayaan-2 byte exists with the PRADAN acknowledgement wording recorded (S15).
+
+**What changed.** D-049, D-047-N1, D-050 recorded; E-036, E-037 logged; RL-042, RL-043 logged; stage-index rows for REAL-DATA-07, -08, -09. Suite 768 → see the index for the current count.
+
+---
+
 ## Where the project stands
 
 | Stage | Status |

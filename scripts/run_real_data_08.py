@@ -153,7 +153,18 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--engines", default="b1,b7,lg")
     ap.add_argument("--out", default="real_data_08_results.json")
+    ap.add_argument("--psf-fwhm", type=float, default=None,
+                    help="degrade the NAC source through a Gaussian PSF of this FWHM (coarse "
+                         "pixels) before the block mean (siim.preprocessing.degrade_to_gsd), "
+                         "as Part 1 section 3 specified. The recorded run used the plain box "
+                         "average (deviation recorded in Part 2); this flag is the labelled "
+                         "re-run and must be paired with a different --out")
     args = ap.parse_args()
+    if args.psf_fwhm is not None:
+        from siim.preprocessing import degrade_to_gsd
+        fwhm = float(args.psf_fwhm)
+        _e7.decimate = lambda a, k, _f=fwhm: degrade_to_gsd(a, k, psf_fwhm_coarse_px=_f)
+        print(f"PSF-aware degradation: Gaussian FWHM {fwhm} coarse px, then block mean")
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / args.out
     if out.exists():

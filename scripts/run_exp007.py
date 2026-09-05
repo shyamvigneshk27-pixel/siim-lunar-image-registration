@@ -312,6 +312,14 @@ def run_engine(engine: str, a: np.ndarray, b: np.ndarray, base: dict):
         return run_disk_lightglue_baseline(a, b, model=base["model"],
                                            ransac_threshold=base["ransac_threshold_px"],
                                            seed=base["seed"])
+    if engine == "xf":
+        # Added 2026-09-05 (B4X, XFeat at a pinned commit) for the REAL-DATA-07
+        # third-engine column. A new branch only: the "b1" and "lg" arms that
+        # produced every recorded artefact are byte-for-byte unchanged.
+        from siim.baselines import run_xfeat_baseline
+        return run_xfeat_baseline(a, b, model=base["model"],
+                                  ransac_threshold=base["ransac_threshold_px"],
+                                  seed=base["seed"])
     raise ValueError(engine)
 
 

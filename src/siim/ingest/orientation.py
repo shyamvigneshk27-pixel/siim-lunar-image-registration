@@ -45,7 +45,8 @@ from ..geometry import Transform
 from .footprint import FrameCorners
 from .lola_dem import _ground_jacobian
 
-__all__ = ["orientation_signature", "NorthUp", "north_up", "north_up_rotation_k"]
+__all__ = ["orientation_signature", "NorthUp", "north_up", "north_up_rotation_k",
+           "handedness", "north_up_east_right"]
 
 
 def orientation_signature(c: FrameCorners) -> tuple[int, int]:
@@ -143,3 +144,84 @@ def north_up(image: NDArray, corners: FrameCorners, *, line: float, sample: floa
         "source": "archive named corner columns via the bilinear frame map; "
                   "no pixel value read; no interpolation",
     })
+
+
+# --------------------------------------------------------------------------
+# reflection-aware orientation (E-037, 2026-09-05)
+# --------------------------------------------------------------------------
+
+def handedness(corners: FrameCorners, line: float, sample: float) -> float:
+    """Determinant of the corner map's Jacobian ``d(E, N) / d(sample, line)``.
+
+    Image axes are ``x`` = sample to the right and ``y`` = line **down**;
+    ground axes are east to the right and north **up**. A tile whose pixels
+    are a rotation of a north-up, east-right view therefore has a **negative**
+    determinant (``dN/dy < 0`` with ``dE/dx > 0``). A positive determinant
+    means the tile is a **mirror image** of such a view, and no rotation can
+    bring it into register with one that is not.
+
+    Measured 2026-09-05 (E-037): of the 14 REAL-DATA-07 census frames, 9 have a
+    negative determinant (including the four incumbents A, B, C, D) and 5 a
+    positive one; every frame of the positive group failed against every
+    partner of the negative group, and flipping one of them (E2) turned
+    5 inliers into 2691 against D and 6 into 2138 against A.
+    """
+    return float(np.linalg.det(_ground_jacobian(corners, line, sample)))
+
+
+def _fliplr_transform(shape: tuple[int, int]) -> Transform:
+    """The (x, y) map of ``np.fliplr``: x' = w-1-x, y' = y."""
+    w = shape[1]
+    m = np.array([[-1.0, 0.0, w - 1.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]])
+    return Transform(m, "affine")
+
+
+def north_up_east_right(image: NDArray, corners: FrameCorners, *, line: float,
+                        sample: float) -> NorthUp:
+    """Bring a tile to north-up AND east-right: a left-right flip when the
+    corner map says the tile is mirrored, then the quarter-turn of
+    :func:`north_up`. Both are exact index permutations; the composed map back
+    to original tile pixels is returned, as before.
+
+    :func:`north_up` is kept unchanged because every REAL-DATA-07 artefact
+    recorded before 2026-09-05 was produced with it; this function is the
+    corrected orientation step and is what the amended run uses.
+    """
+    img = np.asarray(image)
+    if img.ndim != 2:
+        raise ValueError(f"expected a 2-D tile, got {img.shape}")
+    det = handedness(corners, line, sample)
+    mirrored = det > 0
+    if mirrored:
+        flipped = np.ascontiguousarray(np.fliplr(img))
+        flip_tf = _fliplr_transform(img.shape)
+        jac = _ground_jacobian(corners, line, sample).copy()
+        jac[:, 0] *= -1.0                                   # sample axis reversed
+    else:
+        flipped, flip_tf = img, Transform(np.eye(3), "euclidean")
+        jac = _ground_jacobian(corners, line, sample)
+    inv = np.linalg.inv(jac)
+    north = inv @ np.array([0.0, 1.0])
+    north = north / np.linalg.norm(north)
+    best_k, best_dot = 0, -2.0
+    for k in range(4):
+        v = north.copy()
+        for _ in range(k):
+            v = np.array([v[1], -v[0]])
+        dot = float(-v[1])
+        if dot > best_dot:
+            best_k, best_dot = k, dot
+    rotated = np.ascontiguousarray(np.rot90(flipped, best_k)) if best_k else flipped
+    tf = _rot90_transform(flipped.shape, best_k) @ flip_tf
+    along, cross = orientation_signature(corners)
+    return NorthUp(image=rotated, k=best_k, forward=tf, record={
+        "quarter_turns_ccw": int(best_k),
+        "mirrored": bool(mirrored),
+        "jacobian_determinant": det,
+        "orientation_signature_along_cross": [along, cross],
+        "evaluated_at_frame_pixel": [float(line), float(sample)],
+        "source": "archive named corner columns via the bilinear frame map; left-right "
+                  "flip when the Jacobian determinant is positive (E-037); no pixel "
+                  "value read; no interpolation",
+    })
+

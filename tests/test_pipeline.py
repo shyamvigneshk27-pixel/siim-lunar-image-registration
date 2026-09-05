@@ -195,7 +195,7 @@ def test_siim_register_writes_four_deliverables_with_provenance(tmp_path, big_te
     assert "fit_rmse" in v["excluded"]
     rows = (out / "points.csv").read_text(encoding="utf-8").splitlines()
     header = next(l for l in rows if l.startswith("index,"))
-    assert "pred_cov_xx" in header and "refine_confidence" in header
+    assert "model_pred_cov_xx_px2" in header and "refine_confidence" in header
     data = [l for l in rows if l and not l.startswith("#") and not l.startswith("index,")]
     assert len(data) == json.loads((out / "metrics.json").read_text())["n_points_rows"]
     # a refined inlier row carries a finite covariance

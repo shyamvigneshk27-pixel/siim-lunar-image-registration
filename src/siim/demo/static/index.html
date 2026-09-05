@@ -336,7 +336,10 @@ Promise.all([
     SCEN.filter(s => s.data_source === "real_lro_nac").map(card).join("");
   $("#cases-synth").innerHTML =
     SCEN.filter(s => s.data_source !== "real_lro_nac").map(card).join("");
-  document.querySelectorAll("button.case").forEach(b => b.onclick = () => {
+  // The live card shares the .case styling but is not a scenario; it is wired
+  // separately below and must be skipped here (a bug found in-browser on
+  // 2026-09-05: this handler ran after the live one and posted "__live__").
+  document.querySelectorAll("button.case:not(#live-open)").forEach(b => b.onclick = () => {
     document.querySelectorAll("button.case").forEach(x => x.classList.remove("active"));
     b.classList.add("active");
     current = b.dataset.id;
@@ -350,9 +353,13 @@ window.__ENG = eng;
   $("#scope").innerHTML = ill
     ? `<b>Evidence scope</b><br>${esc(ill.scope)}`
     : `<b>Evidence scope</b><br>LRO NAC · Mare Serenitatis`;
+  // Auto-select the first case only if the reader has not already chosen one
+  // (or opened the live card) while the fetches were in flight -- on a loaded
+  // CPU that gap is seconds, and clobbering a choice made in it is a race the
+  // 2026-09-05 browser check hit.
   const first = document.querySelector("#cases-real button.case")
              || document.querySelector("button.case");
-  if (first) first.click();
+  if (first && current === null && !document.getElementById("live-src")) first.click();
 });
 
 $("#run").onclick = () => run();
@@ -360,6 +367,7 @@ $("#run").onclick = () => run();
 // and never touches /api/run. Assigned after the scenario buttons are wired so
 // it overrides the generic handler the shared class would otherwise attach.
 $("#live-open").onclick = () => {
+  current = "__live__";
   document.querySelectorAll("button.case").forEach(x => x.classList.remove("active"));
   $("#live-open").classList.add("active");
   $("#stage").innerHTML = liveCard();
@@ -368,6 +376,7 @@ $("#live-open").onclick = () => {
 };
 
 async function run() {
+  if (current === "__live__") { $("#live-open").onclick(); return; }
   if (!current) return;
   const btn = $("#run");
   btn.disabled = true; btn.textContent = "Running…";
@@ -995,9 +1004,9 @@ function renderLive(d) {
         <td>${esc(e.verdict)}</td><td>${esc(e.weight)}</td></tr>`).join("")}
     </table>
     <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap">
-      <figure style="margin:0"><img src="data:image/png;base64,${d.source_png}" style="max-width:280px"><figcaption class="note">source</figcaption></figure>
-      <figure style="margin:0"><img src="data:image/png;base64,${d.reference_png}" style="max-width:280px"><figcaption class="note">reference</figcaption></figure>
-      ${d.registered_png ? `<figure style="margin:0"><img src="data:image/png;base64,${d.registered_png}" style="max-width:280px"><figcaption class="note">source warped into the reference grid</figcaption></figure>` : ""}
+      <figure style="margin:0"><img src="${esc(d.source_png)}" style="max-width:280px"><figcaption class="note">source</figcaption></figure>
+      <figure style="margin:0"><img src="${esc(d.reference_png)}" style="max-width:280px"><figcaption class="note">reference</figcaption></figure>
+      ${d.registered_png ? `<figure style="margin:0"><img src="${esc(d.registered_png)}" style="max-width:280px"><figcaption class="note">source warped into the reference grid</figcaption></figure>` : ""}
     </div>
     <div class="notclaimed">${d.caveats.map(c => `<span>${esc(c)}</span>`).join("")}</div>`;
 }

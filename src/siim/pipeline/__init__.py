@@ -7,6 +7,7 @@ from .register import (
     RegistrationResult,
     register_pair,
     register_pair_two_engines,
+    with_agreement,
 )
 from .select import MODELS, ModelSelection, reestimate, select_model
 
@@ -18,6 +19,7 @@ __all__ = [
     "RegistrationResult",
     "register_pair",
     "register_pair_two_engines",
+    "with_agreement",
     "MODELS",
     "ModelSelection",
     "reestimate",

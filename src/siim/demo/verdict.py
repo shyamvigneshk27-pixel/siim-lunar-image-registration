@@ -84,6 +84,24 @@ a gauge attached to one image moves its prediction rather than cancelling.
 This is recorded as a **limitation, not a defect to be patched** -- the paragraph
 above applies unchanged.
 
+Engine agreement (added 2026-09-05) is the one signal added since the stages
+above were frozen, and it is added as a CAP, not a criterion: when two
+independent engines' final transforms disagree by more than the measured
+floor (``siim.pipeline.agreement``, 2 px; agreeing pairs on REAL-DATA-07 stay
+under 1.17 px, failing ones start at 49 px) the verdict cannot exceed
+INCONCLUSIVE. It never rejects and never raises a verdict, and it is only
+consulted when a caller supplies it, so every recorded verdict is unchanged.
+The paragraph above -- do not add a rejection path -- still holds.
+
+Measured false-acceptance bound (2026-09-05)
+--------------------------------------------
+``MEASURED_WRONG_PASS`` records, per engine, how many passes under the rule
+had a transform INCONSISTENT with archive geometry on real data. It is a
+bound at the geometry check's own floor (~100 px at native NAC scale, ~2 px
+at 100 m), on mare, and it is what a judge should be shown when asked how
+often VERIFIED is wrong: zero of twenty for RootSIFT and one of twenty-three
+for DISK + LightGlue, with the floor stated.
+
 Confidence is therefore an ordinal band backed by named evidence, not a
 probability. A number like 0.97 would imply a calibration this project has not
 earned, and §12 forbids inventing one.
@@ -99,7 +117,7 @@ import numpy as np
 from ..evaluation.coverage import coverage_metrics
 from ..geometry import Transform
 
-__all__ = ["Verdict", "Evidence", "assess", "EXCLUDED_FROM_VERDICT"]
+__all__ = ["Verdict", "Evidence", "assess", "EXCLUDED_FROM_VERDICT", "MEASURED_WRONG_PASS"]
 
 #: Signals deliberately never allowed to influence the verdict, with the
 #: measurement that disqualified each. Kept as data so the exclusion is
@@ -121,6 +139,18 @@ EXCLUDED_FROM_VERDICT: dict[str, str] = {
         "backward -64 px cancel exactly, scoring 0.000 on wrong cases against "
         "0.325 on the correct one -- an inverted signal."
     ),
+}
+
+#: Wrong passes measured on real data: a pass under the rule whose transform was
+#: INCONSISTENT with archive geometry. Sources: REAL-DATA-07 (42 pairs, ~2 m,
+#: 0 / 20 B1, 0 / 17 B4L) and REAL-DATA-08 (100 m rung, 0 / 1 B1, 1 / 6 B4L).
+#: A bound at the geometry check's floor, on one mare region; not a probability.
+MEASURED_WRONG_PASS: dict[str, dict[str, object]] = {
+    "B1": {"n_pass": 21, "n_wrong_pass": 0,
+           "source": "REAL-DATA-07 (20 passes) + REAL-DATA-08 (1 pass), 2026-09-05"},
+    "B4L": {"n_pass": 23, "n_wrong_pass": 1,
+            "source": "REAL-DATA-07 (17 passes) + REAL-DATA-08 (6 passes; the wrong pass is "
+                      "frame B at 59 m, 9 inliers, 28 px off), 2026-09-05"},
 }
 
 #: The deployable failure rule (D-023). Form matters: '<= 8', not '< 8'.

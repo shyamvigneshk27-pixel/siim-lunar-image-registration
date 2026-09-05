@@ -1,0 +1,63 @@
+{
+  "stage": "EXP-007 (addendum 2026-09-05)",
+  "purpose": "Determinism of B4L on a SUCCEEDING edge; the recorded repeat (learned_lg_repeat) was on a failing edge with 3 inliers",
+  "edge": "nac.m1299958135lc -> nac.m1271742202lc (D -> A, REAL-DATA-04 tiles, decimation 2, raw orientation)",
+  "recorded_learned_lg_tier1_n_inliers": 2016,
+  "runs": [
+    {
+      "run": 1,
+      "n_putative": 2081,
+      "n_inliers": 2016,
+      "fit_rmse_px": 0.9884778548893942,
+      "transform_matrix": [
+        [
+          1.16714625813732,
+          -0.003331321623255137,
+          -100.87626415789123
+        ],
+        [
+          0.005392967717649553,
+          1.1341193522829363,
+          -189.7598291021418
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 31.996675968170166
+    },
+    {
+      "run": 2,
+      "n_putative": 2081,
+      "n_inliers": 2016,
+      "fit_rmse_px": 0.9884778548893942,
+      "transform_matrix": [
+        [
+          1.16714625813732,
+          -0.003331321623255137,
+          -100.87626415789123
+        ],
+        [
+          0.005392967717649553,
+          1.1341193522829363,
+          -189.7598291021418
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "wall_s": 30.21599054336548
+    }
+  ],
+  "identical": true,
+  "max_abs_matrix_difference": 0.0,
+  "environment": {
+    "python": "3.13.7",
+    "torch": "2.10.0+cpu",
+    "kornia": "0.8.3"
+  }
+}
