@@ -1,5 +1,6 @@
 {
-  "stage": "REAL-DATA-07 amendment analysis (post hoc, 2026-09-05)",
+  "stage": "REAL-DATA-07",
+  "artefact": "amendment analysis (post hoc, 2026-09-05/06): not a criterion, a tabulation",
   "orientation_before": "quarter_turn (north_up)",
   "orientation_after": "north_up_east_right (E-037)",
   "frames_mirrored": [
