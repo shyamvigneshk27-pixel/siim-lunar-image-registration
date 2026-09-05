@@ -182,12 +182,27 @@ def assess(
     fit_rmse: float | None = None,
     loop_error_px: float | None = None,
     roi: np.ndarray | None = None,
+    engine_agreement_px: float | None = None,
+    engine_agreement_floor_px: float = 2.0,
+    annotations: dict[str, Any] | None = None,
 ) -> Verdict:
     """Decide whether an estimated registration should be trusted, and say why.
 
     ``loop_error_px`` is optional because it needs a third overlapping image.
     When absent, that is stated as a limit on the verdict rather than silently
     treated as a pass -- the strongest available check simply was not run.
+
+    ``engine_agreement_px`` (added 2026-09-05, next-session plan R2) is the
+    dense disagreement between two independent engines' final transforms
+    (``siim.pipeline.engine_agreement``). It is optional and was never
+    supplied by any recorded stage, so those stages' verdicts are unchanged.
+    When supplied and at or above ``engine_agreement_floor_px`` the verdict is
+    capped at INCONCLUSIVE: two independent engines disagreeing is a reason to
+    refuse, not to choose. It never REJECTS -- rejection stays with the
+    pre-registered rule and loop closure -- and it never raises a verdict.
+
+    ``annotations`` are merged into ``metrics`` verbatim and never consulted
+    by the decision. The pipeline uses it for ``model_selected_by`` (D-045).
     """
     ev: list[Evidence] = []
     reasons: list[str] = []
@@ -204,7 +219,8 @@ def assess(
                      f"{n_put} putative correspondences."],
             evidence=[Evidence("n_putative", float(n_put), "decisive_against",
                                "decisive", "No transform was produced.")],
-            metrics={"n_putative": n_put, "n_inliers": 0},
+            metrics={"n_putative": n_put, "n_inliers": 0,
+                     **(dict(annotations) if annotations else {})},
         )
 
     inl = np.asarray(inlier_mask, dtype=bool)
@@ -285,6 +301,28 @@ def assess(
         "Reported for transparency and EXCLUDED from the verdict. "
         + EXCLUDED_FROM_VERDICT["fit_rmse"]))
 
+    # ---- 6. engine agreement: caps at INCONCLUSIVE, never rejects ---------
+    agreement = _finite(engine_agreement_px)
+    engines_disagree = False
+    if agreement is not None:
+        if agreement >= engine_agreement_floor_px:
+            engines_disagree = True
+            ev.append(Evidence(
+                "engine_agreement_px", agreement, "against", "strong",
+                f"Two independent engines disagree by {agreement:.2f} px median "
+                f"(floor {engine_agreement_floor_px:.1f} px). At least one is wrong; "
+                "the verdict is capped at INCONCLUSIVE. Floor provisional."))
+            reasons.append(
+                f"A second, independent engine reached a different alignment "
+                f"({agreement:.2f} px apart). Nothing here says which is right, so "
+                "neither is trusted.")
+        else:
+            ev.append(Evidence(
+                "engine_agreement_px", agreement, "supports", "strong",
+                f"Two independent engines agree to {agreement:.3f} px median "
+                f"(floor {engine_agreement_floor_px:.1f} px). Independent of loop "
+                "closure's per-image null space; not an accuracy. Floor provisional."))
+
     # ---- combine ---------------------------------------------------------
     decisive_against = [e for e in ev if e.verdict == "decisive_against"]
     against = [e for e in ev if e.verdict == "against"]
@@ -292,6 +330,11 @@ def assess(
 
     if decisive_against:
         status, confidence = "REJECTED", "none"
+    elif engines_disagree:
+        status, confidence = "INCONCLUSIVE", "low"
+        reasons.append(
+            "Independent engines disagree, so the alignment is not reported as "
+            "verified even where the other checks pass.")
     elif loop_ok and not against:
         status, confidence = "VERIFIED", "high"
         reasons.append(
@@ -321,7 +364,9 @@ def assess(
             "coverage_occupancy": _finite(cov.grid_occupancy),
             "fit_rmse": _finite(fit_rmse),
             "loop_error_px": loop,
+            "engine_agreement_px": agreement,
             "transform_model": transform.model,
             "transform_matrix": np.asarray(transform.matrix).tolist(),
+            **(dict(annotations) if annotations else {}),
         },
     )

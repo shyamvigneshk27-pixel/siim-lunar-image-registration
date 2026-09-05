@@ -23,6 +23,19 @@ two images of the same ground directly comparable:
 
     corrected = observed * f(standard) / f(observed)
 
+What a per-FRAME application of this cannot do (E-035, measured 2026-09-04)
+--------------------------------------------------------------------------
+If ``i``, ``e`` and ``g`` are taken as one value per frame -- the archive's
+published incidence, ``g = i`` at near-nadir -- then ``f`` is one scalar per
+tile, and the per-image percentile stretch that follows in the recorded
+pipeline divides that scalar straight back out. REAL-DATA-06 ran its two arms
+exactly that way and got counts and matrices *identical* to the uncorrected
+run on all six real edges (``identical_to_none_after_stretch: true`` in
+``experiments/EXP-007/exp007_results.json``). A correction that can change
+what the matcher sees must vary the angles **per pixel**, from a DEM whose
+facets are at or below the working GSD; with the 59 m SLDEM at 1.8-30 m per
+pixel it changed counts and converted nothing (EXP-007 exploratory arm).
+
 Three models, and why all three are here
 ----------------------------------------
 =================  =========================================================

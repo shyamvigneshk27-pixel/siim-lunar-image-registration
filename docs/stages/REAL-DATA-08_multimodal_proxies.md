@@ -116,4 +116,111 @@ sub-pixel claim.
 
 ## Part 2 — Results
 
-*Empty until Part 1 is committed and the run has completed.*
+**Run:** 2026-09-05, `scripts/run_real_data_08.py` (Part 1 frozen at commit
+d475124), **5.8 min**, 126 rows → `experiments/REAL-DATA-08/real_data_08_results.json`.
+The 2026-09-04 run died with the machine after 47 rows (log preserved as
+`logs/run_died_v1.log`; an earlier crash on a stale module reference as
+`run_crash_v1.log`). Proxies: Mini-RF `LSZ_02951_2S1_EKU_16N022_V1` block
+(SHA-256 `d0b34834…`) and WAC `WAC_GLOBAL_E300N0450_100M` block (`ce24939c…`),
+cut by byte range around the two windows. Sources: the four recorded NAC tiles
+(A, B, C, D from both stage manifests) and the EXP-007 long windows. Engines
+B1, B7, B4L; rule and geometry check as frozen.
+
+**Deviation from Part 1, recorded.** §3 says the NAC source is degraded by a
+*PSF-aware* block mean. The runner used the plain block mean of EXP-007
+(`decimate`: a box average, no Gaussian at the coarse sensor's MTF). A
+PSF-aware degradation now exists (`siim.preprocessing.degrade_to_gsd`, R9)
+and was **not** used here; every number below is with the box average. The
+deviation is stated rather than corrected after the fact; a re-run with the
+PSF-aware operator is a separate, labelled row set if it is ever made.
+
+### S1 — B1 fails on every NAC ↔ radar pair: MET
+
+48 radar rows (4 frames × 2 rungs × up to 2 windows × 3 engines). Under B1:
+0–4 inliers on every pair, every transform INCONSISTENT with the geometry
+prediction (median disagreement 120–18 800 px against floors of 12–20 px).
+Predicted, and it happened.
+
+### S2 — a structure engine registers at least one radar pair: NOT MET
+
+B7 (phase congruency) 0 / 16 and B4L 0 / 16. The closest anything came:
+B4L on frame D's long window at k = 16 (17 m NAC against 14.8 m radar) found 9
+putative and **8** inliers — fails the rule by one — with a transform 193 px
+from the prediction (floor 15 px): a wrong answer that nearly passed. Every
+other radar row is 0–5 inliers, INCONSISTENT or no transform.
+
+**No modality change is registered by anything in this repository.** The
+optical-to-radar case, which the multimodal literature treats as the standard
+hard problem and which paper 2's DFSAR arm is the Chandrayaan-2 instance of,
+is not solved here by classical, phase-congruency or DISK + LightGlue
+matching on this mare window at 7–17 m. H4 (cost of modality): NAC ↔ NAC at
+k = 16 on the same windows registers three of four ~40° pairs under B4L and
+both low-Δ pairs under every engine (EXP-007 tier 2); NAC ↔ radar registers
+**none** under any engine at any Δ. The cost is total.
+
+### S3 — NAC ↔ WAC registers under B1 for ≥ 2 of 4 frames: NOT MET (1 of 4)
+
+B1 passes on **one** frame: D, long window, k = 64 (68 m NAC against 97 m WAC),
+**9** inliers of 13 putative, CONSISTENT (2.56 px against a 2.79 px floor). A,
+B and C under B1: 0–5 inliers at every rung. The NAC sources at this rung are
+small — 128 × 64 px (recorded tiles at k = 32), 192 × 79 (long windows at
+k = 64) and **111 × 46** (long windows at k = 110, the 100 m rung proper) — and
+B1 finds 13–189 keypoints in them, which is the detector starvation of D-026
+in its coarse-rung form.
+
+**What the learned engine did at the 100 m rung (reported; S3 is a B1
+criterion and this earns no credit under it).** B4L, north-up NAC long
+windows against the WAC block:
+
+| frame | inc | rung (NAC m / WAC m) | src px | B4L inliers / putative | geometry (median / floor) |
+|---|---|---|---|---|---|
+| A | 29.95° | 60 / 97 | 192 × 79 | **74 / 77** | **CONSISTENT** 1.92 / 2.79 |
+| A | 29.95° | 102 / 97 | 111 × 46 | **40 / 43** | **CONSISTENT** 2.11 / 2.27 |
+| B | 69.76° | 59 / 97 | 192 × 79 | 9 / 26 | **INCONSISTENT** 27.7 / 2.79 — a **wrong pass** |
+| B | 69.76° | 101 / 97 | 111 × 46 | **34 / 43** | **CONSISTENT** 1.84 / 2.27 |
+| C | 68.80° | 55 / 97 | 192 × 79 | 11 / 28 | INCONCLUSIVE 6.39 / 2.79 |
+| C | 68.80° | 94 / 97 | 111 × 46 | 10 / 16 | INCONCLUSIVE 3.92 / 2.27 |
+| D | 18.22° | 69 / 97 | 192 × 79 | **99 / 102** | **CONSISTENT** 2.73 / 2.79 |
+| D | 18.22° | 118 / 97 | 111 × 46 | 40 / 50 | INCONCLUSIVE 2.37 / 2.27 |
+
+Each A and B row appears twice in the artefact (once per stage manifest); the
+second A row at 102 m gives 8 inliers INCONSISTENT and the second B row at
+101 m gives 4 — the same pair, a different 46-px-wide strip. Taken together:
+B4L registers a 111 × 46 px NAC strip at 100 m to the WAC mosaic on three of
+four frames with a geometry-consistent transform, at ≈ 2 px against a ≈ 2.3 px
+floor, on Sun geometries from 18° to 70° incidence against a photometrically
+normalised mosaic; and it produced **one wrong pass** (B at 59 m: 9 inliers,
+28 px off), the first wrong pass recorded for the engine (0 / 17 in REAL-DATA-07
+becomes 1 / 23 across the two stages). B7 registers nothing at this rung
+(0–3 inliers everywhere).
+
+### What is claimed and what is not
+
+- **Claimed:** on real archive data over Mare Serenitatis, NAC ↔ Mini-RF
+  S-band radar at 7–17 m is registered by **no** engine in this repository
+  (B1 0 / 16, B7 0 / 16, B4L 0 / 16); the radar arm is a measured negative.
+- **Claimed:** NAC ↔ WAC at the 100 m rung is registered by B1 on one frame
+  (9 inliers, consistent) and by B4L on three of four frames with 34–99
+  geometry-consistent inliers at ~2 px against a ~2.3 px floor, from NAC
+  strips of 111 × 46 px; B4L also produced one wrong pass at 59 m. The
+  100 m rung of the scale ladder is therefore **demonstrated on a real
+  reference by the learned engine and not by the classical one**, on mare,
+  with the floor stated.
+- **Not claimed:** anything about Chandrayaan-2, OHRC, TMC-2 or IIRS — these
+  are open-archive PROXIES for the rungs, and the words appear here only as
+  the rungs they stand in for; any radar registration; any accuracy finer
+  than the geometry floor; any highland or high-relief radar behaviour
+  (layover untested); anything with the PSF-aware operator (not used).
+
+### Consequences
+
+- **D-050:** the multimodal claim of the problem statement is **not supported
+  by a radar proxy**, and the deliverable says so; the 100 m rung is supported
+  by B4L with one wrong pass in six passes at that rung, so a pass at the
+  coarse rung is never reported without its geometry verdict.
+- The scale-ladder design (D-005) gets its first real coarse-rung
+  measurement: degradation to the reference GSD before matching works for the
+  learned engine at 100 m and starves the classical detector.
+- R9 (PSF-aware degradation) is implemented after this stage and is the
+  operator any future rung run uses; this artefact stays as the box-average
+  result it is.

@@ -201,4 +201,208 @@ known to cover this window; that is the next stage if S1 is NOT MET).
 
 ## Part 2 — Results
 
-*Empty. To be written only after Part 1 is committed and the run has completed.*
+**Run:** 2026-09-04 20:51–22:15, `scripts/run_exp007.py` (full run; Part 1 frozen
+at commit 75fb001), **84.2 min CPU**, 199 rows. Artefact:
+`experiments/EXP-007/exp007_results.json` (+ `exp007_results_rows.csv`); log
+`experiments/EXP-007/logs/run_full.log`. Environment: CPython 3.13.7, numpy
+2.3.3, OpenCV 5.0.0, torch 2.10.0+cpu, kornia 0.8.3, Windows 11. A smoke run and
+a preliminary tier-1 run of all arms are preserved under `logs/`; their tier-1
+numbers are identical to the full run's.
+
+Arms run exactly as Part 1 §5 lists them, plus two **exploratory** arms that
+were not pre-registered and carry no criterion credit: `photometric_ls_pixel`
+(Lommel-Seeliger with a *per-pixel* incidence from the SLDEM facet normal,
+added when the pre-registered per-frame arms turned out to be a no-op, §S5
+below) and `learned_lg_repeat` (a second run of one edge, for determinism).
+`learned_lg` and `dem_render_lg` were not run at k = 4 (stated in advance in
+Part 1 §5); `dem_render_lg` was also not run at tier-2 k = 4.
+
+### S4 — reproduction gate: MET
+
+The `none` arm at tier 1 reproduces every recorded count exactly: A → B **4**,
+B → C **5365**, C → A **4** (RD-03); A → B **7**, B → D **3**, D → A **1656**
+(RD-04). Keypoint, putative and inlier counts and the transform matrices agree
+with the recorded artefacts to the digit. The harness is the recorded harness.
+
+### S1 (DEM render converts the failing pairs at k ≥ 16) — NOT MET
+
+`dem_render_b1` passed **0 of 4** failing pairs at k = 16, **0 of 4** at
+k = 32, and 0 of 4 at every other rung. No rung transition exists to report;
+`rung_transition_smallest_passing_k` is empty. Every leg (image against the
+render of its own ground under its own Sun) returned **0–7 inliers**, and most
+legs returned 0–3.
+
+The cause is visible in the leg statistics rather than needing to be inferred.
+The render side carried almost no detectable structure at any rung:
+
+| rung | image keypoints (B1, typical) | render keypoints (B1) | render putative → inliers |
+|---|---|---|---|
+| tier 1, 1.8 m | 9 500–12 600 | **0** on A and D, 7–17 on B and C | 0–6 → 0–3 |
+| k = 4, 3.6 m | 12 000–20 700 | 7–171 | 1–22 → 0–3 |
+| k = 8, 7 m | 3 400–7 700 | 6–176 | 0–20 → 0–4 |
+| k = 16, 15 m | 1 500–3 100 | 4–160 | 0–11 → 0–4 |
+| k = 32, 30 m | 560–1 000 | 5–86 | 0–5 → 0–3 |
+
+The high-Sun frames A and D render to a near-uniform surface (0–19 SIFT
+keypoints at every rung); the low-Sun frames B and C render to a soft
+undulation with 57–176. `logs/render_check_tier1_rd04.png` shows it: the NAC
+tiles are dominated by 10–100 m craters and boulders, and a 59 m DEM contains
+none of them. DISK (`dem_render_lg`) detects its usual 4096 points on the
+render because it always returns a fixed budget, and LightGlue then finds
+0–24 putative matches with 0–7 inliers — the same result by a different route.
+
+Of the three causes Part 1 §7 asked Part 2 to distinguish, this is the first:
+**the DEM is too coarse for the relief this mare window has**, at every rung
+down to 30 m. It is *not* the corner-geometry offset (an offset failure would
+show hundreds of render keypoints and no consistent matches; here there are no
+keypoints to mismatch), and the render model cannot be blamed for structure
+the height field does not contain. Whether a better model would matter on a
+fine DEM is untested here and is exactly what the SERENRIDGE1 site (NAC DTM,
+5 m posts) would answer.
+
+### S2 (no tier-1 conversion by the DEM render) — MET
+
+0 of 4 failing tier-1 edges pass in `dem_render_b1`. Predicted, and for the
+reason predicted.
+
+### S3 (learned zero-shot converts a failing tier-1 edge) — MET
+
+`learned_lg` (DISK + LightGlue, Apache-2.0, CPU) at tier 1 on the four failing
+edges:
+
+| edge | Δinc | recorded B1 | `learned_lg` inliers / putative | vs archive geometry (median disagreement / floor) | counts for S3? |
+|---|---|---|---|---|---|
+| C → A (RD-03) | 38.85° | 4 | **56 / 72** | **CONSISTENT** — 47.4 px / 104.1 px | **yes** |
+| A → B (RD-03) | 39.81° | 4 | 38 / 46 | INCONCLUSIVE — 108.1 px / 91.2 px | no (rule passed, geometry did not) |
+| A → B (RD-04) | 39.81° | 7 | 3 / 3 | — | no |
+| B → D (RD-04) | 51.54° | 3 | 3 / 3 | — | no |
+
+One edge satisfies both halves of S3, which is the criterion's threshold. It is
+recorded as MET on **one** edge with a **56-inlier** transform whose agreement
+with the archive is inside the ~100 px discrimination floor: corroborated at
+that scale, not verified, and not a sub-pixel statement.
+
+**Determinism (Part 1 §8).** The repeated edge (`learned_lg_repeat`, A → B
+RD-04) returned 3 inliers both times. That is the weakest possible
+demonstration — a failing edge — and is stated as such; REAL-DATA-07 runs the
+engine on 42 pairs and is where a repeat on a succeeding edge belongs.
+
+### S5 (photometric arms change no tier-1 outcome) — MET, for a reason that voids the arms
+
+Both `photometric_ls` and `photometric_hapke` returned counts **identical** to
+`none` on all six edges (4, 5365, 4, 7, 3, 1656; same keypoints, same
+matrices). Every per-frame record carries
+`identical_to_none_after_stretch: true`. The reason is arithmetic, not
+physics: the pre-registered correction applies one factor per **frame**
+(incidence taken as the frame's published value, `g = i` under the near-nadir
+approximation), so it multiplies the whole tile by a scalar (0.72 for A, 1.30
+for B under Lommel-Seeliger), and the percentile stretch that follows divides
+that scalar straight back out. REAL-DATA-06's arms, exactly as frozen, could
+never have changed any outcome. This is logged as **E-035** and fills
+REAL-DATA-06 Part 2; S5 is MET, and the finding is that the criterion was
+answered by construction rather than by the Moon.
+
+The exploratory per-pixel arm was added to see whether a correction that
+*can* change the image does anything useful. It does change counts — B → C
+5365 → 2469, D → A 1656 → 1197, C → A 4 → 4, A → B (RD-03) 4 → 6 — and converts
+**no** failing edge at any rung while costing 25–55 % of the inliers on the
+succeeding ones. With a 59 m DEM the per-pixel incidence (A: 17.5–44.1°, B:
+59.2–83.8°) is the DEM's slope field at 59 m, not the crater-scale slope the
+pixels actually see; the correction adds a smooth multiplicative field the
+matcher did not need and removes nothing it was failing on.
+
+### S6 (no arm breaks a succeeding pair) — NOT MET, for the two DEM-render arms only
+
+`dem_render_b1` and `dem_render_lg` fail on B → C and D → A at **every** rung
+where `none` passes them (0–3 composed inliers), so by Part 1 §6 their S1/S3
+credit is void. They had none to void. The arms that carry credit break
+nothing:
+
+| arm | B → C (k = 2 / 8 / 16 / 32) | D → A (k = 2 / 8 / 16 / 32) |
+|---|---|---|
+| `none` | 5365 / 3054 / 1373 / 566 | 1656 / 1665 / 693 / 243 |
+| `learned_lg` | 2305 / 3026 / 2646 / 724 | 2016 / 2644 / 2697 / 625 |
+| `photometric_ls`, `photometric_hapke` | = `none` | = `none` |
+| `photometric_ls_pixel` (exploratory) | 2469 / 242 / 17 / 12 | 1197 / 894 / 360 / 160 |
+
+The `none` arm also passes both succeeding pairs at k = 4 (9460 and 3693).
+
+### Tier 2 — the illumination envelope by rung (reported, not a criterion)
+
+Composed two-leg arms aside, the tier-2 long windows (12288 × 5064 samples,
+≈ 11 × 4.5 km) give the first view of how the *direct* arms behave as GSD
+coarsens. Inliers, with the archive-geometry verdict in brackets (C =
+CONSISTENT, I = INCONCLUSIVE, X = INCONSISTENT; the floor shrinks with k
+because it is quoted in pixels):
+
+| pair | Δinc | arm | k = 4 (3.6 m) | k = 8 (7 m) | k = 16 (15 m) | k = 32 (30 m) |
+|---|---|---|---|---|---|---|
+| A → B (RD-03) | 39.81° | `none` | 4 (X) | 4 (X) | 4 (X) | 3 (X) |
+| | | `learned_lg` | — | **1434 (C)** | **2042 (C)** | **511 (C)** |
+| C → A (RD-03) | 38.85° | `none` | **10 (C)** | 4 (X) | 6 (C) | 3 (X) |
+| | | `learned_lg` | — | **1348 (C)** | **1863 (C)** | **475 (C)** |
+| A → B (RD-04) | 39.81° | `none` | **10 (C)** | **9 (C)** | **10 (C)** | 8 (C) |
+| | | `learned_lg` | — | **1409 (C)** | **1536 (C)** | **447 (C)** |
+| B → D (RD-04) | 51.54° | `none` | 3 (X) | 3 (X) | 3 (X) | 3 (X) |
+| | | `learned_lg` | — | 0 | 5 (C) | 37 (I) |
+
+Bold = passes the D-023 rule. Three findings, in decreasing strength:
+
+1. **The learned engine registers the ≈ 39–40° pairs at 7, 15 and 30 m with
+   hundreds to thousands of geometry-consistent inliers** (median disagreement
+   2.7–28 px against floors of 7.7–33 px). Its tier-1 result on C → A is not a
+   fluke of one tile; it holds on three of the four failing pairs at every
+   coarser rung tested. It does **not** cross 51.54°: B → D gives 0, 5 and 37
+   inliers, the last passing the rule with a transform the geometry check can
+   neither confirm nor refute (7.1 px against a 6.8 px floor).
+2. **RootSIFT itself crosses the rule at coarser GSD on two of the four pairs,
+   by one or two inliers.** C → A at 3.6 m (10 inliers) and A → B (RD-04) at
+   3.6–15 m (10, 9, 10), each with a geometry-consistent transform, and 8
+   inliers — a fail by exactly one — at 30 m. These are passes at the edge of
+   D-023, whose false-alarm rate in the mixed regime is 0.369 (EXP-003), so they
+   are reported as *marginal, geometry-consistent passes*, not as conversions.
+   The mechanism is plausible (decimation averages out the sub-10 m shading
+   texture that changes most with the Sun) and is not tested here.
+3. **The B → C edge is INCONCLUSIVE against archive geometry at every rung**
+   (161.9 px / 104.6 px at tier 1; 10.1 / 8.3 at k = 32), for every arm that
+   passes it, learned or classical. This was already the case in REAL-DATA-03
+   and is a property of that pair's corner geometry, not of any arm; D → A is
+   CONSISTENT for every passing arm at every rung.
+
+### What is claimed and what is not
+
+- **Claimed:** on this mare window, DEM-render conditioning with SLDEM2015
+  produces no usable correspondence at any rung from 1.8 m to 30 m, because
+  the 59 m height field contains none of the relief the images are made of.
+  H0 is not supported at any tested rung with this DEM (Part 1 §7, row
+  "S1 NOT MET, S2 MET"). It is **not** refuted for a fine DEM; that is untested.
+- **Claimed:** a licensable, CPU-only learned engine (DISK + LightGlue)
+  registers one failing real edge at native scale (56 inliers, C → A, 38.85°,
+  CONSISTENT) and three of four at 7–30 m, where the unmodified RootSIFT
+  baseline returns 3–10. The transforms are corroborated against archive
+  geometry inside its ~100 px (tier 1) to ~8 px (k = 32) floor. No ground truth
+  exists; nothing here is an accuracy figure.
+- **Claimed:** per-frame photometric normalisation of the REAL-DATA-06 kind is
+  a no-op after per-image stretch (E-035). Per-pixel normalisation from a 59 m
+  DEM changes counts and converts nothing.
+- **Not claimed:** any azimuth result; any sub-pixel number; anything about
+  Chandrayaan-2 or any modality other than NAC ↔ NAC; that the learned
+  engine's 51.54° behaviour generalises; that the marginal RootSIFT passes at
+  coarse rungs are robust.
+
+### Consequences
+
+- **H0 is demoted from central to conditional** (D-046): the DEM-render tier of
+  the architecture is kept only for sites with a DEM finer than the matcher's
+  working GSD, and is retired on this window. The next test is the SERENRIDGE1
+  NAC-DTM site.
+- **B4L becomes an engine arm of the architecture** (D-047, superseding D-028's
+  deferral): the illumination engine at the fine and mid rungs on mare is the
+  learned engine, and the physics layer's jobs are overlap, prior transform,
+  scale and verification.
+- REAL-DATA-06 is closed from this artefact (Part 2 written there; D-048,
+  E-035). REAL-DATA-07 measures the learned engine's envelope on 42 real pairs;
+  REAL-DATA-08 takes it to radar and 100 m.
+- S6 as worded is NOT MET; the wording is kept, the two arms it voids are the
+  two that already failed everything, and the arms that carry this stage's
+  results break nothing.

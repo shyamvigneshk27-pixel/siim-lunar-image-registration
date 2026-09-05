@@ -104,14 +104,18 @@ exactly is still a wrong answer — which is the entire point of this project.
 | | |
 |---|---|
 | **Real LRO NAC, end to end** | Byte-range fetched from the public PDS archive, SHA-256 recorded, PDS4-decoded, sanity-gated, registered by an unmodified baseline |
-| **Δincidence predicts registration outcome — separation is perfect, and NOT YET SIGNIFICANT** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54°. **Exact one-tailed permutation test: p = 0.0667** (`siim.evaluation.exact_separation_test`, computed from the rows, not asserted). Two successes among six edges: chance produces this separation once in fifteen, so the result **does not reach the conventional 0.05**. One-tailed is admissible only because the direction was frozen in a decision table before frame D was acquired. The edges share frames and are therefore not independent, so **0.0667 is a lower bound**. **One further failing edge would give p = 0.0476** — and high-incidence frames are abundant where the low-incidence frames REAL-DATA-05 hunted are not |
+| **Δincidence predicts registration outcome on six edges — and on 42 pairs it is significant, necessary, and NOT sufficient** | On **six** real edges across five frames and two ground windows — successes at 0.96° and 11.73°, failures at 38.85°–51.54°. **Exact one-tailed permutation test: p = 0.0667** (`siim.evaluation.exact_separation_test`, computed from the rows, not asserted). Two successes among six edges: chance produces this separation once in fifteen, so the result **does not reach the conventional 0.05**. One-tailed is admissible only because the direction was frozen in a decision table before frame D was acquired. The edges share frames and are therefore not independent, so **0.0667 is a lower bound**. **One further failing edge would give p = 0.0476** — and high-incidence frames are abundant where the low-incidence frames REAL-DATA-05 hunted are not |
 | **The RMSE trap, on real data** | A real edge reports a fit RMSE of `1.885e-13 px` for a transform independently measured **797 px wrong** |
 | **NOT proven: illumination as *the* cause** | Frame identity is **substantially weakened, not conclusively refuted** — see D-040-N1. The replication (REAL-DATA-05) returned **UNRESOLVED** |
-| **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication. **No multi-modal claim is supported anywhere in this repository** |
+| **NO Chandrayaan-2 data** | OHRC / TMC-2 / IIRS are behind ISSDC authentication (PRADAN registration and download are a human step, scheduled). **No multi-modal claim is supported anywhere in this repository** |
+| **Radar ↔ optical: measured on a real proxy, and NOT registered by anything** | `[MEASURED]` REAL-DATA-08 (2026-09-05): NAC tiles degraded to 7 and 17 m against the Mini-RF S-band strip over the same mare — RootSIFT, phase congruency and DISK + LightGlue each register **0 of 16** pairs; the nearest miss is 8 inliers with a transform 193 px wrong. A PROXY for the DFSAR case, never a Chandrayaan-2 result. The multimodal claim in the problem statement is a measured negative here, not an untested one |
+| **The 100 m rung: registered by the learned engine, starved for the classical one** | `[MEASURED]` REAL-DATA-08: NAC long windows degraded to 60–118 m (strips of **111 × 46 px** at the 100 m rung) against the LROC WAC 100 m mosaic. RootSIFT passes 1 of 4 frames (9 inliers); DISK + LightGlue passes 3 of 4 with **34–99 geometry-consistent inliers at ≈ 2 px against a ≈ 2.3 px floor**, and produced **one wrong pass** (9 inliers, 28 px off) — the reason no coarse-rung pass is reported without its geometry verdict. The IIRS rung of the ladder, on a real reference, by proxy |
 | **NO ground truth on real imagery — and the corroboration resolves only to ~100 px** | None exists for these products. A succeeding real edge is *corroborated*, never verified — and the resolution of that corroboration is stated here rather than left to be found. The archive-geometry bound **discriminates at the scale of ~100 px and certifies nothing finer**: D→A's median disagreement is **56.3 px against a 105.6 px discrimination floor** (0.53×), i.e. *inside* the floor, so the check cannot separate a correct alignment from one translated by up to ~100 px. The **0.04 % / 0.13 %** `SCALED_PIXEL` agreement constrains **SCALE ONLY, not translation**. **Neither check provides any sub-pixel accuracy evidence.** `[MEASURED]` REAL-DATA-04 §11.2. **Amended 2026-09-03 (S9):** the first sentence is too broad and is left as written rather than restated. No *correspondence* ground truth exists — but **geodetic control does**, and this project has not used it. LROC NAC regional controlled mosaics have a published average positional offset **below 13 m** (median <12 m latitude, <5 m longitude), which at NAC resolution is roughly **7–26 px** against the 105.6 px floor quoted above. The accuracy claim is therefore weaker than the evidence available, not weaker than the evidence obtainable, and closing that gap is an unblocked task rather than a limitation of the data |
 | **Δazimuth measured, and it does NOT explain the outcomes** | `[MEASURED]` `scripts/check_solar_geometry.py` — ground solar azimuth computed from the archive's sub-solar point. **Δincidence separates all six edges (11.73° → 38.85°); Δazimuth does not** (the strongest success sits at Δaz 50.29°, above three of four failures). **Not pre-registered** — run after the fact as a confound check |
 | **Δphase and Δincidence are NOT separable here** | Every frame is near-nadir (emission ≤ 1.75°), so phase = incidence + emission and the two deltas agree to **2.56°**. Lunar photometry is **phase**-driven, so *incidence* is our **label** for the variable, not a demonstrated mechanism. Separating them needs an off-nadir frame we do not have |
-| **NO sub-pixel accuracy on real imagery** | The PS's headline accuracy requirement. Sub-pixel is shown **only against synthetic ground truth under fixed illumination** (0.009–0.386 px, EXP-001). `check_transform_against_geometry.py` states in its own output that it *"certifies NO accuracy, and in particular NO sub-pixel accuracy."* **No sub-pixel refinement stage is implemented** |
+| **Sub-pixel: measured on real texture, NOT on a real cross-illumination pair** | The PS's headline accuracy requirement. `[MEASURED]` EXP-010 (2026-09-04): a local ECC refinement stage (`siim.refinement`) reaches **0.003 px** median (95 % CI 0.0032–0.0033) against exact self-warps of all four recorded real NAC tiles — an **upper bound on precision**, since a self-warp shares the original's texture — and under synthetic Sun-azimuth change to 30° the refined error stays **below 0.25 px**. EXP-011: the affine default was absorbing correlated localisation error (**up to 0.99 px on frame D with a zero fit residual**, E-034); refine-then-reselect brings it to **0.0018 px** on 48/48 self-warp cases. **What is still NOT held:** any sub-pixel number on a real pair under *different* illumination — no correspondence ground truth exists, and manual check points are the only route. `check_transform_against_geometry.py` still states that it *"certifies NO accuracy, and in particular NO sub-pixel accuracy"* |
+| **A licensable learned engine registers real edges at 39–40° where RootSIFT fails** | `[MEASURED]` EXP-007 (2026-09-04): DISK + LightGlue (Apache-2.0 code and weights, CPU, via kornia; SuperPoint/SuperGlue excluded under ADR-0008) registers the failing C → A edge at Δinc 38.85° with **56 inliers** and a transform **CONSISTENT with archive geometry** (47 px against a 104 px floor) where RootSIFT gives 4; at 7, 15 and 30 m it registers **three of the four** ~40° pairs with 447–2042 consistent inliers. It does **not** cross 51.54° (0, 5, 37 inliers), and it breaks neither succeeding pair. Corroborated inside the geometry floor, not verified; no ground truth. Its envelope on 42 real pairs is REAL-DATA-07 |
+| **DEM-render conditioning: measured, and it carries NOTHING on this mare** | The master plan's central physics bet (H0): match each image against the 59 m SLDEM2015 rendered under its own Sun, so the illumination difference lives in the DEM rather than the matcher. `[MEASURED]` EXP-007: **0 of 4** failing pairs convert at any rung from 1.8 m to 30 m; the render side yields **0–19 SIFT keypoints** on the high-Sun frames against 560–20 700 on the images, because the height field contains none of the 10–100 m relief the images are made of. H0 is **demoted to conditional on a fine DEM** (D-046); the NAC-DTM site SERENRIDGE1 is the untested next case. Per-frame photometric normalisation (REAL-DATA-06) turned out to be a no-op after the pipeline's own stretch (E-035); per-pixel normalisation from the 59 m DEM changes counts and converts nothing |
 | **Registered product + match points: produced, for ONE edge** | The two named PS deliverables now exist for the D→A edge — `experiments/REAL-DATA-04/products/`: 1759 correspondences with full-frame pixel and archive-derived ground coordinates, the warped source tile, and a difference image. **Emitted from recorded evidence; no matcher runs and nothing is estimated.** Labelled *"a registered product; no ground truth exists for it; corroborated, not verified; class B."* An edge the pre-registered rule **rejected** is refused a product |
 | **Scale: 4× on mare, 8× on highlands — the PS implies 320:1** | `[MEASURED]` `experiments/EXP-001/scale_limit_probe.json`. **Every** failure beyond those ratios is **detector starvation**, not descriptor failure — mare yields *literally zero* SIFT keypoints at 128², which is D-026's texture poverty in its sharpest form. The fix is normalising to a common GSD before matching (D-005): **designed, not implemented**, and untestable here because no cross-modal data exists |
 | **The pipeline runs on tiles, not full frames** | `[MEASURED]` matching is O(keypoints²): 0.18 s at 0.26 Mpx, 5.68 s at 1.05 Mpx. A full 264 Mpx NAC frame extrapolates to ~100 h/edge and ~2 GB of descriptors. Every real result used 2048×1024 decimated tiles (4.5–10.1 s). Tiling is what the geometry layer is built for; **the tiling driver is not written** |
@@ -119,8 +123,10 @@ exactly is still a wrong answer — which is the entire point of this project.
 | **NO Sun-azimuth *invariance* claim** | Every real result is illumination-varied by **incidence** (see the two rows above for what that does and does not mean) |
 
 The project is named for Sun-angle invariance, and the honest position is that **we measured
-the classical baseline and it is not Sun-angle invariant**. That measurement — on real archive
-imagery, against criteria fixed before the data existed — is the contribution.
+the classical baseline and it is not Sun-angle invariant**, and then measured a licensable
+learned engine that is — to about 40° of incidence difference on this mare, and not to 52°.
+Those measurements — on real archive imagery, against criteria fixed before the data existed —
+are the contribution.
 
 ---
 
@@ -139,8 +145,15 @@ imagery, against criteria fixed before the data existed — is the contribution.
 | REAL-DATA-03 — The first correctly controlled real-data registration experiment | **complete — the experiment is valid; 2 of 3 edges fail, 1 succeeds** — `experiments/REAL-DATA-03/` |
 | REAL-DATA-04 — Can frame identity and illumination be separated? | **complete — ANSWERED.** D↔A succeeds (1656 inliers at Δinc 11.73°), D↔B fails (3 at 51.54°). **Illumination attributed (D-040); frame identity substantially weakened, NOT conclusively refuted** — `experiments/REAL-DATA-04/` |
 | REAL-DATA-05 — Does the illumination result replicate on a second low-incidence frame? | **complete — UNRESOLVED, BY DATA AVAILABILITY.** The pre-registered screen returned **zero** admissible frames at every tier and rung; no image byte was fetched and no registration was run. The replication is still owed — `data/manifests/screen_frame_e_*.json` |
-| **September 2 demo** | **the current priority.** Scientific expansion stopped after REAL-DATA-05 |
-| Chandrayaan-2 (OHRC / TMC-2 / IIRS) | **NOT OBTAINED** — ISSDC authentication required. No multi-modal claim is supported |
+| September 2 demo | **delivered** — `python scripts/run_demo.py --open` |
+| EXP-010 — Sub-pixel refinement | **complete — gate, S1, S2, S3 MET; S4 undefined.** 0.003 px on real self-warps; < 0.25 px under synthetic Sun change to 30° — `experiments/EXP-010/` |
+| EXP-011 — Transform model selection | **complete — gate, S2, S3 MET; S1 NOT MET.** Refine-then-reselect 0.0018 px vs 0.0975 px affine default — `experiments/EXP-011/` |
+| EXP-007 — DEM-conditioned correspondence + learned engine | **complete — S2, S3, S4, S5 MET; S1 NOT MET; S6 NOT MET for the two DEM-render arms.** H0 demoted (D-046); DISK + LightGlue admitted as engine arm (D-047) — `experiments/EXP-007/` |
+| REAL-DATA-06 — Photometric normalisation | **closed — null by construction (E-035, D-048)** |
+| REAL-DATA-07 — Replication + illumination envelope on 42 real pairs | **complete — S4, S2 MET; S1, S3, S5, S6 NOT MET.** Pooled Δincidence separation p = 0.0042, 0 wrong passes in 37, nothing above 40°; **replication NOT MET**; four frames fail against every partner (D-049) — `experiments/REAL-DATA-07/` |
+| REAL-DATA-08 — Radar (Mini-RF) and 100 m (WAC) proxies | **complete — S1 MET; S2, S3 NOT MET.** Radar: 0 / 48 under every engine; 100 m: B4L 3 of 4 frames consistent, one wrong pass (D-050). Proxies, never Chandrayaan-2 results — `experiments/REAL-DATA-08/` |
+| REAL-DATA-09 — Chandrayaan-2 ingestion and first C2 ↔ NAC registration | **pre-registered 2026-09-05, NOT started** — waits on the PRADAN download |
+| Chandrayaan-2 (OHRC / TMC-2 / IIRS) | **NOT OBTAINED** — PRADAN registration and download are a human step. No multi-modal claim is supported |
 
 **Where the real data stands.** The project now ingests, decodes and verifies genuine LRO NAC
 imagery from the public PDS archive end to end. **The first real registration attempt failed**
@@ -240,8 +253,8 @@ This is a hypothesis carried over from SAR-optical imagery, not an established l
 Everything below re-derives results that are already recorded under `experiments/`.
 
 ```bash
-python -m pip install -e ".[dev,viz,experiments]"
-python -m pytest tests/ -q            # 605 passed, 2 skipped
+python -m pip install -e ".[dev,viz,experiments,learned]"   # learned = torch (CPU) + kornia
+python -m pytest tests/ -q            # see tests/ -- the count is printed by the suite
                                       # (4 skipped on a fresh clone: the two
                                       #  re-derivation tests report CANNOT CHECK
                                       #  until the gitignored tiles are fetched)
@@ -262,6 +275,17 @@ python scripts/run_exp002_ransac.py   # LO-RANSAC defect: before/after
 python scripts/run_exp002_terrain.py  # terrain realism + regime comparison
 python scripts/run_exp002_threshold.py  # failure threshold, disjoint validation
 python scripts/run_exp002_gtfree.py     # GT-free estimators vs coherent wrong answers
+python scripts/run_exp010.py            # sub-pixel refinement (needs the real tiles for S1)
+python scripts/run_exp011.py            # model selection, refine-then-reselect (real tiles)
+```
+
+**Real tiles, DEM and the learned engine** (the tiles and the SLDEM window are gitignored; the
+DISK/LightGlue weights are fetched once by kornia into `~/.cache/torch/hub`):
+
+```bash
+python scripts/run_exp007.py            # DEM render + photometric + learned arms, 84 min CPU
+python scripts/run_real_data_07.py --window RD03 --overlap overlap_rd03.json   # then RD04, --evaluate
+python scripts/run_real_data_08.py      # radar and 100 m proxies
 ```
 
 **Requires network, and re-fetches ~166 MB of archive imagery.** The decoded tiles are
@@ -305,9 +329,13 @@ src/siim/data/         synthetic lunar terrain + physically shaded GT pairs     
 src/siim/matching/     RootSIFT detection and descriptor matching                [done]
 src/siim/verification/ LO-RANSAC robust estimation                               [done]
 src/siim/evaluation/   GT metrics, coverage, failure taxonomy, GT-free estimators [done]
-src/siim/baselines/    B1 end-to-end classical pipeline                          [done]
-src/siim/ingest/       PDS4 decoding, byte-range fetch, tile sanity checks        [done]
+src/siim/baselines/    B0-B7 classical engines + B4L DISK/LightGlue (Apache-2.0)  [done]
+src/siim/preprocessing/ photometric models, DEM render under a given Sun          [done]
+src/siim/refinement/   per-correspondence sub-pixel ECC refinement (EXP-010)      [done]
+src/siim/pipeline/     estimate -> refine -> re-estimate -> verify; engine agreement [done]
+src/siim/ingest/       PDS4 decoding, byte-range fetch, map grids, DEM, orientation [done]
 src/siim/demo/         verdict engine + FastAPI demonstrator                      [done]
+src/siim/cli.py        `python -m siim register`: two images in, four files out   [done]
 docs/                  normative design documents
 tests/                 property tests pinning the coordinate contract
 scripts/               experiment runners

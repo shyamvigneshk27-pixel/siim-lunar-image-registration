@@ -46,6 +46,19 @@ viz = ["matplotlib>=3.8"]
 # scripts/run_exp002_threshold.py is the sole scikit-learn user (ROC/AP).
 experiments = ["scikit-learn>=1.4", "matplotlib>=3.8"]
 
+# The learned engine B4L (siim.baselines.learned): DISK + LightGlue through
+# kornia on a CPU torch build. Imported lazily, so the core package never needs
+# torch, and run_baseline("B4L") raises a plain ImportError without this extra.
+# Licence audit (ADR-0008, sources.md S14, re-verified 2026-09-05): DISK code and
+# `depth` weights Apache-2.0; LightGlue code and `disk` weights Apache-2.0
+# (the LightGlue README states this explicitly and excludes only SuperPoint);
+# kornia Apache-2.0; torch BSD-3. The weights are fetched once by kornia into
+# ~/.cache/torch/hub (depth-save.pth, disk_lightglue_v0-1_arxiv-pth) and are
+# NOT vendored in this repository. On Windows/Linux without CUDA, install torch
+# from the CPU index first so pip does not pull a multi-GB CUDA wheel:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+learned = ["torch>=2.4", "kornia>=0.8,<0.9"]
+
 # httpx is not optional in practice: tests/test_demo_real_data.py and
 # tests/test_demo_verdict.py drive the API through fastapi.testclient.TestClient,
 # which raises at import time without it. matplotlib comes in because the
@@ -54,6 +67,10 @@ dev = ["pytest>=8.0", "httpx>=0.27", "matplotlib>=3.8"]
 
 # Removed 2026-08-26: pyyaml was declared from the first commit and is imported
 # nowhere in src/, scripts/ or tests/. pandas likewise had no importer.
+
+[project.scripts]
+# `siim register SRC REF --out DIR` -- two images in, four deliverables out.
+siim = "siim.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

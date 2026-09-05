@@ -148,4 +148,92 @@ exactly one thing about a recorded experiment and measures the consequence.
 
 ## Part 2 — Results
 
-*Empty. To be written only after Part 1 is committed and the run has completed.*
+**Run:** the arms of this stage were executed, exactly as frozen in §4, as the
+`photometric_ls` and `photometric_hapke` arms of EXP-007 (2026-09-04,
+`scripts/run_exp007.py`, 84.2 min, commit 75fb001 for the pre-registration).
+Artefact: `experiments/EXP-007/exp007_results.json`, rows with
+`arm ∈ {none, photometric_ls, photometric_hapke}` and `tier = tier1`. This
+stage has no separate artefact; the numbers below are read from that one.
+Every correction record carries the incidence used, the emission used, the
+`g = i` note, the factor median, and — for the Hapke arm — the two
+reliability caveats §7 required.
+
+### S4 — reproduction: MET
+
+`none` reproduces 5365, 1656, 4, 4, 7, 3 exactly (EXP-007 S4).
+
+### S1 (a failing edge converts under Lommel-Seeliger) — NOT MET
+
+0 of 4. The four failing edges return **4, 4, 7, 3** in the `lommel_seeliger`
+arm: the recorded counts, unchanged.
+
+### S2 (median inliers on the failing edges rise ≥ 50 %) — NOT MET
+
+Median 4 → 4, a change of 0 %. Every keypoint count, putative count, inlier
+count and transform matrix in the corrected arms is **identical** to `none`.
+
+### S3 (succeeding edges undamaged) — MET
+
+B → C 5365 → 5365, D → A 1656 → 1656. Nothing was damaged because nothing was
+changed.
+
+### Why every number is identical — the finding (E-035)
+
+Each per-frame record in the artefact carries
+`identical_to_none_after_stretch: true`, and that flag is the result of this
+stage. The method frozen in §4 computes one incidence **per frame** (the
+archive's published value; emission ≤ 1.75°, so `g = i`) and divides the tile
+by the model's reflectance factor at that geometry. With one geometry per
+frame the factor is one **scalar** per tile — 0.717 (A) and 1.297 (B) for
+Lommel-Seeliger, 0.741 and 1.260 for Hapke-HG — and the very next step of the
+recorded pipeline, the per-image percentile stretch, maps any scalar multiple
+of a tile to the same stretched image. The correction and the stretch cancel
+to floating-point identity, so the matcher saw the same pixels it saw in
+REAL-DATA-03 and -04.
+
+This is not a bug in the implementation; the implementation does what §4 says.
+It is a **design error in the pre-registration**: the frozen method could not
+have changed any outcome for any model, any parameters, and any Δincidence.
+Recorded as **E-035** in the error ledger. Under integrity rule 2 this Part 2
+is written as the null result it is; under rule 3 §4 is left exactly as it was
+frozen.
+
+### What was tried beyond the pre-registration (exploratory, no criterion credit)
+
+EXP-007 added a per-**pixel** Lommel-Seeliger arm (`photometric_ls_pixel`)
+whose incidence comes from the local SLDEM2015 facet normal, so the factor is
+a field rather than a scalar and survives the stretch. It changes counts and
+converts nothing: failing edges 4 → 6, 5365-edge → 2469, 1656-edge → 1197 at
+tier 1, and no failing pair passes at any of the four coarser rungs either.
+With a 59 m DEM the field is the slope of the DEM, not the slope of the
+craters the pixels record, and the correction subtracts a smooth
+illumination trend the matcher was never failing on. This arm was not
+pre-registered; it is reported as what it is and licenses nothing.
+
+### What each outcome licenses (from §6, applied)
+
+The row that applies is **"S1 and S2 NOT MET: the failure is not photometric"**
+— with the amendment that this stage, as designed, could not have detected a
+photometric cause even if one existed, because the arm was a no-op. The
+stronger, honest statement is: **a per-frame scalar photometric normalisation
+cannot move the illumination threshold, by construction; a per-pixel
+normalisation from the best available global DEM does not move it either, on
+this window.** Every illumination statement in the repository therefore keeps
+its "uncorrected pipeline" scope with respect to per-frame correction, and
+gains "not rescued by DEM-based per-pixel correction at 59 m" as a measured
+addendum. No new significance claim is made (§7: n is unchanged).
+
+### Consequences
+
+- REAL-DATA-06 is **closed** (D-048). The photometric-normalisation question
+  is not reopened as a new per-frame stage; a per-pixel arm belongs, if
+  anywhere, at a fine-DEM site where the facet slope is the pixel slope
+  (SERENRIDGE1; EXP-007's next test).
+- The `siim.preprocessing.photometry` module stays: its models are correct and
+  tested, and are what a per-pixel correction at a fine-DEM site would use.
+  Its docstring now records that a per-frame application is a no-op after
+  stretch.
+- Lesson for the ledger (E-035 pattern): **a pre-registered treatment must be
+  shown to change the input the matcher sees before its effect on the output
+  is measured.** A one-line assertion — corrected tile ≠ stretched tile — would
+  have caught this before the run.

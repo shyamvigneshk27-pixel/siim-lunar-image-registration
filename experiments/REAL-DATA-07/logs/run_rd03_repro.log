@@ -1,0 +1,5 @@
+  [RD03] m1271742202l->m1452560468lc dInc=38.85 b1  raw  inl=    4 fail  (15s)
+  [RD03] m1271742202l->m1335207975rc dInc=39.81 b1  raw  inl=    4 fail  (11s)
+  [RD03] m1452560468l->m1335207975rc dInc= 0.96 b1  raw  inl= 5365 SUCCESS  (11s)
+written: experiments\REAL-DATA-07\rows_rd03_repro.json  (0.6 min)
+EXIT 0

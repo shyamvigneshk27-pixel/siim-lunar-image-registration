@@ -797,6 +797,80 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 **Status:** RL-033b **closed — answered**. Frame identity and illumination *can* be separated, and the separation goes to illumination. **No successor research question is opened.** Under the standing constraint, REAL-DATA-04 is the final high-value causal experiment; the next action is **September 2 demo engineering**, not another stage. EXP-004 remains pre-registered and **not started** — for the first time pointed at a real question (the *mechanism* behind the Δincidence failure), and still not justified before the demo.
 
 
+## 2026-09-04 — Session 4: the master plan tested in one day (EXP-010, EXP-011, EXP-007, REAL-DATA-06)
+
+### RL-037 — Sub-pixel is measurable on real texture, and the refiner's bias follows the Sun
+
+**Question.** Can a sub-pixel correspondence accuracy be *defined* non-circularly and *measured* on real NAC texture, and how does illumination change bias a local refiner? (EXP-010, criteria frozen before code.)
+
+**Result.** `[MEASURED]` `experiments/EXP-010/exp010_results_v2.json`, 727 rows. Gate: identity refined against identity, max median |shift| 7e-15 px. S1: ECC (translation-only, 48 px window) reaches **0.0032 px** median (95 % CI 0.0032–0.0033) against exact self-warps of all four recorded tiles, from 0.040 px before refinement; frame D from **0.302 → 0.0087 px**. Phase correlation 0.028 px. S2: under synthetic Sun-azimuth change the refined error rises 0.039 → 0.229 px (mare) and 0.008 → 0.069 px (highlands) between 0° and 30°. S3: the sub-pixel definition (median < 0.5 px, CI upper < 1.0) holds to 30°, the largest tested. S4: no point was harmed by > 0.5 px, so the confidence-predicts-harm AUC is undefined — untestable, not refuted.
+
+**Interpretation.** `[INFERENCE]` Refinement locks onto shading, and shading moves with the Sun; within the envelope where matching succeeds at all, the bias stays under 0.25 px. The numbers are upper bounds on precision (self-warps share texture and kernel) and are **not** a real cross-illumination accuracy, which needs check points (R7).
+
+**Status:** closed for synthetic and self-warp; **open** for real cross-illumination pairs (RL-037b). D-044.
+
+### RL-038 — The affine default absorbs localisation bias with a zero residual; refining first and re-selecting removes it
+
+**Question.** E-034: a pure integer self-shift of frame D is recovered by the affine model to 0.99 px median with a zero fit residual. Does model selection by held-out evidence pick the right model, and does re-estimation from refined points remove the bias? (EXP-011.)
+
+**Result.** `[MEASURED]` `experiments/EXP-011/exp011_results.json`, 52 cases. Held-out residuals of translation and affine on frame D are **0.0338 vs 0.0336 px** — indistinguishable — so H1's mechanism is confirmed (the correspondence set cannot see the bias) but H1's predicted *consequence* (wrong selection) did not occur: rule A chose translation through its simplicity tie-break. Rule B (refine with ECC 48, then select on refined points) picks the truth model in **48/48** cases and reaches **0.0018 px** dense median (CI 0.0013–0.0033) against **0.0975 px** for the affine default. Rule C (similarity prior, re-estimated) 0.0051 px on the cases it applies to, 2.8 px where the prior is wrong by construction.
+
+**Interpretation.** `[INFERENCE]` A model with more freedom than the geometry needs converts correlated localisation error into geometric error, and no statistic computed from the same correspondences can detect it. The remedy is not a better statistic but a better *input*: refined points carry no correlated bias, and then any selection rule works. Pipeline order is now estimate → refine → re-estimate with selection → verify (D-045).
+
+**Status:** closed. **Open:** a real pair where the tie-break and the evidence disagree (RL-038b).
+
+### RL-039 — The 59 m DEM render carries no matchable structure on Mare Serenitatis at any rung from 1.8 m to 30 m
+
+**Question.** H0 / EXP-007: if each image is matched against SLDEM2015 rendered under its own Sun, so that the illumination difference is carried by the DEM rather than the matcher, do the four failing ~40–52° real edges register, and at which GSD does the 59 m DEM stop being enough?
+
+**Result.** `[MEASURED]` `experiments/EXP-007/exp007_results.json`, 199 rows, 84 min. S4 MET (5365, 1656, 4, 4, 7, 3 reproduced exactly). **S1 NOT MET: 0 of 4 failing pairs pass in `dem_render_b1` at k = 16 or 32, or at any rung.** The render side yields **0** SIFT keypoints on frames A and D at native scale and 4–19 at every coarser rung; 7–176 on B and C; every image-to-render leg returns 0–7 inliers. S2 MET (no native-scale conversion). S6 NOT MET for the two render arms, which also fail B → C and D → A at every rung. Rung transition: none.
+
+**Interpretation.** `[INFERENCE, HIGH]` Of Part 1 §7's three candidate causes, the keypoint counts select the first: the height field does not contain the 10–100 m relief the images consist of (`logs/render_check_tier1_rd04.png` shows a smooth undulation beside crater fields). An offset failure would show render keypoints that fail to match; a shading-model failure cannot explain structure the DEM lacks. H0 is **not supported at any tested rung with this DEM** and is demoted to *conditional on a DEM finer than the working GSD* (D-046). It is **not** refuted for a fine DEM — the SERENRIDGE1 NAC-DTM site is the test, and it remains owed.
+
+**Status:** closed for SLDEM on mare. **Open:** RL-039b, H0 at a fine-DEM site.
+
+### RL-040 — A licensable learned engine registers real edges at 39–40° where RootSIFT fails, and RootSIFT itself creeps over the rule at coarser GSD
+
+**Question.** H3 / EXP-007 S3: does DISK + LightGlue (Apache-2.0, CPU) convert a failing tier-1 edge with a geometry-consistent transform? And, at tier 2, what does each direct arm do as the GSD coarsens?
+
+**Result.** `[MEASURED]` Same artefact. **S3 MET on one edge**: C → A (38.85°) **56 / 72** inliers, median disagreement with the archive prediction **47.4 px against a 104.1 px floor** — CONSISTENT. A → B (RD-03) 38 inliers but INCONCLUSIVE against geometry (108 / 91 px) and not credited; A → B (RD-04) and B → D 3 each. At 7, 15 and 30 m the engine registers **three of the four ~40° pairs** with 1434/2042/511, 1348/1863/475 and 1409/1536/447 inliers, all CONSISTENT (2.7–28 px against 7.7–33 px floors); B → D at 51.54° gives 0, 5 and 37 (the last INCONCLUSIVE, 7.1 / 6.8 px). Neither succeeding pair is broken at any rung (2305–3026 and 2016–2697 inliers). **RootSIFT** passes C → A at 3.6 m with 10 inliers and A → B (RD-04) at 3.6 / 7 / 15 m with 10 / 9 / 10, each CONSISTENT, and fails by one at 30 m (8). Determinism: one repeated edge, 3 and 3 — the weakest possible demonstration.
+
+**Interpretation.** `[INFERENCE]` The learned engine's invariance is real on this data and licensable; it is the fine- and mid-rung illumination engine on mare (D-047, superseding D-028's deferral), and the physics layer's justification moves to overlap, prior, scale and verification — exactly the outcome Part 1 §7's S3 row anticipated. The RootSIFT creep is consistent with decimation averaging out the sub-10 m shading texture that changes most with the Sun; at 9–10 inliers against a cutoff of 8 whose mixed-regime false-alarm rate is 0.369, it is a marginal geometry-consistent pass and is reported as nothing more. **The B → C pair is INCONCLUSIVE against geometry for every arm at every rung** — a property of its corner geometry known since REAL-DATA-03, not of any engine.
+
+**Status:** closed for tier 1 and the two long windows. **Open:** RL-040b, the engine's envelope and wrong-pass rate on 42 pairs (REAL-DATA-07); RL-040c, whether the 51.54° edge is a limit of the engine or of this pair.
+
+### RL-041 — REAL-DATA-06's arms were a no-op by construction (E-035)
+
+**Question.** Does per-frame photometric normalisation (Lommel-Seeliger, Hapke-HG, standard geometry i = g = 60°) change any of the six real outcomes?
+
+**Result.** `[MEASURED]` Counts and matrices **identical** to `none` on all six edges; every frame record carries `identical_to_none_after_stretch: true`. One incidence per frame makes the correction a scalar (0.717 on A, 1.297 on B), and the per-image percentile stretch removes scalars. The exploratory per-pixel arm (incidence from the SLDEM facet) changes counts (5365 → 2469, 1656 → 1197, 4 → 6) and converts no failing edge at any of five rungs.
+
+**Interpretation.** `[INFERENCE, HIGH]` A design error in a pre-registration, not a bug in code, and not a result about the Moon. The photometric question survives only as *per-pixel correction at a fine-DEM site*; per-frame correction is retired (D-048). The pattern joins the ledger: a treatment must be shown to change the matcher's input before its effect on the output is measured.
+
+**Status:** closed.
+
+## 2026-09-05 — Session 5: the envelope on 42 real pairs (REAL-DATA-07)
+
+### RL-042 — Δincidence separates at p = 0.004 across 42 pairs, and four frames refuse everything: the replication did not happen
+
+**Question.** RL-036 / RL-040b: does a second low-incidence frame replicate D → A, and what is each engine's success rate against Δincidence over every archived frame on the two windows? Criteria frozen 2026-09-04 (REAL-DATA-07 Part 1).
+
+**Result.** `[MEASURED]` `experiments/REAL-DATA-07/real_data_07_results.json`, 188 rows, 42 geometry-confirmed pairs, 14 frames. S4 MET (all six recorded counts reproduce in the recorded direction; E-036 caught the first run's direction error). **S1 NOT MET**: E1 could not be tiled on the shared ground (target outside its swath); E2 (`nac.m1315225542lc`, 21.13°) gives **6** inliers vs A (INCONSISTENT) and 3 vs B, and fails against every partner, passing only D at Δinc 2.91° by two inliers. **S6 NOT MET** by two inliers: north-up moved A → B (RD-04) from 7 to 9. **S2 MET** as worded (largest ≥ 0.8 bin 10–15°, nothing above 40°) with a rate already at 0.71 in the 0–5° bin. **S3 NOT MET**: B4L's envelope equals B1's (17 / 42 vs 20 / 42), its yield inside it 5–25× B1's. **S5 NOT MET** by the per-window clause: pooled **p = 0.0042**, RD-03 0.0040, RD-04 0.121. Wrong passes **0 / 37**. Four frames — E2, and the three darkest tiles at 66.9°, 72.3°, 74.7° — account for every failure below Δinc 20°.
+
+**Interpretation.** `[INFERENCE]` Δincidence is necessary and not sufficient. The six-edge picture generalises to a pooled significance the project never had, and at the same time stops being a function of Δincidence alone: something frame-level governs at least four frames. For the dark three, absolute incidence near the unswept 75° ceiling (D-029, RL-028b) is the candidate the data points at (DN medians 342–529 against 865–1669); for E2 nothing is identified, and E2 is the one that matters, because it is exactly the low-incidence frame whose success would have discharged D-040-N1 and it did not succeed. **The frame-identity question is back with n = 4.** On the engine: the learned engine's advantage at native scale is yield, not reach; its reach advantage is a coarse-rung result (EXP-007 tier 2). D-047 amended (D-047-N1).
+
+**Status:** closed for the census. **Open:** RL-042b — why E2 fails (placement, orientation signature, saturation; a data defect would restore D-040's scope); RL-042c — the 60–75° incidence sweep the census already has frames for; RL-036 remains open (no replication held).
+
+### RL-043 — Radar registers under nothing; the 100 m rung registers under the learned engine and starves the classical one (REAL-DATA-08)
+
+**Question.** Does any engine register a NAC tile, degraded to the radar's sampling, to the Mini-RF S-band strip (a genuine modality change)? Does the pipeline register a NAC tile degraded to 100 m against the WAC mosaic (the IIRS rung)? Criteria frozen 2026-09-04 before any radar or WAC byte was matched.
+
+**Result.** `[MEASURED]` `experiments/REAL-DATA-08/real_data_08_results.json`, 126 rows. **Radar: 0 / 48** — B1, B7 and DISK + LightGlue each 0 / 16 pairs at 7 and 17 m; the nearest miss is B4L on frame D's long window with 8 inliers and a transform 193 px from the archive prediction (S1 MET, S2 NOT MET). **WAC at 100 m:** B1 passes one frame (D at 68 m, 9 inliers, CONSISTENT at 2.56 px / 2.79 px floor; S3 NOT MET at 1 of 4); B4L passes A, B and D with **74 / 40 / 34 / 99** consistent inliers from NAC strips of 192 × 79 and **111 × 46 px** at 1.8–2.7 px against 2.3–2.8 px floors, C INCONCLUSIVE, and one **wrong pass** (B at 59 m: 9 inliers, 27.7 px off). The runner degraded by box average, not the PSF-aware operator Part 1 named (deviation recorded; R9 implemented afterwards).
+
+**Interpretation.** `[INFERENCE]` The problem statement's multimodal claim is not supported by anything measured here: an optical-to-radar pair on low-relief mare, the most tractable radar case, is registered by none of the three engine families. The 100 m rung, by contrast, is a *detector* problem for the classical engine (13–189 keypoints in a 111 × 46 px strip) and a solved one for the learned engine, which is the first real coarse-rung measurement the scale ladder (D-005) has had. The wrong pass is the engine's first in 23 passes and is why no coarse-rung pass is reported without its geometry verdict (D-050).
+
+**Status:** closed for these proxies. **Open:** RL-043b — a cross-modality engine (MatchAnything-ELoFTR; weight licence unverified) on the same radar rows; RL-043c — the rungs re-run with the PSF-aware operator, as a labelled row set.
+
 ## Open threads summary
 
 | ID | Thread | Experiment | Critical path? |
@@ -810,6 +884,14 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 | ~~RL-031b~~ | ~~Why does a confirmed-overlap real pair fail?~~ | **CLOSED by REAL-DATA-03 (RL-033).** Seven candidates eliminated by measurement against a succeeding edge on the same ground; illumination is the only survivor | — |
 | ~~RL-033b~~ | ~~Is the driver illumination, or frame identity?~~ | **CLOSED — ANSWERED by REAL-DATA-04 (RL-035).** Frame D at 18.22° registers against frame A (**1656** inliers, ratio 0.9414, occupancy 1.000) and fails against frame B (**3**), on edges overlap-matched to 0.95 pp. Across six real edges every frame appears on both sides and Δincidence separates all six. **Illumination supported (D-040); frame identity substantially weakened, NOT conclusively refuted** — see the D-040-N1 superseding note | — |
 | **RL-036** | **Does the illumination result replicate on a second low-incidence frame?** REAL-DATA-04's conclusion rests on **one** succeeding edge; A and D each have n = 1 in the successful regime | **REAL-DATA-05 — UNRESOLVED, BY DATA AVAILABILITY.** Of 906 archive products, 8 can centre a full tile on ground shared with A, B and D; only 2 are in the required incidence band and **both are orientation-incompatible** with the incumbents. The screen returned zero admissible frames at every tier and rung; no image byte was fetched, no registration was run, and the decision table was never reached. **Open — a successor must change the design, pre-registered, not the criteria** | **yes — it is what would discharge D-040-N1** |
+| **RL-037b** | **Sub-pixel accuracy on a real cross-illumination pair.** EXP-010's 0.003 px is a self-warp upper bound; its bias curve is synthetic | manual check points (R7), two annotators | **yes — the PS's headline accuracy claim rests on it** |
+| RL-038b | A real pair where rule B's simplicity tie-break and the held-out evidence disagree | REAL-DATA-07 re-estimates every pass with rule B beside the recorded transform | no |
+| **RL-039b** | **H0 at a fine-DEM site.** The SLDEM render carries nothing on this mare at 1.8–30 m; whether a 5 m NAC DTM restores it is untested | **SERENRIDGE1** (23.75 N, 24.65 E; NAC DTM) — EXP-007's render arm re-run there | **yes — the only remaining test of the physics-conditioning claim** |
+| ~~RL-040b~~ | ~~The learned engine's envelope and wrong-pass rate on 42 pairs~~ | **CLOSED by REAL-DATA-07 (RL-042): same envelope as B1 at native scale, 5–25× yield inside it, 0 wrong passes in 17.** D-047 amended to D-047-N1 | — |
+| **RL-042b** | **Why does frame E2 fail against everything, including D at Δinc 2.9°?** Placement, orientation signature, saturation, or a real frame-level effect | a diagnostic on E2's tile before any replication attempt | **yes — it decides whether D-040's scope is the data's or the Moon's** |
+| **RL-042c** | **Where between 60° and 75° does absolute incidence stop being usable?** Three frames at 66.9–74.7° fail 1 / 16 including at Δinc 5–8° | a sweep with the census frames already tiled (RD-07) — discharges RL-028b | **yes — sets the scope of every illumination claim** |
+| RL-040c | Is 51.54° a limit of the engine or of the B → D pair? | a second ≥ 50° pair (REAL-DATA-07 census has frames to 74.65°) | no |
+| **RL-036 (cont.)** | **Replication of the low-incidence success — NOT ACHIEVED by REAL-DATA-07.** E1 could not be tiled on the shared ground; E2 failed both decisive edges (RL-042) | a third candidate after RL-042b is answered | **yes — D-040-N1's debt stands** |
 | **RL-034b** | **Loop closure's discriminating power on real data.** Exercised twice now — 1201.04 px and **943.75 px**, neither a false closure — but both loops had two broken legs | a later stage | **no — deferred behind the September 2 demo.** Needs three mutually low-Δincidence real frames |
 | **RL-032b** | **What frame is `SUB_SOLAR_AZIMUTH` measured in?** It exists in the archive index table but carries the same "relative to the RDR products" caveat that made `NORTH_AZIMUTH` useless (E-027) | **REAL-DATA-03** | yes — it would be this project's first real Sun-azimuth information (E-020) |
 | ~~RL-030b~~ | ~~Are overlapping real NAC triplets available at all?~~ | **CLOSED by REAL-DATA-03 (RL-034): 8 of 60 screened frames contain the target ground point with a full tile inside.** They are not scarce. One was acquired and a real loop was closed | — |
@@ -817,7 +899,9 @@ A second, sharper test uses `SCALED_PIXEL_WIDTH`/`HEIGHT`, which the archive der
 | RL-017b | Exact cliff edge between Δaz 15° and 30° on A-regimes | EXP-003 | no |
 | ~~RL-022b~~ | ~~`n_inliers <= 8` in the discriminable regime~~ | **CLOSED by EXP-003 (RL-024): recall transfers, FPR does not (0.0112 → 0.369)** | — |
 | RL-024b | A deployable operating point with an acceptable false-alarm rate in the mixed regime | **EXP-004** | yes |
-| RL-006 | IIRS band-index vs matchability boundary | deferred, data-blocked | no |
+| **RL-043b** | **Does any cross-modality engine register NAC ↔ radar?** Three engine families register 0 / 48 radar rows | MatchAnything-ELoFTR arm on the REAL-DATA-08 rows, after a weight-licence check (ADR-0008) | **yes — it is the only route left to a multimodal claim before Chandrayaan-2 data** |
+| RL-043c | The coarse rungs with the PSF-aware degradation (R9) instead of the box average REAL-DATA-08 used | a labelled re-run of the WAC rows | no |
+| RL-006 | IIRS band-index vs matchability boundary | deferred, data-blocked (REAL-DATA-09 once the PRADAN download lands) | no |
 | — | CPU latency of each learned engine | EXP-005 | yes |
 
 **Closed by EXP-002:** H-005 (GT-free estimators built and scored — only loop closure works, RL-020) · RL-011 (threshold claim refuted, operating point validated, RL-019) · RL-009b (cliff relocated to 15–30°, RL-017).

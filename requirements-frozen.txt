@@ -32,3 +32,11 @@ requests==2.32.5
 scikit-learn==1.8.0
 scipy==1.16.2
 uvicorn==0.40.0
+# The learned engine (EXP-007, REAL-DATA-07/08 artefacts, 2026-09-04/05).
+# torch is the CPU wheel from https://download.pytorch.org/whl/cpu; a pip
+# resolve against PyPI alone would fetch the CUDA build, which is not needed
+# and was never used. kornia pulls kornia-rs. Weights (not pip-installed, not
+# vendored): DISK `depth` (depth-save.pth) and LightGlue `disk`
+# (disk_lightglue_v0-1_arxiv-pth), fetched by kornia into ~/.cache/torch/hub.
+torch==2.10.0+cpu
+kornia==0.8.3

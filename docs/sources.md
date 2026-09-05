@@ -283,6 +283,9 @@ Rule: every architectural decision resting on an external fact records the sourc
 - Names the admissible route to baselines B4/B6: OpenCV-native DISK/ALIKED with LightGlue, or MINIMA-wrapped engines, subject to a per-weight ONNX licence check.
 - **Forced a recorded substitution in B2.** AKAZE, the §E.1 nomination, is unavailable on OpenCV core builds. B2 is implemented as **ASIFT** — which S3's incumbent Chandrayaan-2 comparison also benchmarks, making the arms directly comparable — and AKAZE is retained as a separate registry entry `B2K` that refuses with an explanatory error rather than being silently swapped.
 
+**Addendum 2026-09-05 — the per-weight check for the engine actually shipped (B4L).**
+Source (primary): LightGlue repository README, https://github.com/cvg/LightGlue, retrieved 2026-09-05: *"The pre-trained weights of LightGlue and the code provided in this repository are released under the Apache-2.0 license. DISK follows this license as well but SuperPoint follows a different, restrictive license."* Source (primary): DISK repository, https://github.com/cvlab-epfl/disk, Apache-2.0 (LICENSE.txt; the weight file `depth-save.pth` is distributed from that repository's releases). The delivered route is **kornia 0.8.3** (Apache-2.0) loading exactly those two files (`depth-save.pth`, `disk_lightglue_v0-1_arxiv-pth`) into `~/.cache/torch/hub`; nothing is vendored. **The "still open" item above is therefore discharged for the two weights this repository uses**, and remains open for any ALIKED or ONNX weight, none of which is used. Recorded in `pyproject.toml` (`learned` extra) and `requirements-frozen.txt`.
+
 ---
 
 ## Unresolved / blocked
