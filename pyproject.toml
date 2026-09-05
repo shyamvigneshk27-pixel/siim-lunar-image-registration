@@ -54,7 +54,9 @@ experiments = ["scikit-learn>=1.4", "matplotlib>=3.8"]
 # (the LightGlue README states this explicitly and excludes only SuperPoint);
 # kornia Apache-2.0; torch BSD-3. The weights are fetched once by kornia into
 # ~/.cache/torch/hub (depth-save.pth, disk_lightglue_v0-1_arxiv-pth) and are
-# NOT vendored in this repository. On Windows/Linux without CUDA, install torch
+# NOT vendored in this repository. B4X (XFeat, Apache-2.0) is loaded by torch.hub
+# from a pinned commit of verlab/accelerated_features: executable code fetched at
+# first use and cached, stated in siim.baselines.xfeat. On Windows/Linux without CUDA, install torch
 # from the CPU index first so pip does not pull a multi-GB CUDA wheel:
 #   pip install torch --index-url https://download.pytorch.org/whl/cpu
 learned = ["torch>=2.4", "kornia>=0.8,<0.9"]

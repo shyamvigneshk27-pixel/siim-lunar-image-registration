@@ -224,3 +224,44 @@ becomes 1 / 23 across the two stages). B7 registers nothing at this rung
 - R9 (PSF-aware degradation) is implemented after this stage and is the
   operator any future rung run uses; this artefact stays as the box-average
   result it is.
+
+## Part 2 — Addendum (2026-09-05): the PSF-aware re-run
+
+The deviation recorded above (box average where Part 1 named a PSF-aware
+operator) was closed the same day: `scripts/run_real_data_08.py --psf-fwhm 1.0
+--out real_data_08_psf_fwhm1.json` degrades the NAC source through a Gaussian
+of one coarse-pixel FWHM and then the block mean (`siim.preprocessing.degrade_to_gsd`).
+Artefact: `experiments/REAL-DATA-08/real_data_08_psf_fwhm1.json` (84 engine
+rows, 24.2 min under CPU contention). The original artefact stands; this is a
+labelled second row set, not a replacement.
+
+**Criteria, unchanged in outcome.** S1 MET (radar: B1 0 / 16). S2 NOT MET
+(radar: 0 / 48 under all three engines; best 9 inliers). S3 NOT MET (B1 on
+WAC: 1 of 4 frames, D at 68 m, 9 inliers, CONSISTENT — identical to the box run).
+
+**B4L at the WAC rung, box vs PSF (same windows, same k):**
+
+| frame, rung | box average | PSF-aware |
+|---|---|---|
+| A, 60 m | 74 CONSISTENT | 68 CONSISTENT |
+| A, 102 m | 40 CONSISTENT | 41 CONSISTENT |
+| B, 59 m | 9 INCONSISTENT (wrong pass) | 10 and 15 INCONSISTENT (wrong passes) |
+| B, 101 m | 34 CONSISTENT / 4 | 32 CONSISTENT / 27 INCONCLUSIVE |
+| C, 55 m / 94 m | 11 / 10 INCONCLUSIVE | 11 / 19 INCONCLUSIVE |
+| D, 69 m | 99 CONSISTENT | 101 CONSISTENT |
+| D, 118 m | 40 INCONCLUSIVE | 30 INCONCLUSIVE |
+
+The PSF operator changes no verdict on A, C or D and moves B's marginal rows
+by a few inliers in both directions; it produces **three** B4L wrong passes on
+frame B (10, 11, 15 inliers, 28–77 px off) where the box run produced one.
+Frame B at 70° incidence with a 46-px-wide strip is where the engine's false
+acceptances live, at both operators. The wrong-pass tally for B4L across
+REAL-DATA-07/08 is therefore stated as **1 / 23 (box) or 3 / 25 (PSF)**, and
+the coarse-rung rule stands: no pass is reported without its geometry verdict.
+
+**What this closes.** The recorded deviation is closed with a measurement,
+and the measurement says the operator was not what limited the classical
+engine at 100 m (B1 still starves: 13–189 keypoints) and not what made the
+learned engine succeed (its consistent passes are within ±6 inliers of the box
+run). R9 is the operator every future rung run uses because it is the honest
+model of a coarse sensor, not because it changed a result here.

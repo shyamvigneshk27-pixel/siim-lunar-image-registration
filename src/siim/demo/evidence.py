@@ -820,6 +820,9 @@ def real_data_status() -> dict[str, Any]:
 
 EXP007_ARTEFACT = EXPERIMENTS / "EXP-007" / "exp007_results.json"
 RD07_ARTEFACT = EXPERIMENTS / "REAL-DATA-07" / "real_data_07_results.json"
+#: The E-037 amendment (reflection-aware orientation), read when present and
+#: shown BESIDE the original, never in place of it.
+RD07_AMENDED_ARTEFACT = EXPERIMENTS / "REAL-DATA-07" / "real_data_07_results_nue.json"
 
 #: The four recorded edges the classical baseline fails, keyed as EXP-007 keys them.
 EXP007_FAILING = (("REAL-DATA-03", "C -> A"), ("REAL-DATA-03", "A -> B"),
@@ -906,26 +909,18 @@ def engines_evidence() -> dict[str, Any]:
                 "b4l_success": bool(lg["pass"] and _geo_word(lg) == "CONSISTENT"),
             })
 
-    c = r7["criteria"]
-    bins = []
-    b1 = c["envelope_b1"]["pooled"]["bins_5deg"]
-    lg = c["envelope_lg"]["pooled"]["bins_5deg"]
-    for b in sorted(set(b1) | set(lg), key=int):
-        bins.append({"bin_deg": int(b),
-                     "n": b1.get(b, {}).get("n", 0),
-                     "b1_success_rate": b1.get(b, {}).get("success_rate"),
-                     "b4l_success_rate": lg.get(b, {}).get("success_rate")})
-    sig_b1 = c["significance_b1"]
-    return {
-        "exp007": {
-            "tier1": tier1, "tier2": tier2,
-            "s3_met": bool(c and e7["criteria"]["S3_learned_converts_a_tier1_failing_edge"]["met"]),
-            "s1_met": bool(e7["criteria"]["S1_dem_render_b1_at_k16_or_k32_on_failing_pairs"]["met"]),
-            "runtime_min": float(e7["total_runtime_s"]) / 60.0,
-            "engine": e7.get("learned_engine"),
-            "source": "experiments/EXP-007/exp007_results.json",
-        },
-        "rd07": {
+    def rd07_block(doc: dict, source: str) -> dict:
+        c = doc["criteria"]
+        bins = []
+        b1 = c["envelope_b1"]["pooled"]["bins_5deg"]
+        lg = c["envelope_lg"]["pooled"]["bins_5deg"]
+        for b in sorted(set(b1) | set(lg), key=int):
+            bins.append({"bin_deg": int(b),
+                         "n": b1.get(b, {}).get("n", 0),
+                         "b1_success_rate": b1.get(b, {}).get("success_rate"),
+                         "b4l_success_rate": lg.get(b, {}).get("success_rate")})
+        sig_b1 = c["significance_b1"]
+        return {
             "bins": bins,
             "n_pairs": int(sig_b1["pooled"]["n_edges"]),
             "b1_successes": int(sig_b1["pooled"]["n_success"]),
@@ -944,8 +939,28 @@ def engines_evidence() -> dict[str, Any]:
             "replication": {"s1_met": bool(c["S1_replication"]["met"]),
                             "detail": c["S1_replication"]["detail"]},
             "north_up_changed": c["S6_north_up_changes_no_recorded_outcome"]["changed"],
-            "source": "experiments/REAL-DATA-07/real_data_07_results.json",
+            "source": source,
+        }
+
+    c = r7["criteria"]
+    amended = None
+    if RD07_AMENDED_ARTEFACT.exists():
+        amended = rd07_block(_read(RD07_AMENDED_ARTEFACT, "REAL-DATA-07 amended results",
+                                   require=("criteria",)),
+                             "experiments/REAL-DATA-07/real_data_07_results_nue.json")
+        amended["orientation"] = "north_up_east_right (E-037: mirrored tiles flipped)"
+    return {
+        "exp007": {
+            "tier1": tier1, "tier2": tier2,
+            "s3_met": bool(c and e7["criteria"]["S3_learned_converts_a_tier1_failing_edge"]["met"]),
+            "s1_met": bool(e7["criteria"]["S1_dem_render_b1_at_k16_or_k32_on_failing_pairs"]["met"]),
+            "runtime_min": float(e7["total_runtime_s"]) / 60.0,
+            "engine": e7.get("learned_engine"),
+            "source": "experiments/EXP-007/exp007_results.json",
         },
+        "rd07": {**rd07_block(r7, "experiments/REAL-DATA-07/real_data_07_results.json"),
+                 "orientation": "quarter_turn (Part 1 method; five frames mirrored, E-037)"},
+        "rd07_amended": amended,
         "summary": ENGINES_SUMMARY,
         "scope": ENGINES_SCOPE,
         "not_claimed": [
@@ -960,5 +975,6 @@ def engines_evidence() -> dict[str, Any]:
             "learned matcher claim beyond the two artefacts named below.",
         ],
         "sources": ["experiments/EXP-007/exp007_results.json",
-                    "experiments/REAL-DATA-07/real_data_07_results.json"],
+                    "experiments/REAL-DATA-07/real_data_07_results.json"]
+                   + ([amended["source"]] if amended else []),
     }

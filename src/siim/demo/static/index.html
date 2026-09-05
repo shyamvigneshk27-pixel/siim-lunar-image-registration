@@ -891,7 +891,16 @@ function enginesPanel(vm) {
       — the native-scale envelope is <b>not</b> extended (S3 NOT MET).
       Δ incidence separation, RootSIFT: pooled p = ${(+r7.significance.b1_pooled_p).toFixed(4)}
       (RD-03 ${(+r7.significance.b1_rd03_p).toFixed(4)}, RD-04 ${(+r7.significance.b1_rd04_p).toFixed(3)}).
-      Replication of the low-incidence success: <b>${r7.replication.s1_met ? "MET" : "NOT MET"}</b>.</div>
+      Replication of the low-incidence success: <b>${r7.replication.s1_met ? "MET" : "NOT MET"}</b>.
+      Orientation step: ${esc(r7.orientation)}.</div>
+    ${eng.rd07_amended ? `<div class="note" style="margin-top:8px;border-left:2px solid var(--warning);padding-left:10px">
+      <b>Amended run, same criteria (E-037: five of the fourteen frames were mirror images; flipped before the quarter-turn).</b>
+      RootSIFT ${eng.rd07_amended.b1_successes} / ${eng.rd07_amended.n_pairs}, DISK + LightGlue ${eng.rd07_amended.b4l_successes} / ${eng.rd07_amended.n_pairs};
+      wrong passes ${eng.rd07_amended.wrong_pass.b1.n_wrong_pass} of ${eng.rd07_amended.wrong_pass.b1.n_pass} and
+      ${eng.rd07_amended.wrong_pass.b4l.n_wrong_pass} of ${eng.rd07_amended.wrong_pass.b4l.n_pass};
+      largest ≥ 0.8 bin ${eng.rd07_amended.envelope.b1_largest_bin_ge_0_8}° / ${eng.rd07_amended.envelope.b4l_largest_bin_ge_0_8}°;
+      pooled p = ${(+eng.rd07_amended.significance.b1_pooled_p).toFixed(4)};
+      replication <b>${eng.rd07_amended.replication.s1_met ? "MET" : "NOT MET"}</b>. The original run above is preserved, not replaced.</div>` : ""}
     <div class="note" style="margin-top:10px;font-size:13.5px;color:var(--ink)"><b>${esc(eng.summary)}</b></div>
     <div class="note" style="margin-top:8px;color:var(--ink-2)"><b>Scope of this evidence:</b> ${esc(eng.scope)}</div>
     <div class="notclaimed">${eng.not_claimed.map(n => `<span>${esc(n)}</span>`).join("")}</div>
