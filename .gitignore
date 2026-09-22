@@ -19,3 +19,15 @@ experiments/**/*.raw
 
 # setuptools editable-install metadata (pip install -e .)
 src/*.egg-info/
+
+# Real archive products fetched by hand (Chandrayaan-2 and similar bulk data).
+# Multi-gigabyte and externally sourced: the manifests and labels are tracked,
+# the bulk products are not. Without this a broad `git add` attempts ~23 GB.
+data/realdata/**
+data/realdata.zip
+# Re-include the PDS4 labels: they are small, they are the evidence the
+# readiness report is built from, and git cannot re-include a file whose
+# parent directory is excluded -- hence the directory negation first.
+!data/realdata/**/
+!data/realdata/**/*.xml
+!data/realdata/**/readme.txt
